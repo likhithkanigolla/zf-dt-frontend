@@ -1,0 +1,61 @@
+/* NavigationBar.css */
+.navbar {
+    position: sticky; /* Change position to sticky */
+    top: 0;
+    left: 0;
+    /* width: 100%; */
+    background-color: #123462;
+    color: white;
+    /* padding: 20px 30px; */
+    padding-left: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.navbar__logo img {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.navbar__dashboard {
+    font-size: 1rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.navbar__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+    overflow: hidden; /* Prevent text overflow */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .navbar__logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar__logo img {
+        margin-right: 0;
+    }
+}
