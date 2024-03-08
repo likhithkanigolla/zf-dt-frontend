@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
+import SCRCLOGO from './scrc_logo.png'; // Import SCRC Logo
+import ZFLOGO from './zf_logo.png'; // Import ZF Logo
 
 const HomePage = () => {
   return (
     <div className="home-page">
       <h1>Digital Twin Collaboration</h1>
       <div className="company-logos">
-        <img src="company1-logo.png" alt="Company 1 Logo" />
-        <img src="company2-logo.png" alt="Company 2 Logo" />
+        <img src={SCRCLOGO} alt="Smart City Logo" /> {/* Use imported SCRC Logo */}
+        <img src={ZFLOGO} alt="ZF Logo" /> {/* Use imported ZF Logo */}
       </div>
       <div className="info">
         <p>Here you can find information about our digital twin collaboration.</p>
