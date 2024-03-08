@@ -1,0 +1,14 @@
+/* VisualizationPage.css */
+.visualization-page {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .visualization-page h2 {
+    margin-bottom: 20px;
+  }
+  
+  .visualization-page p {
+    margin-bottom: 30px;
+  }
+  
