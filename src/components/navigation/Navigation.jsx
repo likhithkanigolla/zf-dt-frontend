@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 import './NavigationBar.css';
-
+import IITHLOGO from './images/iiith.png';
+import SCRCLOGO from './images/scrc_logo.png';
+import ZFLOGO from './images/zf_logo.png';
 
 const NavigationBar = () => {
   return (
