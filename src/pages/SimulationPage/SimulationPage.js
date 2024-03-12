@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import './SimulationPage.css';
 import NavigationBar from '../../components/navigation/Navigation';
+import blueprint from './simulation_bp.png';
+
+
+import { GiWaterTower } from "react-icons/gi";
+import roPlantImage from './ro_plant.png'
+import roCoolerImage from './ro_cooler.png'
+import Motor from './Motor.png';
+
 
 const SimulationPage = () => {
   const [inputValues, setInputValues] = useState({
@@ -19,6 +27,13 @@ const SimulationPage = () => {
     });
   };
 
+  const [isOn, setIsOn] = useState({
+    valve1: true,
+    valve2: false,
+    valve3: true,
+    valve4: false,
+  });
+
   const handleCalculate = async () => {
     try {
       const response = await fetch('http://localhost:1629/calculate', {
@@ -35,17 +50,38 @@ const SimulationPage = () => {
     }
   };
 
+  const toggleIsOn = (valve) => {
+    setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
+  };
+
   return (
     <div className="simulation-page">
       <h2>Simulation Page</h2>
+      <div style={{ position: 'relative' }}>
+      <img src={blueprint} alt="blueprint" style={{ width: '100%', height: '400px', marginTop: '100px' }} />
+      <GiWaterTower size={80} color={isOn.valve1 ? "green" : "red"} style={{position: 'absolute', top: '12%', left: '49%' }} onClick={() => {toggleIsOn('valve1');}} />
+      <img src={roPlantImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '30%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '58%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '72%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '87%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={Motor}  alt="Motor" style={{width: '50px',height: '50px', position: 'absolute', top: '86%', left: '35%',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+
+      </div>     
+
       <div className="input-container">
-        <input type="number" name="number1" value={inputValues.number1} onChange={handleChange} />
-        <input type="number" name="number2" value={inputValues.number2} onChange={handleChange} />
-        <input type="number" name="number3" value={inputValues.number3} onChange={handleChange} />
-        <input type="number" name="number4" value={inputValues.number4} onChange={handleChange} />
+        <label htmlFor="number1">Sump:</label>
+        <input type="number" name="number1" id="number1" value={inputValues.number1} onChange={handleChange} />
+        <label htmlFor="number2">Over Head Tank:</label>
+        <input type="number" name="number2" id="number2" value={inputValues.number2} onChange={handleChange} />
+        <label htmlFor="number3">RO 1:</label>
+        <input type="number" name="number3" id="number3" value={inputValues.number3} onChange={handleChange} />
+        <label htmlFor="number4">RO 2:</label>
+        <input type="number" name="number4" id="number4" value={inputValues.number4} onChange={handleChange} />
         <button onClick={handleCalculate}>Calculate</button>
-      </div>
+       </div>
+
       {result && <p>Result: {result}</p>}
+
     </div>
   );
 }
