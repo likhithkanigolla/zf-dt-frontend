@@ -11,4 +11,45 @@
   .simulation-page p {
     margin-bottom: 30px;
   }
+
+  .result-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-container p {
+    font-weight: bold;
+  }
+  
+  .result-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+  }
+  
+  .result-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-card h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+  }
+  
+  .result-card p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .result-cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   

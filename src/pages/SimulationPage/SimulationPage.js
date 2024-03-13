@@ -12,10 +12,10 @@ import Motor from './Motor.png';
 
 const SimulationPage = () => {
   const [inputValues, setInputValues] = useState({
-    number1: '',
-    number2: '',
-    number3: '',
-    number4: ''
+    voltage: '',
+    temperature: '',
+    desiredTDS: '',
+    effectiveMembraneArea: ''
   });
   const [result, setResult] = useState(null);
 
@@ -25,7 +25,7 @@ const SimulationPage = () => {
       ...inputValues,
       [name]: value
     });
-  };
+  };  
 
   const [isOn, setIsOn] = useState({
     valve1: true,
@@ -34,22 +34,59 @@ const SimulationPage = () => {
     valve4: false,
   });
 
+  const ResultCard = ({ title, value }) => {
+    return (
+      <div className="result-card">
+        <h3>{title}</h3>
+        <p>{value}</p>
+      </div>
+    );
+  };
+
   const handleCalculate = async () => {
     try {
-      const response = await fetch('http://localhost:1629/calculate', {
+      // Calculate initial TDS based on input values
+      const initialTDS = calculateInitialTDS(inputValues);
+      console.log(initialTDS)
+  
+      // Prepare request body including initial TDS
+      const requestBody = {
+        initial_tds: initialTDS,
+        desired_tds: inputValues.desired_tds,
+        voltage: inputValues.voltage,
+        temperature: inputValues.temperature,
+        effective_membrane_area: inputValues.effective_membrane_area
+        // Other parameters as needed
+      };
+  
+      const response = await fetch('http://localhost:1629/calculate_ro_filtration', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(inputValues)
+        body: JSON.stringify(requestBody)
       });
       const data = await response.json();
-      setResult(data.result);
+      setResult(data); // Set the entire response object as result
     } catch (error) {
-      console.error('Error calculating simulation:', error);
+      console.error('Error calculating RO filtration:', error);
     }
   };
+  
+  
+  const calculateInitialTDS = (inputValues) => {
+    const { voltage, temperature } = inputValues;
+  
+    // Calculate CV
+    const CV = voltage / (1.0 + 0.02 * (temperature - 25));
+  
+    // Calculate initial TDS using CV
+    const initialTDS = 133.42 * Math.pow(CV, 3) - 255.86 * Math.pow(CV, 2) + 857.39 * CV * 0.5;
+  
+    return initialTDS;
+  };
 
+  
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
   };
@@ -69,18 +106,31 @@ const SimulationPage = () => {
       </div>     
 
       <div className="input-container">
-        <label htmlFor="number1">Sump:</label>
-        <input type="number" name="number1" id="number1" value={inputValues.number1} onChange={handleChange} />
-        <label htmlFor="number2">Over Head Tank:</label>
-        <input type="number" name="number2" id="number2" value={inputValues.number2} onChange={handleChange} />
-        <label htmlFor="number3">RO 1:</label>
-        <input type="number" name="number3" id="number3" value={inputValues.number3} onChange={handleChange} />
-        <label htmlFor="number4">RO 2:</label>
-        <input type="number" name="number4" id="number4" value={inputValues.number4} onChange={handleChange} />
+        <label htmlFor="voltage">Voltage:</label>
+        <input type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} />
+        <label htmlFor="temperature">Temperature:</label>
+        <input type="number" name="temperature" id="temperature" value={inputValues.temperature} onChange={handleChange} />
+        <label htmlFor="desired_tds">Desired TDS:</label>
+        <input type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
+        <label htmlFor="effective_membrane_area">Effective Membrane Area:</label>
+        <input type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
         <button onClick={handleCalculate}>Calculate</button>
-       </div>
-
-      {result && <p>Result: {result}</p>}
+      </div>
+        {/* Display result if available */}
+        {result && (
+          <div className="result-container">
+          <p>Result:</p>
+          <div className="result-cards">
+            <ResultCard title="Osmotic Pressure" value={result.osmotic_pressure} />
+            <ResultCard title="Water Flux" value={result.water_flux} />
+            <ResultCard title="Permeate Flow Rate" value={result.permeate_flow_rate} />
+            <ResultCard title="Final TDS Concentration After RO Tank" value={result.final_tds_concentration_after_ro_tank} />
+            <ResultCard title="Calculated TDS Value" value={result.calculated_tds_value} />
+            <ResultCard title="Cycle Count" value={result.cycle_count} />
+            <ResultCard title="Time Estimation (hours)" value={result.time_estimation_hours} />
+          </div>
+        </div>
+        )}
 
     </div>
   );
