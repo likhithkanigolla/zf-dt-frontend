@@ -27,6 +27,7 @@ const SimulationPage = () => {
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(0); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
+  const [waterConsumed, setWaterConsumed] = useState(0);
   
 
   useEffect(() => {
@@ -135,6 +136,15 @@ const SimulationPage = () => {
     }
   };
 
+  const handleConsumeWater = () => {
+    if (waterInROFilter >= 10) {
+      setWaterInROFilter(prev => prev - 10); // Consume 10 liters from RO Filter
+      setWaterConsumed(prev => prev + 10); // Add consumed water to the total
+    } else {
+      alert("Not enough water in RO Filter to consume.");
+    }
+  };
+
   const calculateInitialTDS = (inputValues) => {
     const { voltage, temperature } = inputValues;
     // Calculate CV
@@ -167,6 +177,8 @@ const SimulationPage = () => {
             <ResultCard title="Water in Sump" value={waterInSump} />
             <ResultCard title="Water in OHT" value={waterInOHT} />
             <ResultCard title="Water in RO Filter" value={waterInROFilter} />
+            <ResultCard title="Water Consumed" value={waterConsumed} />
+            
             
             </div>
       </div>
@@ -190,6 +202,7 @@ const SimulationPage = () => {
           )}
           <button onClick={handleCalculate}>Calculate</button>
           <button onClick={handleMotorToggle}>{motorOn ? "Turn Motor Off" : "Turn Motor On"}</button>
+          <button onClick={handleConsumeWater}>Consume Water</button>
       </div>
         {/* Display result if available */}
         {result && (
