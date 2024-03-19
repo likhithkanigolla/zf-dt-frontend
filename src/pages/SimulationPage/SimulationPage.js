@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import './SimulationPage.css';
 import NavigationBar from '../../components/navigation/Navigation';
 import blueprint from './simulation_bp.png';
-
-
 import { GiWaterTower } from "react-icons/gi";
-import roPlantImage from './ro_plant.png'
-import roCoolerImage from './ro_cooler.png'
+import roPlantImage from './ro_plant.png';
+import roCoolerImage from './ro_cooler.png';
 import Motor from './Motor.png';
-
 
 const SimulationPage = () => {
   const [inputValues, setInputValues] = useState({
@@ -18,6 +15,29 @@ const SimulationPage = () => {
     effectiveMembraneArea: ''
   });
   const [result, setResult] = useState(null);
+  const [isOn, setIsOn] = useState({
+    valve1: true,
+    valve2: false,
+    valve3: true,
+    valve4: false,
+  });
+  const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+  const [waterInSump, setWaterInSump] = useState(100); // Initial water level in Sump
+  const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
+
+  useEffect(() => {
+    let intervalId;
+    if (isSimulationRunning) {
+      intervalId = setInterval(() => {
+        if (waterInSump > 0) {
+          setWaterInSump(prev => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
+          setWaterInOHT(prev => Math.min(prev + 5, 100)); // Increase water in OHT by 5L per second, limited to 100L
+        }
+      }, 1000); // Run every second
+    }
+    return () => clearInterval(intervalId); // Cleanup interval on unmount or when simulation stops
+  }, [isSimulationRunning, waterInSump]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,14 +45,15 @@ const SimulationPage = () => {
       ...inputValues,
       [name]: value
     });
-  };  
+  };
 
-  const [isOn, setIsOn] = useState({
-    valve1: true,
-    valve2: false,
-    valve3: true,
-    valve4: false,
-  });
+  const handleStartSimulation = () => {
+    setIsSimulationRunning(true);
+  };
+
+  const handleStopSimulation = () => {
+    setIsSimulationRunning(false);
+  };
 
   const ResultCard = ({ title, value }) => {
     return (
@@ -42,13 +63,18 @@ const SimulationPage = () => {
       </div>
     );
   };
+  
 
   const handleCalculate = async () => {
+    if (!isSimulationRunning) {
+      alert("Please start the simulation to proceed.");
+      return;
+    }
+
     try {
       // Calculate initial TDS based on input values
       const initialTDS = calculateInitialTDS(inputValues);
-      console.log(initialTDS)
-  
+
       // Prepare request body including initial TDS
       const requestBody = {
         initial_tds: initialTDS,
@@ -58,7 +84,7 @@ const SimulationPage = () => {
         effective_membrane_area: inputValues.effective_membrane_area
         // Other parameters as needed
       };
-  
+
       const response = await fetch('http://localhost:1629/calculate_ro_filtration', {
         method: 'POST',
         headers: {
@@ -72,21 +98,16 @@ const SimulationPage = () => {
       console.error('Error calculating RO filtration:', error);
     }
   };
-  
-  
+
   const calculateInitialTDS = (inputValues) => {
     const { voltage, temperature } = inputValues;
-  
     // Calculate CV
     const CV = voltage / (1.0 + 0.02 * (temperature - 25));
-  
     // Calculate initial TDS using CV
     const initialTDS = 133.42 * Math.pow(CV, 3) - 255.86 * Math.pow(CV, 2) + 857.39 * CV * 0.5;
-  
     return initialTDS;
   };
 
-  
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
   };
@@ -102,8 +123,19 @@ const SimulationPage = () => {
       <img src={roCoolerImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '72%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
       <img src={roCoolerImage} alt="ro plant" style={{ width: '50px', height: '50px', position: 'absolute', top: '87%', left: '58%' }} onClick={() => { toggleIsOn('valve2'); }} />
       <img src={Motor}  alt="Motor" style={{width: '50px',height: '50px', position: 'absolute', top: '86%', left: '35%',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      </div> 
 
-      </div>     
+      {/* Water Flow From Sump to OHT */}
+      <div className="water-flow-container">
+            <div className="water-box">
+              <h3>Water in Sump</h3>
+              <p>{waterInSump} Liters</p>
+            </div>
+            <div className="water-box">
+              <h3>Water in OHT</h3>
+              <p>{waterInOHT} Liters</p>
+            </div>
+      </div>
 
       <div className="input-container">
         <label htmlFor="voltage">Voltage:</label>
@@ -114,6 +146,13 @@ const SimulationPage = () => {
         <input type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
         <label htmlFor="effective_membrane_area">Effective Membrane Area:</label>
         <input type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
+
+        {isSimulationRunning ? (
+          <button onClick={handleStopSimulation}>Stop Simulation</button>
+        ) : (
+          <button onClick={handleStartSimulation}>Start Simulation</button>
+        )}
+
         <button onClick={handleCalculate}>Calculate</button>
       </div>
         {/* Display result if available */}
