@@ -12,7 +12,10 @@ const SimulationPage = () => {
     voltage: '',
     temperature: '',
     desiredTDS: '',
-    effectiveMembraneArea: ''
+    effectiveMembraneArea: '',
+    sumpCapacity: '',
+    ohtCapacity: '',
+    roCapacity: ''
   });
   const [result, setResult] = useState(null);
   const [isOn, setIsOn] = useState({
@@ -22,7 +25,7 @@ const SimulationPage = () => {
     valve4: false,
   });
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
-  const [waterInSump, setWaterInSump] = useState(100); // Initial water level in Sump
+  const [waterInSump, setWaterInSump] = useState(inputValues.sumpCapacity);
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(0); // Initial water level in RO Filter
@@ -34,44 +37,51 @@ const SimulationPage = () => {
     let intervalId;
     if (isSimulationRunning) {
       intervalId = setInterval(() => {
+        const { sumpCapacity, ohtCapacity } = inputValues;
+        const ohtThreshold80Percent = 0.8 * ohtCapacity;
+        const ohtThreshold20Percent = 0.2 * ohtCapacity;
+
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
-          if (waterInSump > 0 && waterInOHT < 60) {
+          if (waterInSump > 0 && waterInOHT < ohtCapacity) {
             setWaterInSump(prev => Math.max(prev - 3, 0)); // Reduce water in Sump by 3L per second
-            setWaterInOHT(prev => Math.min(prev + 3, 60)); // Increase water in OHT by 3L per second, limited to 60L
+            setWaterInOHT(prev => Math.min(prev + 3, ohtCapacity)); // Increase water in OHT by 3L per second, limited to OHT capacity
           }
 
-          if ((waterInOHT === 60 || waterInSump === 0) && !alertShown) {
-            alert("Motor turned off automatically since water tank is full.");
-            setMotorOn(false)
-            setAlertShown(true); // Set alertShown to true to prevent repeated alerts
-          }
-        }
-        
           // Pump water from OHT to RO Filter continuously
-          if (waterInOHT > 0 && waterInROFilter < 20) {
+          if (waterInOHT > 0 && waterInROFilter < inputValues.roCapacity) {
             setWaterInOHT(prev => Math.max(prev - 3, 0)); // Reduce water in OHT by 3L per second
-            setWaterInROFilter(prev => prev + 3); // Increase water in RO Filter by 3L per second
+            setWaterInROFilter(prev => Math.min(prev + 3, inputValues.roCapacity)); // Increase water in RO Filter by 3L per second, limited to RO capacity
           }
-        // If water in OHT is less than 20%, turn on the motor automatically
-        if (waterInOHT < 12) {
-          setMotorOn(true);
+
+          // Turn off motor if OHT is 80% filled
+          if (waterInOHT >= ohtThreshold80Percent) {
+            setMotorOn(false);
+          }
+        } else {
+          // Turn on motor if OHT is less than 20% filled
+          if (waterInOHT <= ohtThreshold20Percent) {
+            setMotorOn(true);
+          }
         }
-        // If water in OHT is empty, stop the motor
-        // if (waterInOHT === 0) {
-        //   setMotorOn(false);
-        // }
+
+        // If motor is turned off automatically due to tank filled or empty
+        if ((waterInOHT >= ohtCapacity || waterInSump === 0) && !alertShown) {
+          alert("Motor turned off automatically since water tank is full.");
+          setMotorOn(false)
+          setAlertShown(true); // Set alertShown to true to prevent repeated alerts
+        }
+
         // If water in Sump is empty, stop the simulation and show alert
         if (waterInSump === 0) {
-          setMotorOn(false);
-          // alert("No water in sump.");
+          setIsSimulationRunning(false);
+          alert("No water in sump. Simulation stopped.");
         }
-        
       }, 1000); // Run every second
     }
     return () => clearInterval(intervalId); // Cleanup interval on unmount or when simulation stops
-  }, [isSimulationRunning, motorOn, waterInSump, waterInOHT, waterInROFilter, alertShown]);
-  
+  }, [isSimulationRunning, motorOn, waterInSump, waterInOHT, waterInROFilter, alertShown, inputValues]);
+
   
 
 
@@ -124,7 +134,8 @@ const SimulationPage = () => {
         desired_tds: inputValues.desired_tds,
         voltage: inputValues.voltage,
         temperature: inputValues.temperature,
-        effective_membrane_area: inputValues.effective_membrane_area
+        effective_membrane_area: inputValues.effective_membrane_area,
+        sumpCapacity: inputValues.sumpCapacity
         // Other parameters as needed
       };
 
@@ -200,6 +211,13 @@ const SimulationPage = () => {
         <input type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
         <label htmlFor="effective_membrane_area">Effective Membrane Area:</label>
         <input type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
+        <label htmlFor="sumpCapacity">Sump Capacity (Liters):</label>
+        <input type="number" name="sumpCapacity" id="sumpCapacity" value={inputValues.sumpCapacity} onChange={handleChange} />
+        <label htmlFor="ohtCapacity">OHT Capacity (Liters):</label>
+        <input type="number" name="ohtCapacity" id="ohtCapacity" value={inputValues.ohtCapacity} onChange={handleChange} />
+        <label htmlFor="roCapacity">RO Capacity (Liters):</label>
+        <input type="number" name="roCapacity" id="roCapacity" value={inputValues.roCapacity} onChange={handleChange} />
+
 
         {isSimulationRunning ? (
             <button onClick={handleStopSimulation}>Stop Simulation</button>
