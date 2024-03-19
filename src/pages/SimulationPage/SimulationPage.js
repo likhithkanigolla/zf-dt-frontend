@@ -24,19 +24,48 @@ const SimulationPage = () => {
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [waterInSump, setWaterInSump] = useState(100); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
+  const [motorOn, setMotorOn] = useState(false); // Initial motor state
+  const [waterInROFilter, setWaterInROFilter] = useState(0); // Initial water level in RO Filter
+  const [alertShown, setAlertShown] = useState(false);
+  
 
   useEffect(() => {
     let intervalId;
     if (isSimulationRunning) {
       intervalId = setInterval(() => {
-        if (waterInSump > 0) {
-          setWaterInSump(prev => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
-          setWaterInOHT(prev => Math.min(prev + 5, 100)); // Increase water in OHT by 5L per second, limited to 100L
+        if (motorOn) {
+          // Pump water from Sump to OHT if motor is on
+          if (waterInSump > 0 && waterInOHT < 60) {
+            setWaterInSump(prev => Math.max(prev - 3, 0)); // Reduce water in Sump by 3L per second
+            setWaterInOHT(prev => Math.min(prev + 3, 60)); // Increase water in OHT by 3L per second, limited to 60L
+          }
+          // Pump water from OHT to RO Filter continuously
+          if (waterInOHT > 0 && waterInROFilter < 20) {
+            setWaterInOHT(prev => Math.max(prev - 3, 0)); // Reduce water in OHT by 3L per second
+            setWaterInROFilter(prev => prev + 3); // Increase water in RO Filter by 3L per second
+          }
+        }
+        // If water in OHT is filled to maximum capacity, turn off the motor automatically
+        if (waterInOHT === 60) {
+          setMotorOn(false);
+        }
+        // If water in OHT is less than 20%, turn on the motor automatically
+        if (waterInOHT < 12) {
+          setMotorOn(true);
+        }
+        // If water in OHT is empty, stop the motor
+        if (waterInOHT === 0) {
+          setMotorOn(false);
+        }
+        // If water in Sump is empty, stop the simulation
+        if (waterInSump === 0) {
+          setIsSimulationRunning(false);
         }
       }, 1000); // Run every second
     }
     return () => clearInterval(intervalId); // Cleanup interval on unmount or when simulation stops
-  }, [isSimulationRunning, waterInSump]);
+  }, [isSimulationRunning, motorOn, waterInSump, waterInOHT, waterInROFilter]);
+  
 
 
   const handleChange = (e) => {
@@ -55,6 +84,13 @@ const SimulationPage = () => {
     setIsSimulationRunning(false);
   };
 
+  const handleMotorToggle = () => {
+    if (!motorOn) {
+      setAlertShown(false); // Reset alertShown state when motor is manually turned off
+    }
+    setMotorOn(prev => !prev); // Toggle motor state
+  };
+  
   const ResultCard = ({ title, value }) => {
     return (
       <div className="result-card">
@@ -127,15 +163,15 @@ const SimulationPage = () => {
 
       {/* Water Flow From Sump to OHT */}
       <div className="water-flow-container">
-            <div className="water-box">
-              <h3>Water in Sump</h3>
-              <p>{waterInSump} Liters</p>
-            </div>
-            <div className="water-box">
-              <h3>Water in OHT</h3>
-              <p>{waterInOHT} Liters</p>
+            <div className="result-cards">
+            <ResultCard title="Water in Sump" value={waterInSump} />
+            <ResultCard title="Water in OHT" value={waterInOHT} />
+            <ResultCard title="Water in RO Filter" value={waterInROFilter} />
+            
             </div>
       </div>
+      <br></br>
+      <br></br>
 
       <div className="input-container">
         <label htmlFor="voltage">Voltage:</label>
@@ -148,12 +184,12 @@ const SimulationPage = () => {
         <input type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
 
         {isSimulationRunning ? (
-          <button onClick={handleStopSimulation}>Stop Simulation</button>
-        ) : (
-          <button onClick={handleStartSimulation}>Start Simulation</button>
-        )}
-
-        <button onClick={handleCalculate}>Calculate</button>
+            <button onClick={handleStopSimulation}>Stop Simulation</button>
+          ) : (
+            <button onClick={handleStartSimulation}>Start Simulation</button>
+          )}
+          <button onClick={handleCalculate}>Calculate</button>
+          <button onClick={handleMotorToggle}>{motorOn ? "Turn Motor Off" : "Turn Motor On"}</button>
       </div>
         {/* Display result if available */}
         {result && (
