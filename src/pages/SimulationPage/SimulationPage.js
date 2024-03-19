@@ -40,32 +40,38 @@ const SimulationPage = () => {
             setWaterInSump(prev => Math.max(prev - 3, 0)); // Reduce water in Sump by 3L per second
             setWaterInOHT(prev => Math.min(prev + 3, 60)); // Increase water in OHT by 3L per second, limited to 60L
           }
+
+          if ((waterInOHT === 60 || waterInSump === 0) && !alertShown) {
+            alert("Motor turned off automatically since water tank is full.");
+            setMotorOn(false)
+            setAlertShown(true); // Set alertShown to true to prevent repeated alerts
+          }
+        }
+        
           // Pump water from OHT to RO Filter continuously
           if (waterInOHT > 0 && waterInROFilter < 20) {
             setWaterInOHT(prev => Math.max(prev - 3, 0)); // Reduce water in OHT by 3L per second
             setWaterInROFilter(prev => prev + 3); // Increase water in RO Filter by 3L per second
           }
-        }
-        // If water in OHT is filled to maximum capacity, turn off the motor automatically
-        if (waterInOHT === 60) {
-          setMotorOn(false);
-        }
         // If water in OHT is less than 20%, turn on the motor automatically
         if (waterInOHT < 12) {
           setMotorOn(true);
         }
         // If water in OHT is empty, stop the motor
-        if (waterInOHT === 0) {
-          setMotorOn(false);
-        }
-        // If water in Sump is empty, stop the simulation
+        // if (waterInOHT === 0) {
+        //   setMotorOn(false);
+        // }
+        // If water in Sump is empty, stop the simulation and show alert
         if (waterInSump === 0) {
-          setIsSimulationRunning(false);
+          setMotorOn(false);
+          // alert("No water in sump.");
         }
+        
       }, 1000); // Run every second
     }
     return () => clearInterval(intervalId); // Cleanup interval on unmount or when simulation stops
-  }, [isSimulationRunning, motorOn, waterInSump, waterInOHT, waterInROFilter]);
+  }, [isSimulationRunning, motorOn, waterInSump, waterInOHT, waterInROFilter, alertShown]);
+  
   
 
 
