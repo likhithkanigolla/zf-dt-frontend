@@ -119,10 +119,16 @@ const SimulationPage = () => {
 
   const handleStopSimulation = () => {
     setIsSimulationRunning(false);
+    setWaterFlowStarted(false)
+    setMotorOn(false)
   };
 
   const handleStartWaterFlow = () => {
     setWaterFlowStarted(true);
+  };
+
+  const handleStopWaterFlow = () => {
+    setWaterFlowStarted(false);
   };
 
   const handleMotorToggle = () => {
@@ -130,6 +136,10 @@ const SimulationPage = () => {
       setAlertShown(false); // Reset alertShown state when motor is manually turned off
     }
     setMotorOn((prev) => !prev); // Toggle motor state
+  };
+
+  const handleInfoButtonClick = (info) => {
+    alert(info);
   };
 
   const toggleMotorStatus = () => {
@@ -222,6 +232,7 @@ const SimulationPage = () => {
   return (
     <div className="simulation-page">
       <h2>Simulation Page</h2>
+      
       <div style={{ position: "relative" }}>
         <img
           src={blueprint}
@@ -236,125 +247,48 @@ const SimulationPage = () => {
             toggleIsOn("valve1");
           }}
         />
-        <img
-          src={roPlantImage}
-          alt="ro plant"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "30%",
-            left: "58%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
-        <img
-          src={roCoolerImage}
-          alt="ro plant"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "58%",
-            left: "58%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
-        <img
-          src={roCoolerImage}
-          alt="ro plant"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "72%",
-            left: "58%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
-        <img
-          src={roCoolerImage}
-          alt="ro plant"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "87%",
-            left: "58%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
-        <img
-          src={Motor}
-          alt="Motor"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "86%",
-            left: "35%",
-            transform: "scaleX(-1)",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
+        <img src={roPlantImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "30%",left: "58%",}} onClick={() => { toggleIsOn("valve2");}}/>
+        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "58%", left: "58%", }} onClick={() => { toggleIsOn("valve2"); }}/>
+        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "72%", left: "58%",}} onClick={() => { toggleIsOn("valve2");}}/>
+        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "87%", left: "58%",}}onClick={() => {toggleIsOn("valve2");}}/>
+        <img src={Motor} alt="Motor" className={`motor ${motorOn ? 'running' : ''}`} style={{ width: "50px", height: "50px", position: "absolute",top: "86%",left: "35%",transform: "scaleX(-1)",}}onClick={() => {toggleIsOn("valve2");}}/>
       </div>
 
       <br></br>
+      <div className="button-container">
+          <button className={`button ${isSimulationRunning ? 'stop' : 'start'}`} onClick={isSimulationRunning ? handleStopSimulation : handleStartSimulation}>
+            {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
+          </button> 
+      </div>
       <br></br>
-
+      
+      {isSimulationRunning && (
       <div className="container">
-      <h4 className="heading" htmlFor="selectedNumber">Select a container count from 1 to 5:</h4>
-      <input 
-        type="number" 
-        name="selectedNumber" 
-        id="selectedNumber" 
-        value={selectedNumber} 
-        onChange={(e) => setSelectedNumber(e.target.value)} 
-        min="1" 
-        max="5" 
-      />
+        <h4 className="heading" htmlFor="selectedNumber">Container <button className="info-button" onClick={() => handleInfoButtonClick("Information about selecting a container count from 1 to 5.")}>ℹ️</button></h4>
+        <input type="number" name="selectedNumber" id="selectedNumber" value={selectedNumber} onChange={(e) => setSelectedNumber(e.target.value)} min="1" max="5" />
 
-  {/* <h4 className="heading">Voltage:</h4>
-  <input className="input-box" type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} /> */}
-  
-  <h4 className="heading">Temperature:</h4>
-  <input className="input-box" type="number" name="temperature" id="temperature" value={inputValues.temperature} onChange={handleChange} />
-  <br></br>
-  <h4 className="heading">Desired TDS:</h4>
-  <input className="input-box" type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
-  
-  <h4 className="heading">Effective Membrane Area:</h4>
-  <input className="input-box" type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
-  <br></br>
-  <h4 className="heading">Sump Capacity (Liters):</h4>
-  <input className="input-box" type="number" name="sumpCapacity" id="sumpCapacity" value={inputValues.sumpCapacity} onChange={handleChange} />
-</div>
+        {/* <h4 className="heading">Voltage:</h4>
+        <input className="input-box" type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} /> */}
+        
+        <h4 className="heading">Temperature:</h4>
+        <input className="input-box" type="number" name="temperature" id="temperature" value={inputValues.temperature} onChange={handleChange} />
+        <br></br>
+        <h4 className="heading">Desired TDS:</h4>
+        <input className="input-box" type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
+        
+        <h4 className="heading">Effective Membrane Area:</h4>
+        <input className="input-box" type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
+        <br></br>
+        <h4 className="heading">Sump Capacity (Liters):</h4>
+        <input className="input-box" type="number" name="sumpCapacity" id="sumpCapacity" value={inputValues.sumpCapacity} onChange={handleChange} />
 
-<div className="button-container">
-  {isSimulationRunning ? (
-    <button className="button" onClick={handleStopSimulation}>Stop Simulation</button>
-  ) : (
-    <button className="button" onClick={handleStartSimulation}>Start Simulation</button>
-  )}
-  <button className="button" onClick={handleCalculate}>Calculate</button>
-  <button className="button" onClick={handleMotorToggle}>{motorOn ? "Turn Motor Off" : "Turn Motor On"}</button>
-  <button className="button" onClick={handleConsumeWater}>Consume Water</button>
-</div>
+        <button className="button" onClick={handleCalculate}>Calculate</button>
+      </div>)}
 
       {/* Display result if available */}
       {result && (
         <div className="result-container">
-          <p>Result:</p>
+          <p>Estimated Result:</p>
           <div className="result-cards">
             <ResultCard
               title="Osmotic Pressure"
@@ -379,21 +313,32 @@ const SimulationPage = () => {
               value={result.time_estimation_hours}
             />
           </div>
-        </div>
-      )}
-      {result && !waterFlowStarted && (
-        <button onClick={handleStartWaterFlow} className="button">Start Water Flow</button>
-      )}
+          <br></br>
+          {/* <button onClick={handleStartWaterFlow} className="button">Start Water Flow</button> */}
+          <button onClick={waterFlowStarted ? handleStopWaterFlow : handleStartWaterFlow} className="button">
+            {waterFlowStarted ? "Stop Water Flow" : "Start Water Flow"}
+          </button>
 
-      {/* Water Flow From Sump to OHT */}
-      <div className="water-flow-container">
-        <div className="result-cards">
-          <ResultCard title="Water in Sump" value={waterInSump} />
-          <ResultCard title="Water in OHT" value={waterInOHT} />
-          <ResultCard title="Water in RO Filter" value={waterInROFilter} />
-          <ResultCard title="Water Consumed" value={waterConsumed} />
         </div>
-      </div>
+        
+      )}
+      {result && waterFlowStarted && (
+        <div className="result-container">
+          <div className="water-flow-container">
+            <div className="result-cards">
+              <ResultCard title="Water in Sump" value={waterInSump} />
+              <ResultCard title="Water in OHT" value={waterInOHT} />
+              <ResultCard title="Water in RO Filter" value={waterInROFilter} />
+              <ResultCard title="Water Consumed" value={waterConsumed} />
+            </div>
+            <br></br>
+            <button className={`button ${motorOn ? 'motor-off' : 'motor-on'}`} onClick={handleMotorToggle}>
+          {motorOn ? "Turn Motor Off" : "Turn Motor On"}
+          </button> <span><span></span></span>
+            <button className="button" onClick={handleConsumeWater}>Consume Water</button>
+          </div>
+        </div>
+      )}
 
       {showMotorStatus && (
       <div className="motor-status-overlay">

@@ -123,3 +123,70 @@ background-color: #0056b3;
     opacity: 0;
   }
 }
+
+/* Add styles to differentiate Start/Stop Simulation and Motor On/Off */
+.button {
+  /* Style for Start/Stop Simulation button */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button.start {
+  background-color: green;
+  color: white;
+}
+
+.button.stop {
+  background-color: red;
+  color: white;
+}
+
+/* Style for Motor On/Off button */
+.button.motor-on {
+  background-color: green;
+  color: white;
+}
+
+.button.motor-off {
+  background-color: red;
+  color: white;
+}
+
+/* Add styles for diagram components based on running status */
+.img-container {
+  position: relative;
+}
+
+.valve {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: gray;
+  position: absolute;
+}
+
+.valve.running {
+  background-color: green; /* Change color to green when valve is running */
+}
+
+.motor {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+
+.motor.running {
+  animation: spin 2s linear infinite; /* Add rotation animation when motor is running */
+}
+
+/* Animation keyframes for motor rotation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
