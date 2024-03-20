@@ -6,7 +6,7 @@ import NavigationBar from '../../components/navigation/Navigation';
 const ActuationPage = () => {
   return (
     <div className="actuation-page">
-        <NavigationBar />
+        <NavigationBar title="Digital Twin for Water Quality - Actuation"/>
       <h2>Actuation Page</h2>
       <p>This is the Actuation page.</p>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link } from 'react-router-dom';
 import './NavigationBar.css';
 import IITHLOGO from './images/iiith.png';
 import SCRCLOGO from './images/scrc_logo.png';
 import ZFLOGO from './images/zf_logo.png';
 
-const NavigationBar = () => {
+const NavigationBar = ({ title }) => {
   return (
     <nav className="navbar">
       <Link to="/">
@@ -18,7 +18,7 @@ const NavigationBar = () => {
           <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
         </div>
       </Link>
-      <div className="navbar__title">Digital Twin for Water Quality</div>
+      <div className="navbar__title">{title}</div> {/* Display dynamic title */}
       <Link to="/">
         <div className="navbar__logo">
           <img src={ZFLOGO} alt="ZF Logo" />

@@ -231,7 +231,7 @@ const SimulationPage = () => {
 
   return (
     <div className="simulation-page">
-      <h2>Simulation Page</h2>
+      <NavigationBar title="Digital Twin for Water Quality - Simulation"/>
       
       <div style={{ position: "relative" }}>
         <img
