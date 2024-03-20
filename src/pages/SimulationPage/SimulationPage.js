@@ -34,6 +34,22 @@ const SimulationPage = () => {
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
 
+  const [selectedNumber, setSelectedNumber] = useState('');
+  const [voltageValue, setVoltageValue] = useState('');
+  const voltageData = {
+    1: 2.3,
+    2: 3.4,
+    3: 4.5,
+    4: 5.6,
+    5: 6.7,
+    6: 7.8,
+    7: 8.9,
+    8: 9.0,
+    9: 10.1,
+    10: 11.2,
+  };
+  
+
 
   useEffect(() => {
     let intervalId;
@@ -138,6 +154,16 @@ const SimulationPage = () => {
     }
 
     try {
+      const selectedNumberValue = parseInt(selectedNumber);
+
+      // Ensure that the selectedNumber is within the valid range of 1 to 10
+      if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 10) {
+        alert("Please select a number between 1 and 10.");
+        return;
+      }
+  
+      // Retrieve voltage value from the voltageData object
+      const voltageValue = voltageData[selectedNumberValue];
       // Calculate initial TDS based on input values
       const initialTDS = calculateInitialTDS(inputValues);
 
@@ -145,9 +171,10 @@ const SimulationPage = () => {
       const requestBody = {
         initial_tds: initialTDS,
         desired_tds: inputValues.desired_tds,
-        voltage: inputValues.voltage,
+        voltage: voltageValue,
         temperature: inputValues.temperature,
         effective_membrane_area: inputValues.effective_membrane_area,
+        sump_capacity: inputValues.sumpCapacity
         // Other parameters as needed
       };
 
@@ -286,8 +313,19 @@ const SimulationPage = () => {
       <br></br>
 
       <div className="container">
-  <h4 className="heading">Voltage:</h4>
-  <input className="input-box" type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} />
+      <h4 className="heading" htmlFor="selectedNumber">Select a container count from 1 to 5:</h4>
+      <input 
+        type="number" 
+        name="selectedNumber" 
+        id="selectedNumber" 
+        value={selectedNumber} 
+        onChange={(e) => setSelectedNumber(e.target.value)} 
+        min="1" 
+        max="5" 
+      />
+
+  {/* <h4 className="heading">Voltage:</h4>
+  <input className="input-box" type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} /> */}
   
   <h4 className="heading">Temperature:</h4>
   <input className="input-box" type="number" name="temperature" id="temperature" value={inputValues.temperature} onChange={handleChange} />
@@ -358,10 +396,10 @@ const SimulationPage = () => {
       </div>
 
       {showMotorStatus && (
-        <div className="motor-status-overlay">
-          <p>Motor is {motorOn ? "on" : "off"}</p>
-        </div>
-      )}
+      <div className="motor-status-overlay">
+        <p>Motor is {motorOn ? "on" : "off"}</p>
+      </div>
+    )}
 
     </div>
   );
