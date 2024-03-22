@@ -34,19 +34,16 @@ const SimulationPage = () => {
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
 
+  const [infoText, setInfoText] = useState("");
   const [selectedNumber, setSelectedNumber] = useState('');
   const [voltageValue, setVoltageValue] = useState('');
   const voltageData = {
+    0: 1.2,
     1: 2.3,
     2: 3.4,
     3: 4.5,
     4: 5.6,
-    5: 6.7,
-    6: 7.8,
-    7: 8.9,
-    8: 9.0,
-    9: 10.1,
-    10: 11.2,
+    5: 6.7
   };
   
 
@@ -121,6 +118,7 @@ const SimulationPage = () => {
     setIsSimulationRunning(false);
     setWaterFlowStarted(false)
     setMotorOn(false)
+    setResult(false)
   };
 
   const handleStartWaterFlow = () => {
@@ -139,7 +137,11 @@ const SimulationPage = () => {
   };
 
   const handleInfoButtonClick = (info) => {
-    alert(info);
+    setInfoText(info);
+  };
+
+  const handleInfoButtonLeave = () => {
+    setInfoText(""); // Clear the info text when mouse leaves the info button
   };
 
   const toggleMotorStatus = () => {
@@ -234,23 +236,12 @@ const SimulationPage = () => {
       <NavigationBar title="Digital Twin for Water Quality - Simulation"/>
       
       <div style={{ position: "relative" }}>
-        <img
-          src={blueprint}
-          alt="blueprint"
-          style={{ width: "100%", height: "400px", marginTop: "100px" }}
-        />
-        <GiWaterTower
-          size={80}
-          color={isOn.valve1 ? "green" : "red"}
-          style={{ position: "absolute", top: "12%", left: "49%" }}
-          onClick={() => {
-            toggleIsOn("valve1");
-          }}
-        />
+        <img src={blueprint} alt="blueprint" style={{ width: "100%", height: "400px", marginTop: "100px" }}/>
+        <GiWaterTower size={80} color={isOn.valve1 ? "blue" : "red"} style={{ position: "absolute", top: "12%", left: "49%" }} onClick={() => {toggleIsOn("valve1"); }}/>
         <img src={roPlantImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "30%",left: "58%",}} onClick={() => { toggleIsOn("valve2");}}/>
-        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "58%", left: "58%", }} onClick={() => { toggleIsOn("valve2"); }}/>
-        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "72%", left: "58%",}} onClick={() => { toggleIsOn("valve2");}}/>
-        <img src={roCoolerImage} alt="ro plant" style={{ width: "50px", height: "50px", position: "absolute", top: "87%", left: "58%",}}onClick={() => {toggleIsOn("valve2");}}/>
+        <img src={roCoolerImage} alt="ro cooler" style={{ width: "50px", height: "50px", position: "absolute", top: "58%", left: "58%", }} onClick={() => { toggleIsOn("valve2"); }}/>
+        <img src={roCoolerImage} alt="ro cooler" style={{ width: "50px", height: "50px", position: "absolute", top: "72%", left: "58%",}} onClick={() => { toggleIsOn("valve2");}}/>
+        <img src={roCoolerImage} alt="ro cooler" style={{ width: "50px", height: "50px", position: "absolute", top: "87%", left: "58%",}}onClick={() => {toggleIsOn("valve2");}}/>
         <img src={Motor} alt="Motor" className={`motor ${motorOn ? 'running' : ''}`} style={{ width: "50px", height: "50px", position: "absolute",top: "86%",left: "35%",transform: "scaleX(-1)",}}onClick={() => {toggleIsOn("valve2");}}/>
       </div>
 
@@ -263,27 +254,29 @@ const SimulationPage = () => {
       <br></br>
       
       {isSimulationRunning && (
+      <div>
       <div className="container">
-        <h4 className="heading" htmlFor="selectedNumber">Container <button className="info-button" onClick={() => handleInfoButtonClick("Information about selecting a container count from 1 to 5.")}>ℹ️</button></h4>
-        <input type="number" name="selectedNumber" id="selectedNumber" value={selectedNumber} onChange={(e) => setSelectedNumber(e.target.value)} min="1" max="5" />
+        <h4 className="heading" htmlFor="selectedNumber">Soil Impurities <button className="info-button" onMouseEnter={() => handleInfoButtonClick("One Container adds 100g of soil for 2 litre water")} onMouseLeave={handleInfoButtonLeave} > ℹ️ </button>{infoText && <div className="info-box">{infoText}</div>}</h4>
+        <input type="number" name="selectedNumber" id="selectedNumber" value={selectedNumber} onChange={(e) => setSelectedNumber(e.target.value)} min="0" max="5" />
 
         {/* <h4 className="heading">Voltage:</h4>
         <input className="input-box" type="number" name="voltage" id="voltage" value={inputValues.voltage} onChange={handleChange} /> */}
         
-        <h4 className="heading">Temperature:</h4>
+        <h4 className="heading">Temperature(°C):</h4>
         <input className="input-box" type="number" name="temperature" id="temperature" value={inputValues.temperature} onChange={handleChange} />
         <br></br>
-        <h4 className="heading">Desired TDS:</h4>
+        <h4 className="heading">Desired TDS(mg/Litre):</h4>
         <input className="input-box" type="number" name="desired_tds" id="desired_tds" value={inputValues.desired_tds} onChange={handleChange} />
         
-        <h4 className="heading">Effective Membrane Area:</h4>
+        <h4 className="heading">Effective Membrane Area(m²):</h4>
         <input className="input-box" type="number" name="effective_membrane_area" id="effective_membrane_area" value={inputValues.effective_membrane_area} onChange={handleChange} />
         <br></br>
         <h4 className="heading">Sump Capacity (Liters):</h4>
         <input className="input-box" type="number" name="sumpCapacity" id="sumpCapacity" value={inputValues.sumpCapacity} onChange={handleChange} />
 
-        <button className="button" onClick={handleCalculate}>Calculate</button>
-      </div>)}
+        
+      </div>
+      <button className="button" onClick={handleCalculate}>Calculate</button></div>)}
 
       {/* Display result if available */}
       {result && (
@@ -291,20 +284,20 @@ const SimulationPage = () => {
           <p>Estimated Result:</p>
           <div className="result-cards">
             <ResultCard
-              title="Osmotic Pressure"
+              title="Osmotic Pressure(Pascal (Pa))"
               value={result.osmotic_pressure}
             />
-            <ResultCard title="Water Flux" value={result.water_flux} />
+            <ResultCard title="Water Flux(m³)" value={result.water_flux} />
             <ResultCard
-              title="Permeate Flow Rate"
+              title="Permeate Flow Rate(m³/s)"
               value={result.permeate_flow_rate}
             />
             <ResultCard
-              title="Final TDS Concentration After RO Tank"
+              title="Final TDS Concentration After RO Tank(mg/L)"
               value={result.final_tds_concentration_after_ro_tank}
             />
             <ResultCard
-              title="Calculated TDS Value"
+              title="Calculated TDS Value(mg/L)"
               value={result.calculated_tds_value}
             />
             <ResultCard title="Cycle Count" value={result.cycle_count} />

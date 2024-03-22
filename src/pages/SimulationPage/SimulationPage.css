@@ -59,6 +59,7 @@ grid-template-columns: repeat(5, auto); /* Five columns for input and labels */
 gap: 10px; /* Gap between grid items */
 justify-content: center; /* Center items horizontally */
 margin-bottom: 20px; /* Add some bottom margin */
+text-align: center;
 }
 
 /* Input box styles */
@@ -188,4 +189,64 @@ background-color: #0056b3;
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* CSS for the info button */
+.info-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* SimulationPage.css */
+.title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.info {
+  vertical-align: bottom;
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  text-indent: -9999em;
+  display: inline-block;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1em;
+  background-color: #91b2d2;
+  margin-left: .25em;
+  border-radius: .75em;
+}
+
+.info:hover {
+  background-color: #628cb6;
+  cursor: pointer;
+}
+
+.info:before {
+  content: "?";
+  position: absolute;
+  top: .25em;
+  left: 0;
+  display: block;
+  width: 1.5em;
+  text-align: center;
+}
+
+.popover {
+  position: absolute;
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 999;
+}
+
+.popover-title {
+  font-weight: bold;
 }

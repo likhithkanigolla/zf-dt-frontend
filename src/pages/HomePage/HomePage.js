@@ -12,7 +12,7 @@ const HomePage = () => {
         <img src={SCRCLOGO} alt="Smart City Logo" /> {/* Use imported SCRC Logo */}
         <img src={ZFLOGO} alt="ZF Logo" /> {/* Use imported ZF Logo */}
       </div>
-      <div className="info">
+      <div className="info-about">
         <p>Here you can find information about our digital twin collaboration.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere luctus lorem, sit amet laoreet felis scelerisque vel. Fusce tempor dui sit amet sapien fringilla, eget malesuada purus scelerisque.</p>
       </div>
