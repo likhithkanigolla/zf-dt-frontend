@@ -1,34 +1,100 @@
-/* SimulationPage.css */
-.simulation-page {
-  text-align: center;
+/* Complete CSS for Digital Twin Simulation Page */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  margin: 0;
+  /* padding: 20px; */
+  line-height: 1.6;
 }
 
-.simulation-page h2 {
+/* Navigation Bar - Adjust according to your implementation */
+.navigation-bar {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 20px;
   margin-bottom: 20px;
 }
 
-.simulation-page p {
-  margin-bottom: 30px;
-}
-
-.result-container {
-  margin-top: 20px;
+/* General Container Styling */
+.container, .result-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   padding: 20px;
+  margin: 10px 0;
+}
+
+/* Headings and Labels */
+.heading {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Input Fields Styling */
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  box-sizing: border-box; /* Make sure padding doesn't affect overall width */
 }
 
-.result-container p {
-  font-weight: bold;
+/* Button Styling */
+.button, .info-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease-in-out;
 }
 
+.button {
+  background-color: #007bff;
+  color: white;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.info-button {
+  background-color: transparent;
+  color: #007bff;
+  font-size: 16px;
+}
+
+/* Information Box (Tooltip) */
+.info-box {
+  display: inline-block;
+  background-color: #e9ecef;
+  color: #333;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Flex Layout for Main Content */
+div[style*='display: flex'] {
+  display: flex;
+  gap: 20px;
+}
+
+/* Result Cards Container */
 .result-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 
+/* Individual Result Card */
 .result-card {
   background-color: #f9f9f9;
   padding: 15px;
@@ -36,145 +102,15 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.result-card h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
-}
-
-.result-card p {
-  margin: 0;
-  font-size: 14px;
-}
-
-@media (max-width: 768px) {
-  .result-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Container styles */
-.container {
-display: grid;
-grid-template-columns: repeat(5, auto); /* Five columns for input and labels */
-gap: 10px; /* Gap between grid items */
-justify-content: center; /* Center items horizontally */
-margin-bottom: 20px; /* Add some bottom margin */
-text-align: center;
-}
-
-/* Input box styles */
-.input-box {
-width: 100%; /* Make input boxes take full width */
-padding: 12px 20px;
-box-sizing: border-box;
-border: 1px solid #ccc;
-border-radius: 4px;
-margin-bottom: 10px; /* Add some bottom margin */
-}
-
-/* Heading styles */
-.heading {
-font-weight: bold;
-text-align: center;
-}
-
-/* Button container styles */
-.button-container {
-display: flex; /* Use flexbox for button container */
-justify-content: center; /* Center buttons horizontally */
-gap: 10px; /* Gap between buttons */
-margin-top: 20px; /* Add top margin */
-}
-
-/* Button styles */
-.button {
-padding: 10px 20px;
-box-sizing: border-box;
-border: none;
-border-radius: 4px;
-background-color: #007bff;
-color: white;
-cursor: pointer;
-}
-
-.button:hover {
-background-color: #0056b3;
-}
-
-
-/* SimulationPage.css */
-
+/* Motor Status Overlay */
 .motor-status-overlay {
   position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 10px;
   border-radius: 5px;
-  animation: fadeOut 10s ease-in-out forwards; /* Fade out after 10 seconds */
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Add styles to differentiate Start/Stop Simulation and Motor On/Off */
-.button {
-  /* Style for Start/Stop Simulation button */
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button.start {
-  background-color: green;
-  color: white;
-}
-
-.button.stop {
-  background-color: red;
-  color: white;
-}
-
-/* Style for Motor On/Off button */
-.button.motor-on {
-  background-color: green;
-  color: white;
-}
-
-.button.motor-off {
-  background-color: red;
-  color: white;
-}
-
-/* Add styles for diagram components based on running status */
-.img-container {
-  position: relative;
-}
-
-.valve {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: gray;
-  position: absolute;
-}
-
-.valve.running {
-  background-color: green; /* Change color to green when valve is running */
-}
-
-.motor {
-  width: 50px;
-  height: 50px;
-  position: absolute;
 }
 
 .motor.running {
@@ -191,62 +127,48 @@ background-color: #0056b3;
   }
 }
 
-
-/* CSS for the info button */
-.info-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-/* SimulationPage.css */
-.title {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.info {
-  vertical-align: bottom;
-  position: relative;
-  width: 1.5em;
-  height: 1.5em;
-  text-indent: -9999em;
-  display: inline-block;
+/* Style for Motor On/Off button */
+.button.motor-on {
+  background-color: green;
   color: white;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1em;
-  background-color: #91b2d2;
-  margin-left: .25em;
-  border-radius: .75em;
 }
 
-.info:hover {
-  background-color: #628cb6;
-  cursor: pointer;
+.button.motor-off {
+  background-color: red;
+  color: white;
 }
 
-.info:before {
-  content: "?";
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+  div[style*='display: flex'] {
+    flex-direction: column;
+  }
+
+  /* Adjusts for smaller screens to ensure usability */
+  .container, .result-container {
+    padding: 15px;
+  }
+
+  /* Makes sure navigation text size is responsive */
+  .navigation-bar {
+    font-size: 18px;
+  }
+}
+
+
+.icon-container {
+  position: relative;
+  width: 70px; /* Match icon size */
+  height: 70px; /* Match icon size */
+  overflow: hidden; /* Ensure the gradient doesn't overflow */
+}
+
+.icon-container .water-fill {
   position: absolute;
-  top: .25em;
+  bottom: 0;
   left: 0;
-  display: block;
-  width: 1.5em;
-  text-align: center;
-}
-
-.popover {
-  position: absolute;
-  width: 200px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  z-index: 999;
-}
-
-.popover-title {
-  font-weight: bold;
+  width: 100%;
+  background: linear-gradient(to top, blue, red);
+  z-index: 0; /* Ensure this goes behind the icon */
 }
