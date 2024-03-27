@@ -15,6 +15,7 @@ import ZshapePipe from "./components /ZshapePipe";
 import MirrorZPipe from "./components /MirrorZPipe";
 import StraightPipe from "./components /StraightPipe";
 import EShapePipe from "./components /EShapePipe";
+import LShapePipe from "./components /LShapePipe";
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -481,7 +482,7 @@ const SimulationPage = () => {
           </div> */}
           {/* Previous Code End */}
           
-          <div className="demo-page">
+      <div className="demo-page">
       <div style={{ position: "relative" , width: "100%", height: "100%"}}>
         <img
           // src={blueprint}
@@ -566,20 +567,20 @@ const SimulationPage = () => {
           }}
         />
         
-
+        <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)",}}>
+          <LShapePipe flow={flow1} />
+        {/* <StraightPipe flow={flow1} /> */}
+        </div>
 
         <GiWaterTower
           size={90}
           color={isOn.valve1 ? "blue" : "red"}
-          style={{ position: "absolute", top: "27%", left: "53.8%" }}
+          style={{ position: "absolute", top: "30%", left: "53.8%" }}
           onClick={() => {
             toggleIsOn("valve1");
           }}
         />
 
-        <div style={{ position: "absolute", top: "34.6%", left: "52.9%", transform: "rotate(90deg)",}}>
-        <StraightPipe flow={flow1} />
-        </div>
 
         <img
           src={roPlantImage}
@@ -589,27 +590,27 @@ const SimulationPage = () => {
             height: "60px",
             position: "absolute",
             top: "47%",
-            left: "56%",
+            left: "68%",
           }}
           onClick={() => {
             toggleIsOn("valve2");
           }}
         />
 
-        <div style={{ position: "absolute", top: "46%", left: "61.5%"}}>
+        <div style={{ position: "absolute", top: "46%", left: "73%"}}>
         <StraightPipe flow={flow1} />
         </div>
 
         <GiWaterTower
           size={80}
           color={isOn.valve4 ? "skyblue" : "red"}
-          style={{ position: "absolute", top: "48.5%", left: "69.3%" }}
+          style={{ position: "absolute", top: "48.5%", left: "80.5%" }}
           onClick={() => {
             toggleIsOn("valve4");
           }}
         />
         
-        <div style={{ position: "absolute", top: "60%", left: "68.3%"}}><EShapePipe flow={flow1} /></div>
+        <div style={{ position: "absolute", top: "60%", left: "80%"}}><EShapePipe flow={flow1} /></div>
         
 
         <img
@@ -619,8 +620,8 @@ const SimulationPage = () => {
             width: "50px",
             height: "50px",
             position: "absolute",
-            top: "68%",
-            left: "66.5%",
+            top: "66%",
+            left: "78.3%",
           }}
           onClick={() => {
             toggleIsOn("valve3");
@@ -633,8 +634,8 @@ const SimulationPage = () => {
             width: "50px",
             height: "50px",
             position: "absolute",
-            top: "68%",
-            left: "70.5%",
+            top: "66%",
+            left: "82.3%",
           }}
           onClick={() => {
             toggleIsOn("valve3");
@@ -648,8 +649,8 @@ const SimulationPage = () => {
             width: "50px",
             height: "50px",
             position: "absolute",
-            top: "68%",
-            left: "74.5%",
+            top: "66%",
+            left: "86.3%",
           }}
           onClick={() => {
             toggleIsOn("valve3");

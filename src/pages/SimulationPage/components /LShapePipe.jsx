@@ -11,7 +11,7 @@ function LShapePipe({ flow, onClick, text }) {
             {flow ? 
                 <>
                     <polygon
-                        points="5 0, 5 95, 100 95, 100 100, 0 100, 0 0"
+                        points="10 0, 10 90, 100 90, 100 100, 0 100, 0 0"
                         fill='transparent'
                         stroke="black"
                         strokeWidth="2"
