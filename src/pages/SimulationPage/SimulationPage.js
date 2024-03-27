@@ -3,13 +3,15 @@ import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation"; // assuming NavigationBar is a component defined in NavigationBar.js
 // import blueprint from "./simulation_bp.png";
-import blueprint from "./ZF_DT_Simulation_Diagram.png";
+import blueprint from "./images/ZF_DT_Simulation_Diagram.png";
 import { GiWaterTower } from "react-icons/gi";
-import roPlantImage from "./ro_plant.png";
-import roCoolerImage from "./ro_cooler.png";
-import Motor from "./Motor.png";
 
-import whiteimage from './white.png';
+import roPlantImage from "./images/ro_plant.png";
+import roCoolerImage from "./images/ro_cooler.png";
+import Motor from "./images/Motor.png";
+import SumpIcon from "./images/Sump.png"
+
+import whiteimage from './images/white.png';
 import ContainerBox from "./components /ContainerBox";
 import ZshapePipe from "./components /ZshapePipe";
 import MirrorZPipe from "./components /MirrorZPipe";
@@ -481,192 +483,208 @@ const SimulationPage = () => {
             />
           </div> */}
           {/* Previous Code End */}
-          
-      <div className="demo-page">
-      <div style={{ position: "relative" , width: "100%", height: "100%"}}>
-        <img
-          // src={blueprint}
-          src ={whiteimage}
-          alt="blueprint"
-          style={{ width: "100%", height: "100%" }}
-        />
 
-        <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
-          <ContainerBox
-            flow={flow4}
-            // onClick={() => {
-            //   setFlow4((flow4) => !flow4);
-            // }}
-            text="PumpHouse 1"
-          />
-        </div>
+          <div className="demo-page">
+  <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <img
+      src={whiteimage}
+      alt="blueprint"
+      style={{ width: "100%", height: "100%" }}
+    />
 
-        <div style={{ position: "absolute", top: "17%", left: "19.7%" }}>
-          <ZshapePipe
-            flow={flow1}
-            onClick={() => {
-              setFlow1((flow1) => !flow1);
-            }}
-          />
-        </div>
+    {/* PumpHouse 1 */}
+    <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
+      <ContainerBox
+        flow={flow4}
+        text="PumpHouse 1"
+      />
+      <div>PumpHouse 1</div>
+    </div>
 
-        <div style={{ position: "absolute", top: "44%", left: "10.8%" }}>
-          <ContainerBox
-            flow={flow4}
-            // onClick={() => {
-            //   setFlow4((flow4) => !flow4);
-            // }}
-            text="Borewell"
-          />
-        </div>
-
-        <div style={{ position: "absolute", top: "37%", left: "19.7%" }}>
-          <MirrorZPipe
-            flow={flow1}
-            // onClick={() => {
-            //   setFlow2((flow2) => !flow2);
-            // }}
-          />
-        </div>
-
-        <div style={{ position: "absolute", top: "26.5%", left: "28.5%" }}>
-          <ContainerBox
-            flow={flow4}
-            // onClick={() => {
-            //   setFlow4((flow4) => !flow4);
-            // }}
-            text="SUMP"
-          />
-        </div>
-
-        <div style={{ position: "absolute", top: "26%", left: "37.4%" }}>
-        <StraightPipe flow={flow2} />
-        </div>
-
-        <div style={{ position: "absolute", top: "26%", left: "46.4%" }}>
-        <StraightPipe flow={flow2} />
-        </div>
-
-        <img
-          src={Motor}
-          alt="Motor"
-          className={`motor ${motorOn ? "running" : ""}`}
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "29.7%",
-            left: "43.5%",
-            transform: "scaleX(-1)",
-          }}
-          onClick={() => {
-            toggleIsOn("valve5");
-            if (isSimulationRunning) {
-              handleMotorToggle();
-            }
-          }}
-        />
-        
-        <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)",}}>
-          <LShapePipe flow={flow1} />
-        {/* <StraightPipe flow={flow1} /> */}
-        </div>
-
-        <GiWaterTower
-          size={90}
-          color={isOn.valve1 ? "blue" : "red"}
-          style={{ position: "absolute", top: "30%", left: "53.8%" }}
-          onClick={() => {
-            toggleIsOn("valve1");
-          }}
-        />
-
-
-        <img
-          src={roPlantImage}
-          alt="ro plant"
-          style={{
-            width: "60px",
-            height: "60px",
-            position: "absolute",
-            top: "47%",
-            left: "68%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve2");
-          }}
-        />
-
-        <div style={{ position: "absolute", top: "46%", left: "73%"}}>
-        <StraightPipe flow={flow1} />
-        </div>
-
-        <GiWaterTower
-          size={80}
-          color={isOn.valve4 ? "skyblue" : "red"}
-          style={{ position: "absolute", top: "48.5%", left: "80.5%" }}
-          onClick={() => {
-            toggleIsOn("valve4");
-          }}
-        />
-        
-        <div style={{ position: "absolute", top: "60%", left: "80%"}}><EShapePipe flow={flow1} /></div>
-        
-
-        <img
-          src={roCoolerImage}
-          alt="ro cooler 1"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "66%",
-            left: "78.3%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve3");
-          }}
-        />
-        <img
-          src={roCoolerImage}
-          alt="ro cooler 2"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "66%",
-            left: "82.3%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve3");
-          }}
-        />
-
-        <img
-          src={roCoolerImage}
-          alt="ro cooler 3"
-          style={{
-            width: "50px",
-            height: "50px",
-            position: "absolute",
-            top: "66%",
-            left: "86.3%",
-          }}
-          onClick={() => {
-            toggleIsOn("valve3");
-          }}
-        />
-
-
-      </div>
-      {/* <ZshapePipe
+    {/* Z Shape Pipe */}
+    <div style={{ position: "absolute", top: "17%", left: "19.7%" }}>
+      {/* <div>Z Shape Pipe</div> */}
+      <ZshapePipe
         flow={flow1}
         onClick={() => {
           setFlow1((flow1) => !flow1);
         }}
       />
-      <MirrorZPipe flow={flow2} />
-      <StraightPipe flow={flow3} /> */}
+    </div>
+
+    {/* Borewell */}
+    <div style={{ position: "absolute", top: "44%", left: "10.8%" }}>
+      
+      <ContainerBox
+        flow={flow4}
+        text="Borewell"
+      />
+      <div>Borewell</div>
+    </div>
+
+    {/* Mirror Z Pipe */}
+    <div style={{ position: "absolute", top: "37%", left: "19.7%" }}>
+      {/* <div>Mirror Z Pipe</div> */}
+      <MirrorZPipe
+        flow={flow1}
+      />
+    </div>
+
+    {/* SUMP */}
+    <div style={{ position: "absolute", top: "26.5%", left: "28.5%" }}>
+      {/* <ContainerBox
+        flow={flow4}
+        text=""
+      /> */}
+      <img
+      src={SumpIcon}
+      alt="sump"
+      style={{ width: "100px", height: "100px" }}
+    />
+
+      <div>SUMP</div>
+    </div>
+
+    {/* Straight Pipes */}
+    <div style={{ position: "absolute", top: "29.4%", left: "36.4%" }}>
+      {/* <div>Straight Pipe 1</div> */}
+      <StraightPipe flow={flow2} />
+    </div>
+    <div style={{ position: "absolute", top: "29.4%", left: "46.4%" }}>
+      {/* <div>Straight Pipe 2</div> */}
+      <StraightPipe flow={flow2} />
+    </div>
+
+    {/* Motor */}
+    <div style={{ position: "absolute", top: "32.4%", left: "43.5%", textAlign: "center", width: "50px" }}>
+      
+      <img
+        src={Motor}
+        alt="Motor"
+        className={`motor ${motorOn ? "running" : ""}`}
+        style={{
+          width: "50px",
+          height: "50px",
+          transform: "scaleX(-1)",
+        }}
+        onClick={() => {
+          toggleIsOn("valve5");
+          if (isSimulationRunning) {
+            handleMotorToggle();
+          }
+        }}
+      />
+      {motorOn && <div style={{ fontSize: "12px", color: "green" }}>Running</div>}
+      <div>Motor</div>
+    </div>
+    
+    {/* L Shape Pipe */}
+    <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)" }}>
+      {/* <div>L Shape Pipe</div> */}
+      <LShapePipe flow={flow1} />
+    </div>
+
+    {/* Water Tower */}
+    <div style={{ position: "absolute", top: "30%", left: "53.8%" }}>
+      <GiWaterTower
+        size={90}
+        color={isOn.valve1 ? "blue" : "red"}
+        onClick={() => {
+          toggleIsOn("valve1");
+        }}
+      />
+      <div>KRB OHT</div>
+    </div>
+
+    {/* RO Plant */}
+    <div style={{ position: "absolute", top: "47%", left: "68%" }}>
+      
+      <img
+        src={roPlantImage}
+        alt="ro plant"
+        style={{
+          width: "60px",
+          height: "60px",
+        }}
+        onClick={() => {
+          toggleIsOn("valve2");
+        }}
+      />
+      <div>RO Plant</div>
+    </div>
+
+    {/* Straight Pipe */}
+    <div style={{ position: "absolute", top: "46%", left: "73%" }}>
+      {/* <div>Straight Pipe</div> */}
+      <StraightPipe flow={flow1} />
+    </div>
+
+    {/* Water Tower */}
+    <div style={{ position: "absolute", top: "44.5%", left: "80.7%" }}>
+    <div>RO Filtered Water OHT</div>
+      <GiWaterTower
+        size={80}
+        color={isOn.valve4 ? "skyblue" : "red"}
+        onClick={() => {
+          toggleIsOn("valve4");
+        }}
+        />
+        
+        </div>
+        
+        {/* E Shape Pipe */}
+        <div style={{ position: "absolute", top: "60%", left: "80%" }}>
+          {/* <div>E Shape Pipe</div> */}
+          <EShapePipe flow={flow1} />
+        </div>
+    
+        {/* RO Coolers */}
+        <div style={{ position: "absolute", top: "66%", left: "78.3%", textAlign:"center"  }}>
+          
+          <img
+            src={roCoolerImage}
+            alt="ro cooler 1"
+            style={{
+              width: "50px",
+              height: "50px",
+            }}
+            onClick={() => {
+              toggleIsOn("valve3");
+            }}
+          />
+          <div>RO 1</div>
+        </div>
+        <div style={{ position: "absolute", top: "66%", left: "82.3%", textAlign:"center" }}>
+          
+          <img
+            src={roCoolerImage}
+            alt="ro cooler 2"
+            style={{
+              width: "50px",
+              height: "50px",
+            }}
+            onClick={() => {
+              toggleIsOn("valve3");
+            }}
+          />
+          <div>RO 2</div>
+        </div>
+        <div style={{ position: "absolute", top: "66%", left: "86.3%", textAlign:"center" }}>
+         
+          <img
+            src={roCoolerImage}
+            alt="ro cooler 3"
+            style={{
+              width: "50px",
+              height: "50px",
+            }}
+            onClick={() => {
+              toggleIsOn("valve3");
+            }}
+          />
+           <div>RO 3</div>
+      </div>
+      </div>
     </div>
 
 
