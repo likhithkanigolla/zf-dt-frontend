@@ -23,10 +23,10 @@ const SimulationPage = () => {
   // State for holding input values and results
   const [inputValues, setInputValues] = useState({
     voltage: "",
-    temperature: "",
-    desiredTDS: "",
-    effectiveMembraneArea: "",
-    sumpCapacity: "",
+    temperature: "25",
+    desired_tds: "50",
+    effective_membrane_area: "370",
+    sumpCapacity: "6000",
     ohtCapacity: "",
     roCapacity: "",
   });
@@ -46,7 +46,7 @@ const SimulationPage = () => {
   const [flow4, setFlow4] = useState(false);
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
-  const [waterInSump, setWaterInSump] = useState(0); // Initial water level in Sump
+  const [waterInSump, setWaterInSump] = useState(6000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(2); // Initial water level in RO Filter
@@ -83,7 +83,7 @@ const SimulationPage = () => {
           if ((waterInOHT === 60 || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
-            setFlow2((true));
+            setFlow2((false));
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
@@ -119,7 +119,7 @@ const SimulationPage = () => {
       intervalwaterConsume = setInterval(() => {
         if(waterInROFilter>1){
           handleConsumeWater();
-      }}, 50000);
+      }}, 1000);
     }
     return () => {
       clearInterval(intervalId);
@@ -531,7 +531,7 @@ const SimulationPage = () => {
     </div>
 
     {/* SUMP */}
-    <div style={{ position: "absolute", top: "26.5%", left: "28.5%" }}>
+    <div style={{ position: "absolute", top: "26.5%", left: "28.5%" , textAlign: "center"}}>
       {/* <ContainerBox
         flow={flow4}
         text=""

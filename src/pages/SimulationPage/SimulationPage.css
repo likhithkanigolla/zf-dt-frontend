@@ -206,3 +206,5 @@ div[style*='display: flex'] {
 #animatedPolygon {
 animation: fillAnimation 2s infinite; /* Adjust the duration as per your requirement */
 }
+
+
