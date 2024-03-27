@@ -9,11 +9,12 @@ import { GiWaterTower } from "react-icons/gi";
 import roPlantImage from "./images/ro_plant.png";
 import roCoolerImage from "./images/ro_cooler.png";
 import Motor from "./images/Motor.png";
-import SumpIcon from "./images/Sump.png"
-import PumpHouse from "./images/pump_house.png"
-import Borewell from "./images/borewell.png"
-import Watertank from "./images/watertank.png"
-import ROWatertank from "./images/tank_ro.png"
+import SumpIcon from "./images/Sump.png";
+import PumpHouse from "./images/pump_house.png";
+import Borewell from "./images/borewell.png";
+import Watertank from "./images/watertank.png";
+import ROWatertank from "./images/tank_ro.png";
+import WaterLevelArrow from "./images/Waterlevel_arrow.png";
 
 import whiteimage from './images/white.png';
 import ContainerBox from "./components /ContainerBox";
@@ -390,109 +391,6 @@ const SimulationPage = () => {
         </div>
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
-          {/* Previous Code Start */}
-          {/* <div style={{ position: "relative" }}>
-            <img
-              src={blueprint}
-              alt="blueprint"
-              style={{ width: "100%", height: "100%", marginTop: "100px" }}
-            />
-            <GiWaterTower
-              size={70}
-              color={isOn.valve1 ? "blue" : "red"}
-              style={{ position: "absolute", top: "52%", left: "59.53%" }}
-              onClick={() => {
-                toggleIsOn("valve1");
-              }}
-            />
-            <img
-              src={roPlantImage}
-              alt="ro plant"
-              style={{
-                width: "60px",
-                height: "60px",
-                position: "absolute",
-                top: "85%",
-                left: "60%",
-              }}
-              onClick={() => {
-                toggleIsOn("valve2");
-              }}
-            />
-            <img
-              src={roCoolerImage}
-              alt="ro cooler 3"
-              style={{
-                width: "50px",
-                height: "50px",
-                position: "absolute",
-                top: "37%",
-                left: "90.6%",
-              }}
-              onClick={() => {
-                toggleIsOn("valve3");
-              }}
-            />
-            <img
-              src={roCoolerImage}
-              alt="ro cooler 2"
-              style={{
-                width: "50px",
-                height: "50px",
-                position: "absolute",
-                top: "54%",
-                left: "90.6%",
-              }}
-              onClick={() => {
-                toggleIsOn("valve3");
-              }}
-            />
-
-            <img
-              src={roCoolerImage}
-              alt="ro cooler 1"
-              style={{
-                width: "50px",
-                height: "50px",
-                position: "absolute",
-                top: "70%",
-                left: "90.6%",
-              }}
-              onClick={() => {
-                toggleIsOn("valve3");
-              }}
-            />
-
-            <GiWaterTower
-              size={70}
-              color={isOn.valve4 ? "blue" : "red"}
-              style={{ position: "absolute", top: "84%", left: "90.4%" }}
-              onClick={() => {
-                toggleIsOn("valve4");
-              }}
-            />
-            <img
-              src={Motor}
-              alt="Motor"
-              className={`motor ${motorOn ? "running" : ""}`}
-              style={{
-                width: "50px",
-                height: "50px",
-                position: "absolute",
-                top: "54.5%",
-                left: "46.5%",
-                transform: "scaleX(-1)",
-              }}
-              onClick={() => {
-                toggleIsOn("valve5");
-                if(isSimulationRunning){
-                  handleMotorToggle()
-                };
-              }}
-            />
-          </div> */}
-          {/* Previous Code End */}
-
           <div className="demo-page">
   <div style={{ position: "relative", width: "100%", height: "100%" }}>
     <img
