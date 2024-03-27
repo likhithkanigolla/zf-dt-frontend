@@ -10,6 +10,10 @@ import roPlantImage from "./images/ro_plant.png";
 import roCoolerImage from "./images/ro_cooler.png";
 import Motor from "./images/Motor.png";
 import SumpIcon from "./images/Sump.png"
+import PumpHouse from "./images/pump_house.png"
+import Borewell from "./images/borewell.png"
+import Watertank from "./images/watertank.png"
+import ROWatertank from "./images/tank_ro.png"
 
 import whiteimage from './images/white.png';
 import ContainerBox from "./components /ContainerBox";
@@ -378,6 +382,11 @@ const SimulationPage = () => {
           <button onClick={handleStartSimulation} className="button">
             {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
           </button>
+          <div className="definitions">
+    <h3>Definitions</h3>
+    <p><strong>Permeate Flowrate for RO Plant:</strong> The permeate flowrate refers to the rate at which purified water (permeate) is produced by the reverse osmosis (RO) plant. It is typically measured in liters per hour (L/hr) or cubic meters per hour (m³/hr).</p>
+    <p><strong>Total Dissolved Solids (TDS):</strong> TDS refers to the total concentration of dissolved substances in water, including salts, minerals, and other organic and inorganic compounds. It is commonly measured in milligrams per liter (mg/L) or parts per million (ppm).</p>
+  </div>
         </div>
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
@@ -494,10 +503,15 @@ const SimulationPage = () => {
 
     {/* PumpHouse 1 */}
     <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
-      <ContainerBox
+      {/* <ContainerBox
         flow={flow4}
         text="PumpHouse 1"
-      />
+      /> */}
+      <img
+      src={PumpHouse}
+      alt="sump"
+      style={{ width: "100px", height: "100px" }}
+    />
       <div>PumpHouse 1</div>
     </div>
 
@@ -513,12 +527,17 @@ const SimulationPage = () => {
     </div>
 
     {/* Borewell */}
-    <div style={{ position: "absolute", top: "44%", left: "10.8%" }}>
-      
-      <ContainerBox
+    <div style={{ position: "absolute", top: "39%", left: "10.8%" }}>
+    
+      {/* <ContainerBox
         flow={flow4}
         text="Borewell"
-      />
+      /> */}
+      <img
+      src={Borewell}
+      alt="borewell"
+      style={{ width: "100px", height: "100px" }}
+    />
       <div>Borewell</div>
     </div>
 
@@ -585,14 +604,19 @@ const SimulationPage = () => {
     </div>
 
     {/* Water Tower */}
-    <div style={{ position: "absolute", top: "30%", left: "53.8%" }}>
-      <GiWaterTower
+    <div style={{ position: "absolute", top: "32%", left: "54.4%" }}>
+      {/* <GiWaterTower
         size={90}
         color={isOn.valve1 ? "blue" : "red"}
         onClick={() => {
           toggleIsOn("valve1");
         }}
-      />
+      /> */}
+      <img
+      src={Watertank}
+      alt="WaterTank"
+      style={{ width: "80px", height: "80px" }}
+    />
       <div>KRB OHT</div>
     </div>
 
@@ -622,13 +646,18 @@ const SimulationPage = () => {
     {/* Water Tower */}
     <div style={{ position: "absolute", top: "44.5%", left: "80.7%" }}>
     <div>RO Filtered Water OHT</div>
-      <GiWaterTower
+      {/* <GiWaterTower
         size={80}
         color={isOn.valve4 ? "skyblue" : "red"}
         onClick={() => {
           toggleIsOn("valve4");
         }}
-        />
+        /> */}
+      <img
+      src={ROWatertank}
+      alt="WaterTank"
+      style={{ width: "80px", height: "80px" }}
+    />
         
         </div>
         
