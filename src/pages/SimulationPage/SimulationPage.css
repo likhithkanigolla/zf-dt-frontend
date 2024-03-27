@@ -172,3 +172,37 @@ div[style*='display: flex'] {
   background: linear-gradient(to top, blue, red);
   z-index: 0; /* Ensure this goes behind the icon */
 }
+
+
+.buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  background-color: #0056b3;
+}
+
+
+/* body{
+  background-color: rgb(48, 47, 48);
+} */
+
+@keyframes fillAnimation {
+0%, 100% {
+    fill: transparent;
+}
+50% {
+    fill: #33cbec;
+}
+}
+
+
+#animatedPolygon {
+animation: fillAnimation 2s infinite; /* Adjust the duration as per your requirement */
+}
