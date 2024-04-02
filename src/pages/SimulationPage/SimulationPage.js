@@ -342,6 +342,21 @@ const SimulationPage = () => {
     setItemToAdd(type);
   };
 
+  const getImageForType = (type) => {
+    switch (type) {
+      case 'waterqualitysensor':
+        return WaterQualityNode;
+      case 'waterquantitysensor':
+        return WaterQualityNode;
+      case 'waterlevelsensor':
+        return WaterLevelNode;
+      case 'motorsensor':
+        return MotorNode;
+      default:
+        return ''; // default image or empty string if none
+    }
+  };
+
 
   return (
     <div>
@@ -440,11 +455,20 @@ const SimulationPage = () => {
 
           {/* Toolbar */}
           <div className="toolbar">
-            <button onClick={() => handleToolbarItemClick('apple')}>🍎 Apple</button>
-            <button onClick={() => handleToolbarItemClick('mango')}>🥭 Mango</button>
-            <button onClick={() => handleToolbarItemClick('grapes')}>🍇 Grapes</button>
-            <button onClick={() => handleToolbarItemClick('orange')}>🍊 Orange</button>
+            <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
+              <img src={WaterQualityNode} alt="Water Quality Sensor"/> waterqualitysensor
+            </button>
+            <button className="tool-button" onClick={() => handleToolbarItemClick('waterquantitysensor')}>
+              <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> waterquantitysensor
+            </button>
+            <button className="tool-button" onClick={() => handleToolbarItemClick('waterlevelsensor')}>
+              <img src={WaterLevelNode} alt="Water Level Sensor"/> waterlevelsensor
+            </button>
+            <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
+              <img src={MotorNode} alt="Motor Sensor"/> motorsensor
+            </button>
           </div>
+
           <div className="demo-page">
             <div
               style={{ position: 'relative', width: '100%', height: '100%', border: '1px solid black' }}
@@ -690,42 +714,51 @@ const SimulationPage = () => {
                 {/* <div>RO3</div> */}
               </div>
 
-              {canvasItems.map((item, index) => (
-              <div
-                key={index}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                style={{
-                  position: 'absolute',
-                  left: item.x,
-                  top: item.y,
-                  cursor: 'move',
-                }}
-              >
-                {item.type === 'apple' && '🍎'}
-                {item.type === 'mango' && '🥭'}
-                {item.type === 'grapes' && '🍇'}
-                {item.type === 'orange' && '🍊'}
-              </div>
-            ))}
-            {/* If an item is set to be added, we render it here */}
+
+
+              {/* Draggable Code */}
+
+            {
+              canvasItems.map((item, index) => (
+                <div
+                  key={index}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  style={{
+                    position: 'absolute',
+                    left: `${item.x}px`,
+                    top: `${item.y}px`,
+                    cursor: 'move',
+                  }}
+                >
+                  <img
+                    src={getImageForType(item.type)}
+                    alt={item.type}
+                    style={{ maxWidth: '40px', maxHeight: '100%', filter:"grayscale(200%)" }}
+                  />
+                </div>
+              ))
+            }
+
             {itemToAdd && (
               <div
                 draggable
                 onDragStart={(e) => handleDragStart(e)}
                 style={{
                   position: 'absolute',
-                  left: '50px', // Default x position
-                  top: '50px', // Default y position
+                  left: '20px', // Default x position
+                  top: '20px', // Default y position
                   cursor: 'move',
                 }}
               >
-                {itemToAdd === 'apple' && '🍎'}
-                {itemToAdd === 'mango' && '🥭'}
-                {itemToAdd === 'grapes' && '🍇'}
-                {itemToAdd === 'orange' && '🍊'}
+                <img
+                  src={getImageForType(itemToAdd)}
+                  alt={itemToAdd}
+                  style={{ maxWidth: '40px', maxHeight: '100%', filter:"grayscale(200%)" }}
+                />
               </div>
             )}
+
             </div>
           </div>
 
