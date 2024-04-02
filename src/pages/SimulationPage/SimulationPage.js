@@ -66,6 +66,8 @@ const SimulationPage = () => {
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
   const [message, setMessage] = useState("");
+  const [data, setData] = useState([]);
+
 
   const [infoText, setInfoText] = useState("");
   const [selectedNumber, setSelectedNumber] = useState("");
@@ -249,13 +251,22 @@ const SimulationPage = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json();
-      setMessage(`Water Quality: ${data.value}`); // Use the response in your message
+      const data = await response.json(); // Assuming this returns an object
+      // Transform the data object into an array of objects for each key-value pair,
+      // ensuring null values are handled gracefully.
+      const dataArray = Object.entries(data).map(([key, value]) => ({
+        title: key,
+        value: value === null ? 'N/A' : value.toString(), // Use 'N/A' for null values
+      }));
+      setData(dataArray); // Assuming you have a setData function to update state
     } catch (error) {
       console.error("Fetch error:", error);
-      setMessage("Failed to fetch data");
+      setData([{ title: "Error", value: "Failed to fetch data" }]); // Update accordingly
     }
   };
+  
+  
+  
   
 
   const toggleIsOn = (valve) => {
@@ -364,7 +375,7 @@ const SimulationPage = () => {
       case 'waterqualitysensor':
         return WaterQualityNode;
       case 'waterquantitysensor':
-        return WaterQualityNode;
+        return WaterQuantityNode;
       case 'waterlevelsensor':
         return WaterLevelNode;
       case 'motorsensor':
@@ -638,7 +649,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "52%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                 onClick={() => getRealData('WM-WD-KH96-00')}
                 />
                 {/* <div>OHT</div> */}
               </div>
@@ -781,12 +792,15 @@ const SimulationPage = () => {
 
           
           <div className="result-container">
-              <div className="water-flow-container">
-                <div className="result-cards">
-                  <ResultCard title="Water in Sump" value={message} />
-                </div>
+            <div className="water-flow-container">
+              <div className="result-cards">
+                {data.map((item, index) => (
+                  <ResultCard key={index} title={item.title} value={item.value} />
+                ))}
               </div>
             </div>
+          </div>
+
 
           {/* {result && ( */}
           {/* {
