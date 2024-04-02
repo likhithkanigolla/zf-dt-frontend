@@ -227,7 +227,7 @@ const SimulationPage = () => {
       };
 
       const response = await fetch(
-        "http://localhost:1629/calculate_ro_filtration",
+        "http://smartcitylivinglab.iiit.ac.in:1629/calculate_ro_filtration",
         {
           method: "POST",
           headers: {
@@ -247,7 +247,7 @@ const SimulationPage = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`http://localhost:1629/get_value?table_name=${tableName}`);
+      const response = await fetch(`http://smartcitylivinglab.iiit.ac.in:1629/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
