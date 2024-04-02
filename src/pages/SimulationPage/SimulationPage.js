@@ -641,7 +641,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "28%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => getRealData('WM-WD-KH96-00')}
+                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>SUMP</div> */}
               </div>
@@ -657,7 +657,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "60%", left: "64%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>AFter RO</div> */}
               </div>
@@ -665,7 +665,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "50%", left: "84%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>RO OHT</div> */}
               </div>
@@ -673,7 +673,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "82%", left: "73.5%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WD-KH95-00')}
                 />
                 {/* <div>RO 1</div> */}
               </div>
@@ -681,7 +681,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "82%", left: "81.5%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>RO 3</div> */}
               </div>
@@ -689,7 +689,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "33%", textAlign: "center", }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WL-KH98-00')}
                 />
                 {/* <div>SUMP</div> */}
               </div>
@@ -697,7 +697,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "57%", textAlign: "center", }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WL-KH00-00')}
                 />
                 {/* <div>OHT</div> */}
               </div>
@@ -705,7 +705,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "43.5%", textAlign: "center", }}>
                 <img src={MotorNode} alt="MotorNode"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WD-KRB-M1')}
                 />
                 {/* <div>Motor</div> */}
               </div>
@@ -713,7 +713,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "20%", left: "54.5%", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WF-KB04-70')}
                 />
                 {/* <div>W1</div> */}
               </div>
@@ -721,7 +721,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "27%", left: "62.5%", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WF-KB04-73')}
                 />
                 {/* <div>W2</div> */}
               </div>
@@ -729,7 +729,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "60%", left: "82.5%", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
                   style={{ width: "30px", height: "30px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WF-KB04-71')}
                 />
                 {/* <div>RO1</div> */}
               </div>
@@ -737,7 +737,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "60%", left: "74.5%", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
                   style={{ width: "30px", height: "30px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WF-KB04-72')}
                 />
                 {/* <div>RO3</div> */}
               </div>
