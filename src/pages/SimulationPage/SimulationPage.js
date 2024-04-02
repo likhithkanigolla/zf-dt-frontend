@@ -16,7 +16,13 @@ import Watertank from "./images/watertank.png";
 import ROWatertank from "./images/tank_ro.png";
 import WaterLevelArrow from "./images/Waterlevel_arrow.png";
 
+import MotorNode from "./images/MotorNode.png"; 
+import WaterLevelNode from "./images/WaterLevelNode.png";
+import WaterQualityNode from "./images/WaterQualityNode.png";
+import WaterQuantityNode from "./images/WaterQuantityNode.png";
+
 import whiteimage from "./images/white.png";
+import Washrooms from "./images/Washrooms.png";
 import ContainerBox from "./components /ContainerBox";
 import ZshapePipe from "./components /ZshapePipe";
 import MirrorZPipe from "./components /MirrorZPipe";
@@ -472,7 +478,7 @@ const SimulationPage = () => {
               {/* SUMP */}
               <div style={{position: "absolute", top: "26.5%", left: "28.5%", textAlign: "center"}}>
                 <img src={SumpIcon}  alt="sump" style={{ width: "100px", height: "100px" }} />
-                <div>SUMP</div>
+                <div>SUMP-{waterInSump}L</div>
               </div>
 
               {/* Straight Pipes */}
@@ -500,18 +506,38 @@ const SimulationPage = () => {
               </div>
 
               {/* L Shape Pipe */}
-              <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)"}}>
+              <div style={{ position: "absolute", top: "35%", left: "56.2%", transform: "rotate(180deg)"}}>
                 <LShapePipe flow={flow1} />
               </div>
 
+              {/* L Shape Pipe */}
+              <div style={{ position: "absolute", top: "17%", left: "56.2%", transform: "rotate(90deg)"}}>
+                <LShapePipe flow={flow1} />
+              </div>
+
+              <div style={{ position: "absolute", top: "12%", left: "65.3%" }}>
+                <img src={Washrooms} alt="WaterTank" style={{ width: "50px", height: "50px" }}/>
+                <div>Admin Block Washrooms</div>
+              </div>
+
+              <div style={{ position: "absolute", top: "24%", left: "69.3%" }}>
+                <img src={Washrooms} alt="WaterTank" style={{ width: "50px", height: "50px" }}/>
+                <div>KRB Washrooms</div>
+              </div>
+
+              <div style={{ position: "absolute", top: "23%", left: "60.2%" }}>
+                <StraightPipe flow={flow1} />
+              </div>
+              
+              
               {/* Water Tower */}
-              <div style={{ position: "absolute", top: "32%", left: "54.4%" }}>
-                <img src={Watertank} alt="WaterTank" style={{ width: "80px", height: "80px" }}/>
-                <div>KRB OHT</div>
+              <div style={{ position: "absolute", top: "28%", left: "54.1%" }}>
+                <img src={Watertank} alt="WaterTank" style={{ width: "90px", height: "90px" }}/>
+                <div>KRB OHT - {waterInOHT}L</div>
               </div>
 
               {/* RO Plant */}
-              <div style={{ position: "absolute", top: "47%", left: "68%" }}>
+              <div style={{ position: "absolute", top: "47%", left: "64%" }}>
                 <img src={roPlantImage} alt="ro plant" style={{width: "60px", height: "60px", }}
                   onClick={() => { toggleIsOn("valve2"); }}
                 />
@@ -519,30 +545,31 @@ const SimulationPage = () => {
               </div>
 
               {/* Straight Pipe */}
-              <div style={{ position: "absolute", top: "46%", left: "73%" }}>
+              <div style={{ position: "absolute", top: "46%", left: "69%" }}>
                 <StraightPipe flow={flow1} />
               </div>
 
               {/* Water Tower */}
-              <div style={{ position: "absolute", top: "44.5%", left: "80.7%" }}>
-                <div>RO Filtered Water OHT</div>
+              <div style={{ position: "absolute", top: "41.5%", left: "76%" }}>
+                <div>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
                 <img src={ROWatertank} alt="WaterTank" style={{ width: "80px", height: "80px" }}/>
               </div>
 
               {/* E Shape Pipe */}
-              <div style={{ position: "absolute", top: "60%", left: "80%" }}>
+              <div style={{ position: "absolute", top: "60%", left: "75%" }}>
                 <EShapePipe flow={flow1} />
               </div>
 
               {/* RO Coolers */}
-              <div style={{ position: "absolute", top: "66%", left: "78.3%", extAlign: "center", }} >
+              <div style={{ position: "absolute", top: "66%", left: "73.3%", textAlign: "center", }} >
                 <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "50px", height: "50px"}}
                   onClick={() => { toggleIsOn("valve3");  }}
                 />
                 <div>RO 1</div>
+                <div>{((3*waterConsumed)/4).toFixed(1)}L</div>
               </div>
 
-              <div style={{ position: "absolute", top: "66%", left: "82.3%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "66%", left: "77.3%", textAlign: "center", }}>
                 <img src={roCoolerImage} alt="ro cooler 2"
                   style={{ width: "50px", height: "50px",}}
                   onClick={() => {toggleIsOn("valve3");}}
@@ -550,11 +577,117 @@ const SimulationPage = () => {
                 <div>RO 2</div>
               </div>
 
-              <div style={{ position: "absolute", top: "66%", left: "86.3%", textAlign: "center",}}
+              <div style={{ position: "absolute", top: "66%", left: "81.3%", textAlign: "center",}}
               >
                 <img src={roCoolerImage} alt="ro cooler 3" style={{width: "50px", height: "50px",}}
                   onClick={() => {toggleIsOn("valve3");}}/>
                 <div>RO 3</div>
+                <div>{(waterConsumed/4).toFixed(1)}L</div>
+              </div>
+
+              {/* Nodes  */}
+              <div style={{ position: "absolute", top: "47%", left: "28%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>SUMP</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "47%", left: "52%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>OHT</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "60%", left: "64%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>AFter RO</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "50%", left: "84%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>RO OHT</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "82%", left: "73.5%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>RO 1</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "82%", left: "81.5%", textAlign: "center", }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>RO 3</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "47%", left: "33%", textAlign: "center", }}>
+                <img src={WaterLevelNode} alt="WaterLevelNode"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>SUMP</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "47%", left: "57%", textAlign: "center", }}>
+                <img src={WaterLevelNode} alt="WaterLevelNode"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>OHT</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "47%", left: "43.5%", textAlign: "center", }}>
+                <img src={MotorNode} alt="MotorNode"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>Motor</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "20%", left: "54.5%", textAlign: "center", }}>
+                <img src={WaterQuantityNode} alt="WaterQuantityNode"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>W1</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "27%", left: "62.5%", textAlign: "center", }}>
+                <img src={WaterQuantityNode} alt="WaterQuantityNode"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>W2</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "60%", left: "82.5%", textAlign: "center", }}>
+                <img src={WaterQuantityNode} alt="WaterQuantityNode"
+                  style={{ width: "30px", height: "30px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>RO1</div> */}
+              </div>
+
+              <div style={{ position: "absolute", top: "60%", left: "74.5%", textAlign: "center", }}>
+                <img src={WaterQuantityNode} alt="WaterQuantityNode"
+                  style={{ width: "30px", height: "30px",}}
+                  onClick={() => {console.log("Water Quality");}}
+                />
+                {/* <div>RO3</div> */}
               </div>
 
               {canvasItems.map((item, index) => (
@@ -596,8 +729,10 @@ const SimulationPage = () => {
             </div>
           </div>
 
+          
+
           {/* {result && ( */}
-          {
+          {/* {
             <div className="result-container">
               <div className="water-flow-container">
                 <div className="result-cards">
@@ -609,29 +744,18 @@ const SimulationPage = () => {
                   />
                   <ResultCard title="Water Consumed" value={waterConsumed} />
                 </div>
-                <br></br>
-                {/* <button
-                  className={`button ${motorOn ? "motor-off" : "motor-on"}`}
-                  onClick={handleMotorToggle}
-                >
-                  {motorOn ? "Turn Motor Off" : "Turn Motor On"}
-                </button>{" "} */}
-                <span>
-                  <span></span>
-                </span>
-                {/* <button className="button" onClick={handleConsumeWater}>
-                  Consume Water
-                </button> */}
               </div>
             </div>
-          }
+          } */}
 
-          {showMotorStatus && (
+          {/* {showMotorStatus && (
             <div className="motor-status-overlay">
               <p>Motor is {motorOn ? "on" : "off"}</p>
             </div>
-          )}
+          )} */}
         </div>
+
+
         {/* Right Section */}
         <div style={{ flex: 1 }}>
           {/* {result && ( */}
