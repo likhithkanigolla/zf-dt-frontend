@@ -65,6 +65,7 @@ const SimulationPage = () => {
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
+  const [message, setMessage] = useState("");
 
   const [infoText, setInfoText] = useState("");
   const [selectedNumber, setSelectedNumber] = useState("");
@@ -240,6 +241,22 @@ const SimulationPage = () => {
       console.error("Error calculating RO filtration:", error);
     }
   };
+
+
+  const getRealData = async (tableName) => {
+    try {
+      const response = await fetch(`http://localhost:1629/get_value?table_name=${tableName}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setMessage(`Water Quality: ${data.value}`); // Use the response in your message
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setMessage("Failed to fetch data");
+    }
+  };
+  
 
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
@@ -613,7 +630,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "47%", left: "28%", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "50px", height: "50px",}}
-                  onClick={() => {console.log("Water Quality");}}
+                  onClick={() => getRealData('WM-WD-KH96-00')}
                 />
                 {/* <div>SUMP</div> */}
               </div>
@@ -763,6 +780,13 @@ const SimulationPage = () => {
           </div>
 
           
+          <div className="result-container">
+              <div className="water-flow-container">
+                <div className="result-cards">
+                  <ResultCard title="Water in Sump" value={message} />
+                </div>
+              </div>
+            </div>
 
           {/* {result && ( */}
           {/* {
