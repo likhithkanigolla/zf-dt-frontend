@@ -16,13 +16,14 @@ import Watertank from "./images/watertank.png";
 import ROWatertank from "./images/tank_ro.png";
 import WaterLevelArrow from "./images/Waterlevel_arrow.png";
 
-import whiteimage from './images/white.png';
+import whiteimage from "./images/white.png";
 import ContainerBox from "./components /ContainerBox";
 import ZshapePipe from "./components /ZshapePipe";
 import MirrorZPipe from "./components /MirrorZPipe";
 import StraightPipe from "./components /StraightPipe";
 import EShapePipe from "./components /EShapePipe";
 import LShapePipe from "./components /LShapePipe";
+import Toolbar from "./components /ToolBar";
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -44,7 +45,6 @@ const SimulationPage = () => {
     valve5: true,
   });
 
-
   const [flow1, setFlow1] = useState(false);
   const [flow2, setFlow2] = useState(false);
   const [flow3, setFlow3] = useState(false);
@@ -59,7 +59,6 @@ const SimulationPage = () => {
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
-  const [fillPercentage, setfillPercentage] = useState(0);
 
   const [infoText, setInfoText] = useState("");
   const [selectedNumber, setSelectedNumber] = useState("");
@@ -88,7 +87,7 @@ const SimulationPage = () => {
           if ((waterInOHT === 60 || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
-            setFlow2((false));
+            setFlow2(false);
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
@@ -104,27 +103,19 @@ const SimulationPage = () => {
         if (waterInOHT < 12) {
           setMotorOn(true);
           setFlow2(true);
-          
         }
-        // If water in OHT is empty, stop the motor
-        // if (waterInOHT === 0) {
-        //   setMotorOn(false);
-        // }
-        // If water in Sump is empty, stop the simulation and show alert
         if (waterInSump === 0) {
           setMotorOn(false);
           setFlow2(false);
           // alert("No water in sump.");
         }
-
-        // setfillPercentage(waterInOHT / 60 * 100);
-        // console.log("Water %: ",fillPercentage)
       }, 1000); // Run every second
 
       intervalwaterConsume = setInterval(() => {
-        if(waterInROFilter>1){
+        if (waterInROFilter > 1) {
           handleConsumeWater();
-      }}, 1000);
+        }
+      }, 1000);
     }
     return () => {
       clearInterval(intervalId);
@@ -138,45 +129,34 @@ const SimulationPage = () => {
     waterInROFilter,
     alertShown,
   ]);
-  // Handler functions
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setInputValues({
-  //     ...inputValues,
-  //     [name]: value,
-  //   });
-  //   if (name === "sumpCapacity") {
-  //     setWaterInSump(parseInt(value) || 0); // Parse value as integer and set waterInSump
-  //   }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Check if simulation is running
     if (isSimulationRunning) {
       // If simulation is running, stop it
       handleStopWaterFlow();
       setIsSimulationRunning(false);
-  
+
       // Update input values
-      setInputValues(prevInputValues => ({
+      setInputValues((prevInputValues) => ({
         ...prevInputValues,
-        [name]: value
+        [name]: value,
       }));
-  
+
       // Restart the simulation
       handleCalculate(); // Recalculate
       handleStartWaterFlow(); // Restart the simulation
       setIsSimulationRunning(true);
     } else {
       // If simulation is not running, simply update input values
-      setInputValues(prevInputValues => ({
+      setInputValues((prevInputValues) => ({
         ...prevInputValues,
-        [name]: value
+        [name]: value,
       }));
     }
-      if (name === "sumpCapacity") {
+    if (name === "sumpCapacity") {
       setWaterInSump(parseInt(value) || 0); // Parse value as integer and set waterInSump
     }
   };
@@ -209,14 +189,8 @@ const SimulationPage = () => {
   };
 
   const handleCalculate = async () => {
-    // if (!isSimulationRunning) {
-    //   alert("Please start the simulation to proceed.");
-    //   return;
-    // }
-
     try {
       const selectedNumberValue = parseInt(selectedNumber);
-
       // Ensure that the selectedNumber is within the valid range of 1 to 10
       if (
         isNaN(selectedNumberValue) ||
@@ -263,7 +237,7 @@ const SimulationPage = () => {
 
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
-    console.log(valve)
+    console.log(valve);
   };
 
   const handleStartWaterFlow = () => {
@@ -309,6 +283,60 @@ const SimulationPage = () => {
     }
   };
 
+  const [canvasItems, setCanvasItems] = useState([]);
+
+  // This state is used to track the type of item that we need to add to the canvas
+  const [itemToAdd, setItemToAdd] = useState(null);
+
+  const handleDragStart = (event, index) => {
+    // Set the dataTransfer object with the item's index if we are moving an existing item
+    if (index !== undefined) {
+      event.dataTransfer.setData('index', index);
+    }
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const canvasRect = event.currentTarget.getBoundingClientRect();
+    const index = event.dataTransfer.getData('index');
+    const x = event.clientX - canvasRect.left;
+    const y = event.clientY - canvasRect.top;
+    
+
+    if (index) {
+      // We're dragging an existing item, update its position
+      const updatedItems = [...canvasItems];
+      updatedItems[index] = {
+        ...updatedItems[index],
+        x: x,
+        y: y
+      };
+      setCanvasItems(updatedItems);
+      console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
+    } else if (itemToAdd) {
+      // We're adding a new item, add it to the canvasItems state with the dropped position
+      const newItem = {
+        type: itemToAdd,
+        x: x,
+        y: y
+      };
+      setCanvasItems([...canvasItems, newItem]);
+      setItemToAdd(null); // Reset the itemToAdd since it has been added
+      console.log(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault(); // Necessary to allow dropping
+  };
+
+  const handleToolbarItemClick = (type) => {
+    // Prepare to add a new item when the next drop occurs
+    // Instead of directly adding the item, we set an "item to add" state
+    setItemToAdd(type);
+  };
+
+
   return (
     <div>
       <NavigationBar title="Digital Twin for Water Quality - Simulation" />
@@ -338,7 +366,7 @@ const SimulationPage = () => {
             onChange={(e) => {
               setSelectedNumber(e.target.value);
               handleChange(e);
-            }}            
+            }}
             min="0"
             max="5"
           />
@@ -384,239 +412,192 @@ const SimulationPage = () => {
             {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
           </button>
           <div className="definitions">
-    <h3>Definitions</h3>
-    <p><strong>Permeate Flowrate for RO Plant:</strong> The permeate flowrate refers to the rate at which purified water (permeate) is produced by the reverse osmosis (RO) plant. It is typically measured in liters per hour (L/hr) or cubic meters per hour (m³/hr).</p>
-    <p><strong>Total Dissolved Solids (TDS):</strong> TDS refers to the total concentration of dissolved substances in water, including salts, minerals, and other organic and inorganic compounds. It is commonly measured in milligrams per liter (mg/L) or parts per million (ppm).</p>
-  </div>
+            <h3>Definitions</h3>
+            <p>
+              <strong>Permeate Flowrate for RO Plant:</strong> The permeate
+              flowrate refers to the rate at which purified water (permeate) is
+              produced by the reverse osmosis (RO) plant. It is typically
+              measured in liters per hour (L/hr) or cubic meters per hour
+              (m³/hr).
+            </p>
+            <p>
+              <strong>Total Dissolved Solids (TDS):</strong> TDS refers to the
+              total concentration of dissolved substances in water, including
+              salts, minerals, and other organic and inorganic compounds. It is
+              commonly measured in milligrams per liter (mg/L) or parts per
+              million (ppm).
+            </p>
+          </div>
         </div>
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
+
+          {/* Toolbar */}
+          <div className="toolbar">
+            <button onClick={() => handleToolbarItemClick('apple')}>🍎 Apple</button>
+            <button onClick={() => handleToolbarItemClick('mango')}>🥭 Mango</button>
+            <button onClick={() => handleToolbarItemClick('grapes')}>🍇 Grapes</button>
+            <button onClick={() => handleToolbarItemClick('orange')}>🍊 Orange</button>
+          </div>
           <div className="demo-page">
-  <div style={{ position: "relative", width: "100%", height: "100%" }}>
-    <img
-      src={whiteimage}
-      alt="blueprint"
-      style={{ width: "100%", height: "100%" }}
-    />
+            <div
+              style={{ position: 'relative', width: '100%', height: '100%', border: '1px solid black' }}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
 
-    {/* PumpHouse 1 */}
-    <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
-      {/* <ContainerBox
-        flow={flow4}
-        text="PumpHouse 1"
-      /> */}
-      <img
-      src={PumpHouse}
-      alt="sump"
-      style={{ width: "100px", height: "100px" }}
-    />
-      <div>PumpHouse 1</div>
-    </div>
+              {/* PumpHouse 1 */}
+              <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
+                <img src={PumpHouse} alt="sump" style={{ width: "100px", height: "100px" }} />
+                <div>PumpHouse 1</div>
+              </div>
 
-    {/* Z Shape Pipe */}
-    <div style={{ position: "absolute", top: "17%", left: "19.7%" }}>
-      {/* <div>Z Shape Pipe</div> */}
-      <ZshapePipe
-        flow={flow1}
-        onClick={() => {
-          setFlow1((flow1) => !flow1);
-        }}
-      />
-    </div>
+              {/* Z Shape Pipe */}
+              <div style={{ position: "absolute", top: "17%", left: "19.7%" }}>
+                <ZshapePipe flow={flow1}  onClick={() => {setFlow1((flow1) => !flow1);}}/>
+              </div>
 
-    {/* Borewell */}
-    <div style={{ position: "absolute", top: "39%", left: "10.8%" }}>
-    
-      {/* <ContainerBox
-        flow={flow4}
-        text="Borewell"
-      /> */}
-      <img
-      src={Borewell}
-      alt="borewell"
-      style={{ width: "100px", height: "100px" }}
-    />
-      <div>Borewell</div>
-    </div>
+              {/* Borewell */}
+              <div style={{ position: "absolute", top: "39%", left: "10.8%" }}>
+                <img src={Borewell} alt="borewell" style={{ width: "100px", height: "100px" }}/>
+                <div>Borewell</div>
+              </div>
 
-    {/* Mirror Z Pipe */}
-    <div style={{ position: "absolute", top: "37%", left: "19.7%" }}>
-      {/* <div>Mirror Z Pipe</div> */}
-      <MirrorZPipe
-        flow={flow1}
-      />
-    </div>
+              {/* Mirror Z Pipe */}
+              <div style={{ position: "absolute", top: "37%", left: "19.7%" }}>
+                <MirrorZPipe flow={flow1} />
+              </div>
 
-    {/* SUMP */}
-    <div style={{ position: "absolute", top: "26.5%", left: "28.5%" , textAlign: "center"}}>
-      {/* <ContainerBox
-        flow={flow4}
-        text=""
-      /> */}
-      <img
-      src={SumpIcon}
-      alt="sump"
-      style={{ width: "100px", height: "100px" }}
-    />
+              {/* SUMP */}
+              <div style={{position: "absolute", top: "26.5%", left: "28.5%", textAlign: "center"}}>
+                <img src={SumpIcon}  alt="sump" style={{ width: "100px", height: "100px" }} />
+                <div>SUMP</div>
+              </div>
 
-      <div>SUMP</div>
-    </div>
+              {/* Straight Pipes */}
+              <div style={{ position: "absolute", top: "29.4%", left: "36.4%" }}>
+                <StraightPipe flow={flow2} />
+              </div>
 
-    {/* Straight Pipes */}
-    <div style={{ position: "absolute", top: "29.4%", left: "36.4%" }}>
-      {/* <div>Straight Pipe 1</div> */}
-      <StraightPipe flow={flow2} />
-    </div>
-    <div style={{ position: "absolute", top: "29.4%", left: "46.4%" }}>
-      {/* <div>Straight Pipe 2</div> */}
-      <StraightPipe flow={flow2} />
-    </div>
+              <div style={{ position: "absolute", top: "29.4%", left: "46.4%" }}>
+                <StraightPipe flow={flow2} />
+              </div>
 
-    {/* Motor */}
-    <div style={{ position: "absolute", top: "32.4%", left: "43.5%", textAlign: "center", width: "50px" }}>
-      
-      <img
-        src={Motor}
-        alt="Motor"
-        className={`motor ${motorOn ? "running" : ""}`}
-        style={{
-          width: "50px",
-          height: "50px",
-          transform: "scaleX(-1)",
-        }}
-        onClick={() => {
-          toggleIsOn("valve5");
-          if (isSimulationRunning) {
-            handleMotorToggle();
-          }
-        }}
-      />
-      {motorOn && <div style={{ fontSize: "12px", color: "green" }}>Running</div>}
-      <div>Motor</div>
-    </div>
-    
-    {/* L Shape Pipe */}
-    <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)" }}>
-      {/* <div>L Shape Pipe</div> */}
-      <LShapePipe flow={flow1} />
-    </div>
+              {/* Motor */}
+              <div style={{position: "absolute", top: "32.4%", left: "43.5%", textAlign: "center", width: "50px"}}>
+                <img src={Motor} alt="Motor" 
+                className={`motor ${motorOn ? "running" : ""}`} 
+                style={{ width: "50px", height: "50px",transform: "scaleX(-1)",}}
+                  onClick={() => {toggleIsOn("valve5");
+                    if (isSimulationRunning) {
+                      handleMotorToggle();
+                    }
+                  }}
+                />
+                {motorOn && (<div style={{ fontSize: "12px", color: "green" }}>Running</div>)}
+                <div>Motor</div>
+              </div>
 
-    {/* Water Tower */}
-    <div style={{ position: "absolute", top: "32%", left: "54.4%" }}>
-      {/* <GiWaterTower
-        size={90}
-        color={isOn.valve1 ? "blue" : "red"}
-        onClick={() => {
-          toggleIsOn("valve1");
-        }}
-      /> */}
-      <img
-      src={Watertank}
-      alt="WaterTank"
-      style={{ width: "80px", height: "80px" }}
-    />
-      <div>KRB OHT</div>
-    </div>
+              {/* L Shape Pipe */}
+              <div style={{ position: "absolute", top: "35%", left: "60.2%", transform: "rotate(180deg)"}}>
+                <LShapePipe flow={flow1} />
+              </div>
 
-    {/* RO Plant */}
-    <div style={{ position: "absolute", top: "47%", left: "68%" }}>
-      
-      <img
-        src={roPlantImage}
-        alt="ro plant"
-        style={{
-          width: "60px",
-          height: "60px",
-        }}
-        onClick={() => {
-          toggleIsOn("valve2");
-        }}
-      />
-      <div>RO Plant</div>
-    </div>
+              {/* Water Tower */}
+              <div style={{ position: "absolute", top: "32%", left: "54.4%" }}>
+                <img src={Watertank} alt="WaterTank" style={{ width: "80px", height: "80px" }}/>
+                <div>KRB OHT</div>
+              </div>
 
-    {/* Straight Pipe */}
-    <div style={{ position: "absolute", top: "46%", left: "73%" }}>
-      {/* <div>Straight Pipe</div> */}
-      <StraightPipe flow={flow1} />
-    </div>
+              {/* RO Plant */}
+              <div style={{ position: "absolute", top: "47%", left: "68%" }}>
+                <img src={roPlantImage} alt="ro plant" style={{width: "60px", height: "60px", }}
+                  onClick={() => { toggleIsOn("valve2"); }}
+                />
+                <div>RO Plant</div>
+              </div>
 
-    {/* Water Tower */}
-    <div style={{ position: "absolute", top: "44.5%", left: "80.7%" }}>
-    <div>RO Filtered Water OHT</div>
-      {/* <GiWaterTower
-        size={80}
-        color={isOn.valve4 ? "skyblue" : "red"}
-        onClick={() => {
-          toggleIsOn("valve4");
-        }}
-        /> */}
-      <img
-      src={ROWatertank}
-      alt="WaterTank"
-      style={{ width: "80px", height: "80px" }}
-    />
-        
-        </div>
-        
-        {/* E Shape Pipe */}
-        <div style={{ position: "absolute", top: "60%", left: "80%" }}>
-          {/* <div>E Shape Pipe</div> */}
-          <EShapePipe flow={flow1} />
-        </div>
-    
-        {/* RO Coolers */}
-        <div style={{ position: "absolute", top: "66%", left: "78.3%", textAlign:"center"  }}>
-          
-          <img
-            src={roCoolerImage}
-            alt="ro cooler 1"
-            style={{
-              width: "50px",
-              height: "50px",
-            }}
-            onClick={() => {
-              toggleIsOn("valve3");
-            }}
-          />
-          <div>RO 1</div>
-        </div>
-        <div style={{ position: "absolute", top: "66%", left: "82.3%", textAlign:"center" }}>
-          
-          <img
-            src={roCoolerImage}
-            alt="ro cooler 2"
-            style={{
-              width: "50px",
-              height: "50px",
-            }}
-            onClick={() => {
-              toggleIsOn("valve3");
-            }}
-          />
-          <div>RO 2</div>
-        </div>
-        <div style={{ position: "absolute", top: "66%", left: "86.3%", textAlign:"center" }}>
-         
-          <img
-            src={roCoolerImage}
-            alt="ro cooler 3"
-            style={{
-              width: "50px",
-              height: "50px",
-            }}
-            onClick={() => {
-              toggleIsOn("valve3");
-            }}
-          />
-           <div>RO 3</div>
-      </div>
-      </div>
-    </div>
+              {/* Straight Pipe */}
+              <div style={{ position: "absolute", top: "46%", left: "73%" }}>
+                <StraightPipe flow={flow1} />
+              </div>
 
+              {/* Water Tower */}
+              <div style={{ position: "absolute", top: "44.5%", left: "80.7%" }}>
+                <div>RO Filtered Water OHT</div>
+                <img src={ROWatertank} alt="WaterTank" style={{ width: "80px", height: "80px" }}/>
+              </div>
+
+              {/* E Shape Pipe */}
+              <div style={{ position: "absolute", top: "60%", left: "80%" }}>
+                <EShapePipe flow={flow1} />
+              </div>
+
+              {/* RO Coolers */}
+              <div style={{ position: "absolute", top: "66%", left: "78.3%", extAlign: "center", }} >
+                <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "50px", height: "50px"}}
+                  onClick={() => { toggleIsOn("valve3");  }}
+                />
+                <div>RO 1</div>
+              </div>
+
+              <div style={{ position: "absolute", top: "66%", left: "82.3%", textAlign: "center", }}>
+                <img src={roCoolerImage} alt="ro cooler 2"
+                  style={{ width: "50px", height: "50px",}}
+                  onClick={() => {toggleIsOn("valve3");}}
+                />
+                <div>RO 2</div>
+              </div>
+
+              <div style={{ position: "absolute", top: "66%", left: "86.3%", textAlign: "center",}}
+              >
+                <img src={roCoolerImage} alt="ro cooler 3" style={{width: "50px", height: "50px",}}
+                  onClick={() => {toggleIsOn("valve3");}}/>
+                <div>RO 3</div>
+              </div>
+
+              {canvasItems.map((item, index) => (
+              <div
+                key={index}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                style={{
+                  position: 'absolute',
+                  left: item.x,
+                  top: item.y,
+                  cursor: 'move',
+                }}
+              >
+                {item.type === 'apple' && '🍎'}
+                {item.type === 'mango' && '🥭'}
+                {item.type === 'grapes' && '🍇'}
+                {item.type === 'orange' && '🍊'}
+              </div>
+            ))}
+            {/* If an item is set to be added, we render it here */}
+            {itemToAdd && (
+              <div
+                draggable
+                onDragStart={(e) => handleDragStart(e)}
+                style={{
+                  position: 'absolute',
+                  left: '50px', // Default x position
+                  top: '50px', // Default y position
+                  cursor: 'move',
+                }}
+              >
+                {itemToAdd === 'apple' && '🍎'}
+                {itemToAdd === 'mango' && '🥭'}
+                {itemToAdd === 'grapes' && '🍇'}
+                {itemToAdd === 'orange' && '🍊'}
+              </div>
+            )}
+            </div>
+          </div>
 
           {/* {result && ( */}
-          {(
+          {
             <div className="result-container">
               <div className="water-flow-container">
                 <div className="result-cards">
@@ -643,7 +624,7 @@ const SimulationPage = () => {
                 </button> */}
               </div>
             </div>
-          )}
+          }
 
           {showMotorStatus && (
             <div className="motor-status-overlay">
@@ -654,37 +635,40 @@ const SimulationPage = () => {
         {/* Right Section */}
         <div style={{ flex: 1 }}>
           {/* {result && ( */}
-            <div className="result-container">
-              <p>Results:</p>
-              <div className="result-cards">
+          <div className="result-container">
+            <p>Results:</p>
+            <div className="result-cards">
               <ResultCard
-                  title="TDS Value(mg/L) - At SUMP"
-                  value={result?.calculated_tds_value ?? 'N/A'}
-                />
-                {/* <ResultCard
+                title="TDS Value(mg/L) - At SUMP"
+                value={result?.calculated_tds_value ?? "N/A"}
+              />
+              {/* <ResultCard
                   title="Osmotic Pressure(Pascal (Pa))"
                   value={result.osmotic_pressure}
                 /> */}
-                {/* <ResultCard title="Water Flux(m³)" value={result.water_flux} /> */}
-                <ResultCard
-                  title="Permeate Flow Rate(m³/s)"
-                  value={result?.permeate_flow_rate ?? 'N/A'}
-                />
-                <ResultCard
-                  title="Final TDS Concentration After RO Tank(mg/L)"
-                  value={result?.final_tds_concentration_after_ro_tank ?? 'N/A'}
-                />
-                <ResultCard title="Cycle Count" value={result?.cycle_count ?? 'N/A'} />
-                <ResultCard
-                  title="Time Estimation (hours)"
-                  value={result?.time_estimation_hours ?? 'N/A'}
-                />
-              </div>
-              <br />
-              {/* <button onClick={waterFlowStarted ? handleStopWaterFlow : handleStartWaterFlow} className="button">
+              {/* <ResultCard title="Water Flux(m³)" value={result.water_flux} /> */}
+              <ResultCard
+                title="Permeate Flow Rate(m³/s)"
+                value={result?.permeate_flow_rate ?? "N/A"}
+              />
+              <ResultCard
+                title="Final TDS Concentration After RO Tank(mg/L)"
+                value={result?.final_tds_concentration_after_ro_tank ?? "N/A"}
+              />
+              <ResultCard
+                title="Cycle Count"
+                value={result?.cycle_count ?? "N/A"}
+              />
+              <ResultCard
+                title="Time Estimation (hours)"
+                value={result?.time_estimation_hours ?? "N/A"}
+              />
+            </div>
+            <br />
+            {/* <button onClick={waterFlowStarted ? handleStopWaterFlow : handleStartWaterFlow} className="button">
                 {waterFlowStarted ? "Stop Water Flow" : "Start Water Flow"}
               </button> */}
-            </div>
+          </div>
           {/* )} */}
         </div>
       </div>
