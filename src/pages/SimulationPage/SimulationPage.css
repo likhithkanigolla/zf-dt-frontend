@@ -1,5 +1,8 @@
 /* Complete CSS for Digital Twin Simulation Page */
 
+
+/* Complete CSS for Digital Twin Simulation Page */
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
@@ -101,6 +104,7 @@ div[style*='display: flex'] {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 /* Motor Status Overlay */
 .motor-status-overlay {
   position: fixed;
@@ -137,6 +141,22 @@ div[style*='display: flex'] {
   color: white;
 }
 
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+  div[style*='display: flex'] {
+    flex-direction: column;
+  }
+
+  /* Adjusts for smaller screens to ensure usability */
+  .container, .result-container {
+    padding: 15px;
+  }
+
+  /* Makes sure navigation text size is responsive */
+  .navigation-bar {
+    font-size: 18px;
+  }
+}
 
 /* Responsive Design Adjustments */
 @media (max-width: 768px) {
@@ -221,10 +241,6 @@ div[style*='display: flex'] {
 }
 
 
-/* body{
-  background-color: rgb(48, 47, 48);
-} */
-
 @keyframes fillAnimation {
 0%, 100% {
     fill: transparent;
@@ -240,3 +256,55 @@ animation: fillAnimation 2s infinite; /* Adjust the duration as per your require
 }
 
 
+/* Additional Media Queries for Responsive Design */
+
+/* For screens smaller than 576px (e.g., smartphones) */
+@media (max-width: 575.98px) {
+  /* Adjust font sizes for smaller screens */
+  .heading {
+    font-size: 18px;
+  }
+
+  /* Adjust padding or margins to accommodate smaller screens */
+  .container, .result-container {
+    padding: 10px;
+  }
+
+  /* Adjust button sizes for smaller screens */
+  .button, .info-button {
+    padding: 8px 12px;
+  }
+}
+
+/* For screens between 576px and 768px (e.g., tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+  /* Adjust font sizes for tablets */
+  .heading {
+    font-size: 22px;
+  }
+
+  /* Adjust margins or paddings for tablets */
+  .container, .result-container {
+    padding: 15px;
+  }
+
+  /* Adjust button sizes for tablets */
+  .button, .info-button {
+    padding: 10px 15px;
+  }
+}
+
+/* For screens between 768px and 992px (e.g., small desktops) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Add responsive styles for small desktops here */
+}
+
+/* For screens between 992px and 1200px (e.g., medium desktops) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Add responsive styles for medium desktops here */
+}
+
+/* For screens larger than 1200px (e.g., large desktops) */
+@media (min-width: 1200px) {
+  /* Add responsive styles for large desktops here */
+}

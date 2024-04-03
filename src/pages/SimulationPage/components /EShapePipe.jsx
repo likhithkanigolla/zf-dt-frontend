@@ -3,15 +3,17 @@ import React from 'react';
 function EShapePipe({ flow, onClick, text }) {
     return (
         <svg 
-            width="100" 
-            height="100" 
+            width="6vw" // Set width to 100% of the parent container
+            height="8vw" // Set height to 50% of the parent container
+            viewBox="0 0 100 100" // Set the viewBox to maintain aspect ratio
             className='absolute bottom-10 right-52'
             onClick={onClick} // Add onClick event here
+            style={{ maxWidth: '100vw', maxHeight: '50vw' }} // Limit maximum width and height
         >
             {flow ? 
                 <>
                     <polygon
-                        points="0 0, 100 0, 100 44, 90 44, 90 11, 57 11, 57 45, 46 45, 46 11, 10 11, 10 46, 0 46"
+                        points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
                         fill='transparent'
                         stroke="black"
                         strokeWidth="2"
@@ -22,7 +24,7 @@ function EShapePipe({ flow, onClick, text }) {
                 :
                 <>
                 <polygon
-                    points="0 0, 100 0, 100 44, 90 44, 90 11, 57 11, 57 45, 46 45, 46 11, 10 11, 10 46, 0 46"
+                    points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
                     fill='transparent'
                     stroke="black"
                     strokeWidth="2"

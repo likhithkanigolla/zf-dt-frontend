@@ -499,252 +499,256 @@ const SimulationPage = () => {
 
           <div className="demo-page">
             <div
-              style={{ position: 'relative', width: '100%', height: '100%', border: '1px solid black' }}
+              style={{
+                position: 'relative',
+                width: '60vw',
+                height: '40vw',
+                border: '1px solid black',
+              }}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
               <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
 
               {/* PumpHouse 1 */}
-              <div style={{ position: "absolute", top: "11%", left: "10.8%" }}>
-                <img src={PumpHouse} alt="sump" style={{ width: "100px", height: "100px" }} />
-                <div>PumpHouse 1</div>
+              <div style={{ position: "absolute", top: "6vw", left: "3.8vw" }}>
+                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} />
+                <div style={{fontSize:"1vw"}}>PumpHouse</div>
               </div>
 
               {/* Z Shape Pipe */}
-              <div style={{ position: "absolute", top: "17%", left: "19.7%" }}>
+              <div style={{ position: "absolute", top: "8.5vw", left: "7.8vw" }}>
                 <ZshapePipe flow={flow1}  onClick={() => {setFlow1((flow1) => !flow1);}}/>
               </div>
 
-              {/* Borewell */}
-              <div style={{ position: "absolute", top: "39%", left: "10.8%" }}>
-                <img src={Borewell} alt="borewell" style={{ width: "100px", height: "100px" }}/>
-                <div>Borewell</div>
-              </div>
-
               {/* Mirror Z Pipe */}
-              <div style={{ position: "absolute", top: "37%", left: "19.7%" }}>
-                <MirrorZPipe flow={flow1} />
+              <div style={{ position: "absolute", top: "16vw", left: "7.8vw" }}>
+                <MirrorZPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }}/>
               </div>
-
-              {/* SUMP */}
-              <div style={{position: "absolute", top: "26.5%", left: "28.5%", textAlign: "center"}}>
-                <img src={SumpIcon}  alt="sump" style={{ width: "100px", height: "100px" }} />
-                <div>SUMP-{waterInSump}L</div>
+              
+              {/* Borewell */}
+              <div style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
+                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
+                <div style={{fontSize:"1vw"}}>Borewell</div>
               </div>
 
               {/* Straight Pipes */}
-              <div style={{ position: "absolute", top: "29.4%", left: "36.4%" }}>
+              <div style={{ position: "absolute", top: "13vw", left: "18vw" }}>
                 <StraightPipe flow={flow2} />
               </div>
 
-              <div style={{ position: "absolute", top: "29.4%", left: "46.4%" }}>
-                <StraightPipe flow={flow2} />
+              {/* SUMP */}
+              <div style={{position: "absolute", top: "13vw", left: "13vw", textAlign: "center"}}>
+                <img src={SumpIcon}  alt="sump" style={{ width: "6vw", height: "6vw" }} />
+                <div style={{fontSize:"1vw"}}>SUMP-{waterInSump}L</div>
+              </div>
+
+              <div style={{ position: "absolute", top: "10.3vw", left: "25vw" }}>
+                <MirrorZPipe flow={flow2} />
               </div>
 
               {/* Motor */}
-              <div style={{position: "absolute", top: "32.4%", left: "43.5%", textAlign: "center", width: "50px"}}>
+              <div style={{position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw"}}>
                 <img src={Motor} alt="Motor" 
-                className={`motor ${motorOn ? "running" : ""}`} 
-                style={{ width: "50px", height: "50px",transform: "scaleX(-1)",}}
+                  className={`motor ${motorOn ? "running" : ""}`} 
+                  style={{width: "3vw", height: "3vw",transform: "scaleX(-1)",}}
                   onClick={() => {toggleIsOn("valve5");
                     if (isSimulationRunning) {
                       handleMotorToggle();
                     }
                   }}
                 />
-                {motorOn && (<div style={{ fontSize: "12px", color: "green" }}>Running</div>)}
-                <div>Motor</div>
+                {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
+                <div style={{fontSize:"1vw"}}>Motor</div>
               </div>
 
               {/* L Shape Pipe */}
-              <div style={{ position: "absolute", top: "35%", left: "56.2%", transform: "rotate(180deg)"}}>
+              <div style={{ position: "absolute", top: "11.5vw", left: "32.2vw", transform: "rotate(180deg)"}}>
                 <LShapePipe flow={flow1} />
               </div>
 
               {/* L Shape Pipe */}
-              <div style={{ position: "absolute", top: "17%", left: "56.2%", transform: "rotate(90deg)"}}>
+              <div style={{ position: "absolute", top: "3.5vw", left: "33vw", transform: "rotate(90deg)"}}>
                 <LShapePipe flow={flow1} />
               </div>
 
-              <div style={{ position: "absolute", top: "12%", left: "65.3%" }}>
-                <img src={Washrooms} alt="WaterTank" style={{ width: "50px", height: "50px" }}/>
-                <div>Admin Block Washrooms</div>
+              <div style={{ position: "absolute", top: "1.8vw", left: "34.5vw" ,textAlign:"center"}}>
+              <div style={{fontSize:"1vw"}}>Admin Block Washrooms</div>
+                <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }}/>
               </div>
 
-              <div style={{ position: "absolute", top: "24%", left: "69.3%" }}>
-                <img src={Washrooms} alt="WaterTank" style={{ width: "50px", height: "50px" }}/>
-                <div>KRB Washrooms</div>
+              <div style={{ position: "absolute", top: "8vw", left: "38.5vw", textAlign:"center" }}>
+              <div style={{fontSize:"1vw"}}>KRB Washrooms</div>
+                <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }}/>
               </div>
 
-              <div style={{ position: "absolute", top: "23%", left: "60.2%" }}>
+              <div style={{ position: "absolute", top: "7vw", left: "35vw" }}>
                 <StraightPipe flow={flow1} />
               </div>
               
-              
               {/* Water Tower */}
-              <div style={{ position: "absolute", top: "28%", left: "54.1%" }}>
-                <img src={Watertank} alt="WaterTank" style={{ width: "90px", height: "90px" }}/>
-                <div>KRB OHT - {waterInOHT}L</div>
-              </div>
-
-              {/* RO Plant */}
-              <div style={{ position: "absolute", top: "47%", left: "64%" }}>
-                <img src={roPlantImage} alt="ro plant" style={{width: "60px", height: "60px", }}
-                  onClick={() => { toggleIsOn("valve2"); }}
-                />
-                <div>RO Plant</div>
+              <div style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
+                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
+                <div style={{fontSize:"1vw"}}>KRB OHT - {waterInOHT}L</div>
               </div>
 
               {/* Straight Pipe */}
-              <div style={{ position: "absolute", top: "46%", left: "69%" }}>
+              <div style={{ position: "absolute", top: "17vw", left: "41.5vw" }}>
                 <StraightPipe flow={flow1} />
               </div>
 
-              {/* Water Tower */}
-              <div style={{ position: "absolute", top: "41.5%", left: "76%" }}>
-                <div>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
-                <img src={ROWatertank} alt="WaterTank" style={{ width: "80px", height: "80px" }}/>
+              {/* RO Plant */}
+              <div style={{ position: "absolute", top: "17vw", left: "37vw" }}>
+                <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
+                  onClick={() => { toggleIsOn("valve2"); }}
+                />
+                <div style={{fontSize:"1vw"}}>RO Plant</div>
               </div>
 
               {/* E Shape Pipe */}
-              <div style={{ position: "absolute", top: "60%", left: "75%" }}>
+              <div style={{ position: "absolute", top: "22vw", left: "45.5vw" }}>
                 <EShapePipe flow={flow1} />
               </div>
 
+              {/* Water Tower */}
+              <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
+                <div style={{fontSize:"1vw"}}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
+                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }}/>
+              </div>
+
               {/* RO Coolers */}
-              <div style={{ position: "absolute", top: "66%", left: "73.3%", textAlign: "center", }} >
-                <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "50px", height: "50px"}}
+              <div style={{ position: "absolute", top: "28vw", left: "44.4vw", textAlign: "center", }} >
+                <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "2.8vw", height: "2.8vw" }}
                   onClick={() => { toggleIsOn("valve3");  }}
                 />
-                <div>RO 1</div>
-                <div>{((3*waterConsumed)/4).toFixed(1)}L</div>
+                <div style={{fontSize:"1vw"}}>RO 1</div>
+                <div style={{fontSize:"1vw"}}>{((3*waterConsumed)/4).toFixed(1)}L</div>
               </div>
 
-              <div style={{ position: "absolute", top: "66%", left: "77.3%", textAlign: "center", }}>
-                <img src={roCoolerImage} alt="ro cooler 2"
-                  style={{ width: "50px", height: "50px",}}
+              <div style={{ position: "absolute", top: "28vw", left: "47.1vw", textAlign: "center", }}>
+                <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "2.8vw", height: "2.8vw" }}
                   onClick={() => {toggleIsOn("valve3");}}
                 />
-                <div>RO 2</div>
+                <div style={{fontSize:"1vw"}}>RO 2</div>
               </div>
 
-              <div style={{ position: "absolute", top: "66%", left: "81.3%", textAlign: "center",}}
+              <div style={{ position: "absolute", top: "28vw", left: "49.8vw", textAlign: "center",}}
               >
-                <img src={roCoolerImage} alt="ro cooler 3" style={{width: "50px", height: "50px",}}
+                <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "2.8vw", height: "2.8vw" }}
                   onClick={() => {toggleIsOn("valve3");}}/>
-                <div>RO 3</div>
-                <div>{(waterConsumed/4).toFixed(1)}L</div>
+                <div style={{fontSize:"1vw"}}>RO 3</div>
+                <div style={{fontSize:"1vw"}}>{(waterConsumed/4).toFixed(1)}L</div>
               </div>
 
               {/* Nodes  */}
-              <div style={{ position: "absolute", top: "47%", left: "28%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
-                {/* <div>SUMP</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "47%", left: "52%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "21vw", left: "29vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
-                 onClick={() => getRealData('WM-WD-KH96-00')}
+                 style={{ width: "3vw", height: "3vw",}}
+                onClick={() => getRealData('WM-WD-KH96-00')}
                 />
-                {/* <div>OHT</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "60%", left: "64%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "24vw", left: "38vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>AFter RO</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "50%", left: "84%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "20vw", left: "51vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>RO OHT</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "82%", left: "73.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "35vw", left: "44vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
+                 style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WD-KH95-00')}
                 />
                 {/* <div>RO 1</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "82%", left: "81.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "35vw", left: "50vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "50px", height: "50px",}}
+                 style={{ width: "3vw", height: "3vw",}}
                   onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
                 />
                 {/* <div>RO 3</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "47%", left: "33%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "21vw", left: "17vw", textAlign: "center", }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WL-KH98-00')}
                 />
                 {/* <div>SUMP</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "47%", left: "57%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "21vw", left: "33vw", textAlign: "center", }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WL-KH00-00')}
                 />
                 {/* <div>OHT</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "47%", left: "43.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "22vw", left: "22.7vw", textAlign: "center", }}>
                 <img src={MotorNode} alt="MotorNode"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WD-KRB-M1')}
                 />
                 {/* <div>Motor</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "20%", left: "54.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "4vw", left: "34.5vw", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "2vw", height: "2vw",}}
                   onClick={() => getRealData('WM-WF-KB04-70')}
                 />
                 {/* <div>W1</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "27%", left: "62.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "10vw", left: "37vw", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "50px", height: "50px",}}
+                  style={{ width: "2vw", height: "2vw",}}
                   onClick={() => getRealData('WM-WF-KB04-73')}
                 />
                 {/* <div>W2</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "60%", left: "82.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "25vw", left: "44.5vw", textAlign: "center", transform: "rotate(90deg)",}}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "30px", height: "30px",}}
+                  style={{ width: "2vw", height: "2vw",}}
                   onClick={() => getRealData('WM-WF-KB04-71')}
                 />
                 {/* <div>RO1</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "60%", left: "74.5%", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "25vw", left: "50vw", textAlign: "center", transform: "rotate(90deg)",}}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "30px", height: "30px",}}
+                  style={{ width: "2vw", height: "2vw",}}
                   onClick={() => getRealData('WM-WF-KB04-72')}
                 />
                 {/* <div>RO3</div> */}
               </div>
 
+              {/* Other Nodes and Components */}
+              {/* Include other nodes and components with their positions calculated in vw */}
+              {/* ... */}
 
 
-              {/* Draggable Code */}
+            {/* Draggable Code */}
 
             {
               canvasItems.map((item, index) => (
@@ -789,6 +793,7 @@ const SimulationPage = () => {
 
             </div>
           </div>
+
 
           
           <div className="result-container">
