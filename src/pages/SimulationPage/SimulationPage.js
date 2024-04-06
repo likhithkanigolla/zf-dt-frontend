@@ -427,6 +427,10 @@ const SimulationPage = () => {
     console.log("Icon coordinates:", iconCoordinates);
     // You can now use iconCoordinates as needed
   };
+
+  const handleMarkerClick = (marker, index) => {
+    console.log(`Clicked virtual marker with ID ${index+1} and type ${marker.type}`);
+  };
   
 
   const getImageForType = (type) => {
@@ -822,6 +826,7 @@ const SimulationPage = () => {
                     cursor: 'move',
                     border: isMarkerPlaced ? '2px solid green' : 'none'
                   }}
+                  onClick={() => handleMarkerClick(item, index)}
                 >
                   <img
                     src={getImageForType(item.type)}
