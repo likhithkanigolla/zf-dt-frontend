@@ -33,6 +33,8 @@ import Toolbar from "./components /ToolBar";
 
 const SimulationPage = () => {
   // State for holding input values and results
+  const iconRefs = [];
+  const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [inputValues, setInputValues] = useState({
     voltage: "",
     temperature: "25",
@@ -88,12 +90,12 @@ const SimulationPage = () => {
       intervalId = setInterval(() => {
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
-          if (waterInSump > 0 && waterInOHT < 60) {
+          if (waterInSump > 0 && waterInOHT < 600) {
             setWaterInSump((prev) => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
             setWaterInOHT((prev) => Math.min(prev + 5, 600)); // Increase water in OHT by 5L per second, limited to 600L
           }
 
-          if ((waterInOHT === 60 || waterInSump === 0) && !alertShown) {
+          if ((waterInOHT === 600 || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
             setFlow2(false);
@@ -102,14 +104,14 @@ const SimulationPage = () => {
         }
 
         // Pump water from OHT to RO Filter continuously
-        if (waterInOHT > 0 && waterInROFilter < 20) {
-          setWaterInOHT((prev) => Math.max(prev - 1, 0)); // Reduce water in OHT by 1L per second
+        if (waterInOHT > 0 && waterInROFilter < 50) {
+          setWaterInOHT((prev) => Math.max(prev - 5, 0));
           setWaterInROFilter(
             (prev) => prev + (result ? result.permeate_flow_rate / 360 : 0)
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
         // If water in OHT is less than 20%, turn on the motor automatically
-        if (waterInOHT < 12) {
+        if (waterInOHT < 120) {
           setMotorOn(true);
           setFlow2(true);
         }
@@ -126,6 +128,19 @@ const SimulationPage = () => {
         }
       }, 1000);
     }
+
+    const logIconCoordinates = () => {
+      iconRefs.forEach((ref, index) => {
+        const rect = ref.getBoundingClientRect();
+        const iconCoordinates = {
+          x: rect.left,
+          y: rect.top,
+        };
+        console.log(`Icon ${index + 1} coordinates:`, iconCoordinates);
+        // You can now use iconCoordinates as needed
+      });
+    };
+    logIconCoordinates();
     return () => {
       clearInterval(intervalId);
       clearInterval(intervalwaterConsume);
@@ -264,10 +279,6 @@ const SimulationPage = () => {
       setData([{ title: "Error", value: "Failed to fetch data" }]); // Update accordingly
     }
   };
-  
-  
-  
-  
 
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
@@ -309,9 +320,9 @@ const SimulationPage = () => {
   };
 
   const handleConsumeWater = () => {
-    if (waterInROFilter >= 0.1) {
-      setWaterInROFilter((prev) => prev - 0.1); // Consume 10 liters from RO Filter
-      setWaterConsumed((prev) => prev + 0.1); // Add consumed water to the total
+    if (waterInROFilter >= 0.5) {
+      setWaterInROFilter((prev) => prev - 0.5); 
+      setWaterConsumed((prev) => prev + 0.5); 
     } else {
       alert("Not enough water in RO Filter to consume.");
     }
@@ -322,11 +333,49 @@ const SimulationPage = () => {
   // This state is used to track the type of item that we need to add to the canvas
   const [itemToAdd, setItemToAdd] = useState(null);
 
+
+  
   const handleDragStart = (event, index) => {
     // Set the dataTransfer object with the item's index if we are moving an existing item
     if (index !== undefined) {
       event.dataTransfer.setData('index', index);
     }
+    
+    // Capture the coordinates of the draggable marker
+    const markerCoordinates = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    
+    // Call function to check if marker overlaps with any icon
+    const isPlaced = checkMarkerOverlap(markerCoordinates);
+    setIsMarkerPlaced(isPlaced);
+  };
+  
+
+  const checkMarkerOverlap = (markerCoordinates) => {
+    let isPlaced = false;
+    
+    // Iterate over each icon and check if the marker overlaps with it
+    iconRefs.forEach((ref, index) => {
+      const rect = ref.getBoundingClientRect();
+      if (
+        markerCoordinates.x >= rect.left &&
+        markerCoordinates.x <= rect.left + rect.width &&
+        markerCoordinates.y >= rect.top &&
+        markerCoordinates.y <= rect.top + rect.height
+      ) {
+        console.log(`Marker is placed on Icon ${index + 1}`);
+        isPlaced = true;
+        return;
+      }
+    });
+    
+    if (!isPlaced) {
+      console.log("Marker is not placed on any icon");
+    }
+    
+    return isPlaced;
   };
 
   const handleDrop = (event) => {
@@ -369,6 +418,16 @@ const SimulationPage = () => {
     // Instead of directly adding the item, we set an "item to add" state
     setItemToAdd(type);
   };
+
+  const handleIconClick = (event) => {
+    const iconCoordinates = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    console.log("Icon coordinates:", iconCoordinates);
+    // You can now use iconCoordinates as needed
+  };
+  
 
   const getImageForType = (type) => {
     switch (type) {
@@ -512,7 +571,7 @@ const SimulationPage = () => {
 
               {/* PumpHouse 1 */}
               <div style={{ position: "absolute", top: "6vw", left: "3.8vw" }}>
-                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} />
+                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
                 <div style={{fontSize:"1vw"}}>PumpHouse</div>
               </div>
 
@@ -528,7 +587,7 @@ const SimulationPage = () => {
               
               {/* Borewell */}
               <div style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
-                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
+                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
                 <div style={{fontSize:"1vw"}}>Borewell</div>
               </div>
 
@@ -539,7 +598,7 @@ const SimulationPage = () => {
 
               {/* SUMP */}
               <div style={{position: "absolute", top: "13vw", left: "13vw", textAlign: "center"}}>
-                <img src={SumpIcon}  alt="sump" style={{ width: "6vw", height: "6vw" }} />
+                <img src={SumpIcon}  alt="sump" style={{ width: "6vw", height: "6vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
                 <div style={{fontSize:"1vw"}}>SUMP-{waterInSump}L</div>
               </div>
 
@@ -548,7 +607,7 @@ const SimulationPage = () => {
               </div>
 
               {/* Motor */}
-              <div style={{position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw"}}>
+              <div style={{position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw"}} ref={(ref) => (iconRefs.push(ref))}>
                 <img src={Motor} alt="Motor" 
                   className={`motor ${motorOn ? "running" : ""}`} 
                   style={{width: "3vw", height: "3vw",transform: "scaleX(-1)",}}
@@ -588,7 +647,7 @@ const SimulationPage = () => {
               
               {/* Water Tower */}
               <div style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
-                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
+                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
                 <div style={{fontSize:"1vw"}}>KRB OHT - {waterInOHT}L</div>
               </div>
 
@@ -600,7 +659,7 @@ const SimulationPage = () => {
               {/* RO Plant */}
               <div style={{ position: "absolute", top: "17vw", left: "37vw" }}>
                 <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
-                  onClick={() => { toggleIsOn("valve2"); }}
+                  onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
                 />
                 <div style={{fontSize:"1vw"}}>RO Plant</div>
               </div>
@@ -613,13 +672,13 @@ const SimulationPage = () => {
               {/* Water Tower */}
               <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
                 <div style={{fontSize:"1vw"}}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
-                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }}/>
+                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
               </div>
 
               {/* RO Coolers */}
               <div style={{ position: "absolute", top: "28vw", left: "44.4vw", textAlign: "center", }} >
                 <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "2.8vw", height: "2.8vw" }}
-                  onClick={() => { toggleIsOn("valve3");  }}
+                 onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
                 />
                 <div style={{fontSize:"1vw"}}>RO 1</div>
                 <div style={{fontSize:"1vw"}}>{((3*waterConsumed)/4).toFixed(1)}L</div>
@@ -627,7 +686,7 @@ const SimulationPage = () => {
 
               <div style={{ position: "absolute", top: "28vw", left: "47.1vw", textAlign: "center", }}>
                 <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "2.8vw", height: "2.8vw" }}
-                  onClick={() => {toggleIsOn("valve3");}}
+                  onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
                 />
                 <div style={{fontSize:"1vw"}}>RO 2</div>
               </div>
@@ -635,7 +694,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "28vw", left: "49.8vw", textAlign: "center",}}
               >
                 <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "2.8vw", height: "2.8vw" }}
-                  onClick={() => {toggleIsOn("valve3");}}/>
+                  onClick={(e) => handleIconClick(e)}/>
                 <div style={{fontSize:"1vw"}}>RO 3</div>
                 <div style={{fontSize:"1vw"}}>{(waterConsumed/4).toFixed(1)}L</div>
               </div>
@@ -761,12 +820,13 @@ const SimulationPage = () => {
                     left: `${item.x}px`,
                     top: `${item.y}px`,
                     cursor: 'move',
+                    border: isMarkerPlaced ? '2px solid green' : 'none'
                   }}
                 >
                   <img
                     src={getImageForType(item.type)}
                     alt={item.type}
-                    style={{ maxWidth: '40px', maxHeight: '100%', filter:"grayscale(200%)" }}
+                    style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
                   />
                 </div>
               ))
@@ -786,7 +846,7 @@ const SimulationPage = () => {
                 <img
                   src={getImageForType(itemToAdd)}
                   alt={itemToAdd}
-                  style={{ maxWidth: '40px', maxHeight: '100%', filter:"grayscale(200%)" }}
+                  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
                 />
               </div>
             )}

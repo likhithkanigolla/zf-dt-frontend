@@ -210,8 +210,13 @@ div[style*='display: flex'] {
 .demo-page {
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 70vh;
 }
+
+.marker-placed {
+  border: 2px solid green;
+}
+
 
 .toolbar {
   display: flex;
