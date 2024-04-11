@@ -131,12 +131,14 @@ const SimulationPage = () => {
 
     const logIconCoordinates = () => {
       iconRefs.forEach((ref, index) => {
+        const iconId = ref.id;
         const rect = ref.getBoundingClientRect();
         const iconCoordinates = {
           x: rect.left,
           y: rect.top,
         };
-        console.log(`Icon ${index + 1} coordinates:`, iconCoordinates);
+        // console.log(`Icon ${index + 1} coordinates:`, iconCoordinates);
+        console.log(`Icon ${iconId} coordinates:`, iconCoordinates);
         // You can now use iconCoordinates as needed
       });
     };
@@ -358,6 +360,7 @@ const SimulationPage = () => {
     
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref, index) => {
+      const iconId = ref.id;
       const rect = ref.getBoundingClientRect();
       if (
         markerCoordinates.x >= rect.left &&
@@ -365,10 +368,12 @@ const SimulationPage = () => {
         markerCoordinates.y >= rect.top &&
         markerCoordinates.y <= rect.top + rect.height
       ) {
-        console.log(`Marker is placed on Icon ${index + 1}`);
+        console.log(`Marker is placed on ${iconId}`);
+        if (iconId="KRBSump"){console.log("Placed on KRB Sump")}
         isPlaced = true;
         return;
       }
+      
     });
     
     if (!isPlaced) {
@@ -574,9 +579,11 @@ const SimulationPage = () => {
               <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
 
               {/* PumpHouse 1 */}
-              <div style={{ position: "absolute", top: "6vw", left: "3.8vw" }}>
-                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
-                <div style={{fontSize:"1vw"}}>PumpHouse</div>
+              <div style={{ position: "absolute", top: "6vw", left: "3.8vw" }} id="pumpHouseIcon">
+                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
+                  ref={(ref) => {if (ref) {ref.id = "PumpHouse1"; iconRefs.push(ref);} }}
+                />
+                <div style={{ fontSize: "1vw" }}>PumpHouse</div>
               </div>
 
               {/* Z Shape Pipe */}
@@ -588,11 +595,17 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "16vw", left: "7.8vw" }}>
                 <MirrorZPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }}/>
               </div>
-              
+
               {/* Borewell */}
-              <div style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
-                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
-                <div style={{fontSize:"1vw"}}>Borewell</div>
+              <div id="borewellIcon" style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
+                <img
+                  src={Borewell}
+                  alt="borewell"
+                  style={{ width: "4.8vw", height: "4.8vw" }}
+                  onClick={(e) => handleIconClick(e)}
+                  ref={(ref) => {if (ref) {ref.id = "Borewell1"; iconRefs.push(ref);} }}
+                />
+                <div style={{ fontSize: "1vw" }}>Borewell</div>
               </div>
 
               {/* Straight Pipes */}
@@ -602,7 +615,8 @@ const SimulationPage = () => {
 
               {/* SUMP */}
               <div style={{position: "absolute", top: "13vw", left: "13vw", textAlign: "center"}}>
-                <img src={SumpIcon}  alt="sump" style={{ width: "6vw", height: "6vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
+                <img src={SumpIcon}  alt="sump" style={{ width: "6vw", height: "6vw" }} onClick={(e) => handleIconClick(e)} 
+                ref={(ref) => {if (ref) {ref.id = "KRBSump"; iconRefs.push(ref);} }}/>
                 <div style={{fontSize:"1vw"}}>SUMP-{waterInSump}L</div>
               </div>
 
@@ -611,7 +625,8 @@ const SimulationPage = () => {
               </div>
 
               {/* Motor */}
-              <div style={{position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw"}} ref={(ref) => (iconRefs.push(ref))}>
+              <div style={{position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw"}} 
+              ref={(ref) => {if (ref) {ref.id = "Motor"; iconRefs.push(ref);} }}>
                 <img src={Motor} alt="Motor" 
                   className={`motor ${motorOn ? "running" : ""}`} 
                   style={{width: "3vw", height: "3vw",transform: "scaleX(-1)",}}
@@ -651,7 +666,8 @@ const SimulationPage = () => {
               
               {/* Water Tower */}
               <div style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
-                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
+                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)} 
+                ref={(ref) => {if (ref) {ref.id = "KRBOHTIcon"; iconRefs.push(ref);} }}/>
                 <div style={{fontSize:"1vw"}}>KRB OHT - {waterInOHT}L</div>
               </div>
 
@@ -663,7 +679,7 @@ const SimulationPage = () => {
               {/* RO Plant */}
               <div style={{ position: "absolute", top: "17vw", left: "37vw" }}>
                 <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
-                  onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
+                  onClick={(e) => handleIconClick(e)} ref={(ref) => {if (ref) {ref.id = "ROPlant"; iconRefs.push(ref);} }}
                 />
                 <div style={{fontSize:"1vw"}}>RO Plant</div>
               </div>
@@ -676,13 +692,15 @@ const SimulationPage = () => {
               {/* Water Tower */}
               <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
                 <div style={{fontSize:"1vw"}}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
-                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}/>
+                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)} 
+                ref={(ref) => {if (ref) {ref.id = "KRB-RO-OHT"; iconRefs.push(ref);} }}/>
               </div>
 
               {/* RO Coolers */}
               <div style={{ position: "absolute", top: "28vw", left: "44.4vw", textAlign: "center", }} >
                 <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "2.8vw", height: "2.8vw" }}
-                 onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
+                 onClick={(e) => handleIconClick(e)} 
+                 ref={(ref) => {if (ref) {ref.id = "ROCooler1"; iconRefs.push(ref);} }}
                 />
                 <div style={{fontSize:"1vw"}}>RO 1</div>
                 <div style={{fontSize:"1vw"}}>{((3*waterConsumed)/4).toFixed(1)}L</div>
@@ -690,15 +708,16 @@ const SimulationPage = () => {
 
               <div style={{ position: "absolute", top: "28vw", left: "47.1vw", textAlign: "center", }}>
                 <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "2.8vw", height: "2.8vw" }}
-                  onClick={(e) => handleIconClick(e)} ref={(ref) => (iconRefs.push(ref))}
+                  onClick={(e) => handleIconClick(e)} 
+                  ref={(ref) => {if (ref) {ref.id = "ROCooler2"; iconRefs.push(ref);} }}
                 />
                 <div style={{fontSize:"1vw"}}>RO 2</div>
               </div>
 
-              <div style={{ position: "absolute", top: "28vw", left: "49.8vw", textAlign: "center",}}
-              >
+              <div style={{ position: "absolute", top: "28vw", left: "49.8vw", textAlign: "center",}}>
                 <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "2.8vw", height: "2.8vw" }}
-                  onClick={(e) => handleIconClick(e)}/>
+                  onClick={(e) => handleIconClick(e)}
+                  ref={(ref) => {if (ref) {ref.id = "ROCooler3"; iconRefs.push(ref);} }}/>
                 <div style={{fontSize:"1vw"}}>RO 3</div>
                 <div style={{fontSize:"1vw"}}>{(waterConsumed/4).toFixed(1)}L</div>
               </div>
@@ -860,7 +879,7 @@ const SimulationPage = () => {
           </div>
 
 
-          
+          <br></br>
           <div className="result-container">
             <div className="water-flow-container">
               <div className="result-cards">
