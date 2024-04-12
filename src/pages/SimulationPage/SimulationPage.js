@@ -137,7 +137,7 @@ const SimulationPage = () => {
           x: rect.left,
           y: rect.top,
         };
-        // console.log(`Icon ${index + 1} coordinates:`, iconCoordinates);
+        // These coordinates are used to know the postions of the SUMP, OHT etc 
         console.log(`Icon ${iconId} coordinates:`, iconCoordinates);
         // You can now use iconCoordinates as needed
       });
@@ -284,7 +284,6 @@ const SimulationPage = () => {
 
   const toggleIsOn = (valve) => {
     setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
-    console.log(valve);
   };
 
   const handleStartWaterFlow = () => {
@@ -349,18 +348,22 @@ const SimulationPage = () => {
       y: event.clientY,
     };
     
+    // Log the marker coordinates
+    // console.log("Marker coordinates during drag start:", markerCoordinates);
+    
     // Call function to check if marker overlaps with any icon
-    const isPlaced = checkMarkerOverlap(markerCoordinates);
+    const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates);
+    console.log("Marker is placed on:", iconId);
     setIsMarkerPlaced(isPlaced);
   };
   
-
+  
   const checkMarkerOverlap = (markerCoordinates) => {
     let isPlaced = false;
-    
+    let iconId = null;
+  
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref, index) => {
-      const iconId = ref.id;
       const rect = ref.getBoundingClientRect();
       if (
         markerCoordinates.x >= rect.left &&
@@ -368,20 +371,26 @@ const SimulationPage = () => {
         markerCoordinates.y >= rect.top &&
         markerCoordinates.y <= rect.top + rect.height
       ) {
-        console.log(`Marker is placed on ${iconId}`);
-        if (iconId="KRBSump"){console.log("Placed on KRB Sump")}
+        iconId = ref.id; // Update iconId if the marker overlaps with the icon
+        // console.log(`Marker is placed on ${iconId}`);
+        if (iconId === 'KRBSump') {
+          console.log("Marker is Placed on KRB Sump");
+        }
         isPlaced = true;
-        return;
       }
-      
     });
-    
+  
     if (!isPlaced) {
-      console.log("Marker is not placed on any icon");
+      console.log("checkMarkerOverlap - Marker is not placed on any icon: ");
     }
-    
-    return isPlaced;
+     else {
+      console.log(`checkMarkerOverlap - Marker is placed on: ${iconId}`);
+    }
+  
+    return { isPlaced, iconId };
   };
+  
+  
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -425,16 +434,27 @@ const SimulationPage = () => {
   };
 
   const handleIconClick = (event) => {
+    const refId = event.target.id;
     const iconCoordinates = {
       x: event.clientX,
       y: event.clientY,
     };
-    console.log("Icon coordinates:", iconCoordinates);
-    // You can now use iconCoordinates as needed
+    console.log(refId, "coordinates:", iconCoordinates);
   };
 
-  const handleMarkerClick = (marker, index) => {
-    console.log(`Clicked virtual marker with ID ${index+1} and type ${marker.type}`);
+  const handleMarkerClick = (item, index, event) => {
+    const { clientX, clientY } = event; // Get the client coordinates of the click event
+    // console.log("Clicked marker:", item);
+    
+    // Use the marker's coordinates
+    const coordinates = {
+      x: clientX,
+      y: clientY,
+    };
+    
+    const { isPlaced, iconId } = checkMarkerOverlap(coordinates);
+    console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
+    // Continue with your logic here
   };
   
 
@@ -845,7 +865,7 @@ const SimulationPage = () => {
                     cursor: 'move',
                     border: isMarkerPlaced ? '2px solid green' : 'none'
                   }}
-                  onClick={() => handleMarkerClick(item, index)}
+                  onClick={(e) => handleMarkerClick(item, index, e)}
                 >
                   <img
                     src={getImageForType(item.type)}
