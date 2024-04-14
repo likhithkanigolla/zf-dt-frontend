@@ -214,21 +214,28 @@ const SimulationPage = () => {
     );
   };
 
+  async function fetchVoltageValue(selectedNumberValue) {
+    const response = await fetch(`http://smartcitylivinglab.iiit.ac.in:1629/predict_voltage/${selectedNumberValue}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch voltage value: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.predicted_voltage;
+  }
+
   const handleCalculate = async () => {
     try {
       const selectedNumberValue = parseInt(selectedNumber);
       // Ensure that the selectedNumber is within the valid range of 1 to 10
-      if (
-        isNaN(selectedNumberValue) ||
-        selectedNumberValue < 1 ||
-        selectedNumberValue > 5
-      ) {
-        alert("Please select a number between 1 and 5.");
+      if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 500) {
+        alert("Please select a number between 1 and 500.");
         return;
       }
+    
 
       // Retrieve voltage value from the voltageData object
-      const voltageValue = voltageData[selectedNumberValue];
+      const voltageValue = await fetchVoltageValue(selectedNumberValue);
+      console.log("Voltage Value:", voltageValue);
       // Calculate initial TDS based on input values
       const initialTDS = calculateInitialTDS(inputValues);
 
@@ -454,7 +461,10 @@ const SimulationPage = () => {
     
     const { isPlaced, iconId } = checkMarkerOverlap(coordinates);
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
-    // Continue with your logic here
+
+    if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
+      console.log((waterInSump/inputValues.sumpCapacity)*100);
+    }
   };
   
 
@@ -481,8 +491,8 @@ const SimulationPage = () => {
         {/* Left Section */}
         <div className="container" style={{ flex: 1 }}>
           <h4 className="heading" htmlFor="selectedNumber">
-            Soil Impurities{" "}
-            <button
+            Soil Impurities(In grams){" "}
+            {/* <button
               className="info-button"
               onMouseEnter={() =>
                 handleInfoButtonClick(
@@ -492,8 +502,8 @@ const SimulationPage = () => {
               onMouseLeave={handleInfoButtonLeave}
             >
               ℹ️
-            </button>
-            {infoText && <div className="info-box">{infoText}</div>}
+            </button> */}
+            {/* {infoText && <div className="info-box">{infoText}</div>} */}
           </h4>
           <input
             type="number"
@@ -505,7 +515,7 @@ const SimulationPage = () => {
               handleChange(e);
             }}
             min="0"
-            max="5"
+            max="500"
           />
           <h4 className="heading">Temperature(°C):</h4>
           <input
