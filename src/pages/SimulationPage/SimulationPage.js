@@ -20,6 +20,8 @@ import MotorNode from "./images/MotorNode.png";
 import WaterLevelNode from "./images/WaterLevelNode.png";
 import WaterQualityNode from "./images/WaterQualityNode.png";
 import WaterQuantityNode from "./images/WaterQuantityNode.png";
+import LeakageIcon from "./images/leakage_water.png"; // Import your leakage icon
+
 
 import whiteimage from "./images/white.png";
 import Washrooms from "./images/Washrooms.png";
@@ -30,6 +32,7 @@ import StraightPipe from "./components /StraightPipe";
 import EShapePipe from "./components /EShapePipe";
 import LShapePipe from "./components /LShapePipe";
 import Toolbar from "./components /ToolBar";
+
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -83,6 +86,62 @@ const SimulationPage = () => {
     5: 6.7,
   };
 
+  const [showLeakageOptions, setShowLeakageOptions] = useState(false);
+  const [numLeakages, setNumLeakages] = useState(1);
+  const [leakageLocation, setLeakageLocation] = useState("");
+  const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
+  const [leakageMarkers, setLeakageMarkers] = useState([]);
+  // Function to handle leakage icon click
+  const handleLeakageIconClick = () => {
+    setShowLeakageOptions(true);
+  };
+  // Function to handle applying leakage options
+  const handleApplyLeakages = () => {
+    const newMarkers = [];
+    for (let i = 0; i < numLeakages; i++) {
+      // Calculate position based on leakageLocation and index (to distribute markers)
+      const position = calculateLeakagePosition(leakageLocation, i, numLeakages);
+      newMarkers.push({
+        type: "leakage",
+        x: position.x,
+        y: position.y,
+        rate: leakageRate, // Include leakage rate in the marker data
+      });
+    }
+    setLeakageMarkers(newMarkers);
+    setShowLeakageOptions(false);
+  };
+  // Function to calculate leakage position (you'll need to implement the logic)
+  const calculateLeakagePosition = (location, index, totalLeakages) => {
+    let x, y;
+    if (location === "motorOHT") {
+      // Hardcoded coordinates for the three possible leakage positions
+      const leakagePositions = [
+        { x: 890, y: 510 }, // Motor end
+        { x: 920, y: 460 }, // Middle pipe
+        { x: 950, y: 410 }, // Near OHT
+      ];
+  
+      // Ensure totalLeakages is within the allowed range (1 to 3)
+      totalLeakages = Math.max(1, Math.min(3, totalLeakages));
+  
+      // Determine the index for the leakage position based on totalLeakages
+      let positionIndex;
+      if (totalLeakages === 1) {
+        positionIndex = 0; // Only use the motor end position
+      } else if (totalLeakages === 2) {
+        positionIndex = index * 2; // Use motor end and middle positions
+      } else {
+        positionIndex = index; // Use all three positions
+      }
+  
+      // Get the coordinates from the leakagePositions array
+      ({ x, y } = leakagePositions[positionIndex]);
+    } // ... (rest of your logic)
+    return { x, y };
+  };
+  
+
   useEffect(() => {
     let intervalId;
     let intervalwaterConsume;
@@ -91,9 +150,52 @@ const SimulationPage = () => {
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < 600) {
-            setWaterInSump((prev) => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
-            setWaterInOHT((prev) => Math.min(prev + 5, 600)); // Increase water in OHT by 5L per second, limited to 600L
-          }
+            setWaterInSump((prev) => Math.max(prev - 5, 0));
+
+        // Calculate total leakage rate (limited to 4 L/s)
+            const totalLeakageRate = Math.min(
+              leakageMarkers.reduce((sum, marker) => {
+                if (marker.type === "leakage" && marker.location === "motorOHT") {
+                  return sum + marker.rate;
+                }
+                return sum;
+              }, 0),
+              4 // Maximum leakage rate
+            );
+
+            console.log("Total Leakage Rate:", totalLeakageRate); // Check the calculated value
+
+        // Calculate the effective flow rate into OHT
+        const effectiveFlowRate = Math.max(5 - totalLeakageRate, 1); 
+        console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
+
+        const prevWaterInOHT = waterInOHT; // Get previous water level
+        setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, 600)); 
+        console.log("Water in OHT:", waterInOHT, "(Previous:", prevWaterInOHT, ")"); // Verify state update 
+        }
+          //   setWaterInSump((prev) => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
+          //   // Calculate total leakage rate (assuming leakageMarkers structure is correct)
+          //   const totalLeakageRate = leakageMarkers
+          //   .filter((marker) => marker.type === "leakage" && marker.location === "motorOHT")
+          //   .reduce((sum, marker) => sum + marker.rate, 0);
+
+          // const waterFlowToOHT = Math.max(5 - totalLeakageRate, 0); 
+          // setWaterInOHT((prev) => Math.min(prev + waterFlowToOHT, 600));
+
+            // setWaterInOHT((prev) => Math.min(prev + 5, 600)); // Increase water in OHT by 5L per second, limited to 600L
+
+            // Calculate total leakage rate from all markers on the motor-OHT pipeline
+            // const totalLeakageRate = leakageMarkers.reduce((sum, marker) => {
+            //   if (marker.type === "leakage" && marker.location === "motorOHT") {
+            //     return sum + marker.rate;
+            //   }
+            //   return sum;
+            // }, 0);
+
+            // // Calculate the actual water flow into OHT considering leakage
+            // const waterFlowToOHT = Math.max(5 - totalLeakageRate, 0); 
+            // setWaterInOHT((prev) => Math.min(prev + waterFlowToOHT, 600));
+          
 
           if ((waterInOHT === 600 || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
@@ -154,6 +256,7 @@ const SimulationPage = () => {
     waterInOHT,
     waterInROFilter,
     alertShown,
+    leakageRate
   ]);
 
   const handleChange = (e) => {
@@ -593,7 +696,43 @@ const SimulationPage = () => {
             <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
               <img src={MotorNode} alt="Motor Sensor"/> motorsensor
             </button>
+            <button className="tool-button" onClick={handleLeakageIconClick}>
+              <img src={LeakageIcon} alt="Leakage" /> Leakage
+            </button>
           </div>
+          {/* Leakage Options Popup/Dropdown (show when showLeakageOptions is true) */}
+      {showLeakageOptions && (
+        <div className="leakage-options-popup">
+          <label htmlFor="numLeakages">Number of Leakages:</label>
+          <input
+            type="number"
+            id="numLeakages"
+            value={numLeakages}
+            onChange={(e) => setNumLeakages(parseInt(e.target.value, 4))}
+            min="1"
+          />
+          <label htmlFor="leakageLocation">Leakage Location:</label>
+          <select
+            id="leakageLocation"
+            value={leakageLocation}
+            onChange={(e) => setLeakageLocation(e.target.value)}
+          >
+            <option value="">Select Location</option>
+            <option value="motorOHT">Between Motor and OHT</option>
+            <option value="roPlant">Around RO Plant</option>
+            {/* Add more options as needed */}
+          </select>
+          <label htmlFor="leakageRate">Leakage Rate (L/s):</label>
+          <input
+            type="number"
+            id="leakageRate"
+            value={leakageRate}
+            onChange={(e) => setLeakageRate(parseFloat(e.target.value))}
+            min="0"
+          />
+          <button onClick={handleApplyLeakages}>Apply</button>
+        </div>
+      )}
 
           <div className="demo-page">
             <div
@@ -651,7 +790,7 @@ const SimulationPage = () => {
               </div>
 
               <div style={{ position: "absolute", top: "10.3vw", left: "25vw" }}>
-                <MirrorZPipe flow={flow2} />
+                <MirrorZPipe flow={flow2} id="motorOHTPipe" />
               </div>
 
               {/* Motor */}
@@ -919,6 +1058,24 @@ const SimulationPage = () => {
               </div>
             </div>
           </div>
+          {/* Leakage Markers */}
+{leakageMarkers.map((marker, index) => (
+  <div 
+    key={index}
+    style={{
+      position: 'absolute',
+      left: `${marker.x}px`,
+      top: `${marker.y}px`,
+      cursor: 'pointer',
+    }}
+    onClick={() => { 
+      // Handle clicking on a leakage marker (e.g., show information about the leakage)
+      console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
+    }}
+  >
+    <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }} />
+  </div>
+))}
 
 
           {/* {result && ( */}
