@@ -245,6 +245,62 @@ div[style*='display: flex'] {
   margin: 0 auto; /* Centers the image horizontally */
 }
 
+.leakage-icon {
+  width: 3vw; /* Adjust size as needed */
+  height: 3vw;
+  animation: drip 2s infinite; /* Add dripping animation */
+}
+
+.delete-area {
+  width: 50px;  /* Adjust the size as needed */
+  height: 50px;
+  border: 2px dashed red; /* Dashed border for visual indication */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; /* Change cursor to indicate it's interactive */
+}
+
+.delete-area img {
+  width: 80%; /* Adjust icon size as needed */
+  height: auto;
+}
+
+/* Optional: Hover effect */
+.delete-area:hover {
+  background-color: rgba(255, 0, 0, 0.2); /* Light red background on hover */
+}
+
+
+.progress-bar {
+  background-color: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar.horizontal {
+  width: 100px;
+  height: 10px;
+}
+
+.progress-bar.vertical {
+  width: 10px;
+  height: 100px;
+}
+
+.progress {
+  background-color: #007bff;
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+}             
+
+@keyframes drip {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+
 
 @keyframes fillAnimation {
 0%, 100% {
