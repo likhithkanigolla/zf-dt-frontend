@@ -44,8 +44,9 @@ const SimulationPage = () => {
     desired_tds: "50",
     effective_membrane_area: "370",
     sumpCapacity: "6000",
-    ohtCapacity: "",
-    roCapacity: "",
+    ohtCapacity: "600",
+    roCapacity: "50",
+    flowrate: "5"
   });
   const [result, setResult] = useState(null);
   const [isOn, setIsOn] = useState({
@@ -149,8 +150,8 @@ const SimulationPage = () => {
       intervalId = setInterval(() => {
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
-          if (waterInSump > 0 && waterInOHT < 600) {
-            setWaterInSump((prev) => Math.max(prev - 5, 0));
+          if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
+            setWaterInSump((prev) => Math.max(prev - inputValues.flowrate, 0));
 
         // Calculate total leakage rate (limited to 4 L/s)
             const totalLeakageRate = Math.min(
@@ -197,7 +198,7 @@ const SimulationPage = () => {
             // setWaterInOHT((prev) => Math.min(prev + waterFlowToOHT, 600));
           
 
-          if ((waterInOHT === 600 || waterInSump === 0) && !alertShown) {
+          if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
             setFlow2(false);
@@ -206,14 +207,14 @@ const SimulationPage = () => {
         }
 
         // Pump water from OHT to RO Filter continuously
-        if (waterInOHT > 0 && waterInROFilter < 50) {
-          setWaterInOHT((prev) => Math.max(prev - 5, 0));
+        if (waterInOHT > 0 && waterInROFilter < inputValues.roCapacity) {
+          setWaterInOHT((prev) => Math.max(prev - inputValues.flowrate, 0));
           setWaterInROFilter(
             (prev) => prev + (result ? result.permeate_flow_rate / 360 : 0)
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
         // If water in OHT is less than 20%, turn on the motor automatically
-        if (waterInOHT < 120) {
+        if (waterInOHT < (20*inputValues.ohtCapacity)/100) {
           setMotorOn(true);
           setFlow2(true);
         }
@@ -567,6 +568,12 @@ const SimulationPage = () => {
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       console.log((waterInSump/inputValues.sumpCapacity)*100);
+    }
+    if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
+      console.log((waterInOHT/inputValues.ohtCapacity)*100);
+    }
+    if(iconId=='KRB-RO-OHT' && item.type=='waterlevelsensor'){
+      console.log((waterInROFilter/inputValues.roCapacity)*100);
     }
   };
   
