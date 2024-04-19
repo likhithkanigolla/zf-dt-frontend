@@ -171,33 +171,10 @@ const SimulationPage = () => {
         console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
 
         const prevWaterInOHT = waterInOHT; // Get previous water level
-        setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, 600)); 
+        setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
         console.log("Water in OHT:", waterInOHT, "(Previous:", prevWaterInOHT, ")"); // Verify state update 
         }
-          //   setWaterInSump((prev) => Math.max(prev - 5, 0)); // Reduce water in Sump by 5L per second
-          //   // Calculate total leakage rate (assuming leakageMarkers structure is correct)
-          //   const totalLeakageRate = leakageMarkers
-          //   .filter((marker) => marker.type === "leakage" && marker.location === "motorOHT")
-          //   .reduce((sum, marker) => sum + marker.rate, 0);
-
-          // const waterFlowToOHT = Math.max(5 - totalLeakageRate, 0); 
-          // setWaterInOHT((prev) => Math.min(prev + waterFlowToOHT, 600));
-
-            // setWaterInOHT((prev) => Math.min(prev + 5, 600)); // Increase water in OHT by 5L per second, limited to 600L
-
-            // Calculate total leakage rate from all markers on the motor-OHT pipeline
-            // const totalLeakageRate = leakageMarkers.reduce((sum, marker) => {
-            //   if (marker.type === "leakage" && marker.location === "motorOHT") {
-            //     return sum + marker.rate;
-            //   }
-            //   return sum;
-            // }, 0);
-
-            // // Calculate the actual water flow into OHT considering leakage
-            // const waterFlowToOHT = Math.max(5 - totalLeakageRate, 0); 
-            // setWaterInOHT((prev) => Math.min(prev + waterFlowToOHT, 600));
-          
-
+        
           if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
