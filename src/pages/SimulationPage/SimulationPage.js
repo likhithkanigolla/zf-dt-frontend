@@ -879,7 +879,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
+                  onClick={() => getRealData('WM-WD-KH98-00')}
                 />
               </div>
 
@@ -893,7 +893,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "24vw", left: "38vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
+                  onClick={() => setData([{ title: "Error", value: "Node Not Yet Deployed" }])}
                 />
                 {/* <div>AFter RO</div> */}
               </div>
@@ -901,7 +901,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "20vw", left: "51vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
+                  onClick={() => getRealData('WM-WD-KH04-00')}
                 />
                 {/* <div>RO OHT</div> */}
               </div>
@@ -917,7 +917,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "35vw", left: "50vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => setData([{ title: "Error", value: "Node Not Deployed" }])}
+                  onClick={() => getRealData('WM-WD-KH01-00')}
                 />
                 {/* <div>RO 3</div> */}
               </div>
