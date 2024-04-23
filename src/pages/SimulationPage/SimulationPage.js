@@ -941,7 +941,7 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "22vw", left: "22.7vw", textAlign: "center", }}>
                 <img src={MotorNode} alt="MotorNode"
                   style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KRB-M1')}
+                  onClick={() => getRealData('DM-KH98-60')}
                 />
                 {/* <div>Motor</div> */}
               </div>
