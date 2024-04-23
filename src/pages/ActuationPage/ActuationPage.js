@@ -53,9 +53,38 @@ const ActuationPage = () => {
   });
 
 
-  const toggleIsOn = (valve) => {
-    setIsOn((prevState) => ({ ...prevState, [valve]: !prevState[valve] }));
+  const toggleIsOn = async (nodeType, nodeName,nodeID, status) => {
+    // Update the state based on the current state
+    setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
+    console.log(isOn)
+  
+    // Determine the status based on the updated state
+    const node_status = !isOn[nodeName] ? 'on' : 'off';
+    const requestBody = {
+      // Your request body data here
+    };
+  
+    try {
+      const response = await fetch(
+        // `http://smartcitylivinglab.iiit.ac.in:1629/actuation/${nodeType}/${nodeName}/${status}`,
+        `http://localhost:1629/actuation/${nodeType}/${nodeName}/${status}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+  
+      const data = await response.json();
+      console.log(data); // Log the response data if needed
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
+  
 
   return (
     <div className="actuation-page">
@@ -77,7 +106,7 @@ const ActuationPage = () => {
       <img src={WaterLevelNode}  alt="WaterLevelNode at SUMP" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_level_sump'); }} />
       <img src={WaterLevelNode}  alt="WaterLevelNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '48vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_level_krb_oht'); }} />
       
-      <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '32vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('motor_control'); }} />
+      <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '32vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('motor', 'DM-KH98-80', 'motor_control',2); }} />
       
 
       <img src={WaterQualityNode}  alt="WaterQualityNode at sump" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '27.8vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_krb_sump'); }} />
