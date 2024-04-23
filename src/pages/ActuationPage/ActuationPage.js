@@ -55,26 +55,30 @@ const ActuationPage = () => {
         
       <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} />
       {/* Components */}
-      <img src={Watertank} alt="ro plant" style={{ width: '4vw', height: '4vw', position: 'absolute', top: '6.8vw', left: '49%' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={roPlantImage} alt="ro plant" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '12vw', left: '59vw' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '23.4vw', left: '59vw' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '29vw', left: '59vw' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '34.5vw', left: '59vw' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={Watertank} alt="water tank OHT" style={{ width: '4vw', height: '4vw', position: 'absolute', top: '6.8vw', left: '49%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={ROWatertank} alt="RO OHT" style={{ width: '3vw', height: '3vw', position: 'absolute', top: '12vw', left: '59.8%' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roPlantImage} alt="ro plant" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '11vw', left: '54vw' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '23.4vw', left: '57vw' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '29vw', left: '57vw' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={roCoolerImage} alt="ro cooler" style={{ width: '3.48vw', height: '3.48vw', position: 'absolute', top: '34.5vw', left: '57vw' }} onClick={() => { toggleIsOn('valve2'); }} />
       <img src={Motor}  alt="Motor" style={{width: '3.5vw',height: '3.5vw', position: 'absolute', top: '34.6vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
 
       {/* IoT Nodes */}
-      <img src={WaterLevelNode}  alt="WaterLevelNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterLevelNode}  alt="WaterLevelNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '48vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterLevelNode}  alt="WaterLevelNode at SUMP" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterLevelNode}  alt="WaterLevelNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '48vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
       
-      <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '32vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
       
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '51vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at RO Plant" style={{width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '52vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at RO OHT" style={{width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '62.2vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at RO 1" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at RO 2" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '23.5vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQualityNode}  alt="WaterQualityNode at sump" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '27.8vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('valve2'); }} />
 
+      <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 1" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '24.7vw', left: '62vw'}} onClick={() => { toggleIsOn('valve2'); }} />
+      <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 2" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '35.7vw', left: '62vw'}} onClick={() => { toggleIsOn('valve2'); }} />
+     
       </div>     
 
       {/* <div className="input-container">
