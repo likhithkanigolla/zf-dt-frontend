@@ -3,28 +3,28 @@ import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation"; // assuming NavigationBar is a component defined in NavigationBar.js
 // import blueprint from "./simulation_bp.png";
-import blueprint from "./images/ZF_DT_Simulation_Diagram.png";
+import blueprint from "../images/ZF_DT_Simulation_Diagram.png";
 import { GiWaterTower } from "react-icons/gi";
 
-import roPlantImage from "./images/ro_plant.png";
-import roCoolerImage from "./images/ro_cooler.png";
-import Motor from "./images/Motor.png";
-import SumpIcon from "./images/Sump.png";
-import PumpHouse from "./images/pump_house.png";
-import Borewell from "./images/borewell.png";
-import Watertank from "./images/watertank.png";
-import ROWatertank from "./images/tank_ro.png";
-import WaterLevelArrow from "./images/Waterlevel_arrow.png";
+import roPlantImage from "../images/ro_plant.png";
+import roCoolerImage from "../images/ro_cooler.png";
+import Motor from "../images/Motor.png";
+import SumpIcon from "../images/Sump.png";
+import PumpHouse from "../images/pump_house.png";
+import Borewell from "../images/borewell.png";
+import Watertank from "../images/watertank.png";
+import ROWatertank from "../images/tank_ro.png";
+import WaterLevelArrow from "../images/Waterlevel_arrow.png";
 
-import MotorNode from "./images/MotorNode.png"; 
-import WaterLevelNode from "./images/WaterLevelNode.png";
-import WaterQualityNode from "./images/WaterQualityNode.png";
-import WaterQuantityNode from "./images/WaterQuantityNode.png";
-import LeakageIcon from "./images/leakage_water.png"; // Import your leakage icon
+import MotorNode from "../images/MotorNode.png"; 
+import WaterLevelNode from "../images/WaterLevelNode.png";
+import WaterQualityNode from "../images/WaterQualityNode.png";
+import WaterQuantityNode from "../images/WaterQuantityNode.png";
+import LeakageIcon from "../images/leakage_water.png"; 
 
 
-import whiteimage from "./images/white.png";
-import Washrooms from "./images/Washrooms.png";
+import whiteimage from "../images/white.png";
+import Washrooms from "../images/Washrooms.png";
 import ContainerBox from "./components /ContainerBox";
 import ZshapePipe from "./components /ZshapePipe";
 import MirrorZPipe from "./components /MirrorZPipe";
