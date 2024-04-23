@@ -66,8 +66,8 @@ const ActuationPage = () => {
   
     try {
       const response = await fetch(
-        // `http://smartcitylivinglab.iiit.ac.in:1629/actuation/${nodeType}/${nodeName}/${status}`,
-        `http://localhost:1629/actuation/${nodeType}/${nodeName}/${status}`,
+        `http://smartcitylivinglab.iiit.ac.in:1629/actuation/${nodeType}/${nodeName}/${status}`,
+        // `http://localhost:1629/actuation/${nodeType}/${nodeName}/${status}`,
         {
           method: 'POST',
           headers: {
