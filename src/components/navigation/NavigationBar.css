@@ -22,7 +22,7 @@
 }
 
 .navbar__logo img {
-    width: 80px;
+    width: 5vw;
     height: auto;
     margin-right: 15px;
 }
@@ -34,7 +34,7 @@
 }
 
 .navbar__title {
-    font-size: 1.5rem;
+    font-size: 1.5vw;
     font-weight: bold;
     text-align: center;
     flex-grow: 1;
