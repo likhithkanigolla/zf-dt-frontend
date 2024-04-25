@@ -875,7 +875,7 @@ const SimulationPage = () => {
                 <div style={{fontSize:"1vw"}}>{(waterConsumed/4).toFixed(1)}L</div>
               </div>
 
-              {/* Nodes  */}
+              {/* IoT Nodes  */}
               <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
@@ -893,9 +893,9 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "24vw", left: "38vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => setData([{ title: "Error", value: "Node Not Yet Deployed" }])}
+                  onClick={() => getRealData('WM-WD-KH96-01')}
                 />
-                {/* <div>AFter RO</div> */}
+                {/* <div>KRB between oht and ro tank</div> */}
               </div>
 
               <div style={{ position: "absolute", top: "20vw", left: "51vw", textAlign: "center", }}>
