@@ -11,4 +11,17 @@
   .actuation-page p {
     margin-bottom: 30px;
   }
+
+  .node-on {
+    background-color: green; /* Change background color when node is on */
+    color: white; /* Change text color when node is on */
+    /* Add any other styles you want to apply when the node is on */
+  }
+  
+  .node-off {
+    background-color: red; /* Change background color when node is off */
+    color: black; /* Change text color when node is off */
+    /* Add any other styles you want to apply when the node is off */
+  }
+  
   
