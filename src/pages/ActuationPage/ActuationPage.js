@@ -107,7 +107,6 @@ const ActuationPage = () => {
       <img src={WaterLevelNode}  alt="WaterLevelNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '48vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_level_krb_oht'); }} />
       
       <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '32vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('motor', 'DM-KH98-80', 'motor_control',2); }} />
-      
 
       <img src={WaterQualityNode}  alt="WaterQualityNode at sump" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '27.8vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_krb_sump'); }} />
       <img src={WaterQualityNode}  alt="WaterQualityNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '51vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_krb_oht'); }} />
@@ -115,23 +114,10 @@ const ActuationPage = () => {
       <img src={WaterQualityNode}  alt="WaterQualityNode at RO OHT" style={{width: '2vw',height: '2vw', position: 'absolute', top: '11.5vw', left: '62.5vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_ro_tank_oht'); }} />
       <img src={WaterQualityNode}  alt="WaterQualityNode at RO 1" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_ro_cooler1'); }} />
       <img src={WaterQualityNode}  alt="WaterQualityNode at RO 2" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '23.5vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { toggleIsOn('water_quality_ro_cooler2'); }} />
-
       <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 1" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '23.4vw', left: '61vw'}} onClick={() => { toggleIsOn('water_flow_ro_cooler1'); }} />
       <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 2" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '35vw', left: '61.5vw'}} onClick={() => { toggleIsOn('water_flow_ro_cooler2'); }} />
      
       </div>     
-
-      {/* <div className="input-container">
-        <label htmlFor="number1">Sump:</label>
-        <input type="number" name="number1" id="number1" value={inputValues.number1} onChange={handleChange} />
-        <label htmlFor="number2">Over Head Tank:</label>
-        <input type="number" name="number2" id="number2" value={inputValues.number2} onChange={handleChange} />
-        <label htmlFor="number3">RO 1:</label>
-        <input type="number" name="number3" id="number3" value={inputValues.number3} onChange={handleChange} />
-        <label htmlFor="number4">RO 2:</label>
-        <input type="number" name="number4" id="number4" value={inputValues.number4} onChange={handleChange} />
-        <button onClick={handleCalculate}>Calculate</button>
-       </div> */}
     </div>
   );
 }
