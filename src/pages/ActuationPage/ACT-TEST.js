@@ -25,32 +25,27 @@ const ActuationPageT = () => {
 
   const nodePositions = {
     "WM-WL-KH00-00": { top: '34.6vw', left: '22.6vw' },
-   "WM-WL-KH98-00": { top: '4vw', left: '48vw' },
+    "WM-WL-KH98-00": { top: '4vw', left: '48vw' },
     // Add more node positions as needed
   };
   
-
-  useEffect(() => {
-    // Call getRealData for each node when the component mounts
-    const nodeIds = Object.keys(isOn);
-
-    const interval = setInterval(async () => {
-      // getRealData('WM-WF-KB04-72', '3h');
-      updateNodeStatus(nodeIds)
-    }, 10000);
-  }, []); // Empty dependency array to run only once when the component mounts
-
+  // useEffect(() => {
+  //   // Call updateNodeStatus every 10 seconds
+  //   // const interval = setInterval(() => {
+  //   //   updateNodeStatus(Object.keys(isOn));
+  //   // }, 10000);
+    
+  //   // // Cleanup function to clear the interval
+  //   // return () => clearInterval(interval);
+  // }, [isOn]); // Run when 'isOn' state changes
 
   const updateNodeStatus = async (nodeIds) => {
-    let tmpIsOn = {};
-    for (let idx in nodeIds) {
-      tmpIsOn[nodeIds[idx]] = await getRealData(nodeIds[idx], "3h");
+    const tmpIsOn = {};
+    for (const nodeId of nodeIds) {
+      tmpIsOn[nodeId] = await getRealData(nodeId, "3h");
     }
-    console.log(tmpIsOn);
     setIsOn(tmpIsOn);
-    console.log("Done");
   };
-  
 
   const getRealData = async (nodeId, time) => {
     try {
@@ -65,28 +60,16 @@ const ActuationPageT = () => {
       // Extract timestamp from the response
       const timestamp = new Date(data.timestamp).getTime();
       const currentTime = new Date().getTime();
-      //   console.log(timestamp , currentTime)
 
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
-
-    //   const isNodeOn = timeDifference <= parseTime(time);
       return timeDifference <= parseTime(time);
-      // console.log(nodeId,isNodeOn);
-    //   const data_something = { [nodeId]: isNodeOn };
-    //   console.log("Setting: ", nodeId, " to ", isNodeOn);
-    //   // setIsOn({ ...isOn, [nodeId]: isNodeOn });
-    //   return isNodeOn;
-      // setIsOn(tmp_IsOn);
     } catch (error) {
       console.error("Fetch error:", error);
       return false;
-      // Handle error
-    } finally {
     }
   };
 
-  // Function to parse time strings like '5m', '10m', '2hr' into milliseconds
   const parseTime = (timeString) => {
     const regex = /(\d+)([mhr])/;
     const [, value, unit] = timeString.match(regex);
@@ -98,24 +81,7 @@ const ActuationPageT = () => {
     return parseInt(value, 10) * multiplier[unit];
   };
 
-  const AllNodes = () => {
-    return (
-      <div>
-        <h1>All Nodes</h1>
-        {Object.keys(isOn).map((node_id) => {
-          //   console.log("Here: ", node_id)
-          return (
-            <p key={node_id}>
-              {node_id}: {isOn[node_id].toString()}{" "}
-              {/* Convert boolean to string */}
-            </p>
-          );
-        })}
-      </div>
-    );
-  };
-
-  const Node = ({ nodeId, isOn, placement }) => {
+  const Node = ({ nodeId, isOn }) => {
     let nodeImage;
     switch (nodeId) {
       case "DM-KH98-60":
@@ -139,14 +105,12 @@ const ActuationPageT = () => {
     }
 
     return (
-      <div>
-        <img
-          src={nodeImage}
-          alt={`${nodeId} Node`}
-          style={{ width: "3vw", height: "3vw", ...placement }}
-          className={isOn ? "node-on" : "node-off"}
-        />
-      </div>
+      <img
+        src={nodeImage}
+        alt={`${nodeId} Node`}
+        style={{ width: "3vw", height: "3vw", position: "absolute", ...(nodePositions[nodeId] || {}) }}
+        className={isOn ? "node-on" : "node-off"}
+      />
     );
   };
 
@@ -162,13 +126,11 @@ const ActuationPageT = () => {
 
         {/* Render each node based on its state */}
         {Object.entries(isOn).map(([nodeId, isNodeOn]) => (
-          <Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} placement={nodePositions[nodeId]} />
+          <Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />
         ))}
       </div>
-      <AllNodes />
     </div>
   );
-}
-
+};
 
 export default ActuationPageT;

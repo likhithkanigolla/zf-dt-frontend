@@ -96,7 +96,7 @@ const ActuationPage = () => {
   const updateNodeStatus = async (nodeIds) => {
     let tmpIsOn = {};
     for (let idx in nodeIds) {
-      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "3h");
+      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
     }
     console.log(tmpIsOn);
     setIsOn(tmpIsOn);
@@ -119,6 +119,7 @@ const ActuationPage = () => {
 
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
+      console.log(timeDifference,parseTime(time))
       return timeDifference <= parseTime(time);
     } catch (error) {
       console.error("Fetch error:", error);
