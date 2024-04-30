@@ -136,31 +136,34 @@
             var node = document.getElementById('node').value;
             var temperature = document.getElementById('temperature').value;
             var tds = document.getElementById('tds').value;
-
+    
             var formData = {
                 node: node,
                 temperature: temperature,
                 tds: tds
             };
-
+    
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:1629/calibdata/', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-
+    
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         alert('Data submitted successfully!');
                         document.getElementById(node).classList.add('submitted');
                         document.getElementById('node').remove(document.getElementById('node').selectedIndex);
+                        document.getElementById('temperature').value = ""; // Empty the temperature input field
+                        document.getElementById('tds').value = ""; // Empty the tds input field
                     } else {
                         alert('Error: ' + xhr.responseText);
                     }
                 }
             };
-
+    
             xhr.send(JSON.stringify(formData));
         });
     </script>
+    
 </body>
 </html>
