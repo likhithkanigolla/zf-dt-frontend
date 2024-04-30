@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        select,
+        input[type="number"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Water Quality Calibration</h1>
+        <form id="dataForm">
+            <label for="node">Location:</label>
+            <select id="node" name="node">
+                <option value="WM-WD-KH95-00">RO Faculty Lounge</option>
+                <option value="WM-WD-KH03-00">RO 4th Floor</option>
+                <option value="WM-WD-KH04-00">After RO OHT</option>
+                <option value="WM-WD-KH96-01">After OHT</option>
+                <option value="WM-WD-KH96-00">OHT</option>
+                <option value="WM-WD-KH98-00">Sump</option>
+            </select><br><br>
+            <label for="temperature">Temperature (°C):</label>
+            <input type="number" id="temperature" name="temperature"><br><br>
+            <label for="tds">TDS (ppm):</label>
+            <input type="number" id="tds" name="tds"><br><br>
+            <button type="button" id="submitButton">Submit</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>WM-WD-KH95-00</td>
+                    <td>RO Faculty Lounge</td>
+                </tr>
+                <tr>
+                    <td>WM-WD-KH03-00</td>
+                    <td>RO 4th Floor</td>
+                </tr>
+                <tr>
+                    <td>WM-WD-KH04-00</td>
+                    <td>After RO OHT</td>
+                </tr>
+                <tr>
+                    <td>WM-WD-KH96-01</td>
+                    <td>After OHT</td>
+                </tr>
+                <tr>
+                    <td>WM-WD-KH96-00</td>
+                    <td>OHT</td>
+                </tr>
+                <tr>
+                    <td>WM-WD-KH98-00</td>
+                    <td>Sump</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function() {
+            var node = document.getElementById('node').value;
+            var temperature = document.getElementById('temperature').value;
+            var tds = document.getElementById('tds').value;
+
+            var formData = {
+                node: node,
+                temperature: temperature,
+                tds: tds
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:1629/calibdata/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert('Data submitted successfully!');
+                    } else {
+                        alert('Error: ' + xhr.responseText);
+                    }
+                }
+            };
+
+            xhr.send(JSON.stringify(formData));
+        });
+    </script>
+</body>
+</html>
