@@ -89,10 +89,12 @@
                 <option value="WM-WD-KH96-00">OHT</option>
                 <option value="WM-WD-KH98-00">Sump</option>
             </select><br><br>
-            <label for="temperature">Temperature (°C):</label>
-            <input type="number" id="temperature" name="temperature"><br><br>
             <label for="tds">TDS (ppm):</label>
             <input type="number" id="tds" name="tds"><br><br>
+            <label for="temperature">Temperature (°C):</label>
+            <input type="number" id="temperature" name="temperature"><br><br>
+            <label for="ph">pH:</label>
+            <input type="number" id="ph" name="ph"><br><br>
             <button type="button" id="submitButton">Submit</button>
         </form>
         <table>
@@ -136,11 +138,13 @@
             var node = document.getElementById('node').value;
             var temperature = document.getElementById('temperature').value;
             var tds = document.getElementById('tds').value;
+            var ph = document.getElementById('ph').value;
     
             var formData = {
                 node: node,
                 temperature: temperature,
-                tds: tds
+                tds: tds,
+                ph: ph
             };
     
             var xhr = new XMLHttpRequest();
@@ -155,6 +159,7 @@
                         document.getElementById('node').remove(document.getElementById('node').selectedIndex);
                         document.getElementById('temperature').value = ""; // Empty the temperature input field
                         document.getElementById('tds').value = ""; // Empty the tds input field
+                        document.getElementById('ph').value = "0"; 
                     } else {
                         alert('Error: ' + xhr.responseText);
                     }
