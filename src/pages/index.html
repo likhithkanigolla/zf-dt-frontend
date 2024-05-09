@@ -146,6 +146,11 @@
                 tds: tds,
                 ph: ph
             };
+
+            if ((node === "WM-WD-KH95-00" || node === "WM-WD-KH04-00" || node === "WM-WD-KH03-00") && tds > 250) {
+                alert('Error: Please recheck the selected node since TDS value of filtered water is high.');
+                return; // Stop further execution
+            }
     
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:1629/calibdata/', true);
