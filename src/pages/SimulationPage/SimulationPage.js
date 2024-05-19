@@ -49,6 +49,7 @@ const SimulationPage = () => {
     flowrate: "5"
   });
   const [result, setResult] = useState(null);
+  const [soilContamination, setSoilContamination] = useState(null);
   const [isOn, setIsOn] = useState({
     valve1: true,
     valve2: true,
@@ -76,7 +77,8 @@ const SimulationPage = () => {
 
 
   const [infoText, setInfoText] = useState("");
-  const [selectedNumber, setSelectedNumber] = useState("");
+  const [SoilQuantity, setSoilQuantity] = useState("");
+  const [SandQuantity, setSandQuantity] = useState("");
   const [voltageValue, setVoltageValue] = useState("");
   const voltageData = {
     0: 1.2,
@@ -304,27 +306,51 @@ const SimulationPage = () => {
     return data.predicted_voltage;
   }
 
+
+  // Function to call the api calculate_soil_contamination from backend and get the result
+  const calculateSoilContamination = async () => {
+    try {
+      const response = await fetch("http://localhost:1629/calculate_soil_contamination", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(inputValues)
+      });
+      if (!response.ok) {
+        throw new Error("Failed to calculate soil contamination");
+      }
+      const soilContamination = await response.json();
+      setSoilContamination(soilContamination);
+      return soilContamination; // Return the soil contamination value
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
   const handleCalculate = async () => {
     try {
-      const selectedNumberValue = parseInt(selectedNumber);
-      // Ensure that the selectedNumber is within the valid range of 1 to 10
-      if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 500) {
-        alert("Please select a number between 1 and 500.");
-        return;
-      }
+      const selectedNumberValue = parseInt(SoilQuantity);
+      // if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 500) {
+      //   alert("Please select a number between 1 and 500.");
+      //   return;
+      // }
     
 
-      // Retrieve voltage value from the voltageData object
-      const voltageValue = await fetchVoltageValue(selectedNumberValue);
-      console.log("Voltage Value:", voltageValue);
-      // Calculate initial TDS based on input values
-      const initialTDS = calculateInitialTDS(inputValues);
-
+      // // Retrieve voltage value from the voltageData object
+      // const voltageValue = await fetchVoltageValue(selectedNumberValue);
+      // console.log("Voltage Value:", voltageValue);
+      // // Calculate initial TDS based on input values
+      // const initialTDS = calculateInitialTDS(inputValues);
+      const soilContaminationValue = await calculateSoilContamination(inputValues);
+      console.log("soilContamination:", soilContaminationValue);
       // Prepare request body including initial TDS
       const requestBody = {
-        initial_tds: initialTDS,
+        initial_tds: soilContaminationValue,
         desired_tds: inputValues.desired_tds,
-        voltage: voltageValue,
+        voltage: voltageData[voltageValue],
         temperature: inputValues.temperature,
         effective_membrane_area: inputValues.effective_membrane_area,
         sump_capacity: inputValues.sumpCapacity,
@@ -332,7 +358,7 @@ const SimulationPage = () => {
       };
 
       const response = await fetch(
-        "http://smartcitylivinglab.iiit.ac.in:1629/calculate_ro_filtration",
+        "http://localhost:1629/calculate_ro_filtration",
         {
           method: "POST",
           headers: {
@@ -393,6 +419,7 @@ const SimulationPage = () => {
   const handleStartSimulation = () => {
     if (!isSimulationRunning) {
       handleCalculate(); // Start calculation
+      // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
       setIsSimulationRunning(true);
       // setFlow4((flow4) => !flow4);
@@ -577,32 +604,35 @@ const SimulationPage = () => {
       <div style={{ display: "flex" }}>
         {/* Left Section */}
         <div className="container" style={{ flex: 1 }}>
-          <h4 className="heading" htmlFor="selectedNumber">
+          <h4 className="heading" htmlFor="SoilQuantity">
             Soil Impurities(In grams){" "}
-            {/* <button
-              className="info-button"
-              onMouseEnter={() =>
-                handleInfoButtonClick(
-                  "One Container adds 100g of soil for 2 litre water"
-                )
-              }
-              onMouseLeave={handleInfoButtonLeave}
-            >
-              ℹ️
-            </button> */}
-            {/* {infoText && <div className="info-box">{infoText}</div>} */}
           </h4>
           <input
             type="number"
-            name="selectedNumber"
-            id="selectedNumber"
-            value={selectedNumber}
+            name="SoilQuantity"
+            id="SoilQuantity"
+            value={SoilQuantity}
             onChange={(e) => {
-              setSelectedNumber(e.target.value);
+              setSoilQuantity(e.target.value);
               handleChange(e);
             }}
-            min="0"
-            max="500"
+            // min="0"
+            // max="500"
+          />
+          <h4 className="heading" htmlFor="SandQuantity">
+            Sand Impurities(In grams){" "}
+          </h4>
+          <input
+            type="number"
+            name="SandQuantity"
+            id="SandQuantity"
+            value={SandQuantity}
+            onChange={(e) => {
+              setSandQuantity(e.target.value);
+              handleChange(e);
+            }}
+            // min="0"
+            // max="500"
           />
           <h4 className="heading">Temperature(°C):</h4>
           <input
@@ -645,7 +675,7 @@ const SimulationPage = () => {
           <button onClick={handleStartSimulation} className="button">
             {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
           </button>
-          <div className="definitions">
+          {/* <div className="definitions">
             <h3>Definitions</h3>
             <p>
               <strong>Permeate Flowrate for RO Plant:</strong> The permeate
@@ -661,7 +691,7 @@ const SimulationPage = () => {
               commonly measured in milligrams per liter (mg/L) or parts per
               million (ppm).
             </p>
-          </div>
+          </div> */}
         </div>
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
