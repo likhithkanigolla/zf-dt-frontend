@@ -27,6 +27,7 @@ import LShapePipe from "./components/LShapePipe";
 import Toolbar from "./components/ToolBar";
 
 import SimulationForm from "./components/SimulationForm";
+import ResultContainer from "./components/ResultContainer";
 
 import MotorNode from "../images/MotorNode.png"; 
 import WaterLevelNode from "../images/WaterLevelNode.png";
@@ -35,8 +36,8 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
 
 
-// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-const backendAPI = "http://localhost:1629";
+const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+// const backendAPI = "http://localhost:1629";
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -1050,44 +1051,7 @@ const SimulationPage = () => {
 
 
         {/* Right Section */}
-        <div style={{ flex: 1 }}>
-          {/* {result && ( */}
-          <div className="result-container">
-            <p>Results:</p>
-            <div className="result-cards">
-              <ResultCard
-                title="TDS Value(mg/L) - At SUMP"
-                value={result?.calculated_tds_value ?? "N/A"}
-              />
-              {/* <ResultCard
-                  title="Osmotic Pressure(Pascal (Pa))"
-                  value={result.osmotic_pressure}
-                /> */}
-              {/* <ResultCard title="Water Flux(m³)" value={result.water_flux} /> */}
-              <ResultCard
-                title="Permeate Flow Rate(m³/s)"
-                value={result?.permeate_flow_rate ?? "N/A"}
-              />
-              <ResultCard
-                title="Final TDS Concentration After RO Tank(mg/L)"
-                value={result?.final_tds_concentration_after_ro_tank ?? "N/A"}
-              />
-              <ResultCard
-                title="Cycle Count"
-                value={result?.cycle_count ?? "N/A"}
-              />
-              <ResultCard
-                title="Time Estimation (hours)"
-                value={result?.time_estimation_hours ?? "N/A"}
-              />
-            </div>
-            <br />
-            {/* <button onClick={waterFlowStarted ? handleStopWaterFlow : handleStartWaterFlow} className="button">
-                {waterFlowStarted ? "Stop Water Flow" : "Start Water Flow"}
-              </button> */}
-          </div>
-          {/* )} */}
-        </div>
+        <ResultContainer result={result} />
       </div>
     </div>
   );
