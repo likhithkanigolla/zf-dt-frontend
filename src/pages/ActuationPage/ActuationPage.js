@@ -17,6 +17,7 @@ import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 
+// const backendAPI = "http://localhost:1629";
 const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
 
 const ActuationPage = () => {
@@ -140,10 +141,11 @@ const ActuationPage = () => {
     return parseInt(value, 10) * multiplier[unit];
   };
 
-  const NodeRestart = async (nodeType, nodeName,nodeID, status) => {
+  const NodeActuation = async (nodeType, nodeName, status) => {
     // Update the state based on the current state
-    setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
-    console.log(isOn)
+    // Add nodeID in params if needed 
+    // setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
+    // console.log(isOn)
   
     // Determine the status based on the updated state
     const node_status = !isOn[nodeName] ? 'on' : 'off';
@@ -183,9 +185,11 @@ const ActuationPage = () => {
       setShowPopup(false);
     };
 
-    let nodeImage;
+    let nodeImage, nodeType, ControlNode;
     switch (nodeId) {
       case "DM-KH98-60":
+        nodeType = "Motor";
+        ControlNode = "DM-KH98-80";
         nodeImage = MotorNode;
         break;
       case "WM-WL-KH00-00":
@@ -229,11 +233,9 @@ const ActuationPage = () => {
           <button class="close" onClick={handleCloseButtonClick}>✖</button>
           <img src={nodeImage} alt="PopUp-img" />
           <p>Clicked Node: {nodeId}</p>
-          {/* <p>We use cookies for improving user experience, analytics and marketing.</p> */}
-          <button class="accept" onClick={() => handleButtonClick(nodeId)}>Power Reset</button>
-          <button class="accept" onClick={() => handleButtonClick(2)}>Node Reset</button>
-          <button class="accept" onClick={() => handleButtonClick(3)}>Update Callibrated Values</button>
-          {/* <button class="accept">That's fine!</button> */}
+            <button class="accept" onClick={() => NodeActuation(nodeType, ControlNode, 2)}>Power Reset</button>
+            <button class="accept" onClick={() => NodeActuation(nodeType, ControlNode, 3)}>Node Reset</button>
+            <button class="accept" onClick={() =>  NodeActuation(nodeType, ControlNode, 4)}>Update Callibrated Values</button>
         </div>
       )}
       </>

@@ -15,15 +15,16 @@
   .node-on {
     background-color: green; /* Change background color when node is on */
     color: white; /* Change text color when node is on */
-    /* Add any other styles you want to apply when the node is on */
+    border-radius: 50%; 
+    border: 2px solid green; /* Thick border */
   }
   
   .node-off {
     background-color: red; /* Change background color when node is off */
     color: black; /* Change text color when node is off */
-    /* Add any other styles you want to apply when the node is off */
+    border-radius: 50%;
+    border: 2px solid red; /* Thick border */
   }
-  
 
   .PopUpContent {
     position: fixed;
@@ -59,7 +60,7 @@
     font-size: 18px;
   }
   button.accept {
-    background-color: #ed6755;
+    background-color: #074c96; /* Good blue color */
     border: none;
     border-radius: 5px;
     width: 200px;
@@ -67,6 +68,6 @@
     margin: 5px;
     font-size: 16px;
     color: white;
-    box-shadow: 0px 6px 18px -5px rgba(237, 103, 85, 1);
+    box-shadow: 0px 6px 18px -5px rgb(130, 140, 231);
   }
 }
