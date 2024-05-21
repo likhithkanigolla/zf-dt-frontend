@@ -34,7 +34,8 @@ import LShapePipe from "./components /LShapePipe";
 import Toolbar from "./components /ToolBar";
 
 
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+const backendAPI = "http://localhost:1629";
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -52,6 +53,7 @@ const SimulationPage = () => {
   });
   const [result, setResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
+  const [sandContamination, setSandContamination] = useState(null);
   const [isOn, setIsOn] = useState({
     valve1: true,
     valve2: true,
@@ -330,11 +332,31 @@ const SimulationPage = () => {
     }
   };
 
+  const calculateSandContamination = async () => {
+    try {
+      const response = await fetch(`${backendAPI}/calculate_sand_contamination`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(inputValues)
+      });
+      if (!response.ok) {
+        throw new Error("Failed to calculate sand contamination");
+      }
+      const sandContamination = await response.json();
+      setSandContamination(sandContamination);
+      return sandContamination; // Return the sand contamination value
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
 
   const handleCalculate = async () => {
     try {
-      const selectedNumberValue = parseInt(SoilQuantity);
+      // const selectedNumberValue = parseInt(SoilQuantity);
       // if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 500) {
       //   alert("Please select a number between 1 and 500.");
       //   return;
@@ -346,11 +368,35 @@ const SimulationPage = () => {
       // console.log("Voltage Value:", voltageValue);
       // // Calculate initial TDS based on input values
       // const initialTDS = calculateInitialTDS(inputValues);
-      const soilContaminationValue = await calculateSoilContamination(inputValues);
-      console.log("soilContamination:", soilContaminationValue);
+      
+
+      const soilQuantity = parseInt(SoilQuantity);
+      const sandQuantity = parseInt(SandQuantity);
+      let calculatedTDS;
+
+      if (soilQuantity !== 0 && sandQuantity === 0) {
+        const soilContaminationValue = await calculateSoilContamination(inputValues);
+        console.log("Soil Value:", soilContaminationValue)
+        calculatedTDS = soilContaminationValue;
+      } 
+      
+      else if (soilQuantity === 0 && sandQuantity !== 0) {
+        const sandContaminationValue = await calculateSandContamination(inputValues);
+        console.log("Sand Value:", sandContaminationValue)
+        calculatedTDS = sandContaminationValue;
+        
+      } 
+      
+      else {
+        const SandTDS = await calculateSandContamination(inputValues);
+        const SoilTDS = await calculateSoilContamination(inputValues);
+        console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS)
+        calculatedTDS = (SoilTDS + SandTDS) / 2;
+      }
+
       // Prepare request body including initial TDS
       const requestBody = {
-        initial_tds: soilContaminationValue,
+        initial_tds: calculatedTDS,
         desired_tds: inputValues.desired_tds,
         voltage: voltageData[voltageValue],
         temperature: inputValues.temperature,
