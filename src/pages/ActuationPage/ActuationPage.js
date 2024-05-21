@@ -151,6 +151,7 @@ const ActuationPage = () => {
     const node_status = !isOn[nodeName] ? 'on' : 'off';
     const requestBody = {
       // Your request body data here
+      
     };
   
     try {
@@ -175,6 +176,7 @@ const ActuationPage = () => {
   const Node = ({ nodeId, isOn }) => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedButton, setSelectedButton] = useState(null);
+    const [inputValue, setInputValue] = useState('');
 
     const handleButtonClick = (number) => {
       setSelectedButton(number);
@@ -184,6 +186,17 @@ const ActuationPage = () => {
     const handleCloseButtonClick = () => {
       setShowPopup(false);
     };
+
+    const handleChange = (event) => {
+      setInputValue(event.target.value); // Update the input value state
+    };
+
+    const handleSubmit = () => {
+      NodeActuation(nodeType, ControlNode, inputValue); // Call the function with the input value
+      setSelectedButton(null); // Optionally, reset the selected button state
+      setInputValue(''); // Clear the input value
+    };
+
 
     let nodeImage, nodeType, ControlNode;
     switch (nodeId) {
@@ -229,14 +242,22 @@ const ActuationPage = () => {
       />
 
       {showPopup && (
-        <div class="PopUpContent" id="PopUpPopup">
-          <button class="close" onClick={handleCloseButtonClick}>✖</button>
-          <img src={nodeImage} alt="PopUp-img" />
-          <p>Clicked Node: {nodeId}</p>
-            <button class="accept" onClick={() => NodeActuation(nodeType, ControlNode, 2)}>Power Reset</button>
-            <button class="accept" onClick={() => NodeActuation(nodeType, ControlNode, 3)}>Node Reset</button>
-            <button class="accept" onClick={() =>  NodeActuation(nodeType, ControlNode, 4)}>Update Callibrated Values</button>
-        </div>
+        <div className="PopUpContent" id="PopUpPopup">
+        <button className="close" onClick={handleCloseButtonClick}>✖</button>
+        <img src={nodeImage} alt="PopUp-img" />
+        <p>Clicked Node: {nodeId}</p>
+        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 1)}>Turn On</button>
+        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 2)}>Power Reset</button>
+        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 3)}>Node Reset</button>
+        <button className="accept" onClick={() => handleButtonClick(4)}>Update Calibrated Values</button>
+          {selectedButton === 4 && (
+            <div>
+              {/* <label htmlFor="calibratedvalues" className="input-label">Enter Calibrated Values:</label> */}
+              <input type="text" onChange={handleChange} name="calibratedvalues" value={inputValue} className="input-field" placeholder="[5.6,4.3,2.8,.....]"/><br></br>
+              <button onClick={handleSubmit} className="submit-button">Submit</button>
+            </div>
+          )}
+          </div>
       )}
       </>
     );
