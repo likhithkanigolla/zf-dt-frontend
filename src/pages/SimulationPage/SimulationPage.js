@@ -16,22 +16,23 @@ import Watertank from "../images/watertank.png";
 import ROWatertank from "../images/tank_ro.png";
 import WaterLevelArrow from "../images/Waterlevel_arrow.png";
 
+import whiteimage from "../images/white.png";
+import Washrooms from "../images/Washrooms.png";
+import ContainerBox from "./components/ContainerBox";
+import ZshapePipe from "./components/ZshapePipe";
+import MirrorZPipe from "./components/MirrorZPipe";
+import StraightPipe from "./components/StraightPipe";
+import EShapePipe from "./components/EShapePipe";
+import LShapePipe from "./components/LShapePipe";
+import Toolbar from "./components/ToolBar";
+
+import SimulationForm from "./components/SimulationForm";
+
 import MotorNode from "../images/MotorNode.png"; 
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
-
-
-import whiteimage from "../images/white.png";
-import Washrooms from "../images/Washrooms.png";
-import ContainerBox from "./components /ContainerBox";
-import ZshapePipe from "./components /ZshapePipe";
-import MirrorZPipe from "./components /MirrorZPipe";
-import StraightPipe from "./components /StraightPipe";
-import EShapePipe from "./components /EShapePipe";
-import LShapePipe from "./components /LShapePipe";
-import Toolbar from "./components /ToolBar";
 
 
 // const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
@@ -651,118 +652,24 @@ const SimulationPage = () => {
       <NavigationBar title="Digital Twin for Water Quality - Simulation" />
       <div style={{ display: "flex" }}>
         {/* Left Section */}
-        <div className="container" style={{ flex: 1 }}>
-          <h4 className="heading" htmlFor="SoilQuantity">
-            Soil Impurities(In grams){" "}
-          </h4>
-          <input
-            type="number"
-            name="SoilQuantity"
-            id="SoilQuantity"
-            value={SoilQuantity}
-            onChange={(e) => {
-              setSoilQuantity(e.target.value);
-              handleChange(e);
-            }}
-            // min="0"
-            // max="500"
-          />
-          <h4 className="heading" htmlFor="SandQuantity">
-            Sand Impurities(In grams){" "}
-          </h4>
-          <input
-            type="number"
-            name="SandQuantity"
-            id="SandQuantity"
-            value={SandQuantity}
-            onChange={(e) => {
-              setSandQuantity(e.target.value);
-              handleChange(e);
-            }}
-            // min="0"
-            // max="500"
-          />
-          <h4 className="heading">Temperature(°C):</h4>
-          <input
-            className="input-box"
-            type="number"
-            name="temperature"
-            id="temperature"
-            value={inputValues.temperature}
-            onChange={handleChange}
-          />
-          <br />
-          <h4 className="heading">Desired TDS(mg/Litre):</h4>
-          <input
-            className="input-box"
-            type="number"
-            name="desired_tds"
-            id="desired_tds"
-            value={inputValues.desired_tds}
-            onChange={handleChange}
-          />
-          <h4 className="heading">Effective Membrane Area(m²):</h4>
-          <input
-            className="input-box"
-            type="number"
-            name="effective_membrane_area"
-            id="effective_membrane_area"
-            value={inputValues.effective_membrane_area}
-            onChange={handleChange}
-          />
-          <br />
-          <h4 className="heading">Sump Capacity (Liters):</h4>
-          <input
-            className="input-box"
-            type="number"
-            name="sumpCapacity"
-            id="sumpCapacity"
-            value={inputValues.sumpCapacity}
-            onChange={handleChange}
-          />
-          <button onClick={handleStartSimulation} className="button">
-            {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
-          </button>
-          {/* <div className="definitions">
-            <h3>Definitions</h3>
-            <p>
-              <strong>Permeate Flowrate for RO Plant:</strong> The permeate
-              flowrate refers to the rate at which purified water (permeate) is
-              produced by the reverse osmosis (RO) plant. It is typically
-              measured in liters per hour (L/hr) or cubic meters per hour
-              (m³/hr).
-            </p>
-            <p>
-              <strong>Total Dissolved Solids (TDS):</strong> TDS refers to the
-              total concentration of dissolved substances in water, including
-              salts, minerals, and other organic and inorganic compounds. It is
-              commonly measured in milligrams per liter (mg/L) or parts per
-              million (ppm).
-            </p>
-          </div> */}
-        </div>
+        <SimulationForm 
+            SoilQuantity={SoilQuantity} 
+            setSoilQuantity={setSoilQuantity} 
+            SandQuantity={SandQuantity} 
+            setSandQuantity={setSandQuantity} 
+            inputValues={inputValues} 
+            handleChange={handleChange} 
+            handleStartSimulation={handleStartSimulation} 
+            isSimulationRunning={isSimulationRunning} 
+        />
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
-
           {/* Toolbar */}
-          <div className="toolbar">
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
-              <img src={WaterQualityNode} alt="Water Quality Sensor"/> waterqualitysensor
-            </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterquantitysensor')}>
-              <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> waterquantitysensor
-            </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterlevelsensor')}>
-              <img src={WaterLevelNode} alt="Water Level Sensor"/> waterlevelsensor
-            </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
-              <img src={MotorNode} alt="Motor Sensor"/> motorsensor
-            </button>
-            <button className="tool-button" onClick={handleLeakageIconClick}>
-              <img src={LeakageIcon} alt="Leakage" /> Leakage
-            </button>
-          </div>
-          {/* Leakage Options Popup/Dropdown (show when showLeakageOptions is true) */}
+          <Toolbar 
+              handleToolbarItemClick={handleToolbarItemClick} 
+              handleLeakageIconClick={handleLeakageIconClick} 
+          />
+        
       {showLeakageOptions && (
         <div className="leakage-options-popup">
           <label htmlFor="numLeakages">Number of Leakages:</label>
@@ -1121,48 +1028,25 @@ const SimulationPage = () => {
             </div>
           </div>
           {/* Leakage Markers */}
-{leakageMarkers.map((marker, index) => (
-  <div 
-    key={index}
-    style={{
-      position: 'absolute',
-      left: `${marker.x}px`,
-      top: `${marker.y}px`,
-      cursor: 'pointer',
-    }}
-    onClick={() => { 
-      // Handle clicking on a leakage marker (e.g., show information about the leakage)
-      console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
-    }}
-  >
-    <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }} />
+          {leakageMarkers.map((marker, index) => (
+            <div 
+              key={index}
+              style={{
+                position: 'absolute',
+                left: `${marker.x}px`,
+                top: `${marker.y}px`,
+                cursor: 'pointer',
+              }}
+            onClick={() => { 
+              // Handle clicking on a leakage marker (e.g., show information about the leakage)
+              console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
+            }}
+            >
+          <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }} />
   </div>
 ))}
 
-
-          {/* {result && ( */}
-          {/* {
-            <div className="result-container">
-              <div className="water-flow-container">
-                <div className="result-cards">
-                  <ResultCard title="Water in Sump" value={waterInSump} />
-                  <ResultCard title="Water in OHT" value={waterInOHT} />
-                  <ResultCard
-                    title="Water in RO Filter"
-                    value={waterInROFilter}
-                  />
-                  <ResultCard title="Water Consumed" value={waterConsumed} />
-                </div>
-              </div>
-            </div>
-          } */}
-
-          {/* {showMotorStatus && (
-            <div className="motor-status-overlay">
-              <p>Motor is {motorOn ? "on" : "off"}</p>
-            </div>
-          )} */}
-        </div>
+  </div>
 
 
         {/* Right Section */}
