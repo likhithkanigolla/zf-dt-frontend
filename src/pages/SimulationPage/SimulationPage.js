@@ -34,6 +34,8 @@ import LShapePipe from "./components /LShapePipe";
 import Toolbar from "./components /ToolBar";
 
 
+const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+
 const SimulationPage = () => {
   // State for holding input values and results
   const iconRefs = [];
@@ -298,7 +300,7 @@ const SimulationPage = () => {
   };
 
   async function fetchVoltageValue(selectedNumberValue) {
-    const response = await fetch(`http://smartcitylivinglab.iiit.ac.in:1629/predict_voltage/${selectedNumberValue}`);
+    const response = await fetch(`${backendAPI}/predict_voltage/${selectedNumberValue}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch voltage value: ${response.status}`);
     }
@@ -310,7 +312,7 @@ const SimulationPage = () => {
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
     try {
-      const response = await fetch("http://localhost:1629/calculate_soil_contamination", {
+      const response = await fetch(`${backendAPI}/calculate_soil_contamination`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -358,7 +360,7 @@ const SimulationPage = () => {
       };
 
       const response = await fetch(
-        "http://localhost:1629/calculate_ro_filtration",
+        `${backendAPI}/calculate_ro_filtration`,
         {
           method: "POST",
           headers: {
@@ -378,7 +380,7 @@ const SimulationPage = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`http://smartcitylivinglab.iiit.ac.in:1629/get_value?table_name=${tableName}`);
+      const response = await fetch(`${backendAPI}/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
