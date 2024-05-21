@@ -46,8 +46,8 @@ const ActuationPage = () => {
     "WM-WD-KH04-00": false,
     "WM-WD-KH95-00": false,
     "WM-WD-KH04-00": false,
-    "WM-WF-KB04-70": false,
-    "WM-WF-KB04-73": false,
+    // "WM-WF-KB04-70": false,
+    // "WM-WF-KB04-73": false,
     "WM-WF-KB04-71": false,
     "WM-WF-KB04-72": false,
     
@@ -171,6 +171,18 @@ const ActuationPage = () => {
   };
 
   const Node = ({ nodeId, isOn }) => {
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedButton, setSelectedButton] = useState(null);
+
+    const handleButtonClick = (number) => {
+      setSelectedButton(number);
+      console.log(number);
+    };
+
+    const handleCloseButtonClick = () => {
+      setShowPopup(false);
+    };
+
     let nodeImage;
     switch (nodeId) {
       case "DM-KH98-60":
@@ -192,14 +204,39 @@ const ActuationPage = () => {
         nodeImage = WaterQuantityNode;
         break;
     }
-  
+
+    const handleNodeClick = () => {
+      setShowPopup(true);
+    };
+
     return (
+      <>
       <img
         src={nodeImage}
         alt={`${nodeId} Node`}
-        style={{ width: "3vw", height: "3vw", position: "absolute", ...(nodePositions[nodeId] || {}) }}
+        style={{
+        width: "3vw",
+        height: "3vw",
+        position: "absolute",
+        ...(nodePositions[nodeId] || {}),
+        }}
         className={isOn ? "node-on" : "node-off"}
+        onClick={handleNodeClick}
       />
+
+      {showPopup && (
+        <div class="PopUpContent" id="PopUpPopup">
+          <button class="close" onClick={handleCloseButtonClick}>✖</button>
+          <img src={nodeImage} alt="PopUp-img" />
+          <p>Clicked Node: {nodeId}</p>
+          {/* <p>We use cookies for improving user experience, analytics and marketing.</p> */}
+          <button class="accept" onClick={() => handleButtonClick(nodeId)}>Power Reset</button>
+          <button class="accept" onClick={() => handleButtonClick(2)}>Node Reset</button>
+          <button class="accept" onClick={() => handleButtonClick(3)}>Update Callibrated Values</button>
+          {/* <button class="accept">That's fine!</button> */}
+        </div>
+      )}
+      </>
     );
   };
   
@@ -225,21 +262,7 @@ const ActuationPage = () => {
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
       
       
-      {/* IoT Nodes */}
-      {/* <img src={WaterLevelNode}  alt="WaterLevelNode at SUMP" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '22.6vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_level_sump'); }} />
-      <img src={WaterLevelNode}  alt="WaterLevelNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '48vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_level_krb_oht'); }} />
-      
-      <img src={MotorNode}  alt="MotorNode" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '32vw', left: '35vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('motor', 'DM-KH98-80', 'motor_control',2); }} />
 
-      <img src={WaterQualityNode}  alt="WaterQualityNode at sump" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '27.8vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_quality_krb_sump'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode at OHT" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '51vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_quality_krb_oht'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode at RO Plant" style={{width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '52vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_qualityro_plant'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode at RO OHT" style={{width: '2vw',height: '2vw', position: 'absolute', top: '11.5vw', left: '62.5vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_quality_ro_tank_oht'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode at RO 1" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_quality_ro_cooler1'); }} />
-      <img src={WaterQualityNode}  alt="WaterQualityNode at RO 2" style={{width: '2.5vw',height: '2.5vw', position: 'absolute', top: '23.5vw', left: '55vw',transform: 'scaleX(-1)' }} onClick={() => { NodeRestart('water_quality_ro_cooler2'); }} />
-      <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 1" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '23.4vw', left: '61vw'}} onClick={() => { NodeRestart('water_flow_ro_cooler1'); }} />
-      <img src={WaterQuantityNode}  alt="WaterQualityNode at RO 2" style={{width: '1.5vw',height: '1.5vw', position: 'absolute', top: '35vw', left: '61.5vw'}} onClick={() => { NodeRestart('water_flow_ro_cooler2'); }} />
-      */}
       </div>   
       {/* <AllNodes />   */}
     </div>
