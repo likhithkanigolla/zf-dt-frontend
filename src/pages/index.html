@@ -139,39 +139,48 @@
             var temperature = document.getElementById('temperature').value;
             var tds = document.getElementById('tds').value;
             var ph = document.getElementById('ph').value;
-    
+        
             var formData = {
-                node: node,
-                temperature: temperature,
-                tds: tds,
-                ph: ph
+            node: node,
+            temperature: temperature,
+            tds: tds,
+            ph: ph
             };
 
             if ((node === "WM-WD-KH95-00" || node === "WM-WD-KH04-00" || node === "WM-WD-KH03-00") && tds > 250) {
-                alert('Error: Please recheck the selected node since TDS value of filtered water is high.');
-                return; // Stop further execution
+            alert('Error: Please recheck the selected node since TDS value of filtered water is high.');
+            return; // Stop further execution
             }
-    
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:1629/calibdata/', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-    
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        alert('Data submitted successfully!');
-                        document.getElementById(node).classList.add('submitted');
-                        document.getElementById('node').remove(document.getElementById('node').selectedIndex);
-                        document.getElementById('temperature').value = ""; // Empty the temperature input field
-                        document.getElementById('tds').value = ""; // Empty the tds input field
-                        document.getElementById('ph').value = "0"; 
-                    } else {
-                        alert('Error: ' + xhr.responseText);
-                    }
+        
+            fetch('https://smartcitylivinglab.iiit.ac.in/zf-backend-api/calibdata', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+            })
+            .then(function(response) {
+            if (response.ok) {
+                // The request was successful
+                console.log(response.responseText);
+                alert('Data submitted successfully!');
+                document.getElementById(node).classList.add('submitted');
+                document.getElementById('node').remove(document.getElementById('node').selectedIndex);
+                document.getElementById('temperature').value = ""; // Empty the temperature input field
+                document.getElementById('tds').value = ""; // Empty the tds input field
+                document.getElementById('ph').value = "0"; 
+            } else {
+                // There was an error
+                console.error('Error: ' + response.status);
+                if (response.status === 307) {
+                console.error('Received a 307 Temporary Redirect. The browser should automatically follow the redirect.');
                 }
-            };
-    
-            xhr.send(JSON.stringify(formData));
+                alert('Error: ' + response.responseText);
+            }
+            })
+            .catch(function(error) {
+            console.error('Error: ' + error);
+            });
         });
     </script>
     
