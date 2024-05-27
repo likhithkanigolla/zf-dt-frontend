@@ -1,36 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./SimulationPage.css";
 
-import NavigationBar from "../../components/navigation/Navigation"; // assuming NavigationBar is a component defined in NavigationBar.js
-// import blueprint from "./simulation_bp.png";
-import blueprint from "../images/ZF_DT_Simulation_Diagram.png";
-import { GiWaterTower } from "react-icons/gi";
-
-import roPlantImage from "../images/ro_plant.png";
-import roCoolerImage from "../images/ro_cooler.png";
-import Motor from "../images/Motor.png";
-import SumpIcon from "../images/Sump.png";
-import PumpHouse from "../images/pump_house.png";
-import Borewell from "../images/borewell.png";
-import Watertank from "../images/watertank.png";
-import ROWatertank from "../images/tank_ro.png";
-import WaterLevelArrow from "../images/Waterlevel_arrow.png";
-
-import whiteimage from "../images/white.png";
-import Washrooms from "../images/Washrooms.png";
-import ContainerBox from "./components/ContainerBox";
-import ZshapePipe from "./components/ZshapePipe";
-import MirrorZPipe from "./components/MirrorZPipe";
-import StraightPipe from "./components/StraightPipe";
-import EShapePipe from "./components/EShapePipe";
-import LShapePipe from "./components/LShapePipe";
+import NavigationBar from "../../components/navigation/Navigation";
 import Toolbar from "./components/ToolBar";
-
 import SimulationForm from "./components/SimulationForm";
 import ResultContainer from "./components/ResultContainer";
 import LeakageOptions from "./components/LeakageOptions";
 import SimulationCanvas from "./components/SimulationCanvas";
 
+import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png"; 
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
@@ -278,24 +256,6 @@ const SimulationPage = () => {
     }
   };
 
-  const handleInfoButtonClick = (info) => {
-    setInfoText(info);
-  };
-
-  const handleInfoButtonLeave = () => {
-    setInfoText(""); // Clear the info text when mouse leaves the info button
-  };
-
-  const calculateInitialTDS = (inputValues) => {
-    const { voltage, temperature } = inputValues;
-    // Calculate CV
-    const CV = voltage / (1.0 + 0.02 * (temperature - 25));
-    // Calculate initial TDS using CV
-    const initialTDS =
-      133.42 * Math.pow(CV, 3) - 255.86 * Math.pow(CV, 2) + 857.39 * CV * 0.5;
-    return initialTDS;
-  };
-
   const ResultCard = ({ title, value }) => {
     return (
       <div className="result-card">
@@ -304,16 +264,6 @@ const SimulationPage = () => {
       </div>
     );
   };
-
-  async function fetchVoltageValue(selectedNumberValue) {
-    const response = await fetch(`${backendAPI}/predict_voltage/${selectedNumberValue}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch voltage value: ${response.status}`);
-    }
-    const data = await response.json();
-    return data.predicted_voltage;
-  }
-
 
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
@@ -355,8 +305,6 @@ const SimulationPage = () => {
       console.error(error);
     }
   };
-
-
 
   const handleCalculate = async () => {
     try {
@@ -426,7 +374,6 @@ const SimulationPage = () => {
       console.error("Error calculating RO filtration:", error);
     }
   };
-
 
   const getRealData = async (tableName) => {
     try {
@@ -500,8 +447,6 @@ const SimulationPage = () => {
 
   // This state is used to track the type of item that we need to add to the canvas
   const [itemToAdd, setItemToAdd] = useState(null);
-
-
   
   const handleDragStart = (event, index) => {
     // Set the dataTransfer object with the item's index if we are moving an existing item
@@ -556,7 +501,6 @@ const SimulationPage = () => {
   
     return { isPlaced, iconId };
   };
-  
   
 
   const handleDrop = (event) => {
@@ -633,7 +577,6 @@ const SimulationPage = () => {
     }
   };
   
-
   const getImageForType = (type) => {
     switch (type) {
       case 'waterqualitysensor':
@@ -696,34 +639,19 @@ const SimulationPage = () => {
               onDragOver={handleDragOver}
             >
               <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
-              
               <SimulationCanvas 
                   handleIconClick={handleIconClick}
                   iconRefs={iconRefs}
-                  PumpHouse={PumpHouse}
-                  ZshapePipe={ZshapePipe}
                   flow1={flow1}
-                  setFlow1={setFlow1}
-                  MirrorZPipe={MirrorZPipe}
-                  Borewell={Borewell}
-                  StraightPipe={StraightPipe}
                   flow2={flow2}
-                  SumpIcon={SumpIcon}
+                  setFlow1={setFlow1}
                   waterInSump={waterInSump}
-                  Motor={Motor}
                   motorOn={motorOn}
                   toggleIsOn={toggleIsOn}
                   isSimulationRunning={isSimulationRunning}
                   handleMotorToggle={handleMotorToggle}
-                  LShapePipe={LShapePipe}
-                  Washrooms={Washrooms}
-                  Watertank={Watertank}
                   waterInOHT={waterInOHT}
-                  roPlantImage={roPlantImage}
-                  EShapePipe={EShapePipe}
-                  ROWatertank={ROWatertank}
                   waterInROFilter={waterInROFilter}
-                  roCoolerImage={roCoolerImage}
                   waterConsumed={waterConsumed}
                 />
 
@@ -830,13 +758,6 @@ const SimulationPage = () => {
                 {/* <div>RO3</div> */}
               </div>
 
-              {/* Other Nodes and Components */}
-              {/* Include other nodes and components with their positions calculated in vw */}
-              {/* ... */}
-
-
-            {/* Draggable Code */}
-
             {
               canvasItems.map((item, index) => (
                 <div
@@ -861,7 +782,8 @@ const SimulationPage = () => {
               ))
             }
 
-            {itemToAdd && (
+            {
+            itemToAdd && (
               <div
                 draggable
                 onDragStart={(e) => handleDragStart(e)}
@@ -878,12 +800,11 @@ const SimulationPage = () => {
                   style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
                 />
               </div>
-            )}
+            )
+            }
 
             </div>
           </div>
-
-
           <br></br>
           <div className="result-container">
             <div className="water-flow-container">
