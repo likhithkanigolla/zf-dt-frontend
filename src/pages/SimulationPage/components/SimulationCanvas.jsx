@@ -6,12 +6,6 @@ import StraightPipe from './StraightPipe';
 import LShapePipe from './LShapePipe';
 import EShapePipe from './EShapePipe';
 
-import MotorNode from "../../images/MotorNode.png"; 
-import WaterLevelNode from "../../images/WaterLevelNode.png";
-import WaterQualityNode from "../../images/WaterQualityNode.png";
-import WaterQuantityNode from "../../images/WaterQuantityNode.png";
-import LeakageIcon from "../../images/leakage_water.png"; 
-
 import roPlantImage from "../../images/ro_plant.png";
 import roCoolerImage from "../../images/ro_cooler.png";
 import Motor from "../../images/Motor.png";
@@ -20,8 +14,6 @@ import PumpHouse from "../../images/pump_house.png";
 import Borewell from "../../images/borewell.png";
 import Watertank from "../../images/watertank.png";
 import ROWatertank from "../../images/tank_ro.png";
-import WaterLevelArrow from "../../images/Waterlevel_arrow.png";
-import whiteimage from "../../images/white.png";
 import Washrooms from "../../images/Washrooms.png";
 
 const backendAPI = "http://localhost:1629";
@@ -31,30 +23,16 @@ const backendAPI = "http://localhost:1629";
 const SimulationCanvas = ({ 
   handleIconClick, 
   iconRefs, 
-  PumpHouse, 
-  ZshapePipe, 
   flow1, 
   setFlow1, 
-  MirrorZPipe, 
-  Borewell, 
-  StraightPipe, 
   flow2, 
-  SumpIcon, 
   waterInSump, 
-  Motor, 
   motorOn, 
   toggleIsOn, 
   isSimulationRunning, 
   handleMotorToggle, 
-  LShapePipe, 
-  Washrooms, 
-  Watertank, 
   waterInOHT, 
-  roPlantImage, 
-  EShapePipe, 
-  ROWatertank, 
   waterInROFilter, 
-  roCoolerImage, 
   waterConsumed 
 }) => {
   return (
