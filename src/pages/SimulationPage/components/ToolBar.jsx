@@ -1,4 +1,5 @@
 import React from 'react';
+import "../SimulationPage.css";
 
 
 import MotorNode from "../../images/MotorNode.png"; 
