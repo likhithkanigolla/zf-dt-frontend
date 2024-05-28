@@ -152,7 +152,7 @@ const SimulationCanvas = ({
                 <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
                   <div style={{fontSize:"1vw"}}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
                   <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)} 
-                  ref={(ref) => {if (ref) {ref.id = "KRB-RO-OHT"; iconRefs.push(ref);} }}/>
+                  ref={(ref) => {if (ref) {ref.id = "KRBROOHT"; iconRefs.push(ref);} }}/>
                 </div>
 
                 {/* RO Coolers */}

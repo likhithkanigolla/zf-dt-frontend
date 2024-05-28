@@ -49,6 +49,12 @@ const SimulationPage = () => {
   const [flow3, setFlow3] = useState(false);
   const [flow4, setFlow4] = useState(false);
 
+  const [sensorValues, setSensorValues] = useState({
+    KRBSump: 0,
+    KRBOHTIcon: 0,
+    KRBROOHT: 0,
+  });
+
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [waterInSump, setWaterInSump] = useState(6000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
@@ -501,7 +507,6 @@ const SimulationPage = () => {
   
     return { isPlaced, iconId };
   };
-  
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -554,10 +559,7 @@ const SimulationPage = () => {
   };
 
   const handleMarkerClick = (item, index, event) => {
-    const { clientX, clientY } = event; // Get the client coordinates of the click event
-    // console.log("Clicked marker:", item);
-    
-    // Use the marker's coordinates
+    const { clientX, clientY } = event; 
     const coordinates = {
       x: clientX,
       y: clientY,
@@ -567,13 +569,22 @@ const SimulationPage = () => {
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
-      console.log((waterInSump/inputValues.sumpCapacity)*100);
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        KRBSump: (waterInSump/inputValues.sumpCapacity)*100,
+      }));
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
-      console.log((waterInOHT/inputValues.ohtCapacity)*100);
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        KRBOHTIcon: (waterInOHT/inputValues.ohtCapacity)*100,
+      }));
     }
-    if(iconId=='KRB-RO-OHT' && item.type=='waterlevelsensor'){
-      console.log((waterInROFilter/inputValues.roCapacity)*100);
+    if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        'KRBROOHT': (waterInROFilter/inputValues.roCapacity)*100,
+      }));
     }
   };
   
@@ -815,6 +826,18 @@ const SimulationPage = () => {
               </div>
             </div>
           </div>
+
+          <div className="result-container">
+            <div className="water-flow-container">
+              <div className="result-cards">
+                {Object.entries(sensorValues).map(([title, value], index) => (
+                  <ResultCard key={index} title={title} value={value} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+
           {/* Leakage Markers */}
           {leakageMarkers.map((marker, index) => (
             <div 
@@ -830,7 +853,9 @@ const SimulationPage = () => {
               console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
             }}
             >
-          <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }} />
+            <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }
+          }
+        />
   </div>
 ))}
 
