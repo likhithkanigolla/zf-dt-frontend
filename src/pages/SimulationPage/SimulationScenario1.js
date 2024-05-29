@@ -15,12 +15,18 @@ import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-// const backendAPI = "http://localhost:1629";
+
+
+// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+const backendAPI = "http://localhost:1629";
 
 const SimulationScenario1 = () => {
   // State for holding input values and results
+  const notify = (message) => toast(message);
+
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [inputValues, setInputValues] = useState({
@@ -31,8 +37,16 @@ const SimulationScenario1 = () => {
     sumpCapacity: "6000",
     ohtCapacity: "600",
     roCapacity: "50",
-    flowrate: "5"
+    flowrate: 100
   });
+
+  const [OverFlowedROWater, setOverFlowedROWater] = useState(0);
+  const [OverFlowedWater, setOverFlowedWater] = useState(0);
+  const [waterFlowOHT, setWaterFlowOHT] = useState(0);
+  const [waterFlowRO, setWaterFlowRO] = useState(0);
+  const [isOverflowNotificationShown, setIsOverflowNotificationShown] = useState(false);
+  const [WaterLevelOHT, setWaterLevelOHT] = useState(0);
+
   const [result, setResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
   const [sandContamination, setSandContamination] = useState(null);
@@ -50,9 +64,9 @@ const SimulationScenario1 = () => {
   const [flow4, setFlow4] = useState(false);
 
   const [sensorValues, setSensorValues] = useState({
-    KRBSump: 0,
-    KRBOHTIcon: 0,
-    KRBROOHT: 0,
+    // KRBSump: 0,
+    // KRBOHTIcon: 0,
+    // KRBROOHT: 0,
   });
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
@@ -80,61 +94,6 @@ const SimulationScenario1 = () => {
     4: 5.6,
     5: 6.7,
   };
-
-  const [showLeakageOptions, setShowLeakageOptions] = useState(false);
-  const [numLeakages, setNumLeakages] = useState(1);
-  const [leakageLocation, setLeakageLocation] = useState("");
-  const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
-  const [leakageMarkers, setLeakageMarkers] = useState([]);
-  // Function to handle leakage icon click
-  const handleLeakageIconClick = () => {
-    setShowLeakageOptions(true);
-  };
-  // Function to handle applying leakage options
-  const handleApplyLeakages = () => {
-    const newMarkers = [];
-    for (let i = 0; i < numLeakages; i++) {
-      // Calculate position based on leakageLocation and index (to distribute markers)
-      const position = calculateLeakagePosition(leakageLocation, i, numLeakages);
-      newMarkers.push({
-        type: "leakage",
-        x: position.x,
-        y: position.y,
-        rate: leakageRate, // Include leakage rate in the marker data
-      });
-    }
-    setLeakageMarkers(newMarkers);
-    setShowLeakageOptions(false);
-  };
-  // Function to calculate leakage position (you'll need to implement the logic)
-  const calculateLeakagePosition = (location, index, totalLeakages) => {
-    let x, y;
-    if (location === "motorOHT") {
-      // Hardcoded coordinates for the three possible leakage positions
-      const leakagePositions = [
-        { x: 890, y: 510 }, // Motor end
-        { x: 920, y: 460 }, // Middle pipe
-        { x: 950, y: 410 }, // Near OHT
-      ];
-  
-      // Ensure totalLeakages is within the allowed range (1 to 3)
-      totalLeakages = Math.max(1, Math.min(3, totalLeakages));
-  
-      // Determine the index for the leakage position based on totalLeakages
-      let positionIndex;
-      if (totalLeakages === 1) {
-        positionIndex = 0; // Only use the motor end position
-      } else if (totalLeakages === 2) {
-        positionIndex = index * 2; // Use motor end and middle positions
-      } else {
-        positionIndex = index; // Use all three positions
-      }
-  
-      // Get the coordinates from the leakagePositions array
-      ({ x, y } = leakagePositions[positionIndex]);
-    } // ... (rest of your logic)
-    return { x, y };
-  };
   
 
   useEffect(() => {
@@ -143,56 +102,80 @@ const SimulationScenario1 = () => {
     if (waterFlowStarted) {
       intervalId = setInterval(() => {
         if (motorOn) {
-          // Pump water from Sump to OHT if motor is on
-          if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
-            setWaterInSump((prev) => Math.max(prev - inputValues.flowrate, 0));
+          // If motor is on, pump water from Sump to OHT
+          if (waterInSump > 0) {
+            //Descrese water in sump and add that water in OHT 
+            setWaterInSump((prev) => prev - inputValues.flowrate);
+            setWaterInOHT((prev) => prev + inputValues.flowrate);
+            setWaterFlowOHT((prev) => prev + inputValues.flowrate);
 
-        // Calculate total leakage rate (limited to 4 L/s)
-            const totalLeakageRate = Math.min(
-              leakageMarkers.reduce((sum, marker) => {
-                if (marker.type === "leakage" && marker.location === "motorOHT") {
-                  return sum + marker.rate;
-                }
-                return sum;
-              }, 0),
-              4 // Maximum leakage rate
-            );
+            if(waterInOHT >= 590){
+              // Alert when OHT is full
+              setOverFlowedWater((prev) => prev + (waterInOHT - 590));
 
-            console.log("Total Leakage Rate:", totalLeakageRate); // Check the calculated value
+              if (waterInOHT >= 590 && !isOverflowNotificationShown) {
+                // Alert when OHT is full
+                notify("OHT Overflow Detected.");
+                setIsOverflowNotificationShown(true);
+                setOverFlowedWater((prev) => prev + (waterInOHT - 590));
+                notify(`Overflowed Water: ${OverFlowedWater}`);
+                setWaterInOHT(600);
 
-        // Calculate the effective flow rate into OHT
-        const effectiveFlowRate = Math.max(5 - totalLeakageRate, 1); 
-        console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
-
-        const prevWaterInOHT = waterInOHT; // Get previous water level
-        setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
-        console.log("Water in OHT:", waterInOHT, "(Previous:", prevWaterInOHT, ")"); // Verify state update 
-        }
-        
-          if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
-            alert("Motor turned off automatically since water tank is full.");
-            setMotorOn(false);
-            setFlow2(false);
-            setAlertShown(true); // Set alertShown to true to prevent repeated alerts
+                setTimeout(() => {
+                  setIsOverflowNotificationShown(false);
+                }, 300000); // 5 minutes
+              }
+              setWaterInOHT(600);
+            }
+          }
+          else{
+            // Alert when water in sump is empty
+            alert("No water in sump.");
           }
         }
 
-        // Pump water from OHT to RO Filter continuously
-        if (waterInOHT > 0 && waterInROFilter < inputValues.roCapacity) {
-          setWaterInOHT((prev) => Math.max(prev - inputValues.flowrate, 0));
-          setWaterInROFilter(
-            (prev) => prev + (result ? result.permeate_flow_rate / 360 : 0)
-          ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
+        // Pump water from OHT to RO Filter Continuously
+        if (waterInOHT > 0) {
+          const waterToPump = Math.min(1, waterInOHT); // Calculate the maximum amount of water that can be pumped
+          setWaterInOHT((prev) => prev - waterToPump);
+          setWaterInROFilter((prev) => prev + waterToPump);
+          setWaterFlowRO((prev) => prev + waterToPump);
+          if (waterInROFilter + waterToPump > 50) {
+            // Alert when RO Filter is full
+            notify("RO Filter Overflow Detected.");
+            setOverFlowedROWater((prev) => prev + (waterInROFilter + waterToPump - 50));
+            if (waterInROFilter + waterToPump > 50) {
+              // Alert when RO Filter is full
+              notify("RO Filter Overflow Detected.");
+              setOverFlowedROWater((prev) => prev + (waterInROFilter + waterToPump - 50));
+              notify(`RO Overflowed Water: ${OverFlowedROWater}`);
+              setWaterInROFilter(50);
+              setTimeout(() => {
+                setIsOverflowNotificationShown(false);
+              }, 60000); // 1 minute
+            }
+            setWaterInROFilter(50);
+          }
         }
-        // If water in OHT is less than 20%, turn on the motor automatically
-        if (waterInOHT < (20*inputValues.ohtCapacity)/100) {
+
+        if (WaterLevelOHT < 20) {
           setMotorOn(true);
           setFlow2(true);
         }
+        if (WaterLevelOHT > 80) {
+            notify("OHT is full. Motor turned off.");
+            setIsOverflowNotificationShown(true);
+            setTimeout(() => {
+            setIsOverflowNotificationShown(false);
+            }, 300000); // 5 minutes
+          setMotorOn(false);
+          setFlow2(false);
+        }
+
         if (waterInSump === 0) {
           setMotorOn(false);
           setFlow2(false);
-          // alert("No water in sump.");
+          notify("Sump is empty. Motor turned off.");
         }
       }, 1000); // Run every second
 
@@ -228,7 +211,6 @@ const SimulationScenario1 = () => {
     waterInOHT,
     waterInROFilter,
     alertShown,
-    leakageRate
   ]);
 
   const handleChange = (e) => {
@@ -569,22 +551,32 @@ const SimulationScenario1 = () => {
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        KRBSump: (waterInSump/inputValues.sumpCapacity)*100,
-      }));
+      setSensorValues({'Water Level at Sump': (waterInSump/inputValues.sumpCapacity)*100});
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        KRBOHTIcon: (waterInOHT/inputValues.ohtCapacity)*100,
-      }));
+      const ohtwaterlevel = (waterInOHT/inputValues.ohtCapacity)*100
+      setSensorValues({ 'Water Level at OHT': ohtwaterlevel});
+      setWaterLevelOHT(ohtwaterlevel);
     }
+    // if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
+    //   setSensorValues(prevValues => ({
+    //     ...prevValues,
+    //     'KRBROOHT': (waterInROFilter/inputValues.roCapacity)*100,
+    //   }));
+    // }
     if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        'KRBROOHT': (waterInROFilter/inputValues.roCapacity)*100,
-      }));
+      const rowaterlevel = (waterInROFilter/inputValues.roCapacity)*100
+      setSensorValues({'Water Level at RO OHT': rowaterlevel});
+      
+    }
+    if(iconId=='Motor' && item.type=='waterquantitysensor'){
+      setSensorValues({'Total Water Flow from Sump to OHT': waterFlowOHT});
+    }
+    if(iconId=='ROPlant' && item.type=='waterquantitysensor'){
+      setSensorValues({'Total Water Flow from OHT to RO Filter': waterFlowRO});
+    }
+    if(iconId=='Motor' && item.type=='motorsensor'){
+      setSensorValues({'Motor Status here': motorOn ? 'ON' : 'OFF'});
     }
   };
   
@@ -603,39 +595,50 @@ const SimulationScenario1 = () => {
     }
   };
 
+  //Function get the motor status from the variable isMotorOn and store it in setData
+  const getMotorStatus = () => {
+    if (motorOn) {
+      setData([{ title: "Motor Status", value: "ON" }]);
+    } else {
+      setData([{ title: "Motor Status", value: "OFF" }]);
+    }
+  }
+
+  // Write me a function to print the value setWaterFlowOHT and setWaterFlowRO dynamically it should be passed through parameter by storing it in setData
+  const getWaterFlow = (PipeName) => {
+    setData([{ title: "Total Water Flow", value: PipeName }]);
+  }
+
 
   return (
     <div>
+      <ToastContainer />
       <NavigationBar title="Digital Twin for Water Quality - Simulation" />
       <div style={{ display: "flex" }}>
         {/* Left Section */}
-        <SimulationForm 
-            SoilQuantity={SoilQuantity} 
-            setSoilQuantity={setSoilQuantity} 
-            SandQuantity={SandQuantity} 
-            setSandQuantity={setSandQuantity} 
-            inputValues={inputValues} 
-            handleChange={handleChange} 
-            handleStartSimulation={handleStartSimulation} 
-            isSimulationRunning={isSimulationRunning} 
-        />
+        <div className="container" style={{ flex: 1 }}>
+          <h2>Scenario:</h2>
+          <h4>Water Level Node at OHT Failed</h4>
+          <p>Water level node in the OHT is responsible for turning on and off the motor. The primary principle is when the water level in the OHT goes below 20% then the motor should be turned on and when it reaches 80% it should turned off. But in this scenario the water level node got failed.</p>
+          <h5>Steps to resolve</h5>
+          <ol>
+            <li>Check the Motor Running Status by deploying the Virtual Motor Sensor</li>
+            <li>Check the Total InFlow from sump to OHT by deploying Water Quality Sensor at Motor</li>
+            <li>Check the Total OutFlow from OHT to RO Filter by deploying Water Quality Sensor at RO Plant</li>
+            <li>Finally Deploy the WaterLevel Sensor at OHT and check the issue is resolved or not. </li>
+          </ol>
+
+          <button onClick={handleStartSimulation} className="button">
+                {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
+            </button>
+
+        </div>
+
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
           {/* Toolbar */}
           <Toolbar 
               handleToolbarItemClick={handleToolbarItemClick} 
-              handleLeakageIconClick={handleLeakageIconClick} 
-          />
-        
-          <LeakageOptions
-          showLeakageOptions={showLeakageOptions}
-          numLeakages={numLeakages}
-          setNumLeakages={setNumLeakages}
-          leakageLocation={leakageLocation}
-          setLeakageLocation={setLeakageLocation}
-          leakageRate={leakageRate}
-          setLeakageRate={setLeakageRate}
-          handleApplyLeakages={handleApplyLeakages}
           />
 
           <div className="demo-page">
@@ -666,108 +669,6 @@ const SimulationScenario1 = () => {
                   waterConsumed={waterConsumed}
                 />
 
-              {/* IoT Nodes  */}
-              <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH98-00')}
-                />
-              </div>
-
-              <div style={{ position: "absolute", top: "21vw", left: "29vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                onClick={() => getRealData('WM-WD-KH96-00')}
-                />
-              </div>
-
-              <div style={{ position: "absolute", top: "24vw", left: "38vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH96-01')}
-                />
-                {/* <div>KRB between oht and ro tank</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "20vw", left: "51vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH04-00')}
-                />
-                {/* <div>RO OHT</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "35vw", left: "44vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH95-00')}
-                />
-                {/* <div>RO 1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "35vw", left: "50vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH01-00')}
-                />
-                {/* <div>RO 3</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "21vw", left: "17vw", textAlign: "center", }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WL-KH98-00')}
-                />
-                {/* <div>SUMP</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "21vw", left: "33vw", textAlign: "center", }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WL-KH00-00')}
-                />
-                {/* <div>OHT</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "22vw", left: "22.7vw", textAlign: "center", }}>
-                <img src={MotorNode} alt="MotorNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('DM-KH98-60')}
-                />
-                {/* <div>Motor</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "4vw", left: "34.5vw", textAlign: "center", }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-70')}
-                />
-                {/* <div>W1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "10vw", left: "37vw", textAlign: "center", }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-73')}
-                />
-                {/* <div>W2</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "25vw", left: "44.5vw", textAlign: "center", transform: "rotate(90deg)",}}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-71')}
-                />
-                {/* <div>RO1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "25vw", left: "50vw", textAlign: "center", transform: "rotate(90deg)",}}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-72')}
-                />
-                {/* <div>RO3</div> */}
-              </div>
 
             {
               canvasItems.map((item, index) => (
@@ -817,7 +718,7 @@ const SimulationScenario1 = () => {
             </div>
           </div>
           <br></br>
-          <div className="result-container">
+          {/* <div className="result-container">
             <div className="water-flow-container">
               <div className="result-cards">
                 {data.map((item, index) => (
@@ -825,7 +726,7 @@ const SimulationScenario1 = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="result-container">
             <div className="water-flow-container">
@@ -837,36 +738,15 @@ const SimulationScenario1 = () => {
             </div>
           </div>
 
-
-          {/* Leakage Markers */}
-          {leakageMarkers.map((marker, index) => (
-            <div 
-              key={index}
-              style={{
-                position: 'absolute',
-                left: `${marker.x}px`,
-                top: `${marker.y}px`,
-                cursor: 'pointer',
-              }}
-            onClick={() => { 
-              // Handle clicking on a leakage marker (e.g., show information about the leakage)
-              console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
-            }}
-            >
-            <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }
-          }
-        />
-  </div>
-))}
-
   </div>
 
 
         {/* Right Section */}
-        <ResultContainer result={result} />
+        
       </div>
-    </div>
-  );
-};
+      <ResultContainer result={result} />
+  </div>
+      );
+    };
 
 export default SimulationScenario1;
