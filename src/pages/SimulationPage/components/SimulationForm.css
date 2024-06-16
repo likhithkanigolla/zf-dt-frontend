@@ -1,0 +1,193 @@
+/* Simulation Form Component */
+.simulation-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.simulation-form input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 200px;
+}
+
+.simulation-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.simulation-form button:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 100vh;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distributes content to start and end */
+    cursor: pointer;
+    color: #333;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: whitesmoke; /* A distinct, clickable button-like color */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.heading-in{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distributes content to start and end */
+    cursor: pointer;
+    color: #333;
+    margin: 10px 0;
+    border-radius: 5px; 
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+
+}
+
+.heading:hover {
+    background-color: #f5f5f5; /* Darker shade on hover for feedback */
+}
+
+.heading::after {
+    content: '▼'; /* Arrow icon */
+    font-size: 16px;
+    transition: transform 0.3s; /* Smooth transition for rotation */
+}
+
+/* Rotate arrow when heading is active or clicked */
+.heading.active::after {
+    transform: rotate(180deg);
+}
+
+/* Reverse the order of collapsible sections */
+.container {
+    flex-direction: column-reverse;
+}
+/* Reverse the order of collapsible sections */
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: #333;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+/* Reverse the order of collapsible sections */
+.collapsible-content {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Reverse the order of collapsible sections */
+.container {
+    flex-direction: column-reverse;
+}
+
+/* Reverse the order of collapsible sections */
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: #333;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+/* Reverse the order of collapsible sections */
+.collapsible-content {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.input-box {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 100vh;
+    padding: 20px;
+    /* background-color: #f5f5f5; */
+}
+
+.heading {
+    cursor: pointer;
+    color: #333;
+    margin: 10px 0;
+}
+
+.input-box {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.button {
+    width: 100%;
+    background-color: #0f38cd;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #455ca0;
+}
+
+/* Additional styles for collapsible sections */
+.collapsible-content {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Additional styles for collapsible sections */
+.collapsible-content {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
