@@ -33,7 +33,8 @@ const SimulationCanvas = ({
   handleMotorToggle,
   waterInOHT,
   waterInROFilter,
-  waterConsumed
+  waterConsumed,
+flowrate
 }) => {
   return (
     <div>
@@ -81,7 +82,7 @@ const SimulationCanvas = ({
         <div style={{ position: "absolute", top: "13vw", left: "13vw", textAlign: "center" }}>
           <img src={SumpIcon} alt="sump" style={{ width: "6vw", height: "6vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBSump"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "1vw" }}>SUMP-{waterInSump}L</div>
+          <div style={{ fontSize: "1vw" }}>SUMP-{waterInSump.toFixed(2)}L</div>
         </div>
 
         <div style={{ position: "absolute", top: "10.3vw", left: "25vw" }}>
@@ -104,6 +105,7 @@ const SimulationCanvas = ({
           />
           {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
           <div style={{ fontSize: "1vw" }}>Motor</div>
+          <div style={{fontSize: "1vw"}}>{flowrate.toFixed(2)} L/s</div>
         </div>
 
         {/* L Shape Pipe */}
@@ -136,7 +138,7 @@ const SimulationCanvas = ({
         <div style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
           <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBOHTIcon"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "1vw" }}>KRB OHT - {waterInOHT}L</div>
+          <div style={{ fontSize: "1vw" }}>KRB OHT-{waterInOHT.toFixed(2)}L</div>
         </div>
 
         {/* Straight Pipe */}
@@ -159,7 +161,7 @@ const SimulationCanvas = ({
 
         {/* Water Tower */}
         <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
-          <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(1)}L</b></div>
+          <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(2)}L</b></div>
           <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBROOHT"; iconRefs.push(ref); } }} />
         </div>

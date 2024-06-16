@@ -38,12 +38,13 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         type="number"
                         name="SoilQuantity"
                         id="SoilQuantity"
-                        value={SoilQuantity}
+                        value={inputValues.SoilQuantity}
                         className='input-box'
-                        onChange={(e) => {
-                            setSoilQuantity(e.target.value);
-                            handleChange(e);
-                        }}
+                        // onChange={(e) => {
+                        //     setSoilQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
                     />
                     <h4 className="heading-in" htmlFor="SandQuantity">
                         Sand Impurities (In grams)
@@ -52,11 +53,12 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         type="number"
                         name="SandQuantity"
                         id="SandQuantity"
-                        value={SandQuantity}
-                        onChange={(e) => {
-                            setSandQuantity(e.target.value);
-                            handleChange(e);
-                        }}
+                        value={inputValues.SandQuantity}
+                        // onChange={(e) => {
+                        //     setSandQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
                     />
                     <h4 className="heading-in">Temperature (°C):</h4>
                     <input

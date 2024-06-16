@@ -16,23 +16,29 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
 
 
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-// const backendAPI = "http://localhost:1629";
+// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+const backendAPI = "http://localhost:1629";
 
 const SimulationPage = () => {
   // State for holding input values and results
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [inputValues, setInputValues] = useState({
-    voltage: "",
+    SandQuantity: "2000",
+    SoilQuantity: "3000",
+    voltage: "240",
+    current: "11",
+    power_factor: "0.11",
+    motor_efficiency: "0.85",
     temperature: "25",
-    desired_tds: "50",
-    effective_membrane_area: "370",
-    sumpCapacity: "6000",
-    ohtCapacity: "600",
-    roCapacity: "50",
-    flowrate: "5"
+    desired_tds: "65",
+    membrane_area: "3700",
+    sumpCapacity: "60000",
+    ohtCapacity: "100000",
+    ro_ohtCapacity: "1000",
+    // flowrate: "5"
   });
+
   const [result, setResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
   const [sandContamination, setSandContamination] = useState(null);
@@ -56,13 +62,15 @@ const SimulationPage = () => {
   });
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
-  const [waterInSump, setWaterInSump] = useState(6000); // Initial water level in Sump
+  const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(2); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
+  const [flowrate, setFlowrate] = useState(10);
+  const [PermeateFlowRate, setPermeateFlowRate] = useState(1);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
   const [message, setMessage] = useState("");
   const [data, setData] = useState([]);
@@ -137,6 +145,7 @@ const SimulationPage = () => {
   };
   
 
+
   useEffect(() => {
     let intervalId;
     let intervalwaterConsume;
@@ -145,7 +154,7 @@ const SimulationPage = () => {
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
-            setWaterInSump((prev) => Math.max(prev - inputValues.flowrate, 0));
+            setWaterInSump((prev) => Math.max((prev - flowrate), 0));
 
         // Calculate total leakage rate (limited to 4 L/s)
             const totalLeakageRate = Math.min(
@@ -161,7 +170,7 @@ const SimulationPage = () => {
             console.log("Total Leakage Rate:", totalLeakageRate); // Check the calculated value
 
         // Calculate the effective flow rate into OHT
-        const effectiveFlowRate = Math.max(5 - totalLeakageRate, 1); 
+        const effectiveFlowRate = Math.max(flowrate - totalLeakageRate, 1); 
         console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
 
         const prevWaterInOHT = waterInOHT; // Get previous water level
@@ -176,12 +185,12 @@ const SimulationPage = () => {
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-
+        console.log("Permate_Flow_here:",PermeateFlowRate)
         // Pump water from OHT to RO Filter continuously
-        if (waterInOHT > 0 && waterInROFilter < inputValues.roCapacity) {
-          setWaterInOHT((prev) => Math.max(prev - inputValues.flowrate, 0));
+        if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
+          setWaterInOHT((prev) => Math.max(prev - PermeateFlowRate, 0));
           setWaterInROFilter(
-            (prev) => prev + (result ? result.permeate_flow_rate / 360 : 0)
+            (prev) => prev + PermeateFlowRate 
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
         // If water in OHT is less than 20%, turn on the motor automatically
@@ -312,6 +321,55 @@ const SimulationPage = () => {
     }
   };
 
+  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area) => {
+    const requestBody = {
+      initial_tds: calculatedTDS,
+      desired_tds: desired_tds,
+      voltage: voltageData[voltageValue],
+      temperature: temperature,
+      effective_membrane_area: membrane_area,
+      sump_capacity: inputValues.sumpCapacity,
+      // Other parameters as needed
+    };
+
+    let response = await fetch(
+      `${backendAPI}/calculate_ro_filtration`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+    let data = await response.json();
+    return data;
+  };
+
+  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth) => {
+    const requestBody = {
+      voltage: voltage,
+      current: current,
+      power_factor: power_factor,
+      motor_efficiency: motor_efficiency,
+      depth: depth, 
+    };
+
+    let response = await fetch(
+      `${backendAPI}/calculate_motor_flow_rate`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+    
+    let data = await response.json();
+    return data;
+  }
+
   const handleCalculate = async () => {
     try {
       // const selectedNumberValue = parseInt(SoilQuantity);
@@ -352,30 +410,17 @@ const SimulationPage = () => {
         calculatedTDS = (SoilTDS + SandTDS) / 2;
       }
 
-      // Prepare request body including initial TDS
-      const requestBody = {
-        initial_tds: calculatedTDS,
-        desired_tds: inputValues.desired_tds,
-        voltage: voltageData[voltageValue],
-        temperature: inputValues.temperature,
-        effective_membrane_area: inputValues.effective_membrane_area,
-        sump_capacity: inputValues.sumpCapacity,
-        // Other parameters as needed
-      };
+      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5);
+      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
+      setResult(data_RO); // Set the entire response object as result
+      // console.log("Result PR:", data_RO.permeate_flow_rate);
+      setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate));
+      setFlowrate(parseFloat(flow.flowrate_per_min));
+      console.log("Flow Rate:", flowrate);
+      console.log("Permeate Flow Rate:", PermeateFlowRate);
 
-      const response = await fetch(
-        `${backendAPI}/calculate_ro_filtration`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-      const data = await response.json();
-      setResult(data); // Set the entire response object as result
       setWaterFlowStarted(true);
+
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
@@ -421,9 +466,9 @@ const SimulationPage = () => {
     setFlow2((flow2) => !flow2);
   };
 
-  const handleStartSimulation = () => {
+  const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
-      handleCalculate(); // Start calculation
+      await handleCalculate(); 
       // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
       setIsSimulationRunning(true);
@@ -583,7 +628,7 @@ const SimulationPage = () => {
     if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        'KRBROOHT': (waterInROFilter/inputValues.roCapacity)*100,
+        'KRBROOHT': (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
   };
@@ -664,6 +709,7 @@ const SimulationPage = () => {
                   waterInOHT={waterInOHT}
                   waterInROFilter={waterInROFilter}
                   waterConsumed={waterConsumed}
+                  flowrate={flowrate}
                 />
 
               {/* IoT Nodes  */}
@@ -729,7 +775,7 @@ const SimulationPage = () => {
                 {/* <div>OHT</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "22vw", left: "22.7vw", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "23vw", left: "22.7vw", textAlign: "center", }}>
                 <img src={MotorNode} alt="MotorNode"
                   style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('DM-KH98-60')}
