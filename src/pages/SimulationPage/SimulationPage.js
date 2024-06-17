@@ -636,11 +636,7 @@ const SimulationPage = () => {
     event.preventDefault(); // Necessary to allow dropping
   };
 
-  const handleToolbarItemClick = (type) => {
-    // Prepare to add a new item when the next drop occurs
-    // Instead of directly adding the item, we set an "item to add" state
-    setItemToAdd(type);
-  };
+
 
   const handleIconClick = (event) => {
     const refId = event.target.id;
@@ -681,6 +677,12 @@ const SimulationPage = () => {
       }));
     }
   };
+
+  const handleToolbarItemClick = (type) => {
+    // Prepare to add a new item when the next drop occurs
+    // Instead of directly adding the item, we set an "item to add" state
+    setItemToAdd(type);
+  };
   
   const getImageForType = (type) => {
     switch (type) {
@@ -715,16 +717,17 @@ const SimulationPage = () => {
             handleMultiplierChange={handleMultiplierChange}
             timeMultiplier={timeMultiplier}
             handleDownloadLog={handleDownloadLog}
-
+            handleToolbarItemClick={handleToolbarItemClick}
+            handleLeakageIconClick={handleLeakageIconClick}
         />
+        {/* <Toolbar 
+              handleToolbarItemClick={handleToolbarItemClick} 
+              handleLeakageIconClick={handleLeakageIconClick} 
+        /> */}
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
           {/* Toolbar */}
-          <Toolbar 
-              handleToolbarItemClick={handleToolbarItemClick} 
-              handleLeakageIconClick={handleLeakageIconClick} 
-          />
-        
+        <div><br></br></div>
           <LeakageOptions
           showLeakageOptions={showLeakageOptions}
           numLeakages={numLeakages}
@@ -918,25 +921,7 @@ const SimulationPage = () => {
           </div>
 
           <br></br>
-          <div className="result-container">
-            <div className="water-flow-container">
-              <div className="result-cards">
-                {data.map((item, index) => (
-                  <ResultCard key={index} title={item.title} value={item.value} />
-                ))}
-              </div>
-            </div>
-          </div>
 
-          <div className="result-container">
-            <div className="water-flow-container">
-              <div className="result-cards">
-                {Object.entries(sensorValues).map(([title, value], index) => (
-                  <ResultCard key={index} title={title} value={value} />
-                ))}
-              </div>
-            </div>
-          </div>
 
 
           {/* Leakage Markers */}
@@ -964,7 +949,8 @@ const SimulationPage = () => {
 
 
         {/* Right Section */}
-        <ResultContainer result={result} />
+        <ResultContainer result={result} data={data} sensorValues={sensorValues}/>
+        
       </div>
     </div>
   );

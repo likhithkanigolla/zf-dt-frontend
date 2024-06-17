@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './SimulationForm.css';
+import Toolbar from "./ToolBar";
 
-function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog }) {
+function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick}) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -23,9 +24,11 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
 
+    
+
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '70vh', color: 'white' }}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '30vh', color: 'white' }}>
             <div>
             <label style={{color: 'black'}}>Speed Multiplier: </label>
             <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
@@ -186,6 +189,12 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                 </>
             )}
         </div>
+
+        <Toolbar 
+              handleToolbarItemClick={handleToolbarItemClick} 
+              handleLeakageIconClick={handleLeakageIconClick} 
+        />
+
         <button onClick={handleStartSimulation} className="button">
                 {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
         </button>

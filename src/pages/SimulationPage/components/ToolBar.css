@@ -1,0 +1,54 @@
+/* ToolBar.css */
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.toolbar__title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.toolbar__buttons {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+}
+
+.toolbar__button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.tool-button, .toolbar button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    /* border: 2px solid black; */
+    margin: 10px;
+    background-color: transparent;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.toolbar__button:hover {
+    background-color: #0056b3;
+}
+
+.toolbar__button:active {
+    background-color: #004080;
+}

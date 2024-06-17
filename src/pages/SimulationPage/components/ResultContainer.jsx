@@ -9,7 +9,7 @@ const ResultCard = ({ title, value }) => {
     );
   };
 
-const ResultContainer = ({ result }) => {
+const ResultContainer = ({ result, data, sensorValues }) => {
     return (
         <div style={{ flex: 1 }}>
             <div className="result-container">
@@ -36,7 +36,19 @@ const ResultContainer = ({ result }) => {
                         value={result?.time_estimation_hours ?? "N/A"}
                     />
                 </div>
-                <br />
+                <br></br>
+                <div className="result-cards">
+                {Object.entries(sensorValues).map(([title, value], index) => (
+                  <ResultCard key={index} title={title} value={value} />
+                ))}
+              </div>
+              <br></br>
+              <div className="result-cards">
+                {data.map((item, index) => (
+                  <ResultCard key={index} title={item.title} value={item.value} />
+                ))}
+              </div>
+            <br />
             </div>
         </div>
     );
