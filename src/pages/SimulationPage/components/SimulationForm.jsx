@@ -189,7 +189,7 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         <button onClick={handleStartSimulation} className="button">
                 {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
         </button>
-        <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>End Simulation</button>
+        <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button>
         </div>
     );
 }
