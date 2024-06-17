@@ -102,13 +102,13 @@ flowrate
                 handleMotorToggle();
               }
             }}
-          />
-          {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
-          <div style={{ fontSize: "1vw" }}>Motor</div>
-          <div style={{fontSize: "1vw"}}>{flowrate.toFixed(2)} L/s</div>
-        </div>
+            />
+            {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
+            <div style={{ fontSize: "1vw" }}>Motor</div>
+            <div style={{fontSize: "1vw"}}>{motorOn ? (flowrate + Math.random() * 2 - 1).toFixed(2) : 0} L/s</div>
+          </div>
 
-        {/* L Shape Pipe */}
+          {/* L Shape Pipe */}
         <div style={{ position: "absolute", top: "11.5vw", left: "32.2vw", transform: "rotate(180deg)" }}>
           <LShapePipe flow={flow1} 
           ref={(ref) => { if (ref) { ref.id = "OHTtoROPipe"; iconRefs.push(ref); } }}
@@ -135,10 +135,11 @@ flowrate
         </div>
 
         {/* Water Tower */}
-        <div style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
+        <div style={{ position: "absolute", top: "9vw", left: "29vw",textAlign: "center"}}>
           <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBOHTIcon"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "1vw" }}>KRB OHT-{waterInOHT.toFixed(2)}L</div>
+          <div style={{ fontSize: "1vw" }}>KRB OHT</div>
+          <div style={{ fontSize: "1vw" }}><b>{waterInOHT.toFixed(2)}L</b></div>
         </div>
 
         {/* Straight Pipe */}
@@ -160,8 +161,9 @@ flowrate
         </div>
 
         {/* Water Tower */}
-        <div style={{ position: "absolute", top: "16.5vw", left: "46vw" }}>
-          <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT- <b>{waterInROFilter.toFixed(2)}L</b></div>
+        <div style={{ position: "absolute", top: "16.5vw", left: "43.4vw" , textAlign: "center"}}>
+          <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
+          <div style={{ fontSize: "1vw" }}><b>{waterInROFilter.toFixed(2)}L</b></div>
           <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBROOHT"; iconRefs.push(ref); } }} />
         </div>

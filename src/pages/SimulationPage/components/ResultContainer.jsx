@@ -20,7 +20,7 @@ const ResultContainer = ({ result }) => {
                         value={result?.calculated_tds_value ?? "N/A"}
                     />
                     <ResultCard
-                        title="Permeate Flow Rate(m³/s)"
+                        title="Permeate Flow Rate(l/s)"
                         value={result?.permeate_flow_rate ?? "N/A"}
                     />
                     <ResultCard

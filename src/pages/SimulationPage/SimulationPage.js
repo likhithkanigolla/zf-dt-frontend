@@ -151,6 +151,8 @@ const SimulationPage = () => {
     let intervalwaterConsume;
     if (waterFlowStarted) {
       intervalId = setInterval(() => {
+        setMotorOn(true)
+        setFlow2(true);
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
@@ -194,10 +196,10 @@ const SimulationPage = () => {
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
         // If water in OHT is less than 20%, turn on the motor automatically
-        if (waterInOHT < (20*inputValues.ohtCapacity)/100) {
-          setMotorOn(true);
-          setFlow2(true);
-        }
+        // if (waterInOHT < (20*inputValues.ohtCapacity)/100) {
+        //   setMotorOn(true);
+        //   setFlow2(true);
+        // }
         if (waterInSump === 0) {
           setMotorOn(false);
           setFlow2(false);
