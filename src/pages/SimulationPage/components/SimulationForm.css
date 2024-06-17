@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    border: 10px;
 }
 
 .simulation-form input {
@@ -28,7 +30,7 @@
     flex-direction: column;
     overflow-y: scroll;
     height: 100vh;
-    padding: 20px;
+    padding: 40px;
     background-color: #ffffff;
 }
 

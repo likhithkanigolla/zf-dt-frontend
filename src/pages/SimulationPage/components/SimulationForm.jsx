@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SimulationForm.css';
 
-function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleMultiplierChange,timeMultiplier }) {
+function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog }) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -25,7 +25,7 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
 
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '75vh', color: 'white' }}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '70vh', color: 'white' }}>
             <div>
             <label style={{color: 'black'}}>Speed Multiplier: </label>
             <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
@@ -188,7 +188,8 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         </div>
         <button onClick={handleStartSimulation} className="button">
                 {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
-            </button>
+        </button>
+        <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>End Simulation</button>
         </div>
     );
 }

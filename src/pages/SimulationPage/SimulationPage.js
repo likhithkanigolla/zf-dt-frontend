@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { saveAs } from 'file-saver';
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
@@ -82,20 +83,24 @@ const SimulationPage = () => {
   const [SoilQuantity, setSoilQuantity] = useState("");
   const [SandQuantity, setSandQuantity] = useState("");
   const [voltageValue, setVoltageValue] = useState("");
-  const voltageData = {
-    0: 1.2,
-    1: 2.3,
-    2: 3.4,
-    3: 4.5,
-    4: 5.6,
-    5: 6.7,
-  };
+  const voltageData = {0: 1.2, 1: 2.3, 2: 3.4, 3: 4.5, 4: 5.6, 5: 6.7,};
 
   const [showLeakageOptions, setShowLeakageOptions] = useState(false);
   const [numLeakages, setNumLeakages] = useState(1);
   const [leakageLocation, setLeakageLocation] = useState("");
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
+
+  // Logging Code 
+  const [log, setLog] = useState([]); 
+  const updateLog = (message) => {
+    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+  };
+
+  const handleDownloadLog = () => {
+    const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, 'simulation_log.txt');
+  };
 
   const handleMultiplierChange = (e) => {
     setTimeMultiplier(parseFloat(e.target.value));
@@ -160,6 +165,7 @@ const SimulationPage = () => {
       intervalId = setInterval(() => {
         setMotorOn(true)
         setFlow2(true);
+        updateLog("Motor turned on.");
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
@@ -175,12 +181,14 @@ const SimulationPage = () => {
               }, 0),
               4 // Maximum leakage rate
             );
-
+            updateLog(`Total Leakage Rate: ${totalLeakageRate}`);
             console.log("Total Leakage Rate:", totalLeakageRate); // Check the calculated value
-
+        
         // Calculate the effective flow rate into OHT
+        updateLog(`Motor Flow Rate: ${flowrate}`);
         const effectiveFlowRate = Math.max(flowrate - totalLeakageRate, 1); 
-        console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
+        updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
+        // console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
 
         const prevWaterInOHT = waterInOHT; // Get previous water level
         setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
@@ -188,13 +196,15 @@ const SimulationPage = () => {
         }
         
           if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
+            updateLog("Motor turned off automatically since water tank is full.");
             alert("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
             setFlow2(false);
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-        console.log("Permate_Flow_here:",PermeateFlowRate)
+        // console.log("Permate_Flow_here:",PermeateFlowRate)
+        updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
           setWaterInOHT((prev) => Math.max(prev - PermeateFlowRate, 0));
@@ -210,6 +220,7 @@ const SimulationPage = () => {
         if (waterInSump < flowrate) {
           setMotorOn(false);
           setFlow2(false);
+          updateLog("Motor turned off automatically since sump is empty.");
           // alert("No water in sump.");
         }
       }, 1000); // Run every second
@@ -257,6 +268,7 @@ const SimulationPage = () => {
       // If simulation is running, stop it
       handleStopWaterFlow();
       setIsSimulationRunning(false);
+      updateLog("Simulation stopped to Update Values.");
 
       // Update input values
       setInputValues((prevInputValues) => ({
@@ -264,16 +276,19 @@ const SimulationPage = () => {
         [name]: value,
       }));
 
+      updateLog(`Updated the Value ${name} to ${value}.`)
       // Restart the simulation
       handleCalculate(); // Recalculate
       handleStartWaterFlow(); // Restart the simulation
       setIsSimulationRunning(true);
+      updateLog("Simulation restarted after updating values.")
     } else {
       // If simulation is not running, simply update input values
       setInputValues((prevInputValues) => ({
         ...prevInputValues,
         [name]: value,
       }));
+      updateLog(`Updated the Value ${name} to ${value}.`)
     }
     if (name === "sumpCapacity") {
       setWaterInSump(parseInt(value) || 0); // Parse value as integer and set waterInSump
@@ -304,6 +319,7 @@ const SimulationPage = () => {
       }
       const soilContamination = await response.json();
       setSoilContamination(soilContamination);
+      updateLog(`TDS Value Soil Contamination calculated: ${soilContamination}`);
       return soilContamination; // Return the soil contamination value
     } catch (error) {
       console.error(error);
@@ -324,6 +340,7 @@ const SimulationPage = () => {
       }
       const sandContamination = await response.json();
       setSandContamination(sandContamination);
+      updateLog(`TDS Value Sand Contamination calculated: ${sandContamination}`);
       return sandContamination; // Return the sand contamination value
     } catch (error) {
       console.error(error);
@@ -353,6 +370,7 @@ const SimulationPage = () => {
       }
     );
     let data = await response.json();
+    updateLog(`RO Filtration Data: ${JSON.stringify(data, null, 2)}`);
     return data;
   };
 
@@ -378,6 +396,7 @@ const SimulationPage = () => {
     );
     
     let data = await response.json();
+    updateLog(`Motor Flow Rate Data: ${JSON.stringify(data, null, 2)}`);
     return data;
   }
 
@@ -417,18 +436,27 @@ const SimulationPage = () => {
       else {
         const SandTDS = await calculateSandContamination(inputValues);
         const SoilTDS = await calculateSoilContamination(inputValues);
+
         console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS)
+        updateLog(`Soil TDS Value calculated: ${SoilTDS}`);
+        updateLog(`Sand TDS Value calculated: ${SandTDS}`);
+
         calculatedTDS = (SoilTDS + SandTDS) / 2;
+        updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
 
       const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5, inputValues.timeMultiplier)
       const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area, inputValues.timeMultiplier);
       setResult(data_RO); // Set the entire response object as result
+
       // console.log("Result PR:", data_RO.permeate_flow_rate);
       setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate)* timeMultiplier);
       setFlowrate(parseFloat(flow.flowrate_per_min)* timeMultiplier);
       console.log("Flow Rate:", flowrate);
       console.log("Permeate Flow Rate:", PermeateFlowRate);
+
+      updateLog(`Motor flow rate calculated: ${flow.flowrate_per_min}`);
+      updateLog(`RO filtration data: ${JSON.stringify(data_RO)}`);
 
       setWaterFlowStarted(true);
 
@@ -463,10 +491,12 @@ const SimulationPage = () => {
 
   const handleStartWaterFlow = () => {
     setWaterFlowStarted(true);
+    updateLog("Water Flow Started.");
   };
 
   const handleStopWaterFlow = () => {
     setWaterFlowStarted(false);
+    updateLog("Water Flow Stopped.");
   };
 
   const handleMotorToggle = () => {
@@ -474,6 +504,7 @@ const SimulationPage = () => {
       setAlertShown(false); // Reset alertShown state when motor is manually turned off
     }
     setMotorOn((prev) => !prev); // Toggle motor state
+    updateLog(`Motor turned ${motorOn ? "off" : "on"}.`);
     setFlow2((flow2) => !flow2);
   };
 
@@ -485,6 +516,7 @@ const SimulationPage = () => {
       setIsSimulationRunning(true);
       // setFlow4((flow4) => !flow4);
       setFlow1((flow1) => !flow1);
+      updateLog("Simulation started.")
     } else {
       handleStopWaterFlow(); // Stop water flow
       setIsSimulationRunning(false);
@@ -493,6 +525,7 @@ const SimulationPage = () => {
       setFlow3(false);
       setFlow4(false);
       setMotorOn(false);
+      updateLog("Simulation stopped.")
     }
   };
 
@@ -502,6 +535,7 @@ const SimulationPage = () => {
       setWaterConsumed((prev) => prev + 0.5); 
     } else {
       alert("Not enough water in RO Filter to consume.");
+      updateLog("Not enough water in RO Filter to consume.");
     }
   };
 
@@ -528,6 +562,7 @@ const SimulationPage = () => {
     // Call function to check if marker overlaps with any icon
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates);
     console.log("Marker is placed on:", iconId);
+    updateLog(`Marker is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
   
@@ -549,6 +584,7 @@ const SimulationPage = () => {
         // console.log(`Marker is placed on ${iconId}`);
         if (iconId === 'KRBSump') {
           console.log("Marker is Placed on KRB Sump");
+          
         }
         isPlaced = true;
       }
@@ -592,6 +628,7 @@ const SimulationPage = () => {
       setCanvasItems([...canvasItems, newItem]);
       setItemToAdd(null); // Reset the itemToAdd since it has been added
       console.log(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
+      updateLog(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
     }
   };
 
@@ -623,6 +660,7 @@ const SimulationPage = () => {
     
     const { isPlaced, iconId } = checkMarkerOverlap(coordinates);
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
+    updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
@@ -676,6 +714,8 @@ const SimulationPage = () => {
             isSimulationRunning={isSimulationRunning} 
             handleMultiplierChange={handleMultiplierChange}
             timeMultiplier={timeMultiplier}
+            handleDownloadLog={handleDownloadLog}
+
         />
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
@@ -724,6 +764,7 @@ const SimulationPage = () => {
                   waterConsumed={waterConsumed}
                   flowrate={flowrate}
                 />
+              
 
               {/* IoT Nodes  */}
               <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
@@ -875,6 +916,7 @@ const SimulationPage = () => {
 
             </div>
           </div>
+
           <br></br>
           <div className="result-container">
             <div className="water-flow-container">
