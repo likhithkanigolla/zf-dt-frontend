@@ -23,7 +23,9 @@ const SimulationPage = () => {
   // State for holding input values and results
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
+  const [timeMultiplier, setTimeMultiplier] = useState(1);
   const [inputValues, setInputValues] = useState({
+    timeMultiplier: "1",
     SandQuantity: "2000",
     SoilQuantity: "3000",
     voltage: "240",
@@ -94,6 +96,11 @@ const SimulationPage = () => {
   const [leakageLocation, setLeakageLocation] = useState("");
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
+
+  const handleMultiplierChange = (e) => {
+    setTimeMultiplier(parseFloat(e.target.value));
+  };
+
   // Function to handle leakage icon click
   const handleLeakageIconClick = () => {
     setShowLeakageOptions(true);
@@ -200,7 +207,7 @@ const SimulationPage = () => {
         //   setMotorOn(true);
         //   setFlow2(true);
         // }
-        if (waterInSump === 0) {
+        if (waterInSump < flowrate) {
           setMotorOn(false);
           setFlow2(false);
           // alert("No water in sump.");
@@ -323,7 +330,7 @@ const SimulationPage = () => {
     }
   };
 
-  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area) => {
+  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area, timeMultiplier) => {
     const requestBody = {
       initial_tds: calculatedTDS,
       desired_tds: desired_tds,
@@ -331,6 +338,7 @@ const SimulationPage = () => {
       temperature: temperature,
       effective_membrane_area: membrane_area,
       sump_capacity: inputValues.sumpCapacity,
+      timeMultiplier: timeMultiplier,
       // Other parameters as needed
     };
 
@@ -348,13 +356,14 @@ const SimulationPage = () => {
     return data;
   };
 
-  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth) => {
+  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth,timeMultiplier) => {
     const requestBody = {
       voltage: voltage,
       current: current,
       power_factor: power_factor,
       motor_efficiency: motor_efficiency,
       depth: depth, 
+      timeMultiplier: timeMultiplier
     };
 
     let response = await fetch(
@@ -412,12 +421,12 @@ const SimulationPage = () => {
         calculatedTDS = (SoilTDS + SandTDS) / 2;
       }
 
-      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5);
-      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
+      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5, inputValues.timeMultiplier)
+      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area, inputValues.timeMultiplier);
       setResult(data_RO); // Set the entire response object as result
       // console.log("Result PR:", data_RO.permeate_flow_rate);
-      setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate));
-      setFlowrate(parseFloat(flow.flowrate_per_min));
+      setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate)* timeMultiplier);
+      setFlowrate(parseFloat(flow.flowrate_per_min)* timeMultiplier);
       console.log("Flow Rate:", flowrate);
       console.log("Permeate Flow Rate:", PermeateFlowRate);
 
@@ -665,6 +674,8 @@ const SimulationPage = () => {
             handleChange={handleChange} 
             handleStartSimulation={handleStartSimulation} 
             isSimulationRunning={isSimulationRunning} 
+            handleMultiplierChange={handleMultiplierChange}
+            timeMultiplier={timeMultiplier}
         />
         {/* Middle Section */}
         <div style={{ flex: 3 }}>

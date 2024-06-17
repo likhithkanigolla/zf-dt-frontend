@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SimulationForm.css';
 
-function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning }) {
+function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleMultiplierChange,timeMultiplier }) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -26,6 +26,15 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
     return (
         <div>
         <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '75vh', color: 'white' }}>
+            <div>
+            <label style={{color: 'black'}}>Speed Multiplier: </label>
+            <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="4">4x</option>
+                <option value="8">8x</option>
+            </select>
+            </div>
             <h3 className="heading" onClick={toggleWaterConfig}>
                 Water Configuration
             </h3>
