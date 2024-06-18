@@ -211,6 +211,7 @@ const SimulationPage = () => {
         
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
+          console.log("Permeate_Flow_here:",PermeateFlowRate)
           setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
           setWaterInROFilter(
             (prev) => prev + PermeateFlowRate 
@@ -534,9 +535,10 @@ const SimulationPage = () => {
   };
 
   const handleConsumeWater = () => {
-    if (waterInROFilter >= 0.5) {
-      setWaterInROFilter((prev) => prev - 0.5); 
-      setWaterConsumed((prev) => prev + 0.5); 
+    // Consumption is 10% of the filteration. 
+    if (waterInROFilter >= (PermeateFlowRate/10)) {
+      setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
+      setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
     } else {
       alert("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
