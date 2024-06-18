@@ -60,19 +60,14 @@ const RealValueVisualisation = () => {
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(10); // Initial water level in RO Filter
-  const [alertShown, setAlertShown] = useState(false);
-  const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [flowrate, setFlowrate] = useState(10);
-  const [data, setData] = useState([]);
+
 
   // All measurements are in m(meters)
   const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.5});
   const [ohtMeasurements, setOhtMeasurements] = useState({length: 13.6,breadth: 9, height: 1.34});
 
-  // calculate the sump capacity in litres with the sumpMeasurements given in m
-  const sumpCapacity = sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height * 1000;
-  const resultCardRef = useRef(null);
 
   const WaterLevelCalculate = async (waterlevel, length, breadth, height) => {
     const WaterPercentage = (((height * 100) - waterlevel) / (height * 100)) * 100;
@@ -236,7 +231,7 @@ const RealValueVisualisation = () => {
 
   return (
     <div>
-      <NavigationBar title="Digital Twin for Water Quality - Simulation" />
+      <NavigationBar title="Digital Twin for Water Quality " />
       <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div style={{ display: "flex", position: 'relative', width: '70vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
           <div className="demo-page">
