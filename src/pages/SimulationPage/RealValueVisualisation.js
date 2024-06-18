@@ -36,6 +36,23 @@ const RealValueVisualisation = () => {
     KRBROOHT: 0,
   });
 
+  const [units, setUnits] = useState ({
+    flowrate : "Kl/min",
+    totalflow: "Kl",
+    waterlevel : "cm",
+    temparature : "°C",
+    voltage : "V",
+    current	: "A",
+    power	: "W",
+    energy	: "kWh",
+    frequency  : "Hz",
+    power_factor : "n/a",
+    uncompensated_tds: "ppm",
+    compensated_tds: "ppm",
+    turbudity: "NTU",
+    ph: "pH",
+  });
+
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
@@ -83,7 +100,7 @@ const RealValueVisualisation = () => {
       // Create table header row
       const headerRow = document.createElement('tr');
       // Create table header cells
-      const headers = ['Parameter', 'Value']; // Modify the headers here
+      const headers = ['Parameter', 'Value', 'Units']; // Modify the headers here
       // Add styles to the table
       table.style.width = '100%';
       table.style.borderCollapse = 'collapse';
@@ -109,8 +126,13 @@ const RealValueVisualisation = () => {
         valueCell.textContent = value;
         valueCell.style.border = '1px solid black';
         valueCell.style.padding = '8px';
+        const unitCell = document.createElement('td');
+        unitCell.textContent = units[key] || ''; // Get the unit from the units object, or leave it empty if not found
+        unitCell.style.border = '1px solid black';
+        unitCell.style.padding = '8px';
         row.appendChild(keyCell);
         row.appendChild(valueCell);
+        row.appendChild(unitCell);
         table.appendChild(row);
       });
       // Display the table in a suitable container or console.log for debugging
