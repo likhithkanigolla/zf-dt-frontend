@@ -186,7 +186,8 @@ const SimulationPage = () => {
         
         // Calculate the effective flow rate into OHT
         updateLog(`Motor Flow Rate: ${flowrate}`);
-        const effectiveFlowRate = Math.max(flowrate - totalLeakageRate, 1); 
+        const effectiveFlowRate = Math.max(flowrate - totalLeakageRate + (Math.random() - 0.5), 1); 
+  
         updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
         // console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
 
@@ -204,10 +205,13 @@ const SimulationPage = () => {
           }
         }
         // console.log("Permate_Flow_here:",PermeateFlowRate)
+        const temp_permeate = PermeateFlowRate+ (Math.random() - 0.5);
+        setPermeateFlowRate(temp_permeate)
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
+        
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
-          setWaterInOHT((prev) => Math.max(prev - PermeateFlowRate, 0));
+          setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
           setWaterInROFilter(
             (prev) => prev + PermeateFlowRate 
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
@@ -949,7 +953,7 @@ const SimulationPage = () => {
 
 
         {/* Right Section */}
-        <ResultContainer result={result} data={data} sensorValues={sensorValues}/>
+        <ResultContainer result={result} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate}/>
         
       </div>
     </div>

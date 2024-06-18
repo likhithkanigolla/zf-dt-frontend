@@ -9,7 +9,7 @@ const ResultCard = ({ title, value }) => {
     );
   };
 
-const ResultContainer = ({ result, data, sensorValues }) => {
+const ResultContainer = ({ result, data, sensorValues,PermeateFlowRate }) => {
     return (
         <div style={{ flex: 1 }}>
             <div className="result-container">
@@ -21,7 +21,7 @@ const ResultContainer = ({ result, data, sensorValues }) => {
                     />
                     <ResultCard
                         title="Permeate Flow Rate(l/s)"
-                        value={result?.permeate_flow_rate ?? "N/A"}
+                        value={PermeateFlowRate ?? "N/A"}
                     />
                     <ResultCard
                         title="Final TDS Concentration After RO Tank(mg/L)"
