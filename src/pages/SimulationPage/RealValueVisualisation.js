@@ -75,9 +75,8 @@ const RealValueVisualisation = () => {
 
 
   useEffect(() => {
-      const fetchData = async () => {
-
-      setFlow1(true)
+    const fetchData = async () => {
+      setFlow1(true);
       // Calculate Water in Sump
       const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
       const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate(SumpWaterLevelData.waterlevel, sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
@@ -91,20 +90,34 @@ const RealValueVisualisation = () => {
       // Calculate Motor Running Status
       const MotorData = await getRealData('DM-KH98-60');
       const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
-      // let status = 1; 
-      // const MotorFlowrate = await MotorFlow(415, 1.5, 0.85, 0.85, sumpMeasurements.height, status); // Used for testing 
       setMotorOn(MotorData.status === 1 ? true : false);
-      setFlow2(MotorData.status === 1 ? true : false)
+      setFlow2(MotorData.status === 1 ? true : false);
       console.log("Motor FlowRate", MotorFlowrate);
 
-      };
-      fetchData();
+      // WaterQuantityNode Data 
+      const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
+      const WaterQuantityDataKW2 = await getRealData('WM-WF-KB04-73');
+      const WaterQuantityDataR1 = await getRealData('WM-WF-KH04-71');
+      const WaterQuantityDataR2 = await getRealData('WM-WF-KH04-72');
+      const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KB98-40');
+      console.log("WaterQuantityBorewelltoSump", WaterQuantityBorewelltoSump)
+      const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
+      if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
+      if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
+      if (WaterQuantityDataR1.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
+      if (WaterQuantityDataR2.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
+      if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
+      if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
 
-      // if (resultCardRef.current) {
-      //   console.log('ResultCard div is:', resultCardRef.current);
-      //   // You can now directly interact with the DOM element, for example:
-      //   // resultCardRef.current.style.backgroundColor = 'lightblue';
-      // }
+    };
+
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 120000); // Run every 2 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
 
@@ -135,146 +148,99 @@ const RealValueVisualisation = () => {
 
 
   return (
-    <div style={{ height: "100vh" }}>
-      <NavigationBar title="Digital Twin for Water Quality - Simulation" />
-      <div style={{ display: "flex", height: "100%" }}>
-          <div className="demo-page" style={{ flex: 1 }}>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                border: '1px solid black',
-              }}
-            >
-              <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
-              <SimulationCanvas 
-                  iconRefs={iconRefs}
-                  flow1={flow1}
-                  flow2={flow2}
-                  flow3={flow3}
-                  flow4={flow4}
-                  flow5={flow5}
-                  flow6={flow6}
-                  flow7={flow7}
-                  flow8={flow8}
-                  flow9={flow9}
-                  setFlow1={setFlow1}
-                  waterInSump={waterInSump}
-                  motorOn={motorOn}
-                  isSimulationRunning={isSimulationRunning}
-                  waterInOHT={waterInOHT}
-                  waterInROFilter={waterInROFilter}
-                  waterConsumed={waterConsumed}
-                  flowrate={flowrate}
-                />
+    <div>
+    <NavigationBar title="Digital Twin for Water Quality - Simulation" />
+    <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div style={{ display: "flex", position: 'relative', width: '70vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+        <div className="demo-page">
+          <div>
 
-              {/* IoT Nodes  */}
-              <div style={{ position: "absolute", top: "24vw", left: "13vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH98-00')}
-                />
-              </div>
+            <SimulationCanvas
+              iconRefs={iconRefs}
+              flow1={flow1}
+              flow2={flow2}
+              flow3={flow3}
+              flow4={flow4}
+              flow5={flow5}
+              flow6={flow6}
+              flow7={flow7}
+              flow8={flow8}
+              flow9={flow9}
+              setFlow1={setFlow1}
+              waterInSump={waterInSump}
+              waterInOHT={waterInOHT}
+              waterInROFilter={waterInROFilter}
+              motorOn={motorOn}
+              isSimulationRunning={isSimulationRunning}  
+              waterConsumed={waterConsumed}
+              flowrate={flowrate}
+            />
 
-              <div style={{ position: "absolute", top: "21vw", left: "29vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                onClick={() => getRealData('WM-WD-KH96-00')}
-                />
-              </div>
-
-              <div style={{ position: "absolute", top: "24vw", left: "38vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH96-01')}
-                />
-                {/* <div>KRB between oht and ro tank</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "20vw", left: "51vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH04-00')}
-                />
-                {/* <div>RO OHT</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "35vw", left: "44vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH95-00')}
-                />
-                {/* <div>RO 1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "35vw", left: "50vw", textAlign: "center", }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node"
-                 style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WD-KH01-00')}
-                />
-                {/* <div>RO 3</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "24vw", left: "17vw", textAlign: "center", }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WL-KH98-00')}
-                />
-                {/* <div>SUMP</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "21vw", left: "33vw", textAlign: "center", }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('WM-WL-KH00-00')}
-                />
-                {/* <div>OHT</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "23vw", left: "22.7vw", textAlign: "center", }}>
-                <img src={MotorNode} alt="MotorNode"
-                  style={{ width: "3vw", height: "3vw",}}
-                  onClick={() => getRealData('DM-KH98-60')}
-                />
-                {/* <div>Motor</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "4vw", left: "34.5vw", textAlign: "center", }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-70')}
-                />
-                {/* <div>W1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "9.4vw", left: "36.5vw", textAlign: "center", }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-73')}
-                />
-                {/* <div>W2</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "25vw", left: "44.5vw", textAlign: "center", transform: "rotate(90deg)",}}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-71')}
-                />
-                {/* <div>RO1</div> */}
-              </div>
-
-              <div style={{ position: "absolute", top: "25vw", left: "50vw", textAlign: "center", transform: "rotate(90deg)",}}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode"
-                  style={{ width: "2vw", height: "2vw",}}
-                  onClick={() => getRealData('WM-WF-KB04-72')}
-                />
-                {/* <div>RO3</div> */}
-              </div>
+            {/* IoT Nodes  */}
+            <div style={{ position: "absolute", top: "17vw", left: "14vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} />
             </div>
+
+            <div style={{ position: "absolute", top: "13vw", left: "31.5vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH96-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "14vw", left: "37vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH96-01')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "20vw", left: "43vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH04-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "30vw", left: "45vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={() => getRealData('WM-WD-KH95-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "30vw", left: "50.4vw", textAlign: "center" }}>
+              <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={() => getRealData('WM-WD-KH01-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "13vw", left: "16vw", textAlign: "center" }}>
+              <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WL-KH98-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "8vw", left: "29.8vw", textAlign: "center" }}>
+              <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WL-KH00-00')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "18vw", left: "23.6vw", textAlign: "center" }}>
+              <img src={MotorNode} alt="MotorNode" style={{ width: "1.2vw", height: "1.2vw" }} onClick={() => getRealData('DM-KH98-60')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "12vw", left: "9.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "15vw", left: "26vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH95-40')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "4vw", left: "34.5vw", textAlign: "center" }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KB04-70')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "10vw", left: "36.5vw", textAlign: "center" }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KB04-73')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "25vw", left: "44.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KB04-71')} />
+            </div>
+
+            <div style={{ position: "absolute", top: "25vw", left: "50vw", textAlign: "center", transform: "rotate(90deg)" }}>
+              <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KB04-72')} />
+            </div>
+
+          </div>
         </div>
       </div>
-      {/* <ResultCard ref={resultCardRef} title="Water Level" value="75%" /> */}
+    </div>
     </div>
   );
 };

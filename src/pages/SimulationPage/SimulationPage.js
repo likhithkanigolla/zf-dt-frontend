@@ -17,8 +17,8 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
 
 
-// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-const backendAPI = "http://localhost:1629";
+const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+// const backendAPI = "http://localhost:1629";
 
 const SimulationPage = () => {
   // State for holding input values and results

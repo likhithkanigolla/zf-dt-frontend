@@ -78,7 +78,7 @@ flowrate
         <div style={{ fontSize: "1vw" }}>Borewell</div>
       </div>
 
-      {/* Straight Pipes */}
+      {/* Straight Pipes Sump to Motor*/}
       <div>
         <div style={{ position: "absolute", top: "20.6vw", left: "25vw" }}>
           <StraightPipe flow={flow3} 
@@ -129,12 +129,12 @@ flowrate
             
         <div style={{ position: "absolute", top: "1.5vw", left: "34.3vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
-          <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
+          <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
         </div>
 
         <div style={{ position: "absolute", top: "7.6vw", left: "37.2vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
-          <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
+          <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
         </div>
 
         {/* Straight Pipe OHT to KRB Washrooms */}
@@ -151,7 +151,7 @@ flowrate
         </div>
 
         {/* Straight Pipe RO Plant to RO OHT*/}
-        <div style={{ position: "absolute", top: "23.2vw", left: "48.9vw" }}>
+        <div style={{ position: "absolute", top: "23.2vw", left: "48.7vw" }}>
           <StraightPipe flow={flow8} />
         </div>
 
@@ -177,8 +177,8 @@ flowrate
         </div>
 
         {/* RO Coolers */}
-        <div style={{ position: "absolute", top: "28vw", left: "44.4vw", textAlign: "center", }} >
-          <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "2.8vw", height: "2.8vw" }}
+        <div style={{ position: "absolute", top: "28vw", left: "43.9vw", textAlign: "center", }} >
+          <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.8vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler1"; iconRefs.push(ref); } }}
           />
@@ -186,16 +186,16 @@ flowrate
           <div style={{ fontSize: "1vw" }}>{((3 * waterConsumed) / 4).toFixed(1)}L</div>
         </div>
 
-        <div style={{ position: "absolute", top: "28vw", left: "47.1vw", textAlign: "center", }}>
-          <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "2.8vw", height: "2.8vw" }}
+        <div style={{ position: "absolute", top: "28vw", left: "46.6vw", textAlign: "center", }}>
+          <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.8vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler2"; iconRefs.push(ref); } }}
           />
           <div style={{ fontSize: "1vw" }}>RO 2</div>
         </div>
 
-        <div style={{ position: "absolute", top: "28vw", left: "49.8vw", textAlign: "center", }}>
-          <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "2.8vw", height: "2.8vw" }}
+        <div style={{ position: "absolute", top: "28vw", left: "49.3vw", textAlign: "center", }}>
+          <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler3"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "1vw" }}>RO 3</div>
