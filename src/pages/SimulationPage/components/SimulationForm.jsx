@@ -36,6 +36,9 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                 <option value="2">2x</option>
                 <option value="4">4x</option>
                 <option value="8">8x</option>
+                <option value="16">16x</option>
+                <option value="32">32x</option>
+                <option value="64">64x</option>
             </select>
             </div>
             <h3 className="heading" onClick={toggleWaterConfig}>
