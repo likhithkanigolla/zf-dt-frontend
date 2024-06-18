@@ -26,6 +26,13 @@ const SimulationCanvas = ({
   flow1,
   setFlow1,
   flow2,
+  flow3,
+  flow4,
+  flow5,
+  flow6,
+  flow7,
+  flow8,
+  flow9,
   waterInSump,
   motorOn,
   toggleIsOn,
@@ -45,15 +52,15 @@ flowrate
         <div style={{ fontSize: "1vw" }}>PumpHouse</div>
       </div>
 
-      {/* Z Shape Pipe */}
+      {/* Z Shape Pipe Pumphouse to Sump*/}
       <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
         <ZshapePipe flow={flow1} onClick={() => { setFlow1((flow1) => !flow1); }}
         ref={(ref) => { if (ref) { ref.id = "PipeP1toSump"; iconRefs.push(ref); } }} />
       </div>
 
-      {/* Mirror Z Pipe */}
+      {/* Mirror Z Pipe Borewell to Sump */}
       <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
-        <MirrorZPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
+        <MirrorZPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
         
@@ -74,7 +81,7 @@ flowrate
       {/* Straight Pipes */}
       <div>
         <div style={{ position: "absolute", top: "20.6vw", left: "25vw" }}>
-          <StraightPipe flow={flow2} 
+          <StraightPipe flow={flow3} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
@@ -86,7 +93,7 @@ flowrate
         </div>
 
         <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
-          <MirrorZPipe flow={flow2} 
+          <MirrorZPipe flow={flow4} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
@@ -108,18 +115,18 @@ flowrate
             <div style={{fontSize: "1vw"}}>{motorOn ? (flowrate + Math.random() * 2 - 1).toFixed(2) : 0} L/s</div>
           </div>
 
-          {/* L Shape Pipe */}
+          {/* L Shape Pipe  OHT to RO PIPE*/}
         <div style={{ position: "absolute", top: "11.5vw", left: "32.2vw", transform: "rotate(180deg)" }}>
-          <LShapePipe flow={flow1} 
+          <LShapePipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "OHTtoROPipe"; iconRefs.push(ref); } }}
           />
         </div>
 
-        {/* L Shape Pipe */}
+        {/* L Shape Pipe OHT to Admin Block Washrooms*/}
         <div style={{ position: "absolute", top: "10.5vw", left: "31.8vw", transform: "rotate(90deg)" }}>
-          <LShapePipe flow={flow1} />
+          <LShapePipe flow={flow6} />
         </div>
-
+            
         <div style={{ position: "absolute", top: "1.5vw", left: "34.3vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
@@ -130,9 +137,9 @@ flowrate
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
         </div>
 
-        {/* Straight Pipe */}
+        {/* Straight Pipe OHT to KRB Washrooms */}
         <div style={{ position: "absolute", top: "13vw", left: "41.5vw" }}>
-          <StraightPipe flow={flow1} />
+          <StraightPipe flow={flow7} />
         </div>
 
         {/* Water Tower */}
@@ -143,9 +150,9 @@ flowrate
           <div style={{ fontSize: "1vw" }}><b>{waterInOHT.toFixed(2)}L</b></div>
         </div>
 
-        {/* Straight Pipe */}
+        {/* Straight Pipe RO Plant to RO OHT*/}
         <div style={{ position: "absolute", top: "23.2vw", left: "48.9vw" }}>
-          <StraightPipe flow={flow1} />
+          <StraightPipe flow={flow8} />
         </div>
 
         {/* RO Plant */}
@@ -156,9 +163,9 @@ flowrate
           <div style={{ fontSize: "1vw" }}>RO Plant</div>
         </div>
 
-        {/* E Shape Pipe */}
+        {/* E Shape Pipe RO OHT to Ro Filters*/}
         <div style={{ position: "absolute", top: "30vw", left: "51.5vw" }}>
-          <EShapePipe flow={flow1} />
+          <EShapePipe flow={flow9} />
         </div>
 
         {/* Water Tower */}

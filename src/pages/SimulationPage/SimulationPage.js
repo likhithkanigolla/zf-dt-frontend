@@ -763,7 +763,14 @@ const SimulationPage = () => {
                   handleIconClick={handleIconClick}
                   iconRefs={iconRefs}
                   flow1={flow1}
-                  flow2={flow2}
+                  flow2={flow1}
+                  flow3={flow2}
+                  flow4={flow2}
+                  flow5={flow1}
+                  flow6={flow1}
+                  flow7={flow1}
+                  flow8={flow1}
+                  flow9={flow1}
                   setFlow1={setFlow1}
                   waterInSump={waterInSump}
                   motorOn={motorOn}

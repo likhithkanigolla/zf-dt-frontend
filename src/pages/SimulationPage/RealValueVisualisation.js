@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { saveAs } from 'file-saver';
+import React, { useRef,useState, useEffect } from 'react';
+
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import Toolbar from "./components/ToolBar";
-import SimulationForm from "./components/SimulationForm";
 import ResultContainer from "./components/ResultContainer";
-import LeakageOptions from "./components/LeakageOptions";
+
 import SimulationCanvas from "./components/SimulationCanvas";
 
 import whiteimage from "../images/white.png";
@@ -14,7 +12,6 @@ import MotorNode from "../images/MotorNode.png";
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
-import LeakageIcon from "../images/leakage_water.png"; 
 
 
 const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
@@ -23,11 +20,15 @@ const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
 const RealValueVisualisation = () => {
   // State for holding input values and results
   const iconRefs = [];
-
-
-
   const [flow1, setFlow1] = useState(false);
   const [flow2, setFlow2] = useState(false);
+  const [flow3, setFlow3] = useState(false);
+  const [flow4, setFlow4] = useState(false);
+  const [flow5, setFlow5] = useState(false);
+  const [flow6, setFlow6] = useState(false);
+  const [flow7, setFlow7] = useState(false);
+  const [flow8, setFlow8] = useState(false);
+  const [flow9, setFlow9] = useState(false);
 
   const [sensorValues, setSensorValues] = useState({
     KRBSump: 0,
@@ -46,25 +47,75 @@ const RealValueVisualisation = () => {
   const [flowrate, setFlowrate] = useState(10);
   const [data, setData] = useState([]);
 
+  // All measurements are in m(meters)
+  const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.5});
+  const [ohtMeasurements, setOhtMeasurements] = useState({length: 13.6,breadth: 9, height: 1.34});
 
+  // calculate the sump capacity in litres with the sumpMeasurements given in m
+  const sumpCapacity = sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height * 1000;
+  const resultCardRef = useRef(null);
+
+  const WaterLevelCalculate = async (waterlevel, length, breadth, height) => {
+    const WaterPercentage = (((height * 100) - waterlevel) / (height * 100)) * 100;
+    const EstimatedWaterCapacity = (length * breadth * height * 1000) * (WaterPercentage / 100);
+    return [WaterPercentage, EstimatedWaterCapacity]; // Return values inside an array
+  };
 
 
   
+  const MotorFlow = async (voltage, current, power_factor, motor_efficiency, depth, status) => {
+    const power_input = voltage * current * (1.73205080757) * power_factor; // 1.73205080757 is sqrt(3), considering 3 phase motor
+    const p_mechanical = power_input * motor_efficiency;
+    const p_hydraulic = p_mechanical;
+    const flowrate = p_hydraulic / (1000 * 9.81 * depth);
+    const flowrate_lpm = flowrate * 1000 * status;
+    return flowrate_lpm;
+  }
+
 
 
   useEffect(() => {
-    
+      const fetchData = async () => {
+
+      setFlow1(true)
+      // Calculate Water in Sump
+      const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
+      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate(SumpWaterLevelData.waterlevel, sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
+      setWaterInSump(SumpEstimatedWaterCapacity);
+
+      // Calculate Water in OHT
+      const OHTWaterLevelData = await getRealData('WM-WL-KH00-00');
+      const [OHTWaterPercentage, OHTEstimatedWaterCapacity] = await WaterLevelCalculate(OHTWaterLevelData.waterlevel, ohtMeasurements.length, ohtMeasurements.breadth, ohtMeasurements.height);
+      setWaterInOHT(OHTEstimatedWaterCapacity);
+
+      // Calculate Motor Running Status
+      const MotorData = await getRealData('DM-KH98-60');
+      const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
+      // let status = 1; 
+      // const MotorFlowrate = await MotorFlow(415, 1.5, 0.85, 0.85, sumpMeasurements.height, status); // Used for testing 
+      setMotorOn(MotorData.status === 1 ? true : false);
+      setFlow2(MotorData.status === 1 ? true : false)
+      console.log("Motor FlowRate", MotorFlowrate);
+
+      };
+      fetchData();
+
+      // if (resultCardRef.current) {
+      //   console.log('ResultCard div is:', resultCardRef.current);
+      //   // You can now directly interact with the DOM element, for example:
+      //   // resultCardRef.current.style.backgroundColor = 'lightblue';
+      // }
   }, []);
 
 
-  const ResultCard = ({ title, value }) => {
-    return (
-      <div className="result-card">
-        <h5>{title}</h5>
-        <p>{value}</p>
-      </div>
-    );
-  };
+  // const ResultCard = React.forwardRef(({ title, value }, ref) => {
+  //   return (
+  //     <div ref={ref} className="result-card">
+  //       <h5>{title}</h5>
+  //       <p>{value}</p>
+  //     </div>
+  //   );
+  // });
 
   const getRealData = async (tableName) => {
     try {
@@ -73,31 +124,26 @@ const RealValueVisualisation = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json(); // Assuming this returns an object
-      // Transform the data object into an array of objects for each key-value pair,
-      // ensuring null values are handled gracefully.
-      const dataArray = Object.entries(data).map(([key, value]) => ({
-        title: key,
-        value: value === null ? 'N/A' : value.toString(), // Use 'N/A' for null values
-      }));
-      setData(dataArray); // Assuming you have a setData function to update state
+      // console.log(data);
+      return data;
     } catch (error) {
       console.error("Fetch error:", error);
-      setData([{ title: "Error", value: "Failed to fetch data" }]); // Update accordingly
+      return { error: "Failed to fetch data" }; // Update accordingly
     }
   };
 
 
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <NavigationBar title="Digital Twin for Water Quality - Simulation" />
-      <div style={{ display: "flex"}}>
-          <div className="demo-page">
+      <div style={{ display: "flex", height: "100%" }}>
+          <div className="demo-page" style={{ flex: 1 }}>
             <div
               style={{
                 position: 'relative',
-                width: '60vw',
-                height: '40vw',
+                width: '100%',
+                height: '100%',
                 border: '1px solid black',
               }}
             >
@@ -106,6 +152,13 @@ const RealValueVisualisation = () => {
                   iconRefs={iconRefs}
                   flow1={flow1}
                   flow2={flow2}
+                  flow3={flow3}
+                  flow4={flow4}
+                  flow5={flow5}
+                  flow6={flow6}
+                  flow7={flow7}
+                  flow8={flow8}
+                  flow9={flow9}
                   setFlow1={setFlow1}
                   waterInSump={waterInSump}
                   motorOn={motorOn}
@@ -221,6 +274,7 @@ const RealValueVisualisation = () => {
             </div>
         </div>
       </div>
+      {/* <ResultCard ref={resultCardRef} title="Water Level" value="75%" /> */}
     </div>
   );
 };
