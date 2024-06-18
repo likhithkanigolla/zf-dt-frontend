@@ -8,8 +8,8 @@
 }
 
 .lshape-svg-container svg {
-    width: 100%;
-    height: 100%;
+    width: 6vw;
+    height: 8vw;
     max-width: 100vw;
     max-height: 50vw;
 }
