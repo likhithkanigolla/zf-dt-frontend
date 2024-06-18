@@ -68,7 +68,7 @@ const SimulationPage = () => {
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
-  const [waterInROFilter, setWaterInROFilter] = useState(2); // Initial water level in RO Filter
+  const [waterInROFilter, setWaterInROFilter] = useState(10); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
@@ -207,10 +207,12 @@ const SimulationPage = () => {
         // console.log("Permate_Flow_here:",PermeateFlowRate)
         const temp_permeate = PermeateFlowRate+ (Math.random() - 0.5);
         setPermeateFlowRate(temp_permeate)
+        setWaterInROFilter(temp_permeate/5) //Initializing enough water to consume
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
+          console.log("Permeate_Flow_here:",PermeateFlowRate)
           setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
           setWaterInROFilter(
             (prev) => prev + PermeateFlowRate 
@@ -534,9 +536,10 @@ const SimulationPage = () => {
   };
 
   const handleConsumeWater = () => {
-    if (waterInROFilter >= 0.5) {
-      setWaterInROFilter((prev) => prev - 0.5); 
-      setWaterConsumed((prev) => prev + 0.5); 
+    // Consumption is 10% of the filteration. 
+    if (waterInROFilter >= (PermeateFlowRate/10)) {
+      setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
+      setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
     } else {
       alert("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
