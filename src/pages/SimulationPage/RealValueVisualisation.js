@@ -42,6 +42,7 @@ const RealValueVisualisation = () => {
     waterlevel : "cm",
     temparature : "°C",
     temperature: "°C",
+    status : "ON(1)/OFF(0)",
     voltage : "V",
     current	: "A",
     power	: "W",
@@ -118,12 +119,18 @@ const RealValueVisualisation = () => {
 
       // Similarly, add styles to cells in the body
       Object.entries(jsonData).forEach(([key, value]) => {
+        if (key === 'timestamp') {
+          return; // Skip the key 'timestamp'
+        }
         const row = document.createElement('tr');
         const keyCell = document.createElement('td');
         keyCell.textContent = key;
         keyCell.style.border = '1px solid black';
         keyCell.style.padding = '8px';
         const valueCell = document.createElement('td');
+        if (key === 'creationtime') {
+          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset
+        }
         valueCell.textContent = value;
         valueCell.style.border = '1px solid black';
         valueCell.style.padding = '8px';
