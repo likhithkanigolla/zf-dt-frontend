@@ -97,16 +97,16 @@ const RealValueVisualisation = () => {
       // WaterQuantityNode Data 
       const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
       const WaterQuantityDataKW2 = await getRealData('WM-WF-KB04-73');
-      const WaterQuantityDataR1 = await getRealData('WM-WF-KH04-71');
-      const WaterQuantityDataR2 = await getRealData('WM-WF-KH04-72');
-      const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KB98-40');
+      const WaterQuantityDataR1 = await getRealData('WM-WF-KB04-71');
+      const WaterQuantityDataR2 = await getRealData('WM-WF-KB04-72');
+      const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KH98-40');
       console.log("WaterQuantityBorewelltoSump", WaterQuantityBorewelltoSump)
       const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
       if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
       if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
       if (WaterQuantityDataR1.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
       if (WaterQuantityDataR2.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
-      if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
+      // if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
       if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
 
     };
