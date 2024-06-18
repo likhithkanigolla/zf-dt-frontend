@@ -62,9 +62,10 @@ const SimulationPage = () => {
   const [flow4, setFlow4] = useState(false);
 
   const [sensorValues, setSensorValues] = useState({
-    KRBSump: 0,
-    KRBOHTIcon: 0,
-    KRBROOHT: 0,
+    WaterQuality: 0,
+    WaterFlow: 0,
+    WaterLevel: 0,
+    MotorFlow:  0
   });
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
@@ -489,10 +490,12 @@ const SimulationPage = () => {
       updateLog(`RO filtration data: ${JSON.stringify(data_RO)}`);
 
       setWaterFlowStarted(true);
+      return calculatedTDS;
 
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
+
   };
 
   const getRealData = async (tableName) => {
@@ -633,11 +636,10 @@ const SimulationPage = () => {
       ) {
         iconId = ref.id; // Update iconId if the marker overlaps with the icon
         // console.log(`Marker is placed on ${iconId}`);
-        if (iconId === 'KRBSump') {
-          // console.log("Marker is Placed on KRB Sump");
-          toast.success("Marker is Placed on KRB Sump");
-          
-        }
+        // if (iconId === 'KRBSump') {
+        //   // console.log("Marker is Placed on KRB Sump");
+        //   toast.success("Marker is Placed on KRB Sump");
+        // }
         isPlaced = true;
       }
     });
@@ -701,7 +703,7 @@ const SimulationPage = () => {
     console.log(refId, "coordinates:", iconCoordinates);
   };
 
-  const handleMarkerClick = (item, index, event) => {
+  const handleMarkerClick = async (item, index, event) => {
     const { clientX, clientY } = event; 
     const coordinates = {
       x: clientX,
@@ -712,24 +714,49 @@ const SimulationPage = () => {
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
     updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
+    const caltds= await handleCalculate()
+    console.log("Calculated TDS:",caltds)
+
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        KRBSump: (waterInSump/inputValues.sumpCapacity)*100,
+        WaterLevel: (waterInSump/inputValues.sumpCapacity)*100,
       }));
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        KRBOHTIcon: (waterInOHT/inputValues.ohtCapacity)*100,
+        WaterLevel: (waterInOHT/inputValues.ohtCapacity)*100,
       }));
     }
     if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        'KRBROOHT': (waterInROFilter/inputValues.ro_ohtCapacity)*100,
+        WaterLevel: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
+    if(iconId=='KRBSump' && item.type=='waterqualitysensor'){
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        WaterQuality: caltds,
+      }));
+
+    }
+    if(iconId=='KRBOHTIcon' && item.type=='waterqualitysensor'){
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        WaterQuality: caltds + Math.floor(Math.random() * 21) - 10,
+      }));
+
+    }
+    if(iconId=='KRBROOHT' && item.type=='waterqualitysensor'){
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        WaterQuality: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
+      }));
+    }
+    
+
   };
 
   const handleToolbarItemClick = (type) => {

@@ -52,7 +52,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
           {Object.entries(sensorValues).map(([title, value], index) => (
             <ResultCard
               key={index}
-              title={title}
+              title={title+"(Virtual Sensor)"}
               value={value}
               // previousValue={result?.previous_sensor_values?.[title] ?? 0}
             />
