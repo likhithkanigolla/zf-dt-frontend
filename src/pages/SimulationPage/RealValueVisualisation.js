@@ -41,6 +41,7 @@ const RealValueVisualisation = () => {
     totalflow: "Kl",
     waterlevel : "cm",
     temparature : "°C",
+    temperature: "°C",
     voltage : "V",
     current	: "A",
     power	: "W",
