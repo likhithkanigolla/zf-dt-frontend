@@ -1,34 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import './StraightPipe.css';
 
 function StraightPipe({ flow, onClick }) {
+    const [initialFlowComplete, setInitialFlowComplete] = useState(false);
+
+    useEffect(() => {
+        if (flow) {
+            const timer = setTimeout(() => {
+                setInitialFlowComplete(true);
+            }, 2000); // Match this duration to the initialFlow animation duration
+
+            return () => clearTimeout(timer);
+        }
+    }, [flow]);
+
     return (
-        <svg 
-            width="6vw" // Set width to 100% of the parent container
-            height="8vw" // Set height to 50% of the parent container
-            viewBox="0 0 100 100" // Set the viewBox to maintain aspect ratio
-            className='absolute bottom-10 right-52'
-            onClick={onClick} // Add onClick event here
-            style={{ maxWidth: '100vw', maxHeight: '50vw' }} // Limit maximum width and height
-        >
-            {flow ? 
+        <div className="straight-svg-container" onClick={onClick}>
+            <svg viewBox="0 0 100 100">
+                <defs>
+                    <clipPath id="straightPipeClipPath">
+                        <polygon points="0 45, 100 45, 100 55, 0 55" />
+                    </clipPath>
+                    <linearGradient id="straightWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
+                        <stop offset="0%" stopColor="lightblue" />
+                        <stop offset="50%" stopColor="#008ECC" />
+                        <stop offset="100%" stopColor="lightblue" />
+                    </linearGradient>
+                </defs>
+
                 <polygon
                     points="0 45, 100 45, 100 55, 0 55"
-                    fill='transparent'
-                    stroke="black"
-                    strokeWidth="2"
-                    id='animatedPolygon'
-                /> 
-                :
-                <polygon
-                    points="0 45, 100 45, 100 55, 0 55"
-                    fill='transparent'
-                    stroke="black"
-                    strokeWidth="2"
+                    className="straight-pipe-border"
                 />
-            }
-        </svg>
+
+                {flow && (
+                    <>
+                        <g className="straight-pipe-water">
+                            {!initialFlowComplete && (
+                                <rect
+                                    x="0"
+                                    y="45"
+                                    width="100"
+                                    height="10"
+                                    fill="lightblue"
+                                    className="straight-initial-flow"
+                                />
+                            )}
+                            {initialFlowComplete && (
+                                <rect
+                                    x="0"
+                                    y="45"
+                                    width="200"
+                                    height="10"
+                                    fill="lightblue"
+                                    className="straight-initial-flow"
+                                    style={{ transform: 'translateX(0)' }}
+                                />
+                            )}
+                            <rect
+                                x="0"
+                                y="45"
+                                width="200"
+                                height="10"
+                                fill="url(#straightWaveGradient)"
+                                className="straight-wave-path"
+                            />
+                        </g>
+
+                        
+                    </>
+                )}
+            </svg>
+        </div>
     );
 }
 
 export default StraightPipe;
- 
