@@ -777,7 +777,7 @@ const SimulationPage = () => {
               
 
               {/* IoT Nodes  */}
-              <div style={{ position: "absolute", top: "21vw", left: "13vw", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "24vw", left: "13vw", textAlign: "center", }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node"
                   style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WD-KH98-00')}
@@ -823,7 +823,7 @@ const SimulationPage = () => {
                 {/* <div>RO 3</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "21vw", left: "17vw", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "24vw", left: "17vw", textAlign: "center", }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode"
                   style={{ width: "3vw", height: "3vw",}}
                   onClick={() => getRealData('WM-WL-KH98-00')}

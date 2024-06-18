@@ -1,39 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import './EShapePipe.css';
 
 function EShapePipe({ flow, onClick, text }) {
+    const [initialFlowComplete, setInitialFlowComplete] = useState(false);
+
+    useEffect(() => {
+        if (flow) {
+            const timer = setTimeout(() => {
+                setInitialFlowComplete(true);
+            }, 2000); // Match this duration to the initialFlow animation duration
+
+            return () => clearTimeout(timer);
+        }
+    }, [flow]);
+
     return (
-        <svg 
-            width="6vw" // Set width to 100% of the parent container
-            height="8vw" // Set height to 50% of the parent container
-            viewBox="0 0 100 100" // Set the viewBox to maintain aspect ratio
-            className='absolute bottom-10 right-52'
-            onClick={onClick} // Add onClick event here
-            style={{ maxWidth: '100vw', maxHeight: '50vw' }} // Limit maximum width and height
-        >
-            {flow ? 
-                <>
-                    <polygon
-                        points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
-                        fill='transparent'
-                        stroke="black"
-                        strokeWidth="2"
-                        id='animatedPolygon'
-                    /> 
-                    <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
-                </>
-                :
-                <>
+        <div className="eshape-svg-container" onClick={onClick}>
+            <svg viewBox="0 0 100 100">
+                <defs>
+                    <clipPath id="eshapePipeClipPath">
+                        <polygon points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0" />
+                    </clipPath>
+                    <linearGradient id="eshapeWaveGradient" x1="0%" y1="5%" x2="0%" y2="50%">
+                        <stop offset="0%" stopColor="lightblue" />
+                        <stop offset="50%" stopColor="#008ECC" />
+                        <stop offset="100%" stopColor="lightblue" />
+                    </linearGradient>
+                </defs>
+
                 <polygon
                     points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
-                    fill='transparent'
-                    stroke="black"
-                    strokeWidth="2"
+                    className="eshape-pipe-border"
                 />
-                 <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
-                </>
-                
-            }
-        </svg>
+
+                {flow && (
+                    <>
+                        <g className="eshape-pipe-water">
+                            {!initialFlowComplete && (
+                                <rect
+                                    x="0"
+                                    y="0"
+                                    width="100"
+                                    height="10"
+                                    fill="lightblue"
+                                    className="eshape-initial-flow"
+                                />
+                            )}
+                            {initialFlowComplete && (
+                                <rect
+                                    x="0"
+                                    y="0"
+                                    width="100"
+                                    height="200"
+                                    fill="lightblue"
+                                    className="eshape-initial-flow"
+                                    style={{ transform: 'translateY(0)' }}
+                                />
+                            )}
+                            <rect
+                                x="0"
+                                y="0"
+                                width="100"
+                                height="200"
+                                fill="url(#eshapeWaveGradient)"
+                                className="eshape-wave-path"
+                            />
+                        </g>
+
+                       
+                    </>
+                )}
+                <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
+            </svg>
+        </div>
     );
 }
 
