@@ -46,13 +46,13 @@ flowrate
       </div>
 
       {/* Z Shape Pipe */}
-      <div style={{ position: "absolute", top: "8.5vw", left: "7.8vw" }}>
+      <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
         <ZshapePipe flow={flow1} onClick={() => { setFlow1((flow1) => !flow1); }}
         ref={(ref) => { if (ref) { ref.id = "PipeP1toSump"; iconRefs.push(ref); } }} />
       </div>
 
       {/* Mirror Z Pipe */}
-      <div style={{ position: "absolute", top: "16vw", left: "7.8vw" }}>
+      <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
         <MirrorZPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
@@ -73,19 +73,19 @@ flowrate
 
       {/* Straight Pipes */}
       <div>
-        <div style={{ position: "absolute", top: "13vw", left: "18vw" }}>
+        <div style={{ position: "absolute", top: "18.7vw", left: "25vw" }}>
           <StraightPipe flow={flow2} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
         {/* SUMP */}
-        <div style={{ position: "absolute", top: "13vw", left: "13vw", textAlign: "center" }}>
-          <img src={SumpIcon} alt="sump" style={{ width: "6vw", height: "6vw" }} onClick={(e) => handleIconClick(e)}
+        <div style={{ position: "absolute", top: "13vw", left: "12vw", textAlign: "center" }}>
+          <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "KRBSump"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "1vw" }}>SUMP-{waterInSump.toFixed(2)}L</div>
         </div>
 
-        <div style={{ position: "absolute", top: "10.3vw", left: "25vw" }}>
+        <div style={{ position: "absolute", top: "10.5vw", left: "25vw" }}>
           <MirrorZPipe flow={flow2} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
@@ -116,21 +116,22 @@ flowrate
         </div>
 
         {/* L Shape Pipe */}
-        <div style={{ position: "absolute", top: "3.5vw", left: "33vw", transform: "rotate(90deg)" }}>
+        <div style={{ position: "absolute", top: "10.5vw", left: "31.8vw", transform: "rotate(90deg)" }}>
           <LShapePipe flow={flow1} />
         </div>
 
-        <div style={{ position: "absolute", top: "1.8vw", left: "34.5vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "1.5vw", left: "34.3vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
         </div>
 
-        <div style={{ position: "absolute", top: "8vw", left: "38.5vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "8vw", left: "38vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
         </div>
 
-        <div style={{ position: "absolute", top: "7vw", left: "35vw" }}>
+        {/* Straight Pipe */}
+        <div style={{ position: "absolute", width: "30px", top: "13vw", left: "40.85vw" }}>
           <StraightPipe flow={flow1} />
         </div>
 
@@ -143,7 +144,7 @@ flowrate
         </div>
 
         {/* Straight Pipe */}
-        <div style={{ position: "absolute", top: "17vw", left: "41.5vw" }}>
+        <div style={{ position: "absolute", top: "23vw", left: "48vw" }}>
           <StraightPipe flow={flow1} />
         </div>
 
@@ -156,7 +157,7 @@ flowrate
         </div>
 
         {/* E Shape Pipe */}
-        <div style={{ position: "absolute", top: "22vw", left: "45.5vw" }}>
+        <div style={{ position: "absolute", top: "30vw", left: "51.5vw" }}>
           <EShapePipe flow={flow1} />
         </div>
 

@@ -1,0 +1,81 @@
+.straight-svg-container {
+    position: absolute;
+    bottom: 10%;
+    right: 52%;
+    width: 8vw;
+    height: 73px;
+   
+}
+
+.straight-svg-container svg {
+    width: 100%;
+    height: 120%;
+    max-width: 100vw;
+    max-height: 50vw;
+}
+
+.straight-pipe-border {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+.straight-pipe-water {
+    fill: url(#straightWaveGradient);
+    stroke: rgb(39, 186, 194);
+    clip-path: url(#straightPipeClipPath);
+}
+
+@keyframes straightWaveAnimation {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes straightInitialFlowAnimation {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes straightFallingWater {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(6vw) scaleX(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(11vw) scaleX(1);
+        opacity: 0;
+    }
+}
+
+@keyframes straightBubbleAnimation {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+}
+
+.straight-initial-flow {
+    animation: straightInitialFlowAnimation 3s forwards;
+    fill: lightblue;
+}
+
+.straight-wave-path {
+    animation: straightWaveAnimation 2s infinite linear;
+}
+
