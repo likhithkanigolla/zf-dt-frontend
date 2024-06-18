@@ -16,11 +16,17 @@ function ZshapePipe({ flow, onClick }) {
 
     return (
         <div className="svg-container" onClick={onClick}>
-            <svg viewBox="0 0 105 150">
+            <svg 
+                viewBox="0 0 100 100"
+                width="100vw" // Set width to 100% of the parent container
+                height="50vw" // Set height to 50% of the parent container
+                className='absolute bottom-10 right-52'
+                style={{ maxWidth: '100vw', maxHeight: '50vw' }}
+            >
                 <defs>
                     <clipPath id="pipeClipPath">
                         <path
-                            d="M 50,0 L 50,90 L 98,90 L 98,98 L 44,98 L 44,10 L 0,10 L 0,0 Z"
+                            d="M 50,0 L 50,90 L 100,90 L 100,100 L 40,100 L 40,10 L 0,10 L 0,0 Z"
                         />
                     </clipPath>
                     <linearGradient id="waveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
@@ -31,7 +37,7 @@ function ZshapePipe({ flow, onClick }) {
                 </defs>
 
                 <path
-                    d="M 50,0 L 50,90 L 98,90 L 98,98 L 44,98 L 44,10 L 0,10 L 0,0 Z"
+                    d="M 50,0 L 50,90 L 100,90 L 100,100 L 40,100 L 40,10 L 0,10 L 0,0 Z"
                     className="pipe-border"
                 />
 

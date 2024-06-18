@@ -3,13 +3,13 @@
     bottom: 10%;
     right: 52%;
     width: 8vw;
-    height: 73px;
+    height: 5vw;
    
 }
 
 .straight-svg-container svg {
     width: 100%;
-    height: 120%;
+    height: 100%;
     max-width: 100vw;
     max-height: 50vw;
 }

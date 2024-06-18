@@ -104,6 +104,7 @@ const SimulationPage = () => {
 
   const handleMultiplierChange = (e) => {
     setTimeMultiplier(parseFloat(e.target.value));
+    updateLog(`Speed Multiplier changed to ${e.target.value}.`);
   };
 
   // Function to handle leakage icon click
@@ -855,7 +856,7 @@ const SimulationPage = () => {
                 {/* <div>W1</div> */}
               </div>
 
-              <div style={{ position: "absolute", top: "10vw", left: "37vw", textAlign: "center", }}>
+              <div style={{ position: "absolute", top: "9.4vw", left: "36.5vw", textAlign: "center", }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode"
                   style={{ width: "2vw", height: "2vw",}}
                   onClick={() => getRealData('WM-WF-KB04-73')}

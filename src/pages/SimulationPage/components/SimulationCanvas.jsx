@@ -38,7 +38,7 @@ flowrate
 }) => {
   return (
     <div>
-      <div style={{ position: "absolute", top: "6vw", left: "3.8vw" }} id="pumpHouseIcon">
+      <div style={{ position: "absolute", top: "7vw", left: "3.9vw" }} id="pumpHouseIcon">
         <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
           ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
         />
@@ -73,7 +73,7 @@ flowrate
 
       {/* Straight Pipes */}
       <div>
-        <div style={{ position: "absolute", top: "18.7vw", left: "25vw" }}>
+        <div style={{ position: "absolute", top: "20vw", left: "25vw" }}>
           <StraightPipe flow={flow2} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
@@ -85,13 +85,13 @@ flowrate
           <div style={{ fontSize: "1vw" }}>SUMP-{waterInSump.toFixed(2)}L</div>
         </div>
 
-        <div style={{ position: "absolute", top: "10.5vw", left: "25vw" }}>
+        <div style={{ position: "absolute", top: "11.5vw", left: "25.5vw" }}>
           <MirrorZPipe flow={flow2} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
         {/* Motor */}
-        <div style={{ position: "absolute", top: "15.5vw", left: "21.5vw", textAlign: "center", width: "5.8vw" }}
+        <div style={{ position: "absolute", top: "16vw", left: "21.5vw", textAlign: "center", width: "5.8vw" }}
           ref={(ref) => { if (ref) { ref.id = "Motor"; iconRefs.push(ref); } }}>
           <img src={Motor} alt="Motor"
             className={`motor ${motorOn ? "running" : ""}`}
@@ -125,13 +125,13 @@ flowrate
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
         </div>
 
-        <div style={{ position: "absolute", top: "8vw", left: "38vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "7vw", left: "37.2vw", textAlign: "center" }}>
           <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
           <img src={Washrooms} alt="WaterTank" style={{ width: "2.8vw", height: "2.8vw" }} />
         </div>
 
         {/* Straight Pipe */}
-        <div style={{ position: "absolute", width: "30px", top: "13vw", left: "40.85vw" }}>
+        <div style={{ position: "absolute", width: "30px", top: "13vw", left: "40.5vw" }}>
           <StraightPipe flow={flow1} />
         </div>
 
@@ -149,7 +149,7 @@ flowrate
         </div>
 
         {/* RO Plant */}
-        <div style={{ position: "absolute", top: "17vw", left: "37vw" }}>
+        <div style={{ position: "absolute", top: "17vw", left: "37.2vw" }}>
           <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
             onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "ROPlant"; iconRefs.push(ref); } }}
           />
@@ -162,7 +162,7 @@ flowrate
         </div>
 
         {/* Water Tower */}
-        <div style={{ position: "absolute", top: "16.5vw", left: "43.4vw" , textAlign: "center"}}>
+        <div style={{ position: "absolute", top: "16.1vw", left: "43.2vw" , textAlign: "center"}}>
           <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
           <div style={{ fontSize: "1vw" }}><b>{waterInROFilter.toFixed(2)}L</b></div>
           <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)}
