@@ -15,10 +15,10 @@ import Borewell from "../../images/borewell.png";
 import Watertank from "../../images/watertank.png";
 import ROWatertank from "../../images/tank_ro.png";
 import Washrooms from "../../images/Washrooms.png";
+import Sump from './Sump';
+import WaterTank from './Watertank';
 
 const backendAPI = "http://localhost:1629";
-
-
 
 const SimulationCanvas = ({
   handleIconClick,
@@ -34,7 +34,7 @@ const SimulationCanvas = ({
   waterInOHT,
   waterInROFilter,
   waterConsumed,
-flowrate
+  flowrate
 }) => {
   return (
     <div>
@@ -51,16 +51,15 @@ flowrate
         ref={(ref) => { if (ref) { ref.id = "PipeP1toSump"; iconRefs.push(ref); } }} />
       </div>
 
-      {/* Mirror Z Pipe */}
-      <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
-        <MirrorZPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
+      {/* Straight Pipe from Borewell to Sump */}
+      <div style={{ position: "absolute", top: "21vw", left: "15vw" }}>
+        <StraightPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
-        
       </div>
 
       {/* Borewell */}
-      <div id="borewellIcon" style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
+      <div id="borewellIcon" style={{ position: "absolute", top: "17vw", left: "3.8vw" }}>
         <img
           src={Borewell}
           alt="borewell"
@@ -78,20 +77,18 @@ flowrate
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
-        {/* SUMP */}
-        <div style={{ position: "absolute", top: "13vw", left: "12vw", textAlign: "center" }}>
-          <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} onClick={(e) => handleIconClick(e)}
-            ref={(ref) => { if (ref) { ref.id = "KRBSump"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "1vw" }}>SUMP-{waterInSump.toFixed(2)}L</div>
-        </div>
+        {/* Sump */}
+        <Sump waterInSump={waterInSump} onClick={(e) => handleIconClick(e)} 
+         ref={(ref) => {if (ref) {ref.id = "KRBSump"; iconRefs.push(ref);} }}/>
 
-        <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
+        {/* MirrorZpipe */}
+        <div style={{ position: "absolute", top: "11.9vw", left: "25.5vw" }}>
           <MirrorZPipe flow={flow2} 
           ref={(ref) => { if (ref) { ref.id = "motorOHTPipe"; iconRefs.push(ref); } }} />
         </div>
 
         {/* Motor */}
-        <div style={{ position: "absolute", top: "17vw", left: "21.5vw", textAlign: "center", width: "5.8vw" }}
+        <div style={{ position: "absolute", zIndex: 2,top: "17vw", left: "21.5vw", textAlign: "center", width: "5.8vw" }}
           ref={(ref) => { if (ref) { ref.id = "Motor"; iconRefs.push(ref); } }}>
           <img src={Motor} alt="Motor"
             className={`motor ${motorOn ? "running" : ""}`}
@@ -135,13 +132,13 @@ flowrate
           <StraightPipe flow={flow1} />
         </div>
 
-        {/* Water Tower */}
-        <div style={{ position: "absolute", top: "9vw", left: "29vw",textAlign: "center"}}>
-          <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }} onClick={(e) => handleIconClick(e)}
-            ref={(ref) => { if (ref) { ref.id = "KRBOHTIcon"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "1vw" }}>KRB OHT</div>
-          <div style={{ fontSize: "1vw" }}><b>{waterInOHT.toFixed(2)}L</b></div>
+       {/* Water Tower */}
+       <div>
+          <WaterTank waterInOHT={waterInOHT} handleIconClick={handleIconClick} 
+          onClick={(e) => handleIconClick(e)}
+          ref={(ref) => { if (ref) { ref.id = "KRBOHTIcon"; iconRefs.push(ref); } }} />
         </div>
+
 
         {/* Straight Pipe */}
         <div style={{ position: "absolute", top: "23.2vw", left: "48.9vw" }}>
@@ -162,7 +159,7 @@ flowrate
         </div>
 
         {/* Water Tower */}
-        <div style={{ position: "absolute", top: "16.7vw", left: "43.5vw" , textAlign: "center"}}>
+        <div style={{ position: "absolute", top: "16.5vw", left: "43.5vw" , textAlign: "center"}}>
           <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
           <div style={{ fontSize: "1vw" }}><b>{waterInROFilter.toFixed(2)}L</b></div>
           <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)}

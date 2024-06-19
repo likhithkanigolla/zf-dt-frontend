@@ -36,8 +36,8 @@ const SimulationPage = () => {
     temperature: "25",
     desired_tds: "65",
     membrane_area: "3700",
-    sumpCapacity: "60000",
-    ohtCapacity: "100000",
+    sumpCapacity: "6000",
+    ohtCapacity: "10000",
     ro_ohtCapacity: "1000",
     // flowrate: "5"
   });
