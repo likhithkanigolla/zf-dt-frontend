@@ -45,7 +45,7 @@ flowrate
 }) => {
   return (
     <div>
-      <div style={{ position: "absolute", top: "7vw", left: "3.9vw" }} id="pumpHouseIcon">
+      <div style={{ position: "absolute", top: "7vw", left: "3.9vw"}} id="pumpHouseIcon">
         <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
           ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
         />
@@ -111,7 +111,7 @@ flowrate
             }}
             />
             {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
-            <div style={{ fontSize: "1vw" }}>Motor</div>
+            <div style={{ fontSize: "1vw" }}>Motor Pumping Rate</div>
             <div style={{fontSize: "1vw"}}>{motorOn ? (flowrate + Math.random() * 2 - 1).toFixed(2) : 0} L/s</div>
           </div>
 

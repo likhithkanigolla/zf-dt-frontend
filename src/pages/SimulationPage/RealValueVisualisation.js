@@ -230,16 +230,34 @@ const RealValueVisualisation = () => {
     }
   };
 
+  const Box = ({ color, src }) => (
+    <div style={{
+      flex: 1,
+      backgroundColor: color,
+      margin: '0px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
+    </div>
+  );
 
 
   return (
     <div>
       <NavigationBar title="Digital Twin for Water Quality " />
-      <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", position: 'relative', width: '70vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+      <div style={{ display: "flex"}} className='Page'>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
+    </div>
+      <div style={{ height: "46vw", width: "20vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+        <div style={{ display: "flex", position: 'relative', width: '70vw', height: '45vw', border: '1px', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
           <div className="demo-page">
             <div>
-
               <SimulationCanvas
                 iconRefs={iconRefs}
                 flow1={flow1}
@@ -334,6 +352,13 @@ const RealValueVisualisation = () => {
 
           </div>
         </div>
+      </div>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+    </div>
       </div>
     </div>
   );
