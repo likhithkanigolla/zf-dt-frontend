@@ -54,7 +54,7 @@ flowrate
 
       {/* Z Shape Pipe Pumphouse to Sump*/}
       <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
-        <ZshapePipe flow={flow1} onClick={() => { setFlow1((flow1) => !flow1); }}
+        <ZshapePipe flow={flow1}
         ref={(ref) => { if (ref) { ref.id = "PipeP1toSump"; iconRefs.push(ref); } }} />
       </div>
 

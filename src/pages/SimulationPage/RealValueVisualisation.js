@@ -123,8 +123,8 @@ const RealValueVisualisation = () => {
         keyCell.style.border = '1px solid black';
         keyCell.style.padding = '8px';
         const valueCell = document.createElement('td');
-        if (key === 'creationtime') {
-          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset
+        if (key === 'creationtime' && value !== null) {
+          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset only if value is not null
         }
         valueCell.textContent = value;
         valueCell.style.border = '1px solid black';
@@ -157,8 +157,11 @@ const RealValueVisualisation = () => {
 
 
   useEffect(() => {
+    setFlow2(true);
+    setFlow3(true);
+    setFlow5(true);
+    setFlow8(true);
     const fetchData = async () => {
-      setFlow1(true);
       // Calculate Water in Sump
       const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
       const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate(SumpWaterLevelData.waterlevel, sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
@@ -173,7 +176,7 @@ const RealValueVisualisation = () => {
       const MotorData = await getRealData('DM-KH98-60');
       const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
       setMotorOn(MotorData.status === 1 ? true : false);
-      setFlow2(MotorData.status === 1 ? true : false);
+      setFlow4(MotorData.status === 1 ? true : false);
       console.log("Motor FlowRate", MotorFlowrate);
 
       // WaterQuantityNode Data 
@@ -187,8 +190,8 @@ const RealValueVisualisation = () => {
       if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
       if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
       if (WaterQuantityDataR1.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
-      if (WaterQuantityDataR2.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
-      // if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
+      if (WaterQuantityDataR2.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
+      if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
       if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
 
     };
@@ -249,6 +252,7 @@ const RealValueVisualisation = () => {
                 flow8={flow8}
                 flow9={flow9}
                 setFlow1={setFlow1}
+                setFlow2={setFlow2} 
                 waterInSump={waterInSump}
                 waterInOHT={waterInOHT}
                 waterInROFilter={waterInROFilter}
