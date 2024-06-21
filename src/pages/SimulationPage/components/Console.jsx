@@ -25,12 +25,15 @@ const ConsoleHeader = ({ handleDownloadLog, log}) => {
     <div className="container" style={styles.consoleContainer}>
     <div className='flex-container' style={styles.headingContainer}>
         <h3 style={styles.heading}>Console</h3>
-      </div>
-      <div className='flex-container' style={styles.buttonContainer}>
         <button onClick={handleDownloadLog} className='button' style={styles.button}><FaDownload style={styles.icon} /></button>
         <button onClick={handleDownloadLog} className='button' style={styles.button}><FaSave style={styles.icon} /></button>
         <button onClick={handleDownloadLog} className='button' style={styles.button}><IoIosCloseCircle style={styles.icon} /></button>
       </div>
+      {/* <div className='flex-container' style={styles.buttonContainer}>
+        <button onClick={handleDownloadLog} className='button' style={styles.button}><FaDownload style={styles.icon} /></button>
+        <button onClick={handleDownloadLog} className='button' style={styles.button}><FaSave style={styles.icon} /></button>
+        <button onClick={handleDownloadLog} className='button' style={styles.button}><IoIosCloseCircle style={styles.icon} /></button>
+      </div> */}
       <div className='log-container' style={styles.logContainer} ref={listRef}>
         {/* {logs.map((log, index) => (
           <div key={index} style={styles.log}>{log}</div>
@@ -50,7 +53,7 @@ const styles = {
     padding: '10px',
     background: 'white',
     overflowY: 'scroll',
-    height: '30vh'
+    height: '17vh'
   },
   buttonContainer: {
     display: 'flex',
@@ -84,7 +87,7 @@ const styles = {
     padding: '10px',
     border: '1px solid limegreen',
     borderRadius: '5px',
-    maxHeight: '30vh',
+    maxHeight: '10vh',
     maxWidth: '100vh',
     overflowY: 'auto' 
     // auto scroll to down automatically 

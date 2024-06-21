@@ -29,6 +29,7 @@ const SimulationPage = () => {
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [timeMultiplier, setTimeMultiplier] = useState(1);
   const [inputValues, setInputValues] = useState({
+    Scenarios: "1",
     timeMultiplier: "1",
     SandQuantity: "2000",
     SoilQuantity: "3000",
