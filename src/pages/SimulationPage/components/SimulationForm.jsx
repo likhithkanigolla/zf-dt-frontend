@@ -3,7 +3,7 @@ import './SimulationForm.css';
 import Toolbar from "./ToolBar";
 import ConsoleHeader from "./Console";
 
-function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick}) {
+function SimulationForm({inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick, log}) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -24,13 +24,13 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
     const toggleMotorConfig = () => {
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
-
+    console.log("Log100:" , log)
 
     
 
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '40vh', color: 'white' }}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '80vh', color: 'white' }}>
             <div>
             <label style={{color: 'black'}} className="heading">Speed Multiplier: 
             <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
@@ -313,7 +313,7 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         /> */}
 
         
-        <ConsoleHeader handleDownloadLog={handleDownloadLog} />
+        {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} /> */}
         <button onClick={handleStartSimulation} className="button">{isSimulationRunning ? "Stop Simulation" : "Start Simulation"}</button>
         {/* <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button> */}
         

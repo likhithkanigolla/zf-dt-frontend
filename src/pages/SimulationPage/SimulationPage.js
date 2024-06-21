@@ -8,6 +8,7 @@ import SimulationForm from "./components/SimulationForm";
 import ResultContainer from "./components/ResultContainer";
 import LeakageOptions from "./components/LeakageOptions";
 import SimulationCanvas from "./components/SimulationCanvas";
+import ConsoleHeader from "./components/Console";
 
 import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png"; 
@@ -168,11 +169,9 @@ const SimulationPage = () => {
   useEffect(() => {
     let intervalId;
     let intervalwaterConsume;
+    console.log("iconRefs",iconRefs);
     if (waterFlowStarted) {
       intervalId = setInterval(() => {
-        setMotorOn(true)
-        setFlow2(true);
-        updateLog("Motor turned on.");
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
@@ -524,14 +523,16 @@ const SimulationPage = () => {
 
   const handleStartWaterFlow = () => {
     setWaterFlowStarted(true);
+    setMotorOn(true);
     updateLog("Water Flow Started.");
-    toast.info("Water flow started!");
+    updateLog("Motor turned on.");
+    // toast.info("Water flow started!");
   };
 
   const handleStopWaterFlow = () => {
     setWaterFlowStarted(false);
     updateLog("Water Flow Stopped.");
-    toast.info("Water flow stopped!");
+    // toast.info("Water flow stopped!");
   };
 
   const handleMotorToggle = () => {
@@ -564,6 +565,8 @@ const SimulationPage = () => {
       setIsSimulationRunning(true);
       // setFlow4((flow4) => !flow4);
       setFlow1((flow1) => !flow1);
+      setFlow2(true);
+      setMotorOn(true);
       updateLog("Simulation started.")
       toast.success("Simulation started!");
     } else {
@@ -701,6 +704,7 @@ const SimulationPage = () => {
       y: event.clientY,
     };
     console.log(refId, "coordinates:", iconCoordinates);
+    console.log("Icon clicked:", refId);
   };
 
   const handleMarkerClick = async (item, index, event) => {
@@ -788,10 +792,6 @@ const SimulationPage = () => {
       <div style={{ display: "flex" }}>
         {/* Left Section */}
         <SimulationForm 
-            SoilQuantity={SoilQuantity} 
-            setSoilQuantity={setSoilQuantity} 
-            SandQuantity={SandQuantity} 
-            setSandQuantity={setSandQuantity} 
             inputValues={inputValues} 
             handleChange={handleChange} 
             handleStartSimulation={handleStartSimulation} 
@@ -801,6 +801,7 @@ const SimulationPage = () => {
             handleDownloadLog={handleDownloadLog}
             handleToolbarItemClick={handleToolbarItemClick}
             handleLeakageIconClick={handleLeakageIconClick}
+            log={log}
         />
 
         {/* Middle Section */}
@@ -810,7 +811,7 @@ const SimulationPage = () => {
               handleToolbarItemClick={handleToolbarItemClick} 
               handleLeakageIconClick={handleLeakageIconClick} 
         />
-        <div><br></br></div>
+        {/* <div><br></br></div> */}
           <LeakageOptions
           showLeakageOptions={showLeakageOptions}
           numLeakages={numLeakages}
@@ -827,7 +828,7 @@ const SimulationPage = () => {
               style={{
                 position: 'relative',
                 width: '60vw',
-                height: '40vw',
+                height: '35vw',
                 border: '1px solid black',
               }}
               onDrop={handleDrop}
@@ -969,6 +970,7 @@ const SimulationPage = () => {
             }
 
             </div>
+          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} />
           </div>
 
           <br></br>
