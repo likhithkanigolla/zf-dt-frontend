@@ -34,9 +34,9 @@
   left: 1vw;
   width: 15vw;
   background-color: rgb(62, 195, 221);
-  transition: height 2s infinite;
+  transition: height 3s infinite;
   animation: wave 3s infinite;
-  border-radius: 80%;
+  border-radius: 50%;
 }
 
 .watertank-wave {
@@ -48,6 +48,7 @@
   bottom: 0.2vw;
   background: rgb(62, 194, 220);
   border-radius: 50vw;
+  transition: height 2s infinite;
   animation: watertank-wave 3s infinite;
 }
 
