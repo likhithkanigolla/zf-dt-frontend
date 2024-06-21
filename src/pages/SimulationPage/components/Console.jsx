@@ -34,7 +34,7 @@ const styles = {
   consoleContainer: {
     color: 'white',
     fontFamily: 'monospace',
-    padding: '20px',
+    padding: '10px',
     background: 'white',
     overflowY: 'scroll',
     height: '30vh'
@@ -43,12 +43,10 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '1rem'
   },
   button: {
     height: '2vw',
-    width: '5vw',
-    margin: '1vw',
+    width: '4vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -60,7 +58,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '1rem'
   },
   heading: {
     margin: 0,
@@ -77,9 +74,9 @@ const styles = {
     maxHeight: '30vh',
     overflowY: 'auto' // Scrollable log container
   },
-  log: {
-    margin: '5px 0'
-  }
+//   log: {
+//     margin: '5px 0'
+//   }
 };
 
 export default ConsoleHeader;
