@@ -69,21 +69,21 @@ const ActuationPage = () => {
   });
 
   const nodePositions = {
-    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "22vw", left: "31vw" },
-    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '47vw' },
-    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '39vw'},
-    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '27.8vw' }, //sump
-    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '46vw' }, //oht
-    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '22vw', left: '51.5vw' }, //after oht
-    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '37vw', left: '65.2vw' }, //ro 2
-    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '37vw', left: '59.6vw' },  //faculty launge
-    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '58vw' }, //after ro
-    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '33vw', left: '60vw', transform: 'rotate(90deg)'},
-    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '33vw', left: '65.5vw', transform: 'rotate(90deg)'}, 
-    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '50vw'},
-    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '52vw'},   
-    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '24.5vw', transform: 'rotate(90deg)', zIndex: '3'},
-    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '22vw', left: '41vw',transform: 'rotate(90deg)'},   
+    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "24vw", left: "38vw" },
+    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '54vw' },
+    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '26vw', left: '46vw'},
+    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '26vw', left: '34.8vw' }, //sump
+    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '22vw', left: '53vw' }, //oht
+    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '24vw', left: '59.5vw' }, //after oht
+    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '38vw', left: '73vw' }, //ro 2
+    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '38vw', left: '67vw' },  //faculty launge
+    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '29vw', left: '65vw' }, //after ro
+    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '34vw', left: '67.5vw', transform: 'rotate(90deg)'},
+    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '34vw', left: '73vw', transform: 'rotate(90deg)'}, 
+    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '13vw', left: '57vw'},
+    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '59vw'},   
+    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw', transform: 'rotate(90deg)', zIndex: '3'},
+    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '48.5vw',transform: 'rotate(90deg)'},   
   };
 
   // Debug Statements for Printing the usestate
@@ -286,6 +286,19 @@ const ActuationPage = () => {
       </>
     );
   };
+
+  const Box = ({ color, src }) => (
+    <div style={{
+      flex: 1,
+      backgroundColor: color,
+      margin: '0px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
+    </div>
+  );
   
   
 
@@ -293,128 +306,142 @@ const ActuationPage = () => {
     <div className="actuation-page">
       {/* <h2>Actuation Page</h2> */}
       <NavigationBar title="Digital Twin for Water Quality - Actuation" />
-      <div>
+      <div style={{ display: "flex"}} className='Page'>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
+        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
+        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
+      </div>
+        <div>
       {/* <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} /> */}
       {/* Components */}
-      <div style={{ height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", position: 'relative', width: '70vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-          <div className="demo-page">
-            <div style={{ position: "absolute", top: "7vw", left: "3.9vw"}} id="pumpHouseIcon">
-              <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }}/>
-              <div style={{ fontSize: "1vw" }}>PumpHouse</div>
-            </div>
-
-            {/* Z Shape Pipe Pumphouse to Sump*/}
-            <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
-              <ZshapePipe/>
-            </div>
-
-            {/* Mirror Z Pipe Borewell to Sump */}
-            <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
-              <MirrorZPipe style={{ width: "4.8vw", height: "4.8vw" }}/>
-            </div>
-
-            {/* Borewell */}
-            <div id="borewellIcon" style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
-              <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
-              <div style={{ fontSize: "1vw" }}>Borewell</div>
-            </div>
-
-            {/* Straight Pipes Sump to Motor*/}
-            <div>
-              <div style={{ position: "absolute", top: "20.6vw", left: "25vw" }}>
-                <StraightPipe/>
+        <div style={{ height: "46vw", display: "flex",flex:3, justifyContent: "center", alignItems: "center" }}>
+          <div style={{ display: "flex", position: 'relative', width: '55vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+            <div className="demo-page">
+              <div style={{ position: "absolute", top: "7vw", left: "3.9vw"}} id="pumpHouseIcon">
+                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }}/>
+                <div style={{ fontSize: "1vw" }}>PumpHouse</div>
               </div>
 
-              {/* SUMP */}
-              <div style={{ position: "absolute", top: "13vw", left: "12vw", textAlign: "center" }}>
-                <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} />
+              {/* Z Shape Pipe Pumphouse to Sump*/}
+              <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
+                <ZshapePipe/>
               </div>
 
-              <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
-                <MirrorZPipe/>
+              {/* Mirror Z Pipe Borewell to Sump */}
+              <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
+                <MirrorZPipe style={{ width: "4.8vw", height: "4.8vw" }}/>
               </div>
 
-              {/* Motor */}
-              <div style={{ position: "absolute", top: "17vw", left: "22vw", textAlign: "center", width: "5.8vw"}}>
-                <img src={Motor} alt="Motor" className={`motor`}style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)"}}/>
-                <div style={{ fontSize: "1vw" }}>Motor</div>
+              {/* Borewell */}
+              <div id="borewellIcon" style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
+                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
+                <div style={{ fontSize: "1vw" }}>Borewell</div>
               </div>
 
-              {/* L Shape Pipe  OHT to RO PIPE*/}
-              <div style={{ position: "absolute", top: "12vw", left: "32.2vw", transform: "rotate(180deg)" }}>
-                <LShapePipe/>
-              </div>
+              {/* Straight Pipes Sump to Motor*/}
+              <div>
+                <div style={{ position: "absolute", top: "20.6vw", left: "25vw" }}>
+                  <StraightPipe/>
+                </div>
 
-              {/* L Shape Pipe OHT to Admin Block Washrooms*/}
-              <div style={{ position: "absolute", top: "10.5vw", left: "31.8vw", transform: "rotate(90deg)" }}>
-                <LShapePipe/>
-              </div>
-                  
-              <div style={{ position: "absolute", top: "2vw", left: "34.3vw", textAlign: "center" }}>
-                <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
-                <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-              </div>
+                {/* SUMP */}
+                <div style={{ position: "absolute", top: "13vw", left: "12vw", textAlign: "center" }}>
+                  <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} />
+                </div>
 
-              <div style={{ position: "absolute", top: "7.8vw", left: "38.2vw", textAlign: "center" }}>
-                <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-                <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
-              </div>
+                <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
+                  <MirrorZPipe/>
+                </div>
 
-              {/* Straight Pipe OHT to KRB Washrooms */}
-              <div style={{ position: "absolute", top: "13vw", left: "41vw" }}>
-                <StraightPipe/>
-              </div>
+                {/* Motor */}
+                <div style={{ position: "absolute", top: "17vw", left: "22vw", textAlign: "center", width: "5.8vw"}}>
+                  <img src={Motor} alt="Motor" className={`motor`}style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)"}}/>
+                  <div style={{ fontSize: "1vw" }}>Motor</div>
+                </div>
 
-              {/* Water Tower */}
-              <div style={{ position: "absolute", top: "9vw", left: "29vw",textAlign: "center"}}>
-                <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
-                <div style={{ fontSize: "1vw" }}>KRB OHT</div>
-              </div>
+                {/* L Shape Pipe  OHT to RO PIPE*/}
+                <div style={{ position: "absolute", top: "12vw", left: "32.2vw", transform: "rotate(180deg)" }}>
+                  <LShapePipe/>
+                </div>
 
-              {/* Straight Pipe RO Plant to RO OHT*/}
-              <div style={{ position: "absolute", top: "23.2vw", left: "48.7vw" }}>
-                <StraightPipe/>
-              </div>
+                {/* L Shape Pipe OHT to Admin Block Washrooms*/}
+                <div style={{ position: "absolute", top: "10.5vw", left: "31.8vw", transform: "rotate(90deg)" }}>
+                  <LShapePipe/>
+                </div>
+                    
+                <div style={{ position: "absolute", top: "2vw", left: "34.3vw", textAlign: "center" }}>
+                  <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
+                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
+                </div>
 
-              {/* RO Plant */}
-              <div style={{ position: "absolute", top: "17vw", left: "37.2vw" }}>
-                <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}/>
-                <div style={{ fontSize: "1vw" }}>RO Plant</div>
-              </div>
+                <div style={{ position: "absolute", top: "7.8vw", left: "38.2vw", textAlign: "center" }}>
+                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
+                  <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
+                </div>
 
-              {/* E Shape Pipe RO OHT to Ro Filters*/}
-              <div style={{ position: "absolute", top: "30vw", left: "52vw" }}>
-                <EShapePipe/>
-              </div>
+                {/* Straight Pipe OHT to KRB Washrooms */}
+                <div style={{ position: "absolute", top: "13vw", left: "41vw" }}>
+                  <StraightPipe/>
+                </div>
 
-              {/* Water Tower */}
-              <div style={{ position: "absolute", top: "16.7vw", left: "43.5vw" , textAlign: "center"}}>
-                <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
-                <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }}/>
-              </div>
+                {/* Water Tower */}
+                <div style={{ position: "absolute", top: "9vw", left: "29vw",textAlign: "center"}}>
+                  <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
+                  <div style={{ fontSize: "1vw" }}>KRB OHT</div>
+                </div>
 
-              {/* RO Coolers */}
-              <div style={{ position: "absolute", top: "28vw", left: "43.9vw", textAlign: "center", }} >
-                <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.8vw", height: "3.8vw" }}/>
-                <div style={{ fontSize: "1vw" }}>RO 1</div>
-              </div>
+                {/* Straight Pipe RO Plant to RO OHT*/}
+                <div style={{ position: "absolute", top: "23.2vw", left: "48.7vw" }}>
+                  <StraightPipe/>
+                </div>
 
-              <div style={{ position: "absolute", top: "28vw", left: "46.6vw", textAlign: "center", }}>
-                <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.8vw", height: "3.8vw" }} />
-                <div style={{ fontSize: "1vw" }}>RO 2</div>
-              </div>
+                {/* RO Plant */}
+                <div style={{ position: "absolute", top: "17vw", left: "37.2vw" }}>
+                  <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}/>
+                  <div style={{ fontSize: "1vw" }}>RO Plant</div>
+                </div>
 
-              <div style={{ position: "absolute", top: "28vw", left: "49.3vw", textAlign: "center", }}>
-                <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}/>
-                <div style={{ fontSize: "1vw" }}>RO 3</div>
+                {/* E Shape Pipe RO OHT to Ro Filters*/}
+                <div style={{ position: "absolute", top: "30vw", left: "52vw" }}>
+                  <EShapePipe/>
+                </div>
+
+                {/* Water Tower */}
+                <div style={{ position: "absolute", top: "16.7vw", left: "43.5vw" , textAlign: "center"}}>
+                  <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
+                  <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }}/>
+                </div>
+
+                {/* RO Coolers */}
+                <div style={{ position: "absolute", top: "28vw", left: "43.9vw", textAlign: "center", }} >
+                  <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.8vw", height: "3.8vw" }}/>
+                  <div style={{ fontSize: "1vw" }}>RO 1</div>
+                </div>
+
+                <div style={{ position: "absolute", top: "28vw", left: "46.6vw", textAlign: "center", }}>
+                  <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.8vw", height: "3.8vw" }} />
+                  <div style={{ fontSize: "1vw" }}>RO 2</div>
+                </div>
+
+                <div style={{ position: "absolute", top: "28vw", left: "49.3vw", textAlign: "center", }}>
+                  <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}/>
+                  <div style={{ fontSize: "1vw" }}>RO 3</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
-    </div>
+        </div>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+        </div>
+      </div>
     </div>
   );
 }
