@@ -16,7 +16,7 @@ function MirrorZPipe({ flow, onClick }) {
 
     return (
         <div className="mirror-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 110 150">
                 <defs>
                     <clipPath id="mirrorPipeClipPath">
                         <polygon points="51 8, 51 100, 0 100, 0 92, 42 92, 42 0, 100 0, 100 8" />
@@ -66,6 +66,7 @@ function MirrorZPipe({ flow, onClick }) {
                                 className="mirror-wave-path"
                             />
                         </g>
+
                     </>
                 )}
             </svg>

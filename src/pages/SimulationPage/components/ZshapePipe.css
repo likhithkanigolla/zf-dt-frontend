@@ -89,29 +89,30 @@
     fill: rgb(37, 194, 226);
     animation: fallingWater 1s infinite ease-in;
     transform-origin: top;
-    height: 50px;
+    height: 2vw;
     z-index: 2;
 }
 
 .falling-water2 {
     fill: rgb(37, 194, 226);
-    animation: fallingWater 1.1s infinite ease-in;
+    animation: fallingWater 1s infinite ease-in;
     transform-origin: top;
     z-index: 2;
 }
 
 .falling-water3 {
     fill: rgb(37, 194, 226);
-    animation: fallingWater 1.2s infinite ease-in;
+    animation: fallingWater 1s infinite ease-in;
     transform-origin: top;
     z-index: 2;
 }
 
 .bubble {
     fill: rgb(15, 62, 155);
-    animation: bubbleAnimation 1.5s infinite ease-in-out;
-    height: 100%;
-    bottom: 10%;
-    width: 10px;
+    animation: bubbleAnimation 1s infinite ease-in-out;
+    height: 10vw;
+    left: 2vw;
+    bottom: 10vw;
+    width: 10vw;
     z-index: 3;
 }

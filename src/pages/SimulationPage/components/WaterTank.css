@@ -1,0 +1,72 @@
+.water-tank {
+  position: relative;
+  width: 6vw;
+  height: 9vw;
+  background-color: #bcbaba;
+  border-radius: 2vw;
+  overflow: hidden; /* Ensure the conical bottom doesn't overflow */
+  border: 2px solid #000000; /* Black border */
+}
+
+
+.water-tank-cone {
+  position: absolute;
+  bottom: -3vw; /* Adjust the position to fit the tank body */
+  left: 0;
+  width: 100%;
+  height: 6vw; /* Height of the conical bottom */
+  background-color: #bcbaba;
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 100%;
+}
+
+.water-tank-background {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1vw;
+  background-color: #bcbaba;
+}
+
+.water-tank-fill {
+  position: absolute;
+  bottom: -9%; /* Start filling from the bottom */
+  left: 35%;
+  width: 150%;
+  background-color: rgb(62, 195, 221);
+  transition: height 4s infinite;
+  animation: wave 4s infinite;
+  border-radius: 60%;
+}
+
+.watertank-wave {
+  position: relative;
+  width: 7vw;
+  height: 9vw;
+  left: -10%;
+  right: 10%;
+  bottom: 5%;
+  background: rgb(62, 194, 220);
+  border-radius: 60%;
+  animation: watertank-wave 1s infinite;
+}
+
+@keyframes watertank-wave {
+  0% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-20%, -5%);
+  }
+  100% {
+    transform: translate(-50%, -10%);
+  }
+}
+
+.water-tank-percentage {
+  position: absolute;
+  bottom: 1vw;
+  right: 0.5vw;
+  font-size: 1vw;
+  color: #0b0909;
+}
