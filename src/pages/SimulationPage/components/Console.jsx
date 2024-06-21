@@ -53,7 +53,7 @@ const styles = {
     padding: '10px',
     background: 'white',
     overflowY: 'scroll',
-    height: '17vh'
+    height: '20vh'
   },
   buttonContainer: {
     display: 'flex',
@@ -87,8 +87,9 @@ const styles = {
     padding: '10px',
     border: '1px solid limegreen',
     borderRadius: '5px',
-    maxHeight: '10vh',
-    maxWidth: '100vh',
+    width: '60vw',
+    maxHeight: '5vw',
+    maxWidth: '100vw',
     overflowY: 'auto' 
     // auto scroll to down automatically 
 
