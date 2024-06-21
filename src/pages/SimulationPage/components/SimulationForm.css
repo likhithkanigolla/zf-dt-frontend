@@ -25,6 +25,7 @@
     background-color: #0056b3;
 }
 
+
 .container {
     display: flex;
     flex-direction: column;
@@ -64,7 +65,7 @@
 }
 
 .heading::after {
-    content: '▼'; /* Arrow icon */
+    /* content: '▼'; */
     font-size: 16px;
     transition: transform 0.3s; /* Smooth transition for rotation */
 }
@@ -192,4 +193,11 @@
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: nowrap;
 }

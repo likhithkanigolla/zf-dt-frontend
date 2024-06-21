@@ -11,7 +11,7 @@ import LeakageIcon from "../../images/leakage_water.png";
 function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
     return (
         <div className="toolbar">
-            {/* <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
+            <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
                 <img src={WaterQualityNode} alt="Water Quality Sensor"/> waterqualitysensor
             </button>
             <button className="tool-button" onClick={() => handleToolbarItemClick('waterquantitysensor')}>
@@ -25,9 +25,9 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
             </button>
             <button className="tool-button" onClick={handleLeakageIconClick}>
                 <img src={LeakageIcon} alt="Leakage" /> Leakage
-            </button> */}
+            </button>
 
-            <table>
+            {/* <table>
                 <tr>
                     <td>
                         <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
@@ -59,7 +59,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
                         </button>
                     </td>
                 </tr>
-            </table>
+            </table> */}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './SimulationForm.css';
 import Toolbar from "./ToolBar";
+import ConsoleHeader from "./Console";
 
 function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick}) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
@@ -24,13 +25,14 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
 
+
     
 
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '30vh', color: 'white' }}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '40vh', color: 'white' }}>
             <div>
-            <label style={{color: 'black'}}>Speed Multiplier: </label>
+            <label style={{color: 'black'}} className="heading">Speed Multiplier: 
             <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
                 <option value="1">1x</option>
                 <option value="2">2x</option>
@@ -39,12 +41,49 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                 <option value="16">16x</option>
                 <option value="32">32x</option>
                 <option value="64">64x</option>
-            </select>
+            </select></label>
             </div>
-            <h3 className="heading" onClick={toggleWaterConfig}>
-                Water Configuration
-            </h3>
-            {isWaterConfigCollapsed && (
+            <h4 className="heading" onClick={toggleWaterConfig}>Water Configuration</h4>
+            <h4 className="heading-in" htmlFor="SoilQuantity">
+                        Soil Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SoilQuantity"
+                        id="SoilQuantity"
+                        value={inputValues.SoilQuantity}
+                        className='input-box'
+                        // onChange={(e) => {
+                        //     setSoilQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in" htmlFor="SandQuantity">
+                        Sand Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SandQuantity"
+                        id="SandQuantity"
+                        value={inputValues.SandQuantity}
+                        // onChange={(e) => {
+                        //     setSandQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in">Temperature (°C):</h4>
+                    <input
+                        className="input-box"
+                        type="number"
+                        name="temperature"
+                        id="temperature"
+                        value={inputValues.temperature}
+                        onChange={handleChange}
+                    />
+
+            {/* {isWaterConfigCollapsed && (
                 <>
                     <h4 className="heading-in" htmlFor="SoilQuantity">
                         Soil Impurities (In grams)
@@ -85,12 +124,29 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         onChange={handleChange}
                     />
                 </>
-            )}
+            )} */}
 
-            <h3 className="heading" onClick={toggleCapacities}>
-                Capacities
-            </h3>
-            {isCapacitiesCollapsed && (
+            <h4 className="heading" onClick={toggleCapacities}>Capacity Configuration</h4>
+                <h4 className="heading-in">Sump Capacity (Liters):</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="sumpCapacity"
+                    id="sumpCapacity"
+                    value={inputValues.sumpCapacity}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">OHT Capacity (Liters):</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="ohtCapacity"
+                    id="ohtCapacity"
+                    value={inputValues.ohtCapacity}
+                    onChange={handleChange}
+                />
+
+            {/* {isCapacitiesCollapsed && (
                 <>
                     <h4 className="heading-in">Sump Capacity (Liters):</h4>
                     <input
@@ -111,12 +167,38 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         onChange={handleChange}
                     />
                 </>
-            )}
+            )} */}
 
-            <h3 className="heading" onClick={toggleROPlantConfig}>
-                RO Plant Configuration
-            </h3>
-            {isROPlantConfigCollapsed && (
+            <h4 className="heading" onClick={toggleROPlantConfig}>RO Plant Configuration</h4>
+            <h4 className="heading-in">Desired TDS (After Filtration):</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="desired_tds"
+                    id="desired_tds"
+                    value={inputValues.desired_tds}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">Membrane Area (m²):</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="membrane_area"
+                    id="membrane_area"
+                    value={inputValues.membrane_area}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">RO OHT Capacity (Liters):</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="ro_ohtCapacity"
+                    id="ro_ohtCapacity"
+                    value={inputValues.ro_ohtCapacity}
+                    onChange={handleChange}
+                />
+
+            {/* {isROPlantConfigCollapsed && (
                 <>
                     <h4 className="heading-in">Desired TDS (After Filtration):</h4>
                     <input
@@ -146,12 +228,44 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         onChange={handleChange}
                     />
                 </>
-            )}
+            )} */}
 
-            <h3 className="heading" onClick={toggleMotorConfig}>
-                Motor Configuration
-            </h3>
-            {isMotorConfigCollapsed && (
+            <h4 className="heading" onClick={toggleMotorConfig}>Motor Configuration</h4>
+                <h4 className="heading-in">Voltage:</h4>
+                <input className="input-box" type="number"
+                    name="voltage"
+                    id="voltage"
+                    value={inputValues.voltage}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">Current:</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="current"
+                    id="current"
+                    value={inputValues.current}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">Power Factor:</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="power_factor"
+                    id="power_factor"
+                    value={inputValues.power_factor}
+                    onChange={handleChange}
+                />
+                <h4 className="heading-in">Motor Efficiency:</h4>
+                <input
+                    className="input-box"
+                    type="number"
+                    name="motor_efficiency"
+                    id="motor_efficiency"
+                    value={inputValues.motor_efficiency}
+                    onChange={handleChange}
+                />
+            {/* {isMotorConfigCollapsed && (
                 <>
                     <h4 className="heading-in">Voltage:</h4>
                     <input
@@ -190,18 +304,19 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                         onChange={handleChange}
                     />
                 </>
-            )}
+            )} */}
         </div>
 
-        <Toolbar 
+        {/* <Toolbar 
               handleToolbarItemClick={handleToolbarItemClick} 
               handleLeakageIconClick={handleLeakageIconClick} 
-        />
+        /> */}
 
-        <button onClick={handleStartSimulation} className="button">
-                {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
-        </button>
-        <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button>
+        
+        <ConsoleHeader handleDownloadLog={handleDownloadLog} />
+        <button onClick={handleStartSimulation} className="button">{isSimulationRunning ? "Stop Simulation" : "Start Simulation"}</button>
+        {/* <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button> */}
+        
         </div>
     );
 }
