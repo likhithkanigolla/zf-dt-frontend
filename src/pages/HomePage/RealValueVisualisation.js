@@ -3,9 +3,9 @@ import React, { useRef,useState, useEffect } from 'react';
 import "./RealValueVisualisation.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import ResultContainer from "./components/ResultContainer";
+import ResultContainer from "../SimulationPage/components/ResultContainer";
 
-import SimulationCanvas from "./components/SimulationCanvas";
+import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
 import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png"; 

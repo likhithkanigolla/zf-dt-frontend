@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
-import RealValueVisualisation from './pages/SimulationPage/RealValueVisualisation';
+import RealValueVisualisation from './pages/HomePage/RealValueVisualisation';
 import VisualizationPage from './pages/VisualizationPage/VisualizationPage';
 import SimulationPage from './pages/SimulationPage/SimulationPage';
 import ActuationPage from './pages/ActuationPage/ActuationPage';
