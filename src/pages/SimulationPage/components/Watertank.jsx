@@ -22,7 +22,7 @@ const [inputValues] = useState({
 });
 
 useEffect(() => {
-const targetPercentage = (waterInOHT / inputValues.ohtCapacity); 
+const targetPercentage = (waterInOHT /20); 
 const increment = targetPercentage > fillPercentage ? 1 : -1;
 let currentPercentage = fillPercentage;
 const animationInterval = setInterval(() => {

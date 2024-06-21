@@ -24,7 +24,6 @@ const Sump = ({ waterInSump, handleIconClick }) => {
   useEffect(() => {
     const targetPercentage = (waterInSump / inputValues.sumpCapacity ); // Assuming the sump capacity is 10000L
     const increment = targetPercentage > fillPercentage ? 1 : -1;
-
     let currentPercentage = fillPercentage;
     const animationInterval = setInterval(() => {
       if ((increment > 0 && currentPercentage >= targetPercentage) || (increment < 0 && currentPercentage <= targetPercentage)) {
