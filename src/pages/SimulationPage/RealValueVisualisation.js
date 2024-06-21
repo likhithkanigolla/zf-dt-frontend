@@ -272,7 +272,9 @@ const RealValueVisualisation = () => {
                 setFlow1={setFlow1}
                 setFlow2={setFlow2} 
                 waterInSump={waterInSump}
+                sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
                 waterInOHT={waterInOHT}
+                ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
                 waterInROFilter={waterInROFilter}
                 motorOn={motorOn}
                 isSimulationRunning={isSimulationRunning}  
