@@ -26,11 +26,15 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 import SimulationCanvas from '../SimulationPage/components/SimulationCanvas';
 
+import 'react-toastify/dist/ReactToastify.css';
+ 
+import { ToastContainer, toast } from 'react-toastify';
+
 // const backendAPI = "http://localhost:1629";
 const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
 
 const ActuationPage = () => {
-
+  
   const [inputValues, setInputValues] = useState({
     number1: '',
     number2: '',
@@ -38,7 +42,7 @@ const ActuationPage = () => {
     number4: ''
   });
   const [result, setResult] = useState(null);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputValues({
@@ -133,14 +137,46 @@ const ActuationPage = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-
+  
       // Extract timestamp from the response
       const timestamp = new Date(data.timestamp).getTime();
       const currentTime = new Date().getTime();
-
+  
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
-      console.log(timeDifference,parseTime(time))
+      console.log(timeDifference, parseTime(time));
+      if (timeDifference > parseTime(time)) {
+        // Show toast notification using react-toastify
+        const message = `Node ${nodeId} is down!`;
+        toast.error(message);  // Customize message as needed
+        // sendTelegramNotification(message);
+        // toast.info("Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      // Check TDS value for WM-WD-KH98-00 node
+      if (nodeId === "WM-WD-KH98-00" && data.compensated_tds > 500) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        toast.error(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if (nodeId === "WM-WD-KH96-00" && data.compensated_tds > 500) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        toast.error(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if (nodeId === "WM-WD-KH04-00" && data.compensated_tds > 150) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        toast.error(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if (nodeId === "WM-WD-KH95-00" && data.compensated_tds > 150) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        toast.error(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
       return timeDifference <= parseTime(time);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -307,7 +343,7 @@ const ActuationPage = () => {
       {/* <h2>Actuation Page</h2> */}
       <NavigationBar title="Digital Twin for Water Quality - Actuation" />
       <div style={{ display: "flex"}} className='Page'>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
@@ -317,7 +353,7 @@ const ActuationPage = () => {
       {/* <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} /> */}
       {/* Components */}
         <div style={{ height: "46vw", display: "flex",flex:3, justifyContent: "center", alignItems: "center" }}>
-          <div style={{ display: "flex", position: 'relative', width: '55vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+          <div style={{ display: "flex", position: 'relative', width: '55vw', height: '45vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
             <div className="demo-page">
               <div style={{ position: "absolute", top: "7vw", left: "3.9vw"}} id="pumpHouseIcon">
                 <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }}/>
@@ -429,20 +465,41 @@ const ActuationPage = () => {
                   <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}/>
                   <div style={{ fontSize: "1vw" }}>RO 3</div>
                 </div>
+                
               </div>
+              <div>
+              <div className="custom-toast-container">
+      <ToastContainer 
+         position="bottom-center"
+         autoClose={false}
+         hideProgressBar={false}
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover
+         className="horizontal-toasts"
+         toastClassName="toast-item"
+
+      />
+      </div>
+      </div>
             </div>
           </div>
         </div>
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
         </div>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
         </div>
       </div>
+      
     </div>
+    
   );
 }
 
