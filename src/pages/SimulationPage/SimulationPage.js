@@ -19,8 +19,8 @@ import LeakageIcon from "../images/leakage_water.png";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-const backendAPI = "http://localhost:1629";
+const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+// const backendAPI = "http://localhost:1629";
 
 const SimulationPage = () => {
   // State for holding input values and results

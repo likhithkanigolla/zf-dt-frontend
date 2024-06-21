@@ -18,7 +18,7 @@ import Washrooms from "../../images/Washrooms.png";
 import Sump from './Sump';
 import WaterTank from './Watertank';
 
-const backendAPI = "http://localhost:1629";
+
 
 const SimulationCanvas = ({
   handleIconClick,
