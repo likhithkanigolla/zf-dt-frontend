@@ -62,12 +62,11 @@ const SimulationCanvas = ({
       {/* Straight Pipe from Borewell to Sump */}
       <div style={{ position: "absolute", top: "21vw", left: "15vw" }}>
         <StraightPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
-        
-      {/* Mirror Z Pipe Borewell to Sump */}
-      {/*<div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
-        <MirrorZPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }}  */}
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
+        {/* Mirror Z Pipe Borewell to Sump */}
+        {/*<div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
+        <MirrorZPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }}  */}
       </div>
 
       {/* Borewell */}
