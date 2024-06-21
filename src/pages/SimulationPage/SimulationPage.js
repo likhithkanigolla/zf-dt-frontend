@@ -802,13 +802,14 @@ const SimulationPage = () => {
             handleToolbarItemClick={handleToolbarItemClick}
             handleLeakageIconClick={handleLeakageIconClick}
         />
-        {/* <Toolbar 
-              handleToolbarItemClick={handleToolbarItemClick} 
-              handleLeakageIconClick={handleLeakageIconClick} 
-        /> */}
+
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
           {/* Toolbar */}
+          <Toolbar 
+              handleToolbarItemClick={handleToolbarItemClick} 
+              handleLeakageIconClick={handleLeakageIconClick} 
+        />
         <div><br></br></div>
           <LeakageOptions
           showLeakageOptions={showLeakageOptions}
