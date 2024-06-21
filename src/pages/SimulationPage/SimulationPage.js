@@ -38,7 +38,7 @@ const SimulationPage = () => {
     temperature: "25",
     desired_tds: "65",
     membrane_area: "3700",
-    sumpCapacity: "6000",
+    sumpCapacity: "60000",
     ohtCapacity: "10000",
     ro_ohtCapacity: "1000",
     // flowrate: "5"
@@ -847,11 +847,13 @@ const SimulationPage = () => {
                   flow9={flow1}
                   setFlow1={setFlow1}
                   waterInSump={waterInSump}
+                  sumpCapacity={inputValues.sumpCapacity}
                   motorOn={motorOn}
                   toggleIsOn={toggleIsOn}
                   isSimulationRunning={isSimulationRunning}
                   handleMotorToggle={handleMotorToggle}
                   waterInOHT={waterInOHT}
+                  ohtCapacity={inputValues.ohtCapacity}
                   waterInROFilter={waterInROFilter}
                   waterConsumed={waterConsumed}
                   flowrate={flowrate}

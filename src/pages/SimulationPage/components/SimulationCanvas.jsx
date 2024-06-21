@@ -34,11 +34,13 @@ const SimulationCanvas = ({
   flow8,
   flow9,
   waterInSump,
+  sumpCapacity,
   motorOn,
   toggleIsOn,
   isSimulationRunning,
   handleMotorToggle,
   waterInOHT,
+  ohtCapacity,
   waterInROFilter,
   waterConsumed,
   flowrate
@@ -64,9 +66,8 @@ const SimulationCanvas = ({
         <StraightPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
-        
         {/* Mirror Z Pipe Borewell to Sump */}
-      {/*<div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
+        {/*<div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
         <MirrorZPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }}  */}
       </div>
 
@@ -90,7 +91,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* Sump */}
-        <Sump waterInSump={waterInSump} onClick={(e) => handleIconClick(e)} 
+        <Sump waterInSump={waterInSump} sumpCapacity={sumpCapacity} onClick={(e) => handleIconClick(e)} 
          ref={(ref) => {if (ref) {ref.id = "KRBSump"; iconRefs.push(ref);} }}/>
 
         <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
@@ -146,7 +147,7 @@ const SimulationCanvas = ({
 
        {/* Water Tower */}
        <div>
-          <WaterTank waterInOHT={waterInOHT} handleIconClick={handleIconClick} 
+          <WaterTank waterInOHT={waterInOHT} ohtCapacity={ohtCapacity} handleIconClick={handleIconClick} 
           onClick={(e) => handleIconClick(e)}
           ref={(ref) => { if (ref) { ref.id = "KRBOHTIcon"; iconRefs.push(ref); } }} />
         </div>
