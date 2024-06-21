@@ -993,8 +993,19 @@ const SimulationPage = () => {
             <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }
           }
         />
+        
   </div>
+
+  
 ))}
+
+      {/* <div className="container" style={{overflowY: 'scroll', height: '25vh', color: 'white' }}>
+            <div className='flex-container'>
+            <button onClick={handleDownloadLog} className='button' style={{background: 'blue', height:'1vw', width:'6vw'}}>Download</button>
+            <button onClick={handleDownloadLog} className='button' sstyle={{background: 'blue', height:'1vw', width:'6vw'}}>Save</button>
+            <button onClick={handleDownloadLog} className='button' sstyle={{background: 'blue', height:'1vw', width:'6vw'}}>Close</button>
+            </div>
+        </div> */}
 
   </div>
 

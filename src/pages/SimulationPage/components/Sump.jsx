@@ -35,7 +35,7 @@ const [fillPercentage, setFillPercentage] = useState(0);
           <div className="sumpwave"></div>
           <div className="sumpwave"></div>
         </div>
-        <div className="sump-percentage">{`${fillPercentage.toFixed(2)}%`}</div>
+        {/* <div className="sump-percentage">{`${fillPercentage.toFixed(2)}%`}</div> */}
       </div>
       <div style={{ fontSize: "14px" }}>SUMP - {waterInSump.toFixed(2)}L</div>
     </div>

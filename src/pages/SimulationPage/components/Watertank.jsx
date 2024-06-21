@@ -26,7 +26,7 @@ return (
 <div className="watertank-wave"></div>
 <div className="watertank-wave"></div>
 </div>
-<div className="water-tank-percentage">{`${fillPercentage.toFixed(2)}%`}</div>
+{/* <div className="water-tank-percentage">{`${fillPercentage.toFixed(2)}%`}</div> */}
 </div>
 <div style={{ fontSize: "14px", color: "" , position: "" }}>KRB OHT</div>
 <div style={{ fontSize: "14px", color: "" , position: "" }}><b>{waterInOHT.toFixed(2)}L</b></div>
