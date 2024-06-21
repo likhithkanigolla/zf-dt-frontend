@@ -254,7 +254,7 @@ const RealValueVisualisation = () => {
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
     </div>
-      <div style={{ height: "46vw", width: "20vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+      <div style={{ height: "52vw", width: "20vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
         <div style={{ display: "flex", position: 'relative', width: '70vw', height: '45vw', border: '1px', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
           <div className="demo-page">
             <div>
