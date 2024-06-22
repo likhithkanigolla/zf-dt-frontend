@@ -61,7 +61,7 @@ const styles = {
     alignItems: 'center',
   },
   button: {
-    height: '2vw',
+    height: '0.5vw',
     width: '4vw',
     display: 'flex',
     justifyContent: 'center',

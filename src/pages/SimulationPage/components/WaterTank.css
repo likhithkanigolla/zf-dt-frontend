@@ -30,13 +30,13 @@
 
 .water-tank-fill {
   position: absolute;
-  bottom: -10%; /* Start filling from the bottom */
+  bottom: -1%; /* Start filling from the bottom */
   left: 1vw;
   width: 15vw;
   background-color: rgb(62, 195, 221);
-  transition: height 3s infinite;
+  transition: height 1s infinite;
   animation: wave 3s infinite;
-  border-radius: 50%;
+  border-radius: 80%;
 }
 
 .watertank-wave {
@@ -60,7 +60,7 @@
     transform: translate(20%,);
   }
   100% {
-    transform: translate(-50%,);
+    transform: translate(10%,);
   }
 }
 

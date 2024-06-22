@@ -1,25 +1,9 @@
-/* Complete CSS for Digital Twin Simulation Page */
-
-
-/* Complete CSS for Digital Twin Simulation Page */
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
   color: #333;
   margin: 0;
-  /* padding: 20px; */
-  line-height: 1.6;
-}
-
-/* Navigation Bar - Adjust according to your implementation */
-.navigation-bar {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 /* General Container Styling */
@@ -29,7 +13,7 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   padding: 20px;
   margin: 10px 0;
-  height: 82vh;
+  height: 95vh;
   overflow-y: scroll;
 }
 
@@ -37,7 +21,7 @@ body {
 .heading {
   color: #333;
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 1vw;
 }
 
 /* Input Fields Styling */
@@ -47,7 +31,7 @@ input[type="number"] {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Make sure padding doesn't affect overall width */
+  box-sizing: border-box;
 }
 
 /* Button Styling */
@@ -119,7 +103,7 @@ div[style*='display: flex'] {
 }
 
 .motor.running {
-  animation: spin 2s linear infinite; /* Add rotation animation when motor is running */
+  animation: spin 2s linear infinite;
 }
 
 /* Animation keyframes for motor rotation */
@@ -143,46 +127,12 @@ div[style*='display: flex'] {
   color: white;
 }
 
-/* Responsive Design Adjustments */
-@media (max-width: 768px) {
-  div[style*='display: flex'] {
-    flex-direction: column;
-  }
-
-  /* Adjusts for smaller screens to ensure usability */
-  .container, .result-container {
-    padding: 15px;
-  }
-
-  /* Makes sure navigation text size is responsive */
-  .navigation-bar {
-    font-size: 18px;
-  }
-}
-
-/* Responsive Design Adjustments */
-@media (max-width: 768px) {
-  div[style*='display: flex'] {
-    flex-direction: column;
-  }
-
-  /* Adjusts for smaller screens to ensure usability */
-  .container, .result-container {
-    padding: 15px;
-  }
-
-  /* Makes sure navigation text size is responsive */
-  .navigation-bar {
-    font-size: 18px;
-  }
-}
-
-
+/* Icon Container and Water Fill */
 .icon-container {
   position: relative;
-  width: 70px; /* Match icon size */
-  height: 70px; /* Match icon size */
-  overflow: hidden; /* Ensure the gradient doesn't overflow */
+  width: 70px;
+  height: 70px;
+  overflow: hidden;
 }
 
 .icon-container .water-fill {
@@ -191,10 +141,10 @@ div[style*='display: flex'] {
   left: 0;
   width: 100%;
   background: linear-gradient(to top, blue, red);
-  z-index: 0; /* Ensure this goes behind the icon */
+  z-index: 0;
 }
 
-
+/* Button Group */
 .buttons button {
   margin: 0 10px;
   padding: 10px 20px;
@@ -209,6 +159,7 @@ div[style*='display: flex'] {
   background-color: #0056b3;
 }
 
+/* Demo Page */
 .demo-page {
   position: relative;
   width: 100%;
@@ -219,62 +170,63 @@ div[style*='display: flex'] {
   border: 2px solid green;
 }
 
-
+/* Toolbar */
 .toolbar {
   display: flex;
-  justify-content: space-around; /* Adjusts spacing between buttons */
-  align-items: center; /* Vertically aligns buttons in the toolbar */
+  justify-content: space-around;
+  align-items: center;
 }
 
 .tool-button, .toolbar button {
   display: flex;
-  flex-direction: column; /* Stacks image and text vertically */
-  align-items: center; /* Centers content horizontally */
-  justify-content: center; /* Centers content vertically */
-  width: 120px; /* Example width, adjust as needed */
-  height: 120px; /* Example height, adjust as needed */
-  border: 1px solid transparent; /* Styles or removes the border */
-  background-color: transparent; /* Makes the background transparent */
-  padding: 10px; /* Adds padding inside the button */
-  cursor: pointer; /* Changes the cursor to indicate it's clickable */
-  text-align: center; /* Ensures text is centered */
-  font-size: 0.9em; /* Adjusts the font size of the text */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9em;
 }
 
 .tool-button img, .toolbar button img {
-  width: 50%; /* Adjusts image width */
-  height: 50%; /* Adjusts image height */
-  margin: 0 auto; /* Centers the image horizontally */
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
 }
 
+/* Leakage Icon Animation */
 .leakage-icon {
-  width: 3vw; /* Adjust size as needed */
+  width: 3vw;
   height: 3vw;
-  animation: drip 2s infinite; /* Add dripping animation */
+  animation: drip 2s infinite;
 }
 
+/* Delete Area */
 .delete-area {
-  width: 50px;  /* Adjust the size as needed */
+  width: 50px;
   height: 50px;
-  border: 2px dashed red; /* Dashed border for visual indication */
+  border: 2px dashed red;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer; /* Change cursor to indicate it's interactive */
+  cursor: pointer;
 }
 
 .delete-area img {
-  width: 80%; /* Adjust icon size as needed */
+  width: 80%;
   height: auto;
 }
 
-/* Optional: Hover effect */
 .delete-area:hover {
-  background-color: rgba(255, 0, 0, 0.2); /* Light red background on hover */
+  background-color: rgba(255, 0, 0, 0.2);
 }
 
-
+/* Progress Bar */
 .progress-bar {
   background-color: #e9ecef;
   border-radius: 5px;
@@ -295,7 +247,7 @@ div[style*='display: flex'] {
   background-color: #007bff;
   height: 100%;
   transition: width 0.5s ease-in-out;
-}             
+}
 
 @keyframes drip {
   0% { transform: translateY(0); }
@@ -303,37 +255,41 @@ div[style*='display: flex'] {
   100% { transform: translateY(0); }
 }
 
-
 @keyframes fillAnimation {
-0%, 100% {
-    fill: transparent;
+  0%, 100% { fill: transparent; }
+  50% { fill: #33cbec; }
 }
-50% {
-    fill: #33cbec;
-}
-}
-
 
 #animatedPolygon {
-animation: fillAnimation 2s infinite; /* Adjust the duration as per your requirement */
+  animation: fillAnimation 2s infinite;
 }
 
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+  div[style*='display: flex'] {
+    flex-direction: column;
+  }
+
+  .container, .result-container {
+    padding: 15px;
+  }
+
+  .navigation-bar {
+    font-size: 18px;
+  }
+}
 
 /* Additional Media Queries for Responsive Design */
-
 /* For screens smaller than 576px (e.g., smartphones) */
 @media (max-width: 575.98px) {
-  /* Adjust font sizes for smaller screens */
   .heading {
     font-size: 18px;
   }
 
-  /* Adjust padding or margins to accommodate smaller screens */
   .container, .result-container {
     padding: 10px;
   }
 
-  /* Adjust button sizes for smaller screens */
   .button, .info-button {
     padding: 8px 12px;
   }
@@ -341,17 +297,14 @@ animation: fillAnimation 2s infinite; /* Adjust the duration as per your require
 
 /* For screens between 576px and 768px (e.g., tablets) */
 @media (min-width: 576px) and (max-width: 768px) {
-  /* Adjust font sizes for tablets */
   .heading {
     font-size: 22px;
   }
 
-  /* Adjust margins or paddings for tablets */
   .container, .result-container {
     padding: 15px;
   }
 
-  /* Adjust button sizes for tablets */
   .button, .info-button {
     padding: 10px 15px;
   }
