@@ -19,21 +19,21 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
   return (
     <div style={{ flex: 1 }}>
       <div className="result-container">
-        <p>Results:</p>
+        <h3 style={{color:'black'}}>Results:</h3>
         <div className="result-cards">
           <ResultCard
             title="TDS Value(mg/L) - At SUMP"
-            value={result?.calculated_tds_value ?? "N/A"}
+            value={result?.calculated_tds_value.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.calculated_tds_value ?? 0}
           />
           <ResultCard
             title="Permeate Flow Rate(l/s)"
-            value={PermeateFlowRate ?? "N/A"}
+            value={PermeateFlowRate.toFixed(4) ?? "N/A"}
             previousValue={PreviousPermeateFlowRate ?? 0}
           />
           <ResultCard
             title="Final TDS Concentration After RO Tank(mg/L)"
-            value={result?.final_tds_concentration_after_ro_tank ?? "N/A"}
+            value={result?.final_tds_concentration_after_ro_tank.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.final_tds_concentration_after_ro_tank ?? 0}
           />
           <ResultCard
@@ -43,7 +43,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
           />
           <ResultCard
             title="Time Estimation (hours)"
-            value={result?.time_estimation_hours ?? "N/A"}
+            value={result?.time_estimation_hours.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.time_estimation_hours ?? 0}
           />
         </div>

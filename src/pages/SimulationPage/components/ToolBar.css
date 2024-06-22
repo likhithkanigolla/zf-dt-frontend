@@ -6,6 +6,8 @@
     align-items: center;
     text-align: center;
     background-color: #ffffff;
+    height: 5vw;
+    max-height: 8vw;
 }
 
 .toolbar__title {
@@ -17,6 +19,12 @@
     display: flex;
     gap: 10px;
     padding: 20px;
+}
+
+.tool-button img, .toolbar button img{
+    width: 20%;
+    height: 20%;
+    margin: 0 auto;
 }
 
 .toolbar__button {
