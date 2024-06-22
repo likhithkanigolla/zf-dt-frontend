@@ -1,6 +1,7 @@
 /* Simulation Form Component */
 .simulation-form {
     display: flex;
+    height: 1vw;
     flex-direction: column;
     align-items: center;
     padding: 20px;

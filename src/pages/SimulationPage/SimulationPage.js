@@ -829,7 +829,7 @@ const SimulationPage = () => {
               style={{
                 position: 'relative',
                 width: '60vw',
-                height: '35vw',
+                height: '33vw',
                 border: '1px solid black',
               }}
               onDrop={handleDrop}
