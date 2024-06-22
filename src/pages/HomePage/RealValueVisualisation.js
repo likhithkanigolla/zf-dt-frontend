@@ -192,7 +192,7 @@ const RealValueVisualisation = () => {
       if (WaterQuantityDataR1.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
       if (WaterQuantityDataR2.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
       if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
-      if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
+      // if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
 
     };
 
