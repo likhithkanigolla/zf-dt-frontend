@@ -63,15 +63,11 @@
 
 @keyframes bubbleAnimation {
     0% {
-        transform: translateY(10vw);
+        transform: translateY(0);
         opacity: 1;
     }
-    50% {
-        transform: translateY(5vw);
-        opacity: 0.5;
-    }
     100% {
-        transform: translateY(0);
+        transform: translateY(-25px);
         opacity: 0;
     }
 }
@@ -87,7 +83,7 @@
 
 .falling-water {
     fill: rgb(37, 194, 226);
-    animation: fallingWater 1s infinite ease-in;
+    animation: fallingWater 300ms infinite ease-in;
     transform-origin: top;
     height: 2vw;
     z-index: 2;
@@ -95,7 +91,7 @@
 
 .falling-water2 {
     fill: rgb(37, 194, 226);
-    animation: fallingWater 1s infinite ease-in;
+    animation: fallingWater 300ms infinite ease-in;
     transform-origin: top;
     z-index: 2;
 }
@@ -110,9 +106,5 @@
 .bubble {
     fill: rgb(15, 62, 155);
     animation: bubbleAnimation 1s infinite ease-in-out;
-    height: 10vw;
-    left: 2vw;
-    bottom: 10vw;
-    width: 10vw;
-    z-index: 3;
+  
 }

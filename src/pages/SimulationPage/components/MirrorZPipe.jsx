@@ -67,6 +67,36 @@ function MirrorZPipe({ flow, onClick }) {
                             />
                         </g>
 
+                        <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water"
+                        />
+
+                        <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water2"
+                        />
+
+                        <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water3"
+                        />
+
+                        {/* Water Bubbles */}
+                        <circle className="mirror-bubble" cx="98" cy="50" r="1" />
+                        <circle className="mirror-bubble" cx="102" cy="55" r="1.5" />
+                        <circle className="mirror-bubble" cx="94" cy="48" r="2.5" />
+                        <circle className="mirror-bubble" cx="99" cy="55" r="2.8" />
+                        <circle className="mirror-bubble" cx="106" cy="58" r="2.0" />
                     </>
                 )}
             </svg>

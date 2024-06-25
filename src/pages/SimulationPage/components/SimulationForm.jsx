@@ -3,7 +3,7 @@ import './SimulationForm.css';
 import Toolbar from "./ToolBar";
 import ConsoleHeader from "./Console";
 
-function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQuantity, inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick}) {
+function SimulationForm({inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick, log}) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -24,16 +24,22 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
     const toggleMotorConfig = () => {
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
-
+    console.log("Log100:" , log)
 
     
 
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '40vh', color: 'white' }}>
-            <div>
-            <label style={{color: 'black'}} className="heading">Speed Multiplier: 
-            <select name="timeMultiplier" onChange={handleChange} value={inputValues.timeMultiplier}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '85vh', color: 'white' }}>
+            <div><h3 style={{color:'black'}}>Configuration</h3>
+            <label><select name="Scenarios" class="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
+                <option value="1">Scenario 1</option>
+                <option value="2">Scenario 2</option>
+                <option value="3">Scenario 3</option>
+                <option value="4">Scenario 4</option>
+            </select></label>
+            <label style={{color: 'white'}} className="heading"><b>Simulation Speed: </b>
+            <select name="timeMultiplier" onChange={handleChange} class="dropdown-content-n"  value={inputValues.timeMultiplier}>
                 <option value="1">1x</option>
                 <option value="2">2x</option>
                 <option value="4">4x</option>
@@ -43,7 +49,7 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
                 <option value="64">64x</option>
             </select></label>
             </div>
-            <h4 className="heading" onClick={toggleWaterConfig}>Water Configuration</h4>
+            <h4 className="heading" onClick={toggleWaterConfig}>Water Parameter Configuration </h4>
             <h4 className="heading-in" htmlFor="SoilQuantity">
                         Soil Impurities (In grams)
                     </h4>
@@ -313,7 +319,7 @@ function SimulationForm({ SoilQuantity, setSoilQuantity, SandQuantity, setSandQu
         /> */}
 
         
-        <ConsoleHeader handleDownloadLog={handleDownloadLog} />
+        {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} /> */}
         <button onClick={handleStartSimulation} className="button">{isSimulationRunning ? "Stop Simulation" : "Start Simulation"}</button>
         {/* <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button> */}
         

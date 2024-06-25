@@ -3,11 +3,12 @@
     position: sticky; /* Change position to sticky */
     top: 0;
     left: 0;
-    /* width: 100%; */
+    width: 98vw;
+    height: 5vw;
     background-color: #123462;
     color: white;
     /* padding: 20px 30px; */
-    padding-left: 20px;
+    padding-left: 2vw;
     z-index: 100;
     display: flex;
     justify-content: space-between;
