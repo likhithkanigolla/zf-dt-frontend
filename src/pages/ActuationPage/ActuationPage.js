@@ -25,6 +25,8 @@ import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 import SimulationCanvas from '../SimulationPage/components/SimulationCanvas';
+import { saveAs } from 'file-saver';
+import ConsoleHeader from  '../SimulationPage/components/Console';
 
 import 'react-toastify/dist/ReactToastify.css';
  
@@ -89,8 +91,19 @@ const ActuationPage = () => {
     "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw', transform: 'rotate(90deg)', zIndex: '3'},
     "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '48.5vw',transform: 'rotate(90deg)'},   
   };
-
+  // const handleDownloadLog = () => {
+  //   const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
+  //   saveAs(blob, 'simulation_log.txt');
+  // };
   // Debug Statements for Printing the usestate
+  const [log, setLog] = useState([]); 
+  const updateLog = (message) => {
+    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+  };
+  const handleDownloadLog = () => {
+    const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, 'actuation_log.txt');
+  };
   const AllNodes = () => {
     return (
       <div>
@@ -148,32 +161,32 @@ const ActuationPage = () => {
       if (timeDifference > parseTime(time)) {
         // Show toast notification using react-toastify
         const message = `Node ${nodeId} is down!`;
-        toast.error(message);  // Customize message as needed
+        updateLog(message);  // Customize message as needed
         // sendTelegramNotification(message);
         // toast.info("Alert sent to the telegram");  // Notification after sending to Telegram
       }
       // Check TDS value for WM-WD-KH98-00 node
       if (nodeId === "WM-WD-KH98-00" && data.compensated_tds > 500) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        toast.error(tdsAlertMessage);  // Display toast alert
+        updateLog(tdsAlertMessage);  // Display toast alert
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
       if (nodeId === "WM-WD-KH96-00" && data.compensated_tds > 500) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        toast.error(tdsAlertMessage);  // Display toast alert
+        updateLog(tdsAlertMessage);  // Display toast alert
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
       if (nodeId === "WM-WD-KH04-00" && data.compensated_tds > 150) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        toast.error(tdsAlertMessage);  // Display toast alert
+        updateLog(tdsAlertMessage);  // Display toast alert
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
       if (nodeId === "WM-WD-KH95-00" && data.compensated_tds > 150) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        toast.error(tdsAlertMessage);  // Display toast alert
+        updateLog(tdsAlertMessage);  // Display toast alert
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
@@ -467,24 +480,8 @@ const ActuationPage = () => {
                 </div>
                 
               </div>
-              <div>
-              <div className="custom-toast-container">
-      <ToastContainer 
-         position="bottom-center"
-         autoClose={false}
-         hideProgressBar={false}
-         newestOnTop={false}
-         closeOnClick
-         rtl={false}
-         pauseOnFocusLoss
-         draggable
-         pauseOnHover
-         className="horizontal-toasts"
-         toastClassName="toast-item"
-
-      />
-      </div>
-      </div>
+              
+      
             </div>
           </div>
         </div>
@@ -497,7 +494,25 @@ const ActuationPage = () => {
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
         </div>
       </div>
-      
+      <div>
+              <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/>
+              {/* {<div className="custom-toast-container">
+              
+      <ToastContainer 
+         position="bottom-center"
+         autoClose={false}
+         hideProgressBar={false}
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover
+         className="horizontal-toasts"
+         toastClassName="toast-item" }
+
+      /> */}
+      </div>
     </div>
     
   );
