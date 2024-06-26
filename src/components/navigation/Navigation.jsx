@@ -26,10 +26,10 @@ const NavigationBar = ({ title }) => {
       <div>
           {/* Dropdown to select the pages */}
           <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
-            <option value="/" selected={window.location.pathname === '/'}>Home</option>
-            <option value="/analytics" selected={window.location.pathname === '/analytics'}>Analytics</option>
-            <option value="/actuation" selected={window.location.pathname === '/actuation'}>Actuation</option>
-            <option value="/simulation" selected={window.location.pathname === '/simulation'}>Simulation</option>
+            <option value="/dt_waternetwork/" selected={window.location.pathname === '/'}>Home</option>
+            <option value="/dt_waternetwork/analytics" selected={window.location.pathname === '/analytics'}>Analytics</option>
+            <option value="/dt_waternetwork/actuation" selected={window.location.pathname === '/actuation'}>Actuation</option>
+            <option value="/dt_waternetwork/simulation" selected={window.location.pathname === '/simulation'}>Simulation</option>
           </select>
       </div>
       <div className="navbar__icon">
