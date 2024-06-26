@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './ActuationPage.css';
 import NavigationBar from '../../components/navigation/Navigation';
+import LoginPage from '../LoginPage/LoginPage';
 
 import ZshapePipe from '../SimulationPage/components/ZshapePipe';
 import MirrorZPipe from '../SimulationPage/components/MirrorZPipe';
@@ -37,7 +38,7 @@ import { CgLayoutGrid } from 'react-icons/cg';
 const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
 
 const ActuationPage = () => {
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputValues, setInputValues] = useState({
     number1: '',
     number2: '',
@@ -122,24 +123,15 @@ const ActuationPage = () => {
     );
   };
 
-  useEffect(() => {
-    // Call getNodeStatus for each node when the component mounts
-    const nodeIds = Object.keys(isOn);
-    updateNodeStatus(nodeIds)
-
-    // const interval = setInterval(() => {
-    //     getNodeStatus('WM-WF-KB04-72', '15m');
-    //   }, 5000);
-  }, []);
-
-  const updateNodeStatus = async (nodeIds) => {
-    let tmpIsOn = {};
-    for (let idx in nodeIds) {
-      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
-    }
-    console.log(tmpIsOn);
-    setIsOn(tmpIsOn);
-    console.log("Done"); 
+  const parseTime = (timeString) => {
+    const regex = /(\d+)([mhr])/;
+    const [, value, unit] = timeString.match(regex);
+    const multiplier = {
+      m: 60000, // minutes to milliseconds
+      h: 3600000, // hours to milliseconds
+      r: 60000 * 60 * 24, // days to milliseconds
+    };
+    return parseInt(value, 10) * multiplier[unit];
   };
 
   const getNodeStatus = async (nodeId, time) => {
@@ -206,16 +198,33 @@ const ActuationPage = () => {
     }
   };
 
-  const parseTime = (timeString) => {
-    const regex = /(\d+)([mhr])/;
-    const [, value, unit] = timeString.match(regex);
-    const multiplier = {
-      m: 60000, // minutes to milliseconds
-      h: 3600000, // hours to milliseconds
-      r: 60000 * 60 * 24, // days to milliseconds
-    };
-    return parseInt(value, 10) * multiplier[unit];
+  const updateNodeStatus = async (nodeIds) => {
+    let tmpIsOn = {};
+    for (let idx in nodeIds) {
+      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
+    }
+    console.log(tmpIsOn);
+    setIsOn(tmpIsOn);
+    console.log("Done"); 
   };
+
+  useEffect(() => {
+    // Call getNodeStatus for each node when the component mounts
+    const nodeIds = Object.keys(isOn);
+    updateNodeStatus(nodeIds)
+    const token = localStorage.getItem('token');
+    if (token) {
+        setIsAuthenticated(true);
+    }
+
+    // const interval = setInterval(() => {
+    //     getNodeStatus('WM-WF-KB04-72', '15m');
+    //   }, 5000);
+  }, []);
+  if (!isAuthenticated) {
+    return <LoginPage />;
+}
+
 
   const NodeActuation = async (nodeType, nodeName, status) => {
     // Update the state based on the current state
