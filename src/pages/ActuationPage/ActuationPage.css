@@ -14,7 +14,23 @@
 
   .node-on {
     background-color: green; /* Change background color when node is on */
-    color: white; /* Change text color when node is on */
+    color: white; /* Change text co
+    ￼￼
+    Motor
+    Admin Block Washrooms
+    ￼￼
+    KRB Washrooms
+    ￼
+    KRB OHT
+    ￼
+    RO Plant
+    RO Filtered Water OHT
+    ￼￼
+    RO 1
+    ￼
+    RO 2
+    ￼
+    RO 3lor when node is on */
     border-radius: 50%; 
     border: 2px solid green; /* Thick border */
   }
@@ -28,7 +44,7 @@
   .demo-page {
     position: relative;
     width: 100%;
-    height: 70vh;
+    height: 38vh;
   }
 
   .PopUpContent {
