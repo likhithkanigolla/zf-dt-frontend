@@ -14,7 +14,23 @@
 
   .node-on {
     background-color: green; /* Change background color when node is on */
-    color: white; /* Change text color when node is on */
+    color: white; /* Change text co
+    ￼￼
+    Motor
+    Admin Block Washrooms
+    ￼￼
+    KRB Washrooms
+    ￼
+    KRB OHT
+    ￼
+    RO Plant
+    RO Filtered Water OHT
+    ￼￼
+    RO 1
+    ￼
+    RO 2
+    ￼
+    RO 3lor when node is on */
     border-radius: 50%; 
     border: 2px solid green; /* Thick border */
   }
@@ -28,7 +44,7 @@
   .demo-page {
     position: relative;
     width: 100%;
-    height: 70vh;
+    height: 38vh;
   }
 
   .PopUpContent {
@@ -96,4 +112,31 @@
 
 .submit-button:hover {
   background-color: #45a049;
+}
+
+.custom-toast-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10vw; /* Adjust based on your layout */
+  width: 20vw;
+  pointer-events: none; /* Ensure toasts do not block interactions */
+ 
+
+  
+}
+
+.horizontal-toasts {
+  display: flex;
+  left: 105vw;
+  width: 200vw;
+  flex-direction: row; /* Horizontal alignment */
+  gap: 1vw; /* Space between toasts */
+  white-space: wrap; /* Prevent toasts from wrapping */
+}
+
+.toast-item {
+  pointer-events: auto; /* Allow interactions with the toasts */
+  width: 20vw;
 }
