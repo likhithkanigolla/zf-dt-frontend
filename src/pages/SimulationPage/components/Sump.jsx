@@ -11,6 +11,7 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) =>
   }, [waterInSump, sumpCapacity]);
 
   return (
+    <div>
     <div className="sump-container" ref={ref} style={{ position: "absolute", top: "13vw", left: "13vw" }}>
       <div className="sump" onClick={handleIconClick}>
         <div className="sump-background"></div>
@@ -19,7 +20,9 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) =>
           <div className="sumpwave"></div>
         </div>
       </div>
-      <div style={{ fontSize: "14px" }}>SUMP - {waterInSump.toFixed(2)}L</div>
+    </div>
+    <div style={{ fontSize: "14px", position: "initial" }}>SUMP</div>
+    <div style={{ fontSize: "14px" }}><b>{waterInSump.toFixed(2)}L</b></div>
     </div>
   );
 });

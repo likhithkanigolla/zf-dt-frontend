@@ -30,7 +30,7 @@ function SimulationForm({inputValues, handleChange, handleStartSimulation, isSim
 
     return (
         <div>
-        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '85vh', color: 'white' }}>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '73vh', color: 'white' }}>
             <div><h3 style={{color:'black'}}>Configuration</h3>
             <label><select name="Scenarios" class="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
                 <option value="1">Scenario 1</option>
@@ -38,7 +38,7 @@ function SimulationForm({inputValues, handleChange, handleStartSimulation, isSim
                 <option value="3">Scenario 3</option>
                 <option value="4">Scenario 4</option>
             </select></label>
-            <label style={{color: 'white'}} className="heading"><b>Simulation Speed: </b>
+            <label style={{color: 'white', height: '2vw'}} className="heading"><b>Simulation Speed: </b>
             <select name="timeMultiplier" onChange={handleChange} class="dropdown-content-n"  value={inputValues.timeMultiplier}>
                 <option value="1">1x</option>
                 <option value="2">2x</option>

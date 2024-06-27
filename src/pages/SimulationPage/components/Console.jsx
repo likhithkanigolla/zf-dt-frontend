@@ -50,7 +50,7 @@ const styles = {
   consoleContainer: {
     color: 'white',
     fontFamily: 'monospace',
-    padding: '10px',
+    padding: '0.5vw',
     background: 'white',
     overflowY: 'scroll',
     height: '20vh'
