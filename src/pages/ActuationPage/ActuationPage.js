@@ -227,7 +227,7 @@ const ActuationPage = () => {
 }
 
 
-  const NodeActuation = async (nodeType, nodeName, status) => {
+  const NodeActuation = async (nodeName, status) => {
     // Update the state based on the current state
     // Add nodeID in params if needed 
     // setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
@@ -242,7 +242,7 @@ const ActuationPage = () => {
   
     try {
       const response = await fetch(
-        `${config.backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
+        `${config.backendAPI}/actuation/${nodeName}/${status}`,
         {
           method: 'POST',
           headers: {
@@ -283,11 +283,57 @@ const ActuationPage = () => {
       setInputValue(event.target.value); // Update the input value state
     };
 
-    const handleSubmit = () => {
-      NodeActuation(nodeType, ControlNode, inputValue); // Call the function with the input value
-      setSelectedButton(null); // Optionally, reset the selected button state
-      setInputValue(''); // Clear the input value
+    const handleSubmit = async () => {
+      try {
+        console.log("I am here")
+        // Step 1: Get the token
+        const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            'username': 'smartcity_water',
+            'password': 'WaterQualityNode'
+          })
+        });
+    
+        if (!tokenResponse.ok) {
+          throw new Error('Failed to fetch token');
+        }
+    
+        const tokenData = await tokenResponse.json();
+        const token = tokenData.access_token;
+        console.log(token);
+    
+        // Step 2: Use the token in the next request
+        const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${nodeId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model_name: nodeId,
+            coefficients: inputValue
+          })
+        });
+    
+        if (!updateResponse.ok) {
+          throw new Error('Failed to update coefficients');
+        }
+    
+        const updateData = await updateResponse.json();
+        console.log('Update response:', updateData);
+    
+        // Reset the state
+        setSelectedButton(null);
+        setInputValue('');
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
+    
 
 
     let nodeImage, nodeType, ControlNode;
@@ -334,14 +380,14 @@ const ActuationPage = () => {
       />
 
       {showPopup && (
-        <div className="PopUpContent" id="PopUpPopup">
+        <div className="PopUpContent" id="PopUpPopup" style={{zIndex:100}}>
         <button className="close" onClick={handleCloseButtonClick}>✖</button>
         <img src={nodeImage} alt="PopUp-img" />
         <p>Clicked Node: {nodeId}</p>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 1)}>Turn On</button>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 2)}>Power Reset</button>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 3)}>Node Reset</button>
-        <button className="accept" onClick={() => UpdateCoef(nodeType,ControlNode)}>Update Calibrated Values</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 1)}>Turn On</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 2)}>Power Reset</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 3)}>Node Reset</button>
+        <button className="accept" onClick={() => handleButtonClick(4)}>Update Calibrated Values</button>
           {selectedButton === 4 && (
             <div>
               {/* <label htmlFor="calibratedvalues" className="input-label">Enter Calibrated Values:</label> */}
@@ -375,12 +421,12 @@ const ActuationPage = () => {
       {/* <h2>Actuation Page</h2> */}
       <NavigationBar title="Digital Twin for Water Quality - Actuation" />
       <div style={{ display: "flex"}} className='Page'>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
+        {/* <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
-      </div>
+      </div> */}
         <div>
       {/* <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} /> */}
       {/* Components */}
@@ -509,12 +555,12 @@ const ActuationPage = () => {
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
       <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/>
         </div>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
+        {/* <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
-        </div>
+        </div> */}
       </div>
       <div>
         {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/> */}
