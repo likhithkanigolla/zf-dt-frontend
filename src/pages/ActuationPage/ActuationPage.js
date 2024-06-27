@@ -34,8 +34,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { CgLayoutGrid } from 'react-icons/cg';
 
-// const backendAPI = "http://localhost:1629";
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+import config from '../../config';
+
+
 
 const ActuationPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -137,7 +138,7 @@ const ActuationPage = () => {
   const getNodeStatus = async (nodeId, time) => {
     try {
       const response = await fetch(
-        `${backendAPI}/get_value?table_name=${nodeId}`
+        `${config.backendAPI}/get_value?table_name=${nodeId}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -241,7 +242,7 @@ const ActuationPage = () => {
   
     try {
       const response = await fetch(
-        `${backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
+        `${config.backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
         {
           method: 'POST',
           headers: {

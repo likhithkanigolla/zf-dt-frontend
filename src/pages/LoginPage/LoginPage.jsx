@@ -8,8 +8,6 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
-    // const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-    const backendAPI = "http://localhost:1629/token";
 
     const handleSubmit = async (event) => {
         event.preventDefault();

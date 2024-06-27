@@ -20,8 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-// const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-const backendAPI = "http://localhost:1629";
+import config from '../../config';
 
 const SimulationScenario1 = () => {
   // State for holding input values and results
@@ -256,7 +255,7 @@ const SimulationScenario1 = () => {
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
     try {
-      const response = await fetch(`${backendAPI}/calculate_soil_contamination`, {
+      const response = await fetch(`${config.backendAPI}/calculate_soil_contamination`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -276,7 +275,7 @@ const SimulationScenario1 = () => {
 
   const calculateSandContamination = async () => {
     try {
-      const response = await fetch(`${backendAPI}/calculate_sand_contamination`, {
+      const response = await fetch(`${config.backendAPI}/calculate_sand_contamination`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -346,7 +345,7 @@ const SimulationScenario1 = () => {
       };
 
       const response = await fetch(
-        `${backendAPI}/calculate_ro_filtration`,
+        `${config.backendAPI}/calculate_ro_filtration`,
         {
           method: "POST",
           headers: {
@@ -365,7 +364,7 @@ const SimulationScenario1 = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`${backendAPI}/get_value?table_name=${tableName}`);
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
