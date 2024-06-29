@@ -63,8 +63,8 @@ const RealValueVisualisation = () => {
 
 
   // All measurements are in m(meters)
-  const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.5});
-  const [ohtMeasurements, setOhtMeasurements] = useState({length: 13.6,breadth: 9, height: 1.34});
+  const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.08});
+  const [ohtMeasurements, setOhtMeasurements] = useState({length: 11.28,breadth: 8.82, height: 1.15});
 
 
   const WaterLevelCalculate = async (waterlevel, length, breadth, height) => {
@@ -162,7 +162,7 @@ const RealValueVisualisation = () => {
     const fetchData = async () => {
       // Calculate Water in Sump
       const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
-      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate(SumpWaterLevelData.waterlevel, sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
+      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate((SumpWaterLevelData.waterlevel-20), sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
       setWaterInSump(SumpEstimatedWaterCapacity);
 
       // Calculate Water in OHT
