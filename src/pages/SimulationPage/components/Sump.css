@@ -1,77 +1,89 @@
 .sump-container {
-    position: relative;
-    width: 6vw;
-    left: 7vw;
-    height: 6.8vw;
-    overflow: relative;
-    border: 2px solid black;
-    background-color: #ccc;
-  }
-  
-  .sump {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-  
-  .sump-background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #ccc;
-    
-  }
-  
-  .sump-fill {
-    position: absolute;
-    width: 100%;
-    bottom: 0%;
-    left: 0;
-    background-color: rgb(37, 194, 226);
-    overflow: hidden; 
-    transition: height 4s ease;
-    animation: sumpwave 4s ease-in-out;
-    border-radius: 0%;
+  position: relative;
+  width: 6vw;
+  left: 7vw;
+  height: 6.8vw;
+  overflow: hidden;
+  border: 2px solid black;
+  background-color: #ccc;
+ 
+}
 
+.sump {
+  position: relative;
+  width: 1vw;
+  height: 8vw;
+}
+
+.sump-background {
+  position: absolute;
+  width: 100%;
+  height: 1vw;
+  background-color: #ccc;
+  
+}
+
+.sump-fill {
+  position: absolute;
+  width: 15vw;
+  bottom: 0;
+  left: 1vw;
+  background-color: rgb(37, 194, 226);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden; 
+  transition: height 4s ease;
+  animation: sumpwave 5s infinite ease-in-out;
+  border-radius: 100%;
+
+}
+
+.sumpwave {
+width: 200%;
+height: 20px; /* Adjust as needed */
+background: rgb(37, 194, 226);;
+border-radius: 50%;
+position: absolute;
+animation: wave-animation 4s infinite linear;
+}
+
+.sumpwave:nth-child(2) {
+top: 10px;
+animation: wave-animation 4s infinite linear reverse;
+}
+
+@keyframes sumpwave {
+  0% {
+    transform: translate(-50%, 0);
   }
-  
-  .wave {
-    position: absolute;
-    width: 170%;
-    height: 10%;
-    left: -10%;
-    right: 20%;
-    bottom: 5%;
-    background:  rgb(73, 190, 214);
-    border-radius: 60%;
-    animation: wave 4s ease-in-out;
+  50% {
+    transform: translate(-30%, -20%);
   }
-  
-  .wave:nth-of-type(20) {
-    animation-delay: 6s;
+  100% {
+    transform: translate(-50%, 0);
   }
-  
-  @keyframes wave {
-    0% {
-      transform: translate(-50%, 0);
-    }
-    50% {
-      transform: translate(-30%, -20%);
-    }
-    100% {
-      transform: translate(-50%, 0);
-    }
-  }
-  
-  .sump-percentage {
-    position: relative;
-    width: -10vw;
-    text-align: center;
-    bottom: 0;
-    font-size: 0.8vw;
-    color: rgb(6, 6, 6);
-    z-index: 6; 
-  }
-  
-  
+}
+
+.sump-percentage {
+  position: relative;
+  width: -10vw;
+  text-align: center;
+  bottom: 0;
+  font-size: 0.8vw;
+  color: rgb(6, 6, 6);
+  z-index: 6; 
+}
+
+
+.sump-text {
+  font-size: 1vw;
+  position: absolute;
+  top: calc(65% + 0.5vw); /* Adjust the top value to position the text below the sump */
+  left: 23%;
+  transform: translateX(-50%);
+  z-index: 100;
+  color: black;
+  text-align: center;
+  width: 100%;
+}

@@ -10,10 +10,9 @@
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 60vw; /* Full width */
+    width: 30vw; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-   
     margin: 0 auto; /* Center horizontally */
     justify-content: center; /* Center vertically */
     align-items: center; /* Center vertically */

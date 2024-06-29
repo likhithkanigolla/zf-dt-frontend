@@ -1,7 +1,7 @@
 /* NavigationBar.css */
 .navbar {
-    position: sticky; /* Change position to sticky */
-    top: 0;
+    position: sticky;
+    top: 0vw;
     left: 0;
     width: 100vw;
     height: 5vw;
@@ -25,7 +25,11 @@
 .navbar__logo img {
     width: 5vw;
     height: auto;
+/* <<<<<<< HEAD */
+    margin-right: 1vw;
+/* ======= */
     /* margin-right: 15px; */
+/* >>>>>>> 3eb0706b3824bf144e57fb6cc1a00abd19af48f4 */
 }
 
 .navbar__dashboard {
@@ -44,14 +48,14 @@
 }
 
 /* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 90vw) {
     .navbar {
         flex-direction: column;
         align-items: center;
-        padding: 10px 0;
+        padding: 10vw 0;
     }
     .navbar__logo {
-        margin-bottom: 10px;
+        margin-bottom: 1vw;
     }
     .navbar__logo img {
         margin-right: 0;
@@ -61,19 +65,19 @@
 .navbar__dropdown {
     background-color: #123462;
     color: white;
-    padding: 10px;
+    padding: 1vw;
     font-size: 1rem;
     cursor: pointer;
     border: 2px solid white;
-    border-radius: 10px;
-    margin: 30px;
+    border-radius: 1vw;
+    margin: 2vw;
 
 }
 
 .navbar__dropdown option {
     background-color: #123462;
     color: white;
-    padding: 10px;
+    padding: 12vw;
     border: none;
     font-size: 1rem;
     cursor: pointer;
@@ -85,15 +89,15 @@
 
 
 /* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 90vw) {
     .navbar {
         flex-direction: column;
         align-items: center;
-        padding: 10px 0;
+        padding: 1vw 0;
     }
 
     .navbar__logo {
-        margin-bottom: 10px;
+        margin-bottom: 1vw;
     }
 
     .navbar__logo img {

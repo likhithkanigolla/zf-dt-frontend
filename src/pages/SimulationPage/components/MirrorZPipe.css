@@ -87,7 +87,7 @@
         opacity: 0.8;
     }
     100% {
-        transform: translateY(0vw) ;
+        transform: translateY(-1vw) ;
         opacity: 0;
     }
 }
