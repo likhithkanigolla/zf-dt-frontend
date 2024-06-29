@@ -22,11 +22,11 @@ const WaterTank = forwardRef(({ waterInOHT, ohtCapacity, handleIconClick }, ref)
         </div>
         <div className="water-tank-fill" style={{ height: `${fillPercentage}%` }}>
           <div className="watertank-wave"></div>
-          <div className="watertank-wave"></div>
+          {/* <div className="watertank-wave"></div> */}
         </div>
       </div>
-      <div style={{ fontSize: "14px" }}>KRB OHT</div>
-      <div style={{ fontSize: "14px" }}><b>{waterInOHT.toFixed(2)}L</b></div>
+      <div style={{ fontSize: "14px", position: "relative", top: "0vw", left: "1vw" }}>KRB OHT</div>
+      <div style={{ fontSize: "14px", position: "relative", top: "0vw", left: "1vw" }}><b>{waterInOHT.toFixed(2)}L</b></div>
     </div>
   );
 });

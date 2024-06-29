@@ -1,7 +1,7 @@
 .water-tank {
   position: relative;
   width: 6vw;
-  height: 9vw;
+  height: 9.4vw;
   background-color: #bcbaba;
   border-radius: 2vw;
   overflow: hidden; /* Ensure the conical bottom doesn't overflow */
@@ -30,37 +30,41 @@
 
 .water-tank-fill {
   position: absolute;
-  bottom: -1%; /* Start filling from the bottom */
+  bottom: -8%; /* Start filling from the bottom */
   left: 1vw;
   width: 15vw;
   background-color: rgb(62, 195, 221);
-  transition: height 1s infinite;
-  animation: wave 3s infinite;
-  border-radius: 80%;
+  transition: height 3s ease;
+  animation: watertank-wave 3s infinite ease-in-out;
+  border-radius: 100%;
 }
 
 .watertank-wave {
   position: relative;
   width: 7vw;
-  height: 5vw;
-  left: 3vw;
-  right: 10%;
+  height: 2vw;
+  left: 5.5vw;
+  right: 3vw;
   bottom: 0.2vw;
   background: rgb(62, 194, 220);
-  border-radius: 50vw;
-  transition: height 2s infinite;
+  border-radius: 100%;
+  transition: height 3s infinite;
   animation: watertank-wave 3s infinite;
+}
+
+.watertank-wave:nth-of-type(2) {
+  animation-delay: 1ms;
 }
 
 @keyframes watertank-wave {
   0% {
-    transform: translate(50%,);
+    transform: translate(-50%, 0);
   }
   50% {
-    transform: translate(20%,);
+    transform: translate(-30%, -20%);
   }
   100% {
-    transform: translate(10%,);
+    transform: translate(-50%, 0);
   }
 }
 

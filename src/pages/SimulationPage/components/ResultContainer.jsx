@@ -7,10 +7,12 @@ const ResultCard = ({ title, value, previousValue }) => {
   return (
     <div className="result-card">
       <h5>{title}</h5>
-      <p>{value}</p>
-      <p style={{ color: differenceColor }}>
-        {difference.toFixed(3)} {difference < 0 ? '↓' : '↑'}
-      </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '0vw' }}>
+        <p>{value}</p>
+        <p style={{ color: differenceColor, marginLeft: '10px' }}>
+          {difference.toFixed(3)} {difference < 0 ? '↓' : '↑'}
+        </p>
+      </div>
     </div>
   );
 };
@@ -19,7 +21,15 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
   return (
     <div style={{ flex: 1 }}>
       <div className="result-container">
-        <h3 style={{color:'black'}}>Results:</h3>
+        <div style={{ backgroundColor: '#123462',
+           padding: '0%', 
+           textAlign: 'center',
+          height : '2.6vw',
+           width: '18vw',
+           borderRadius: '0.3vw',
+           color: 'white' }}>
+          <h2>Results:</h2>
+        </div>
         <div className="result-cards">
           <ResultCard
             title="TDS Value(mg/L) - At SUMP"
@@ -52,7 +62,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
           {Object.entries(sensorValues).map(([title, value], index) => (
             <ResultCard
               key={index}
-              title={title+"(Virtual Sensor)"}
+              title={title + "(Virtual Sensor)"}
               value={value}
               // previousValue={result?.previous_sensor_values?.[title] ?? 0}
             />

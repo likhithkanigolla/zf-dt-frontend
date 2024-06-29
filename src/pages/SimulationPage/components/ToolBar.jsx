@@ -12,19 +12,19 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
     return (
         <div className="toolbar">
             <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
-                <img src={WaterQualityNode} alt="Water Quality Sensor"/> waterqualitysensor
+                <img src={WaterQualityNode} alt="Water Quality Sensor"/> 
             </button>
             <button className="tool-button" onClick={() => handleToolbarItemClick('waterquantitysensor')}>
-                <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> waterquantitysensor
+                <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> 
             </button>
             <button className="tool-button" onClick={() => handleToolbarItemClick('waterlevelsensor')}>
-                <img src={WaterLevelNode} alt="Water Level Sensor"/> waterlevelsensor
+                <img src={WaterLevelNode} alt="Water Level Sensor"/>
             </button>
             <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
-                <img src={MotorNode} alt="Motor Sensor"/> motorsensor
+                <img src={MotorNode} alt="Motor Sensor"/>
             </button>
             <button className="tool-button" onClick={handleLeakageIconClick}>
-                <img src={LeakageIcon} alt="Leakage" /> Leakage
+                <img src={LeakageIcon} alt="Leakage" />
             </button>
 
             {/* <table>
