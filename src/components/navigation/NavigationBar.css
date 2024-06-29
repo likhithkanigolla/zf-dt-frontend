@@ -3,8 +3,13 @@
     position: sticky; /* Change position to sticky */
     top: 0vw;
     left: 0;
+/* <<<<<<< HEAD */
     width: 98vw;
     height: 4vw;
+/* ======= */
+    width: 100vw;
+    height: 5vw;
+/* >>>>>>> 3eb0706b3824bf144e57fb6cc1a00abd19af48f4 */
     background-color: #123462;
     color: white;
     /* padding: 20px 30px; */
@@ -25,7 +30,11 @@
 .navbar__logo img {
     width: 5vw;
     height: auto;
+/* <<<<<<< HEAD */
     margin-right: 1vw;
+/* ======= */
+    /* margin-right: 15px; */
+/* >>>>>>> 3eb0706b3824bf144e57fb6cc1a00abd19af48f4 */
 }
 
 .navbar__dashboard {

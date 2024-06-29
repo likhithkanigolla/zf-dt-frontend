@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './ActuationPage.css';
 import NavigationBar from '../../components/navigation/Navigation';
+import LoginPage from '../LoginPage/LoginPage';
 
 import ZshapePipe from '../SimulationPage/components/ZshapePipe';
 import MirrorZPipe from '../SimulationPage/components/MirrorZPipe';
@@ -25,12 +26,20 @@ import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 import SimulationCanvas from '../SimulationPage/components/SimulationCanvas';
+import { saveAs } from 'file-saver';
+import ConsoleHeader from  '../SimulationPage/components/Console';
 
-// const backendAPI = "http://localhost:1629";
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+import 'react-toastify/dist/ReactToastify.css';
+ 
+import { ToastContainer, toast } from 'react-toastify';
+import { CgLayoutGrid } from 'react-icons/cg';
+
+import config from '../../config';
+
+
 
 const ActuationPage = () => {
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputValues, setInputValues] = useState({
     number1: '',
     number2: '',
@@ -38,7 +47,7 @@ const ActuationPage = () => {
     number4: ''
   });
   const [result, setResult] = useState(null);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputValues({
@@ -69,24 +78,35 @@ const ActuationPage = () => {
   });
 
   const nodePositions = {
-    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "24vw", left: "38vw" },
-    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '54vw' },
-    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '26vw', left: '46vw'},
-    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '26vw', left: '34.8vw' }, //sump
-    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '22vw', left: '53vw' }, //oht
-    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '24vw', left: '59.5vw' }, //after oht
-    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '38vw', left: '73vw' }, //ro 2
-    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '38vw', left: '67vw' },  //faculty launge
-    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '29vw', left: '65vw' }, //after ro
-    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '34vw', left: '67.5vw', transform: 'rotate(90deg)'},
-    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '34vw', left: '73vw', transform: 'rotate(90deg)'}, 
-    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '13vw', left: '57vw'},
-    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '59vw'},   
-    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw', transform: 'rotate(90deg)', zIndex: '3'},
-    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '48.5vw',transform: 'rotate(90deg)'},   
+    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "13.9vw", left: "32vw", zIndex: '3' }, //WL at sump
+    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '11vw', left: '49vw', zIndex: '3' }, //WL at OHT
+    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '40vw',  zIndex: '3'}, //motor
+    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '30vw' ,  zIndex: '3'}, //WQ at sump
+    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '13.9vw', left: '48vw',  zIndex: '3'}, //WQ at OHT
+    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '16vw', left: '53.5vw' }, //WQ to RO plant
+    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '67.1vw' }, //ro 2
+    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '61.7vw' },  //faculty launge
+    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
+    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '61.5vw', transform: 'rotate(90deg)'},
+    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '67.1vw', transform: 'rotate(90deg)'}, 
+    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '8.5vw', left: '52vw'},
+    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '54vw'},   
+    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '26vw', transform: 'rotate(90deg)', zIndex: '3'},
+    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '15vw', left: '43vw',transform: 'rotate(90deg)',  zIndex: '3'},   
   };
-
+  // const handleDownloadLog = () => {
+  //   const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
+  //   saveAs(blob, 'simulation_log.txt');
+  // };
   // Debug Statements for Printing the usestate
+  const [log, setLog] = useState([]); 
+  const updateLog = (message) => {
+    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+  };
+  const handleDownloadLog = () => {
+    const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, 'actuation_log.txt');
+  };
   const AllNodes = () => {
     return (
       <div>
@@ -104,50 +124,6 @@ const ActuationPage = () => {
     );
   };
 
-  useEffect(() => {
-    // Call getNodeStatus for each node when the component mounts
-    const nodeIds = Object.keys(isOn);
-    updateNodeStatus(nodeIds)
-
-    // const interval = setInterval(() => {
-    //     getNodeStatus('WM-WF-KB04-72', '15m');
-    //   }, 5000);
-  }, []);
-
-  const updateNodeStatus = async (nodeIds) => {
-    let tmpIsOn = {};
-    for (let idx in nodeIds) {
-      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
-    }
-    console.log(tmpIsOn);
-    setIsOn(tmpIsOn);
-    console.log("Done"); 
-  };
-
-  const getNodeStatus = async (nodeId, time) => {
-    try {
-      const response = await fetch(
-        `${backendAPI}/get_value?table_name=${nodeId}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-
-      // Extract timestamp from the response
-      const timestamp = new Date(data.timestamp).getTime();
-      const currentTime = new Date().getTime();
-
-      // Check if the timestamp is within the specified time range
-      const timeDifference = currentTime - timestamp;
-      console.log(timeDifference,parseTime(time))
-      return timeDifference <= parseTime(time);
-    } catch (error) {
-      console.error("Fetch error:", error);
-      return false;
-    }
-  };
-
   const parseTime = (timeString) => {
     const regex = /(\d+)([mhr])/;
     const [, value, unit] = timeString.match(regex);
@@ -159,7 +135,99 @@ const ActuationPage = () => {
     return parseInt(value, 10) * multiplier[unit];
   };
 
-  const NodeActuation = async (nodeType, nodeName, status) => {
+  const getNodeStatus = async (nodeId, time) => {
+    try {
+      const response = await fetch(
+        `${config.backendAPI}/get_value?table_name=${nodeId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+  
+      // Extract timestamp from the response
+      const timestamp = new Date(data.timestamp).getTime();
+      const currentTime = new Date().getTime();
+  
+      // Check if the timestamp is within the specified time range
+      const timeDifference = currentTime - timestamp;
+      console.log(timeDifference, parseTime(time));
+      if (timeDifference > parseTime(time)) {
+        // Show toast notification using react-toastify
+        const message = `Node ${nodeId} is down!`;
+        updateLog(message);  // Customize message as needed
+        // sendTelegramNotification(message);
+        // toast.info("Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      
+      // Check TDS value for WM-WD-KH98-00 node
+      if ((nodeId === "WM-WD-KH98-00" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        updateLog(tdsAlertMessage);  // Display toast alert
+        console.log(tdsAlertMessage)
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if ((nodeId === "WM-WD-KH96-00" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        updateLog(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if ((nodeId === "WM-WD-KH04-00" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        updateLog(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if ((nodeId === "WM-WD-KH95-00" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        updateLog(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      if ((nodeId === "WM-WD-KH96-01" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
+        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
+        updateLog(tdsAlertMessage);  // Display toast alert
+        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
+        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
+      }
+      return timeDifference <= parseTime(time);
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return false;
+    }
+  };
+
+  const updateNodeStatus = async (nodeIds) => {
+    let tmpIsOn = {};
+    for (let idx in nodeIds) {
+      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
+    }
+    console.log(tmpIsOn);
+    setIsOn(tmpIsOn);
+    console.log("Done"); 
+  };
+
+  useEffect(() => {
+    // Call getNodeStatus for each node when the component mounts
+    const nodeIds = Object.keys(isOn);
+    updateNodeStatus(nodeIds)
+    const token = localStorage.getItem('token');
+    if (token) {
+        setIsAuthenticated(true);
+    }
+
+    // const interval = setInterval(() => {
+    //     getNodeStatus('WM-WF-KB04-72', '15m');
+    //   }, 5000);
+  }, []);
+  if (!isAuthenticated) {
+    return <LoginPage />;
+}
+
+
+  const NodeActuation = async (nodeName, status) => {
     // Update the state based on the current state
     // Add nodeID in params if needed 
     // setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
@@ -174,7 +242,7 @@ const ActuationPage = () => {
   
     try {
       const response = await fetch(
-        `${backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
+        `${config.backendAPI}/actuation/${nodeName}/${status}`,
         {
           method: 'POST',
           headers: {
@@ -215,11 +283,57 @@ const ActuationPage = () => {
       setInputValue(event.target.value); // Update the input value state
     };
 
-    const handleSubmit = () => {
-      NodeActuation(nodeType, ControlNode, inputValue); // Call the function with the input value
-      setSelectedButton(null); // Optionally, reset the selected button state
-      setInputValue(''); // Clear the input value
+    const handleSubmit = async () => {
+      try {
+        console.log("I am here")
+        // Step 1: Get the token
+        const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            'username': 'smartcity_water',
+            'password': 'WaterQualityNode'
+          })
+        });
+    
+        if (!tokenResponse.ok) {
+          throw new Error('Failed to fetch token');
+        }
+    
+        const tokenData = await tokenResponse.json();
+        const token = tokenData.access_token;
+        console.log(token);
+    
+        // Step 2: Use the token in the next request
+        const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${nodeId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model_name: nodeId,
+            coefficients: inputValue
+          })
+        });
+    
+        if (!updateResponse.ok) {
+          throw new Error('Failed to update coefficients');
+        }
+    
+        const updateData = await updateResponse.json();
+        console.log('Update response:', updateData);
+    
+        // Reset the state
+        setSelectedButton(null);
+        setInputValue('');
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
+    
 
 
     let nodeImage, nodeType, ControlNode;
@@ -266,14 +380,14 @@ const ActuationPage = () => {
       />
 
       {showPopup && (
-        <div className="PopUpContent" id="PopUpPopup">
+        <div className="PopUpContent" id="PopUpPopup" style={{zIndex:100}}>
         <button className="close" onClick={handleCloseButtonClick}>✖</button>
         <img src={nodeImage} alt="PopUp-img" />
         <p>Clicked Node: {nodeId}</p>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 1)}>Turn On</button>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 2)}>Power Reset</button>
-        <button className="accept" onClick={() => NodeActuation(nodeType, ControlNode, 3)}>Node Reset</button>
-        <button className="accept" onClick={() => UpdateCoef(nodeType,ControlNode)}>Update Calibrated Values</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 1)}>Turn On</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 2)}>Power Reset</button>
+        <button className="accept" onClick={() => NodeActuation(nodeId, 3)}>Node Reset</button>
+        <button className="accept" onClick={() => handleButtonClick(4)}>Update Calibrated Values</button>
           {selectedButton === 4 && (
             <div>
               {/* <label htmlFor="calibratedvalues" className="input-label">Enter Calibrated Values:</label> */}
@@ -307,7 +421,7 @@ const ActuationPage = () => {
       {/* <h2>Actuation Page</h2> */}
       <NavigationBar title="Digital Twin for Water Quality - Actuation" />
       <div style={{ display: "flex"}} className='Page'>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
         <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
@@ -316,133 +430,176 @@ const ActuationPage = () => {
         <div>
       {/* <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} /> */}
       {/* Components */}
-        <div style={{ height: "46vw", display: "flex",flex:3, justifyContent: "center", alignItems: "center" }}>
-          <div style={{ display: "flex", position: 'relative', width: '55vw', height: '40vw', border: '1px solid black', justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-            <div className="demo-page">
-              <div style={{ position: "absolute", top: "7vw", left: "3.9vw"}} id="pumpHouseIcon">
+        <div style={{ height: "30vw", display: "flex",flex:3, justifyContent: "flex-start", alignItems: "flex-start" }}>
+          {/* Box for the actuation display */}
+          
+          <div style={{position: "relative", width: "65vw", height: "29vw", top: "0.5vw", border: "1px solid black", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+          <div className="demo-page"> 
+              <div style={{ position: "absolute", 
+                top: "-3.2vw", 
+                left: "-24.3vw",
+                zIndex: "2"
+                }}
+                 id="pumpHouseIcon">
                 <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }}/>
                 <div style={{ fontSize: "1vw" }}>PumpHouse</div>
               </div>
 
               {/* Z Shape Pipe Pumphouse to Sump*/}
-              <div style={{ position: "absolute", top: "8.5vw", left: "7.9vw" }}>
+              <div style={{ position: "absolute", top: "-2vw", left: "-20vw" }}>
                 <ZshapePipe/>
               </div>
 
-              {/* Mirror Z Pipe Borewell to Sump */}
-              <div style={{ position: "absolute", top: "16vw", left: "8vw" }}>
-                <MirrorZPipe style={{ width: "4.8vw", height: "4.8vw" }}/>
-              </div>
-
               {/* Borewell */}
-              <div id="borewellIcon" style={{ position: "absolute", top: "19vw", left: "3.8vw" }}>
+              <div id="borewellIcon" style={{ position: "absolute", top: "6.1vw", left: "-24vw" }}>
                 <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
                 <div style={{ fontSize: "1vw" }}>Borewell</div>
               </div>
 
-              {/* Straight Pipes Sump to Motor*/}
-              <div>
-                <div style={{ position: "absolute", top: "20.6vw", left: "25vw" }}>
-                  <StraightPipe/>
-                </div>
+              {/* Straight Pipe from Borewell to Sump */}
+              <div style={{ position: "absolute", top: "10vw", left: "-12.5vw" }}>
+              <StraightPipe style={{ width: "4.8vw", height: "4.8vw" }} 
+              ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump";  } }}
+              />
+              </div>
 
-                {/* SUMP */}
-                <div style={{ position: "absolute", top: "13vw", left: "12vw", textAlign: "center" }}>
+              {/* SUMP */}
+              <div style={{ position: "absolute", top: "2vw", left: "-16vw", textAlign: "center", zIndex: "1"}}>
                   <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} />
                 </div>
 
-                <div style={{ position: "absolute", top: "11.8vw", left: "25.5vw" }}>
-                  <MirrorZPipe/>
+              {/* Straight Pipes Sump to Motor*/}
+              <div>
+                <div style={{ position: "absolute", top: "9.7vw", left: "-3.5vw" }}>
+                  <StraightPipe/>
                 </div>
 
                 {/* Motor */}
-                <div style={{ position: "absolute", top: "17vw", left: "22vw", textAlign: "center", width: "5.8vw"}}>
+                <div style={{ position: "absolute", top: "6vw", left: "-6vw", textAlign: "center", width: "5.8vw", zIndex: "3"}}>
                   <img src={Motor} alt="Motor" className={`motor`}style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)"}}/>
                   <div style={{ fontSize: "1vw" }}>Motor</div>
                 </div>
 
-                {/* L Shape Pipe  OHT to RO PIPE*/}
-                <div style={{ position: "absolute", top: "12vw", left: "32.2vw", transform: "rotate(180deg)" }}>
-                  <LShapePipe/>
+                {/* MirrorZPipe */}
+                <div style={{ position: "absolute", top: "0.8vw", left: "-2vw" }}>
+                  <MirrorZPipe/>
                 </div>
 
-                {/* L Shape Pipe OHT to Admin Block Washrooms*/}
-                <div style={{ position: "absolute", top: "10.5vw", left: "31.8vw", transform: "rotate(90deg)" }}>
-                  <LShapePipe/>
-                </div>
-                    
-                <div style={{ position: "absolute", top: "2vw", left: "34.3vw", textAlign: "center" }}>
-                  <div style={{ fontSize: "1vw" }}>Admin Block Washrooms</div>
-                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-                </div>
-
-                <div style={{ position: "absolute", top: "7.8vw", left: "38.2vw", textAlign: "center" }}>
-                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-                  <div style={{ fontSize: "1vw" }}>KRB Washrooms</div>
-                </div>
-
-                {/* Straight Pipe OHT to KRB Washrooms */}
-                <div style={{ position: "absolute", top: "13vw", left: "41vw" }}>
-                  <StraightPipe/>
-                </div>
 
                 {/* Water Tower */}
-                <div style={{ position: "absolute", top: "9vw", left: "29vw",textAlign: "center"}}>
+                <div style={{ position: "absolute", 
+                  top: "0vw", 
+                  left: "1.9vw",
+                  textAlign: "center",
+                  zIndex: "2"
+                  }}>
                   <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
                   <div style={{ fontSize: "1vw" }}>KRB OHT</div>
                 </div>
 
-                {/* Straight Pipe RO Plant to RO OHT*/}
-                <div style={{ position: "absolute", top: "23.2vw", left: "48.7vw" }}>
+
+                {/* L Shape Pipe OHT to Admin Block Washrooms*/}
+                <div style={{ position: "absolute", top: "4vw", left: "4vw", transform: "rotate(90deg)" }}>
+                  <LShapePipe/>
+                </div>
+                    
+                <div style={{ position: "absolute", top: "-5vw", left: "7vw", textAlign: "center" }}>
+                <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
+                <div style={{ fontSize: "1vw", whiteSpace: "nowrap" }}>Admin Block Washrooms</div>
+                </div>
+
+
+                {/* Straight Pipe OHT to KRB Washrooms */}
+                <div style={{ position: "absolute", top: "4vw", left: "14vw" }}>
                   <StraightPipe/>
                 </div>
 
+                <div style={{ position: "absolute", top: "0vw", left: "11vw", textAlign: "center" }}>
+                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
+                  <div style={{ fontSize: "1vw", whiteSpace: "nowrap" }}>KRB Washrooms</div>
+                </div>
+
+                
+              {/* L Shape Pipe  OHT to RO PLANT*/}
+              <div style={{ position: "absolute", top: "2vw", left: "4.5vw", transform: "rotate(180deg)" }}>
+                  <LShapePipe/>
+                </div>
+
                 {/* RO Plant */}
-                <div style={{ position: "absolute", top: "17vw", left: "37.2vw" }}>
+                <div style={{ position: "absolute", top: "7vw", left: "9.3vw" }}>
                   <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}/>
                   <div style={{ fontSize: "1vw" }}>RO Plant</div>
                 </div>
 
-                {/* E Shape Pipe RO OHT to Ro Filters*/}
-                <div style={{ position: "absolute", top: "30vw", left: "52vw" }}>
-                  <EShapePipe/>
+                {/* Straight Pipe RO Plant to RO OHT*/}
+                <div style={{ position: "absolute", top: "13.2vw", left: "20vw" }}>
+                  <StraightPipe/>
                 </div>
 
                 {/* Water Tower */}
-                <div style={{ position: "absolute", top: "16.7vw", left: "43.5vw" , textAlign: "center"}}>
+                <div style={{ position: "absolute", top: "2.5vw", left: "18.3vw" , textAlign: "center", zIndex: "2"}}>
                   <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
-                  <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }}/>
+                  <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5.2vw" }}/>
+                </div>
+
+                {/* E Shape Pipe RO OHT to Ro Filters*/}
+                <div style={{ position: "absolute", top: "19.5vw", left: "23.8vw" }}>
+                  <EShapePipe/>
                 </div>
 
                 {/* RO Coolers */}
-                <div style={{ position: "absolute", top: "28vw", left: "43.9vw", textAlign: "center", }} >
+                <div style={{ position: "absolute", top: "17.5vw", left: "16.4vw", textAlign: "center", }} >
                   <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.8vw", height: "3.8vw" }}/>
                   <div style={{ fontSize: "1vw" }}>RO 1</div>
                 </div>
 
-                <div style={{ position: "absolute", top: "28vw", left: "46.6vw", textAlign: "center", }}>
+                <div style={{ position: "absolute", top: "17.5vw", left: "19vw", textAlign: "center", }}>
                   <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.8vw", height: "3.8vw" }} />
                   <div style={{ fontSize: "1vw" }}>RO 2</div>
                 </div>
 
-                <div style={{ position: "absolute", top: "28vw", left: "49.3vw", textAlign: "center", }}>
+                <div style={{ position: "absolute", top: "17.5vw", left: "21.7vw", textAlign: "center", }}>
                   <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}/>
                   <div style={{ fontSize: "1vw" }}>RO 3</div>
                 </div>
+                
               </div>
+              
+      
             </div>
           </div>
         </div>
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
+      <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/>
         </div>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
         </div>
       </div>
+      <div>
+        {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/> */}
+              {/* {<div className="custom-toast-container">
+              
+      <ToastContainer 
+         position="bottom-center"
+         autoClose={false}
+         hideProgressBar={false}
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover
+         className="horizontal-toasts"
+         toastClassName="toast-item" }
+
+      /> */}
+      </div>
     </div>
+    
   );
 }
 

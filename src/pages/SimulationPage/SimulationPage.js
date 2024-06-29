@@ -20,8 +20,7 @@ import LeakageIcon from "../images/leakage_water.png";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-// const backendAPI = "http://localhost:1629";
+import config from '../../config';
 
 const SimulationPage = () => {
   // State for holding input values and results
@@ -333,7 +332,7 @@ const SimulationPage = () => {
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
     try {
-      const response = await fetch(`${backendAPI}/calculate_soil_contamination`, {
+      const response = await fetch(`${config.backendAPI}/calculate_soil_contamination`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -354,7 +353,7 @@ const SimulationPage = () => {
 
   const calculateSandContamination = async () => {
     try {
-      const response = await fetch(`${backendAPI}/calculate_sand_contamination`, {
+      const response = await fetch(`${config.backendAPI}/calculate_sand_contamination`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -386,7 +385,7 @@ const SimulationPage = () => {
     };
 
     let response = await fetch(
-      `${backendAPI}/calculate_ro_filtration`,
+      `${config.backendAPI}/calculate_ro_filtration`,
       {
         method: "POST",
         headers: {
@@ -411,7 +410,7 @@ const SimulationPage = () => {
     };
 
     let response = await fetch(
-      `${backendAPI}/calculate_motor_flow_rate`,
+      `${config.backendAPI}/calculate_motor_flow_rate`,
       {
         method: "POST",
         headers: {
@@ -500,7 +499,7 @@ const SimulationPage = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`${backendAPI}/get_value?table_name=${tableName}`);
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

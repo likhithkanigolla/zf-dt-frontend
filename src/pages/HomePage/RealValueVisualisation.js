@@ -12,10 +12,8 @@ import MotorNode from "../images/MotorNode.png";
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
+import config from '../../config';
 
-
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
-// const backendAPI = "http://localhost:1629";
 
 const RealValueVisualisation = () => {
   // State for holding input values and results
@@ -217,7 +215,7 @@ const RealValueVisualisation = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`${backendAPI}/get_value?table_name=${tableName}`);
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

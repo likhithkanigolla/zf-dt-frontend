@@ -17,8 +17,7 @@ import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 
-// const backendAPI = "http://localhost:1629";
-const backendAPI = "http://smartcitylivinglab.iiit.ac.in:1629";
+import config from '../../config';
 
 const ActuationPageB = () => {
 
@@ -109,7 +108,7 @@ const ActuationPageB = () => {
   const getNodeStatus = async (nodeId, time) => {
     try {
       const response = await fetch(
-        `${backendAPI}/get_value?table_name=${nodeId}`
+        `${config.backendAPI}/get_value?table_name=${nodeId}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -156,7 +155,7 @@ const ActuationPageB = () => {
   
     try {
       const response = await fetch(
-        `${backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
+        `${config.backendAPI}/actuation/${nodeType}/${nodeName}/${status}`,
         {
           method: 'POST',
           headers: {

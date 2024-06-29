@@ -45,7 +45,7 @@
     left: 5vw;
     right: 3vw;
     bottom: 0.3vw;
-    background:  rgb(41, 180, 201);
+    background:  rgb(37, 194, 226);
     border-radius: 100%;
     transition: height 3s infinite;
     animation: sumpwave 2s infinite ease;

@@ -27,7 +27,7 @@ label {
 .dropdown-content {
     padding: 0.5vw;
     height: 2vw;
-    width: 14.5vw;
+    width: 15.7vw;
     max-width: 30vw;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -120,7 +120,7 @@ label {
     cursor: pointer;
     color: #fff; /* White text for better contrast */
     padding: 10px 20px; /* Added horizontal padding for better spacing */
-    background: linear-gradient(45deg, #333333, #1a1a1a); /* Blacish gradient background */
+    background: linear-gradient(45deg, #123462, #123462); /* Blacish gradient background */
     border-radius: 5px; /* Rounded corners for a modern look */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
@@ -137,7 +137,7 @@ label {
     align-items: center;
     justify-content: space-between; /* Distributes content to start and end */
     cursor: pointer;
-    color: #333;
+    color: #123462;
     margin: 10px 0;
     border-radius: 5px; 
     transition: background-color 0.3s; /* Smooth transition for hover effect */

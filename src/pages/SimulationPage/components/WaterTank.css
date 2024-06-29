@@ -1,7 +1,7 @@
 .water-tank {
   position: relative;
   width: 6vw;
-  height: 9vw;
+  height: 9.4vw;
   background-color: #bcbaba;
   border-radius: 2vw;
   overflow: hidden; /* Ensure the conical bottom doesn't overflow */
@@ -30,7 +30,7 @@
 
 .water-tank-fill {
   position: absolute;
-  bottom: -10%; /* Start filling from the bottom */
+  bottom: -8%; /* Start filling from the bottom */
   left: 1vw;
   width: 15vw;
   background-color: rgb(62, 195, 221);

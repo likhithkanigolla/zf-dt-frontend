@@ -53,7 +53,8 @@ const styles = {
     padding: '0.5vw',
     background: 'white',
     overflowY: 'scroll',
-    height: '20vh'
+    height: '20vh',
+    width: '60vw'
   },
   buttonContainer: {
     display: 'flex',
@@ -87,7 +88,7 @@ const styles = {
     padding: '10px',
     border: '1px solid limegreen',
     borderRadius: '5px',
-    width: '60vw',
+    width: '57.5vw',
     maxHeight: '5vw',
     maxWidth: '100vw',
     overflowY: 'auto' 
