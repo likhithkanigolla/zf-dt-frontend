@@ -19,13 +19,13 @@ const ResultCard = ({ title, value, previousValue }) => {
 
 const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate }) => {
   return (
-    <div style={{ flex: 1 }}>
+    <div style={{ flex: 1}}>
       <div className="result-container">
         <div style={{ backgroundColor: '#123462',
            padding: '0%', 
            textAlign: 'center',
           height : '2.6vw',
-           width: '18vw',
+           width: '17vw',
            borderRadius: '0.3vw',
            color: 'white' }}>
           <h2>Results:</h2>
@@ -42,7 +42,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
             previousValue={PreviousPermeateFlowRate ?? 0}
           />
           <ResultCard
-            title="Final TDS Concentration After RO Tank(mg/L)"
+            title="Final TDS After RO(mg/L)"
             value={result?.final_tds_concentration_after_ro_tank.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.final_tds_concentration_after_ro_tank ?? 0}
           />

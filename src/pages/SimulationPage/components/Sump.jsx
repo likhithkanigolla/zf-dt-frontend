@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import './Sump.css';
 
 const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) => {
@@ -12,7 +11,7 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) =>
 
   return (
     <div>
-    <div className="sump-container" ref={ref} style={{ position: "absolute", top: "13vw", left: "13vw" }}>
+    <div className="sump-container" ref={ref} style={{ position: "absolute", top: "8vw", left: "11vw" }}>
       <div className="sump" onClick={handleIconClick}>
         <div className="sump-background"></div>
         <div className="sump-fill" style={{ height: `${fillPercentage}%` }}>
@@ -20,9 +19,8 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) =>
           <div className="sumpwave"></div>
         </div>
       </div>
-    </div>
-    <div style={{ fontSize: "14px",  position: "relative", top: "-13vw", left: "13vw" }}>SUMP</div>
-    <div style={{ fontSize: "14px", position: "relative", top: "-13vw", left: "12.8vw" }}><b>{waterInSump.toFixed(2)}L</b></div>
+      </div>
+      <div className="sump-text">SUMP - <b>{waterInSump.toFixed(2)}L</b></div>
     </div>
   );
 });
