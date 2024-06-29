@@ -42,7 +42,7 @@ function LShapePipe({ flow, onClick, text }) {
                                     y="0"
                                     width="100"
                                     height="10"
-                                    fill="lightblue"
+                                    fill="white"
                                     className="lshape-initial-flow"
                                 />
                             )}
@@ -54,7 +54,7 @@ function LShapePipe({ flow, onClick, text }) {
                                     height="200"
                                     fill="lightblue"
                                     className="lshape-initial-flow"
-                                    style={{ transform: 'translateY(0)' }}
+                                    style={{ transform: 'translateY(-50)' }}
                                 />
                             )}
                             <rect
@@ -66,8 +66,6 @@ function LShapePipe({ flow, onClick, text }) {
                                 className="lshape-wave-path"
                             />
                         </g>
-
-                      
                     </>
                 )}
                 <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>

@@ -26,15 +26,15 @@
 .sump-fill {
   position: absolute;
   width: 15vw;
-  bottom: 0;
+  bottom: -0.8vw;
   left: 1vw;
   background-color: rgb(37, 194, 226);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden; 
-  transition: height 4s ease;
-  animation: sumpwave 5s infinite ease-in-out;
+  transition: height 5s ease;
+  animation: sumpwave 6s infinite ease-in-out;
   border-radius: 100%;
 
 }
