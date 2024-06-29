@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './StraightPipe.css';
+import './Pipe.css';
 
 function StraightPipe({ flow, onClick }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);

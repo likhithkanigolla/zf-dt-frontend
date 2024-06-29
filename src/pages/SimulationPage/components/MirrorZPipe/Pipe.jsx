@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './ZshapePipe.css';
+import './Pipe.css';
 
-function ZshapePipe({ flow, onClick }) {
+function MirrorZPipe({ flow, onClick }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,35 +15,27 @@ function ZshapePipe({ flow, onClick }) {
     }, [flow]);
 
     return (
-        <div className="svg-container" onClick={onClick}>
-            <svg 
-                viewBox="0 0 100 100"
-                width="100vw" // Set width to 100% of the parent container
-                height="50vw" // Set height to 50% of the parent container
-                className='absolute bottom-10 right-52'
-                style={{ maxWidth: '100vw', maxHeight: '50vw' }}
-            >
+        <div className="mirror-svg-container" onClick={onClick}>
+            <svg viewBox="0 0 110 150">
                 <defs>
-                    <clipPath id="pipeClipPath">
-                        <path
-                            d="M 50,0 L 50,90 L 100,90 L 100,100 L 40,100 L 40,10 L 0,10 L 0,0 Z"
-                        />
+                    <clipPath id="mirrorPipeClipPath">
+                        <polygon points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92" />
                     </clipPath>
-                    <linearGradient id="waveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
+                    <linearGradient id="mirrorWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
                     </linearGradient>
                 </defs>
 
-                <path
-                    d="M 50,0 L 50,90 L 100,90 L 100,100 L 40,100 L 40,10 L 0,10 L 0,0 Z"
-                    className="pipe-border"
+                <polygon
+                    points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92"
+                    className="mirror-pipe-border"
                 />
 
                 {flow && (
                     <>
-                        <g className="pipe-water">
+                        <g className="mirror-pipe-water">
                             {!initialFlowComplete && (
                                 <rect
                                     x="0"
@@ -51,7 +43,7 @@ function ZshapePipe({ flow, onClick }) {
                                     width="10"
                                     height="100"
                                     fill="lightblue"
-                                    className="initial-flow"
+                                    className="mirror-initial-flow"
                                 />
                             )}
                             {initialFlowComplete && (
@@ -61,7 +53,7 @@ function ZshapePipe({ flow, onClick }) {
                                     width="200"
                                     height="100"
                                     fill="lightblue"
-                                    className="initial-flow"
+                                    className="mirror-initial-flow"
                                     style={{ transform: 'translateX(0)' }}
                                 />
                             )}
@@ -70,41 +62,41 @@ function ZshapePipe({ flow, onClick }) {
                                 y="0"
                                 width="200"
                                 height="100"
-                                fill="url(#waveGradient)"
-                                className="wave-path"
+                                fill="url(#mirrorWaveGradient)"
+                                className="mirror-wave-path"
                             />
                         </g>
 
-                        <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                        {/* <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
-                            className="falling-water"
+                            className="mirror-falling-water"
                         />
 
                         <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
-                            className="falling-water2"
+                            className="mirror-falling-water2"
                         />
 
                         <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
-                            className="falling-water3"
-                        />
+                            className="mirror-falling-water3"
+                        /> */}
 
                         {/* Water Bubbles */}
-                        <circle className="bubble" cx="98" cy="140" r="1" />
-                        <circle className="bubble" cx="102" cy="145" r="1.5" />
-                        <circle className="bubble" cx="94" cy="138" r="2.5" />
-                        <circle className="bubble" cx="99" cy="145" r="2.8" />
-                        <circle className="bubble" cx="106" cy="148" r="2.0" />
+                        {/* <circle className="mirror-bubble" cx="98" cy="50" r="1" />
+                        <circle className="mirror-bubble" cx="102" cy="55" r="1.5" />
+                        <circle className="mirror-bubble" cx="94" cy="48" r="2.5" />
+                        <circle className="mirror-bubble" cx="99" cy="55" r="2.8" />
+                        <circle className="mirror-bubble" cx="106" cy="58" r="2.0" /> */}
                     </>
                 )}
             </svg>
@@ -112,4 +104,4 @@ function ZshapePipe({ flow, onClick }) {
     );
 }
 
-export default ZshapePipe;
+export default MirrorZPipe;

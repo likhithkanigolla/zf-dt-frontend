@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './EShapePipe.css';
+import './PipeOHT.css';
 
-function EShapePipe({ flow, onClick, text }) {
+function LShapePipeOHT({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,13 +15,13 @@ function EShapePipe({ flow, onClick, text }) {
     }, [flow]);
 
     return (
-        <div className="eshape-svg-container" onClick={onClick}>
+        <div className="lshape-svg-container" onClick={onClick}>
             <svg viewBox="0 0 100 100">
                 <defs>
-                    <clipPath id="eshapePipeClipPath">
-                        <polygon points="100 50, 100 100, 90 100, 90 60, 55 60, 55 100, 45 100, 45 60, 10 60, 10 100, 0 100, 0 50" />
+                    <clipPath id="lshapePipeClipPath">
+                        <polygon points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75" />
                     </clipPath>
-                    <linearGradient id="eshapeWaveGradient" x1="0%" y1="5%" x2="0%" y2="50%">
+                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
@@ -29,13 +29,13 @@ function EShapePipe({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="100 50, 100 100, 90 100, 90 60, 55 60, 55 100, 45 100, 45 60, 10 60, 10 100, 0 100, 0 50"
-                    className="eshape-pipe-border"
+                    points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75"
+                    className="lshape-pipe-border"
                 />
 
                 {flow && (
                     <>
-                        <g className="eshape-pipe-water">
+                        <g className="lshape-pipe-water">
                             {!initialFlowComplete && (
                                 <rect
                                     x="0"
@@ -43,7 +43,7 @@ function EShapePipe({ flow, onClick, text }) {
                                     width="100"
                                     height="10"
                                     fill="lightblue"
-                                    className="eshape-initial-flow"
+                                    className="lshape-initial-flow"
                                 />
                             )}
                             {initialFlowComplete && (
@@ -53,7 +53,7 @@ function EShapePipe({ flow, onClick, text }) {
                                     width="100"
                                     height="200"
                                     fill="lightblue"
-                                    className="eshape-initial-flow"
+                                    className="lshape-initial-flow"
                                     style={{ transform: 'translateY(0)' }}
                                 />
                             )}
@@ -62,12 +62,12 @@ function EShapePipe({ flow, onClick, text }) {
                                 y="0"
                                 width="100"
                                 height="200"
-                                fill="url(#eshapeWaveGradient)"
-                                className="eshape-wave-path"
+                                fill="url(#lshapeWaveGradient)"
+                                className="lshape-wave-path"
                             />
                         </g>
 
-                       
+                      
                     </>
                 )}
                 <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
@@ -76,4 +76,4 @@ function EShapePipe({ flow, onClick, text }) {
     );
 }
 
-export default EShapePipe;
+export default LShapePipeOHT;

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import Toolbar from "./components/ToolBar";
-import SimulationForm from "./components/SimulationForm";
+import Toolbar from "./components/ToolBar/ToolBar";
 import ResultContainer from "./components/ResultContainer";
 import LeakageOptions from "./components/LeakageOptions";
 import SimulationCanvas from "./components/SimulationCanvas";

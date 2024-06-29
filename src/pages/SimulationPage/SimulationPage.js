@@ -3,12 +3,12 @@ import { saveAs } from 'file-saver';
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import Toolbar from "./components/ToolBar";
-import SimulationForm from "./components/SimulationForm";
+import Toolbar from "./components/ToolBar/ToolBar";
+import SimulationForm from "./components/SimulationForm/Form";
 import ResultContainer from "./components/ResultContainer";
 import LeakageOptions from "./components/LeakageOptions";
 import SimulationCanvas from "./components/SimulationCanvas";
-import ConsoleHeader from "./components/Console";
+import ConsoleHeader from "./components/Console/Console";
 
 import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png"; 

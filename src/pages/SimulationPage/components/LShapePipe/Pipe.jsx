@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './LShapePipe.css';
+import './Pipe.css';
 
 function LShapePipe({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);

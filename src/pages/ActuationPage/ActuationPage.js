@@ -4,11 +4,12 @@ import './ActuationPage.css';
 import NavigationBar from '../../components/navigation/Navigation';
 import LoginPage from '../LoginPage/LoginPage';
 
-import ZshapePipe from '../SimulationPage/components/ZshapePipe';
-import MirrorZPipe from '../SimulationPage/components/MirrorZPipe';
-import StraightPipe from '../SimulationPage/components/StraightPipe';
-import LShapePipe from '../SimulationPage/components/LShapePipe';
-import EShapePipe from '../SimulationPage/components/EShapePipe';
+import ZshapePipe from '../SimulationPage/components/ZShapePipe/Pipe';
+import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
+import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
+import LShapePipe from '../SimulationPage/components/LShapePipe/Pipe';
+import EShapePipe from '../SimulationPage/components/EShapePipe/Pipe';
+import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
 
 import roPlantImage from "../images/ro_plant.png";
 import roCoolerImage from "../images/ro_cooler.png";
@@ -27,7 +28,8 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/borewell.png"; 
 import SimulationCanvas from '../SimulationPage/components/SimulationCanvas';
 import { saveAs } from 'file-saver';
-import ConsoleHeader from  '../SimulationPage/components/Console';
+
+import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
 
 import 'react-toastify/dist/ReactToastify.css';
  

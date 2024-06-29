@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import './SimulationForm.css';
-import Toolbar from "./ToolBar";
-import ConsoleHeader from "./Console";
+import './Form.css';
 
 function SimulationForm({inputValues, handleChange, handleStartSimulation, isSimulationRunning,handleDownloadLog,handleToolbarItemClick, handleLeakageIconClick, log}) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);

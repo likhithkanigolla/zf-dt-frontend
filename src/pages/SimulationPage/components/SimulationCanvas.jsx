@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 
-import ZshapePipe from './ZshapePipe';
-import MirrorZPipe from './MirrorZPipe';
-import StraightPipe from './StraightPipe';
-import LShapePipe from './LShapePipe';
-import EShapePipe from './EShapePipe';
+import ZshapePipe from './ZShapePipe/Pipe';
+import MirrorZPipe from './MirrorZPipe/Pipe';
+import StraightPipe from './StraightPipe/Pipe';
+import LShapePipe from './LShapePipe/Pipe';
+import EShapePipe from './EShapePipe/Pipe';
 
 import roPlantImage from "../../images/ro_plant.png";
 import roCoolerImage from "../../images/ro_cooler.png";
@@ -15,9 +15,9 @@ import Borewell from "../../images/borewell.png";
 import Watertank from "../../images/watertank.png";
 import ROWatertank from "../../images/tank_ro.png";
 import Washrooms from "../../images/Washrooms.png";
-import Sump from './Sump';
-import WaterTank from './Watertank';
-import Lshapepipeoht from './Lshapepipeoht'
+import Sump from './Sump/Sump';
+import WaterTank from './WaterTank/Watertank';
+import Lshapepipeoht from './LShapePipe/PipeOHT'
 
 const SimulationCanvas = ({
   handleIconClick,

@@ -2,11 +2,11 @@ import React from 'react';
 import './ToolBar.css';
 
 
-import MotorNode from "../../images/MotorNode.png"; 
-import WaterLevelNode from "../../images/WaterLevelNode.png";
-import WaterQualityNode from "../../images/WaterQualityNode.png";
-import WaterQuantityNode from "../../images/WaterQuantityNode.png";
-import LeakageIcon from "../../images/leakage_water.png"; 
+import MotorNode from "../../../images/MotorNode.png"; 
+import WaterLevelNode from "../../../images/WaterLevelNode.png";
+import WaterQualityNode from "../../../images/WaterQualityNode.png";
+import WaterQuantityNode from "../../../images/WaterQuantityNode.png";
+import LeakageIcon from "../../../images/leakage_water.png"; 
 
 function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
     return (
