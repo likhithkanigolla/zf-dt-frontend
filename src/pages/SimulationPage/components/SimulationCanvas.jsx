@@ -147,7 +147,7 @@ const SimulationCanvas = ({
           <div style={{ fontSize: "0.8vw" }}><b>{motorOn ? (flowrate + Math.random() * 2 - 1).toFixed(2) : 0} L/s</b></div>
         </div>
 
-        {/* L Shape Pipe OHT to Admin Block Washrooms */}
+        {/* L Shape Pipe from motor to oht */}
         <div style={{ position: "absolute", top: "7.6vw", left: "26.5vw", transform: "rotate(90deg)", zIndex: "1" }}>
           <Lshapepipeoht flow={flow6} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoAdminWashrooms"; iconRefs.push(ref); } }} />
