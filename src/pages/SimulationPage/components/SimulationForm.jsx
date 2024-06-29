@@ -326,7 +326,7 @@ function SimulationForm({inputValues, handleChange, handleStartSimulation, isSim
 
         
         {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} /> */}
-        <button onClick={handleStartSimulation} className="button">{isSimulationRunning ? "Stop Simulation" : "Start Simulation"}</button>
+        <button onClick={handleStartSimulation} className="button-form">{isSimulationRunning ? "Stop Simulation" : "Start Simulation"}</button>
         {/* <button onClick={handleDownloadLog} className='button' style={{background: 'red'}}>Download Simulation Log</button> */}
         
         </div>
