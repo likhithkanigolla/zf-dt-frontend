@@ -19,7 +19,7 @@ function EShapePipe({ flow, onClick, text }) {
             <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="eshapePipeClipPath">
-                        <polygon points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0" />
+                        <polygon points="100 50, 100 100, 90 100, 90 60, 55 60, 55 100, 45 100, 45 60, 10 60, 10 100, 0 100, 0 50" />
                     </clipPath>
                     <linearGradient id="eshapeWaveGradient" x1="0%" y1="5%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
@@ -29,7 +29,7 @@ function EShapePipe({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
+                    points="100 50, 100 100, 90 100, 90 60, 55 60, 55 100, 45 100, 45 60, 10 60, 10 100, 0 100, 0 50"
                     className="eshape-pipe-border"
                 />
 

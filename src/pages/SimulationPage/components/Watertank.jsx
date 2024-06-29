@@ -11,7 +11,7 @@ const WaterTank = forwardRef(({ waterInOHT, ohtCapacity, handleIconClick }, ref)
   }, [waterInOHT, ohtCapacity]);
 
   return (
-    <div className="water-tank-container" ref={ref} style={{ position: "absolute", top: "9vw", left: "29.5vw" }}>
+    <div className="water-tank-container" ref={ref} style={{ position: "absolute", top: "0.5vw", left: "28.5vw" }}>
       <div className={`water-pour ${isOverflowing ? 'overflowing' : ''}`}></div>
       <div className="water-tank" onClick={handleIconClick}>
         <div className="water-tank-cap"></div>
@@ -22,11 +22,11 @@ const WaterTank = forwardRef(({ waterInOHT, ohtCapacity, handleIconClick }, ref)
         </div>
         <div className="water-tank-fill" style={{ height: `${fillPercentage}%` }}>
           <div className="watertank-wave"></div>
-          <div className="watertank-wave"></div>
+          {/* <div className="watertank-wave"></div> */}
         </div>
       </div>
-      <div style={{ fontSize: "14px" }}>KRB OHT</div>
-      <div style={{ fontSize: "14px" }}><b>{waterInOHT.toFixed(2)}L</b></div>
+      <div style={{ fontSize: "1vw", position: "relative", top: "0vw", left: "1vw" }}>KRB OHT</div>
+      <div style={{ fontSize: "1vw", position: "relative", top: "0vw", left: "1vw" }}><b>{waterInOHT.toFixed(2)}L</b></div>
     </div>
   );
 });

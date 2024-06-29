@@ -7,6 +7,7 @@
     text-align: center;
     background-color: #ffffff;
     height: 5vw;
+    width: 60vw;
     max-height: 8vw;
 }
 
@@ -17,13 +18,13 @@
 
 .toolbar__buttons {
     display: flex;
-    gap: 10px;
-    padding: 20px;
+    gap: 5vw;
+    padding: 2vw;
 }
 
 .tool-button img, .toolbar button img{
-    width: 20%;
-    height: 20%;
+    width: 3vw;
+    height: 3vw;
     margin: 0 auto;
 }
 
@@ -33,7 +34,7 @@
     border-radius: 4px;
     background-color: #007bff;
     color: #fff;
-    font-size: 14px;
+    font-size: 10vw;
     cursor: pointer;
 }
 
@@ -42,7 +43,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 120px;
+    width: 4vw;
     height: 120px;
     /* border: 2px solid black; */
     margin: 10px;
