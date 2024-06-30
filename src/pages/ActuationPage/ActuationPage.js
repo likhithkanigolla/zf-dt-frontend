@@ -19,7 +19,7 @@ import { saveAs } from 'file-saver';
 
 const ActuationPage = () => {
   // State for holding input values and results
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const iconRefs = [];
   const [flow1, setFlow1] = useState(false);
   const [flow2, setFlow2] = useState(false);
@@ -64,8 +64,8 @@ const ActuationPage = () => {
     "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '78vw', transform: 'rotate(90deg)'}, 
     "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '60vw',transform: 'rotate(90deg)',zIndex: '3'},
     "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '65vw',transform: 'rotate(90deg)',zIndex: '3'},   
-    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '14vw', left: '27vw', transform: 'rotate(90deg)', zIndex: '3'},
-    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '16.3vw', left: '47vw',transform: 'rotate(90deg)',  zIndex: '3'},   
+    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '14vw', left: '27vw', transform: 'rotate(90deg)', zIndex: '3'},
+    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '16.3vw', left: '47vw',transform: 'rotate(90deg)',  zIndex: '3'},   
   };
 
 
@@ -213,6 +213,21 @@ const ActuationPage = () => {
     console.log("Done"); 
   };
 
+  const getRealData = async (tableName) => {
+    try {
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json(); // Assuming this returns an object
+      // console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return { error: "Failed to fetch data" }; // Update accordingly
+    }
+  };
+  
   useEffect(() => {
     setFlow2(true);
     setFlow3(true);
@@ -462,21 +477,6 @@ const ActuationPage = () => {
   //     </div>
   //   );
   // });
-
-  const getRealData = async (tableName) => {
-    try {
-      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json(); // Assuming this returns an object
-      // console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Fetch error:", error);
-      return { error: "Failed to fetch data" }; // Update accordingly
-    }
-  };
 
   const Box = ({ color, src }) => (
     <div style={{
