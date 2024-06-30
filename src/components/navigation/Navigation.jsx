@@ -9,24 +9,25 @@ import {
   CardContent,
   Button,
   IconButton,
-  makeStyles,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
-} from '@material-ui/core';
-import IITHLOGO from './images/iiith.png';
-import SCRCLOGO from './images/scrc_logo.png';
-import ZFLOGO from './images/zf_logo.png';
+} from '@mui/material';
 import {
   NotificationsActive as NotificationsIcon,
   Alarm as AlarmIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+
+import IITHLOGO from './images/iiith.png';
+import SCRCLOGO from './images/scrc_logo.png';
+import ZFLOGO from './images/zf_logo.png';
 
 import config from '../../config';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = styled((theme) => ({
   notificationCard: {
     marginBottom: theme.spacing(1),
     position: 'relative',

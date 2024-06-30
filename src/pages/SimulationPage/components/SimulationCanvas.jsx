@@ -95,7 +95,7 @@ const SimulationCanvas = ({
 
       {/* Straight Pipe from Borewell to Sump */}
       <div style={{ position: "absolute", top: "16vw", left: "13vw" }}>
-        <StraightPipe flow={flow1} style={{ width: "4.8vw", height: "4.8vw" }} 
+        <StraightPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
       </div>
