@@ -160,12 +160,12 @@ const SimulationCanvas = ({
         </div>
 
         {/* Straight Pipe1 for extension  */}
-      <div style={{ position: "absolute", top: "9.6vw", left: "47.9vw" }}>
+      <div style={{ position: "absolute", top: "9.7vw", left: "47.9vw" }}>
         <StraightPipe flow={flow5} style={{ width: "4.8vw", height: "4.8vw" }}/>
       </div>
 
       {/* Straight Pipe2 for extension  */}
-      <div style={{ position: "absolute", top: "9.6vw", left: "53.9vw" }}>
+      <div style={{ position: "absolute", top: "9.7vw", left: "53.9vw" }}>
         <StraightPipe flow={flow5} style={{ width: "4.8vw", height: "4.8vw" }} 
         />
       </div>

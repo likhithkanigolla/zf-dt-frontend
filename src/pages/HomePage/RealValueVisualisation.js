@@ -57,7 +57,7 @@ const RealValueVisualisation = () => {
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
-  const [waterInROFilter, setWaterInROFilter] = useState(10); // Initial water level in RO Filter
+  const [waterInROFilter, setWaterInROFilter] = useState(465.32); // Initial water level in RO Filter
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [flowrate, setFlowrate] = useState(10);
 
@@ -168,6 +168,10 @@ const RealValueVisualisation = () => {
       const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate((SumpWaterLevelData.waterlevel-20), sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
       setWaterInSump(SumpEstimatedWaterCapacity);
 
+      const RO1FlowData = await getRealData('WM-WF-KB04-71');
+      const RO2FlowData = await getRealData('WM-WF-KB04-72');
+      setWaterConsumed((RO1FlowData.totalflow + RO2FlowData.totalflow)*1000); //Converting to Litres from Kl
+
       // Calculate Water in OHT
       const OHTWaterLevelData = await getRealData('WM-WL-KH00-00');
       const [OHTWaterPercentage, OHTEstimatedWaterCapacity] = await WaterLevelCalculate(OHTWaterLevelData.waterlevel, ohtMeasurements.length, ohtMeasurements.breadth, ohtMeasurements.height);
@@ -246,8 +250,8 @@ const RealValueVisualisation = () => {
 
 
   return (
-    <div>
-      <NavigationBar title="Digital Twin for Water Quality " />
+    <div className='page'>
+      <NavigationBar title="Digital Twin for Water Quality " style={{position:'fixed'}} />
       <div style={{ display: "flex"}} className='Page'>
       <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw', border: "0px" }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
@@ -349,11 +353,11 @@ const RealValueVisualisation = () => {
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} />
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "39.6vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
+              <div style={{ position: "absolute", top: "7.2vw", left: "39.5vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} />
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "45.3vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
+              <div style={{ position: "absolute", top: "7.2vw", left: "45.2vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} />
               </div>
 

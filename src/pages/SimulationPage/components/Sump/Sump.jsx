@@ -20,7 +20,7 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick }, ref) =>
         </div>
       </div>
       </div>
-      <div className="sump-text">SUMP - <b>{waterInSump.toFixed(2)}L</b></div>
+      <div className="sump-text">SUMP: <b>{waterInSump.toFixed(2)}L</b></div>
     </div>
   );
 });
