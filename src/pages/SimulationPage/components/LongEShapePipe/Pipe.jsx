@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Pipe.css';
 
-function MirrorZPipe({ flow, onClick }) {
+function LongEShapePipe({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,13 +15,13 @@ function MirrorZPipe({ flow, onClick }) {
     }, [flow]);
 
     return (
-        <div className="mirror-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 110 150">
+        <div className="eshape-svg-container" onClick={onClick}>
+            <svg viewBox="0 0 100 100">
                 <defs>
-                    <clipPath id="mirrorPipeClipPath">
-                        <polygon points="51 8, 51 100, 0 100, 0 92, 42 92, 42 0, 100 0, 100 8" />
+                    <clipPath id="eshapePipeClipPath">
+                        <polygon points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0" />
                     </clipPath>
-                    <linearGradient id="mirrorWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
+                    <linearGradient id="eshapeWaveGradient" x1="0%" y1="5%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
@@ -29,49 +29,51 @@ function MirrorZPipe({ flow, onClick }) {
                 </defs>
 
                 <polygon
-                    points="51 8, 51 100, 0 100, 0 92, 42 92, 42 0, 100 0, 100 8"
-                    className="mirror-pipe-border"
+                    points="0 0, 0 100, 10 100, 10 10, 45 10, 45 100, 55 100, 55 10, 90 10, 90 100, 100 100, 100 0"
+                    className="eshape-pipe-border"
                 />
 
                 {flow && (
                     <>
-                        <g className="mirror-pipe-water">
+                        <g className="eshape-pipe-water">
                             {!initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
-                                    width="10"
-                                    height="100"
+                                    width="100"
+                                    height="10"
                                     fill="lightblue"
-                                    className="mirror-initial-flow"
+                                    className="eshape-initial-flow"
                                 />
                             )}
                             {initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
-                                    width="200"
-                                    height="100"
+                                    width="100"
+                                    height="200"
                                     fill="lightblue"
-                                    className="mirror-initial-flow"
-                                    style={{ transform: 'translateX(0)' }}
+                                    className="eshape-initial-flow"
+                                    style={{ transform: 'translateY(0)' }}
                                 />
                             )}
                             <rect
                                 x="0"
                                 y="0"
-                                width="200"
-                                height="100"
-                                fill="url(#mirrorWaveGradient)"
-                                className="mirror-wave-path"
+                                width="100"
+                                height="200"
+                                fill="url(#eshapeWaveGradient)"
+                                className="eshape-wave-path"
                             />
                         </g>
 
+                       
                     </>
                 )}
+                <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
             </svg>
         </div>
     );
 }
 
-export default MirrorZPipe;
+export default LongEShapePipe;

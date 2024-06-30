@@ -7,8 +7,8 @@ import LoginPage from '../LoginPage/LoginPage';
 import ZshapePipe from '../SimulationPage/components/ZShapePipe/Pipe';
 import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
 import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
-import LShapePipe from '../SimulationPage/components/LShapePipe/Pipe';
-import EShapePipe from '../SimulationPage/components/EShapePipe/Pipe';
+import LongLShapePipe from '../SimulationPage/components/LongLShapePipe/Pipe';
+import LongEShapePipe from '../SimulationPage/components/LongEShapePipe/Pipe';
 import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
 
 import roPlantImage from "../images/ro_plant.png";
@@ -502,7 +502,7 @@ const ActuationPage = () => {
 
                 {/* L Shape Pipe OHT to Admin Block Washrooms*/}
                 <div style={{ position: "absolute", top: "4vw", left: "4vw", transform: "rotate(90deg)" }}>
-                  <LShapePipe/>
+                  <LongLShapePipe/>
                 </div>
                     
                 <div style={{ position: "absolute", top: "-5vw", left: "7vw", textAlign: "center" }}>
@@ -524,7 +524,7 @@ const ActuationPage = () => {
                 
               {/* L Shape Pipe  OHT to RO PLANT*/}
               <div style={{ position: "absolute", top: "2vw", left: "4.5vw", transform: "rotate(180deg)" }}>
-                  <LShapePipe/>
+                  <LongLShapePipe/>
                 </div>
 
                 {/* RO Plant */}
@@ -546,7 +546,7 @@ const ActuationPage = () => {
 
                 {/* E Shape Pipe RO OHT to Ro Filters*/}
                 <div style={{ position: "absolute", top: "19.5vw", left: "23.8vw" }}>
-                  <EShapePipe/>
+                  <LongEShapePipe/>
                 </div>
 
                 {/* RO Coolers */}

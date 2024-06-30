@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Pipe.css';
 
-function MirrorZPipe({ flow, onClick }) {
+function MirrorLPipe({ flow, onClick }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ function MirrorZPipe({ flow, onClick }) {
             <svg viewBox="0 0 110 150">
                 <defs>
                     <clipPath id="mirrorPipeClipPath">
-                        <polygon points="51 8, 51 100, 0 100, 0 92, 42 92, 42 0, 100 0, 100 8" />
+                        <polygon points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92" />
                     </clipPath>
                     <linearGradient id="mirrorWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
                         <stop offset="0%" stopColor="lightblue" />
@@ -29,7 +29,7 @@ function MirrorZPipe({ flow, onClick }) {
                 </defs>
 
                 <polygon
-                    points="51 8, 51 100, 0 100, 0 92, 42 92, 42 0, 100 0, 100 8"
+                    points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92"
                     className="mirror-pipe-border"
                 />
 
@@ -67,6 +67,36 @@ function MirrorZPipe({ flow, onClick }) {
                             />
                         </g>
 
+                        {/* <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water"
+                        />
+
+                        <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water2"
+                        />
+
+                        <path
+                            d="M 98,8 Q 100,15 98,20 T 98,30 T 98,40 T 98,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="mirror-falling-water3"
+                        /> */}
+
+                        {/* Water Bubbles */}
+                        {/* <circle className="mirror-bubble" cx="98" cy="50" r="1" />
+                        <circle className="mirror-bubble" cx="102" cy="55" r="1.5" />
+                        <circle className="mirror-bubble" cx="94" cy="48" r="2.5" />
+                        <circle className="mirror-bubble" cx="99" cy="55" r="2.8" />
+                        <circle className="mirror-bubble" cx="106" cy="58" r="2.0" /> */}
                     </>
                 )}
             </svg>
@@ -74,4 +104,4 @@ function MirrorZPipe({ flow, onClick }) {
     );
 }
 
-export default MirrorZPipe;
+export default MirrorLPipe;
