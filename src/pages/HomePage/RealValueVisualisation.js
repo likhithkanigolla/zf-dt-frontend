@@ -154,6 +154,7 @@ const RealValueVisualisation = () => {
   };
 
   const toggleIsOn = (valve) => {};
+  const handleIconClick = (icon) => {};
 
 
   useEffect(() => {
@@ -234,7 +235,7 @@ const RealValueVisualisation = () => {
     <div style={{
       flex: 1,
       backgroundColor: color,
-      margin: '0px',
+      margin: '-20px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -248,24 +249,38 @@ const RealValueVisualisation = () => {
     <div>
       <NavigationBar title="Digital Twin for Water Quality " />
       <div style={{ display: "flex"}} className='Page'>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '30vw' }}>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw', border: "0px" }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
     </div>
-      <div style={{ height: "40vw", width: "30vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+      <div style={{ height: "53vw", width: "60vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
         <div>
           <div>
+          <div id="myModal" className="modal" style={{
+              position: 'fixed', // Keeps the modal above all other content
+              top: '50%', // Centers vertically
+              left: '50%', // Centers horizontally
+              transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
+              width: '60vw',
+              zIndex: 1000, // Ensures it's on top of everything
+              }}>
+            <div className="modal-content">
+              <span className="close" onClick={() => closeModal()}>&times;</span>
+              <div id="tableContainer"></div>
+            </div>
+          </div>
             <div
                           style={{
                             position: 'relative',
-                            width: '61vw',
-                            height: '25vw',
+                            width: '60vw',
+                            height: '20vw',
                             border: '',
                           }}
                           >
               <SimulationCanvas
+                handleIconClick={handleIconClick}
                 iconRefs={iconRefs}
                 flow1={flow1}
                 flow2={flow2}
@@ -289,13 +304,13 @@ const RealValueVisualisation = () => {
                 waterConsumed={waterConsumed}
                 flowrate={flowrate}
               />
-                            {/* IoT Nodes  */}
-                            <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
+              {/* IoT Nodes  */}
+              <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
                 <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} />
               </div>
 
-              <div style={{ position: "absolute", top: "4vw", left: "31.5vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} />
+              <div style={{ position: "absolute", top: "2vw", left: "30vw", textAlign: "center" }}>
+                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} />
               </div>
 
               <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center" }}>
@@ -303,7 +318,7 @@ const RealValueVisualisation = () => {
               </div>
 
               <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH04-00')} />
+                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-02')} />
               </div>
 
               <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
@@ -318,7 +333,7 @@ const RealValueVisualisation = () => {
                 <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH98-00')} />
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "32vw", textAlign: "center" }}>
+              <div style={{ position: "absolute", top: "2vw", left: "32vw", textAlign: "center" }}>
                 <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} />
               </div>
 
@@ -352,18 +367,10 @@ const RealValueVisualisation = () => {
 
             </div>
 
-           
-            <div id="myModal" className="modal" style={{zIndex:4}}>
-              <div className="modal-content">
-                <span className="close" onClick={() => closeModal()}>&times;</span>
-                <div id="tableContainer"></div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw' }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
