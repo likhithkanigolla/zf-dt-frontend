@@ -32,7 +32,8 @@
   position: absolute;
   bottom: -8%; /* Start filling from the bottom */
   left: 1vw;
-  width: 15vw;
+  width: 18vw;
+  height: 2vw;
   background-color: rgb(62, 195, 221);
   transition: height 3s ease;
   animation: watertank-wave 3s infinite ease-in-out;
@@ -41,9 +42,9 @@
 
 .watertank-wave {
   position: relative;
-  width: 7vw;
+  width: 11vw;
   height: 2vw;
-  left: 5.5vw;
+  left: 8vw;
   right: 3vw;
   bottom: 0.2vw;
   background: rgb(62, 194, 220);

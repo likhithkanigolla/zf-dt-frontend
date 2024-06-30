@@ -239,7 +239,7 @@ const RealValueVisualisation = () => {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
+      <iframe src={src} width="290vw" height="100%" style={{ border: 'none' }}></iframe>
     </div>
   );
 
@@ -248,7 +248,7 @@ const RealValueVisualisation = () => {
     <div>
       <NavigationBar title="Digital Twin for Water Quality " />
       <div style={{ display: "flex"}} className='Page'>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '85vh' }}>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '30vw' }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
