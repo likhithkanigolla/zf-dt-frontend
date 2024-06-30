@@ -810,8 +810,6 @@ const SimulationPage = () => {
             handleMultiplierChange={handleMultiplierChange}
             timeMultiplier={timeMultiplier}
             handleDownloadLog={handleDownloadLog}
-            handleToolbarItemClick={handleToolbarItemClick}
-            handleLeakageIconClick={handleLeakageIconClick}
             log={log}
         />
 
@@ -946,14 +944,15 @@ const SimulationPage = () => {
                     left: `${item.x}px`,
                     top: `${item.y}px`,
                     cursor: 'move',
-                    border: isMarkerPlaced ? '2px solid green' : 'none'
+                    border: isMarkerPlaced ? '2px solid green' : 'none',
+                    zIndex:5
                   }}
                   onClick={(e) => handleMarkerClick(item, index, e)}
                 >
                   <img
                     src={getImageForType(item.type)}
                     alt={item.type}
-                    style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
+                    style={{ maxWidth: '2vw', maxHeight: '2vw', filter:"grayscale(200%)", zIndex: 10}}
                   />
                 </div>
               ))
