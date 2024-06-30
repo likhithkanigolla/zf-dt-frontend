@@ -40,7 +40,7 @@ const SimulationPage = () => {
     desired_tds: "65",
     membrane_area: "3700",
     sumpCapacity: "60000",
-    ohtCapacity: "10000",
+    ohtCapacity: "100000",
     ro_ohtCapacity: "1000",
     // flowrate: "5"
   });
@@ -73,7 +73,7 @@ const SimulationPage = () => {
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
-  const [waterInROFilter, setWaterInROFilter] = useState(10); // Initial water level in RO Filter
+  const [waterInROFilter, setWaterInROFilter] = useState(100); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0);
@@ -779,6 +779,13 @@ const SimulationPage = () => {
     // Instead of directly adding the item, we set an "item to add" state
     setItemToAdd(type);
   };
+
+  const handleClearLog = () => {
+    // Assuming logContent is a state variable holding the log data
+    setLog(''); // Clear the log by setting the log content to an empty string
+    updateLog('Log cleared'); // Log the action
+  };
+
   
   const getImageForType = (type) => {
     switch (type) {
@@ -980,7 +987,7 @@ const SimulationPage = () => {
             }
 
             </div>
-          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} className={"consoleContainer"} />
+          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog} className={"consoleContainer"} />
           </div>
 
           <br></br>

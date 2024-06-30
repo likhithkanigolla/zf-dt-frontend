@@ -228,6 +228,12 @@ const ActuationPage = () => {
     return <LoginPage />;
 }
 
+const handleClearLog = () => {
+  // Assuming logContent is a state variable holding the log data
+  setLog(''); // Clear the log by setting the log content to an empty string
+  updateLog('Log cleared'); // Log the action
+};
+
 
   const NodeActuation = async (nodeName, status) => {
     // Update the state based on the current state
@@ -572,7 +578,7 @@ const ActuationPage = () => {
           </div>
         </div>
       {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
-      <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/>
+      <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog}/>
         </div>
         <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
