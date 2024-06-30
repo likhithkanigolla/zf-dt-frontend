@@ -65,7 +65,7 @@ const ActuationPage = () => {
 
     "WM-WD-KH98-00": false,
     "WM-WD-KH96-00": false,
-    "WM-WD-KH04-00": false,
+    "WM-WD-KH96-02": false,
     "WM-WD-KH95-00": false,
     "WM-WD-KH96-01": false,
     "WM-WD-KH03-00": false,
@@ -88,7 +88,7 @@ const ActuationPage = () => {
     "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '16vw', left: '53.5vw' }, //WQ to RO plant
     "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '67.1vw' }, //ro 2
     "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '61.7vw' },  //faculty launge
-    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
+    "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
     "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '61.5vw', transform: 'rotate(90deg)'},
     "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '67.1vw', transform: 'rotate(90deg)'}, 
     "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '8.5vw', left: '52vw'},
@@ -176,7 +176,7 @@ const ActuationPage = () => {
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
-      if ((nodeId === "WM-WD-KH04-00" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
+      if ((nodeId === "WM-WD-KH96-02" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
         updateLog(tdsAlertMessage);  // Display toast alert
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
@@ -350,7 +350,7 @@ const ActuationPage = () => {
         nodeImage = WaterLevelNode;
         break;
       case "WM-WD-KH98-00":
-      case "WM-WD-KH04-00":
+      case "WM-WD-KH96-02":
       case "WM-WD-KH96-00":
       case "WM-WD-KH95-00":
       case "WM-WD-KH03-00":

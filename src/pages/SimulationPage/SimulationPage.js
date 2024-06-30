@@ -800,7 +800,7 @@ const SimulationPage = () => {
     <div>
       <ToastContainer />
       <NavigationBar title="Digital Twin for Water Quality - Simulation" />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex"}}>
         {/* Left Section */}
         <SimulationForm 
             inputValues={inputValues} 
@@ -888,7 +888,7 @@ const SimulationPage = () => {
               </div>
 
               <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} />
+                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} />
               </div>
 
               <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>

@@ -84,7 +84,7 @@
             <select id="node" name="node">
                 <option value="WM-WD-KH95-00">RO Faculty Lounge</option>
                 <option value="WM-WD-KH03-00">RO 4th Floor</option>
-                <option value="WM-WD-KH04-00">After RO OHT</option>
+                <option value="WM-WD-KH96-02">After RO OHT</option>
                 <option value="WM-WD-KH96-01">After OHT</option>
                 <option value="WM-WD-KH96-00">OHT</option>
                 <option value="WM-WD-KH98-00">Sump</option>
@@ -113,8 +113,8 @@
                     <td>WM-WD-KH03-00</td>
                     <td>RO 4th Floor</td>
                 </tr>
-                <tr id="WM-WD-KH04-00">
-                    <td>WM-WD-KH04-00</td>
+                <tr id="WM-WD-KH96-02">
+                    <td>WM-WD-KH96-02</td>
                     <td>After RO OHT</td>
                 </tr>
                 <tr id="WM-WD-KH96-01">
@@ -147,7 +147,7 @@
             ph: ph
             };
 
-            if ((node === "WM-WD-KH95-00" || node === "WM-WD-KH04-00" || node === "WM-WD-KH03-00") && tds > 250) {
+            if ((node === "WM-WD-KH95-00" || node === "WM-WD-KH96-02" || node === "WM-WD-KH03-00") && tds > 250) {
             alert('Error: Please recheck the selected node since TDS value of filtered water is high.');
             return; // Stop further execution
             }

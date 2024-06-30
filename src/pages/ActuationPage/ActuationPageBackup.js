@@ -43,9 +43,9 @@ const ActuationPageB = () => {
     "DM-KH98-60": false,
     "WM-WD-KH98-00": false,
     "WM-WD-KH96-00": false,
-    "WM-WD-KH04-00": false,
+    "WM-WD-KH96-02": false,
     "WM-WD-KH95-00": false,
-    "WM-WD-KH04-00": false,
+    "WM-WD-KH96-02": false,
     // "WM-WF-KB04-70": false,
     // "WM-WF-KB04-73": false,
     "WM-WF-KB04-71": false,
@@ -60,9 +60,9 @@ const ActuationPageB = () => {
     "WM-WD-KH98-00" : {width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '27.8vw',transform: 'scaleX(-1)' },
     "WM-WD-KH96-00" : {width: '2.5vw',height: '2.5vw', position: 'absolute', top: '4vw', left: '51vw',transform: 'scaleX(-1)' },
     "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '52vw',transform: 'scaleX(-1)' },
-    "WM-WD-KH04-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '11.5vw', left: '62.5vw',transform: 'scaleX(-1)' },
+    "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '11.5vw', left: '62.5vw',transform: 'scaleX(-1)' },
     "WM-WD-KH95-00" : {width: '2.5vw',height: '2.5vw', position: 'absolute', top: '34.6vw', left: '55vw',transform: 'scaleX(-1)' },
-    "WM-WD-KH04-00" : {width: '2.5vw',height: '2.5vw', position: 'absolute', top: '23.5vw', left: '55vw',transform: 'scaleX(-1)' },
+    "WM-WD-KH96-02" : {width: '2.5vw',height: '2.5vw', position: 'absolute', top: '23.5vw', left: '55vw',transform: 'scaleX(-1)' },
     "WM-WF-KB04-71" : {width: '1.5vw',height: '1.5vw', position: 'absolute', top: '23.4vw', left: '61vw'},
     "WM-WF-KB04-72" : {width: '1.5vw',height: '1.5vw', position: 'absolute', top: '35vw', left: '61.5vw'}
   };
@@ -209,10 +209,10 @@ const ActuationPageB = () => {
         nodeImage = WaterLevelNode;
         break;
       case "WM-WD-KH98-00":
-      case "WM-WD-KH04-00":
+      case "WM-WD-KH96-02":
       case "WM-WD-KH96-00":
       case "WM-WD-KH95-00":
-      case "WM-WD-KH04-00":
+      case "WM-WD-KH96-02":
       case "WM-WD-KH96-01":
         nodeImage = WaterQualityNode;
         break;

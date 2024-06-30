@@ -14,7 +14,7 @@ const ActuationPageT = () => {
     "DM-KH98-60": false,
     "WM-WD-KH98-00": false,
     "WM-WD-KH96-00": false,
-    "WM-WD-KH04-00": false,
+    "WM-WD-KH96-02": false,
     "WM-WD-KH95-00": false,
     "WM-WD-KH01-00": false,
     "WM-WF-KB04-70": false,
@@ -92,7 +92,7 @@ const ActuationPageT = () => {
         nodeImage = WaterLevelNode;
         break;
       case "WM-WD-KH98-00":
-      case "WM-WD-KH04-00":
+      case "WM-WD-KH96-02":
       case "WM-WD-KH96-00":
       case "WM-WD-KH95-00":
       case "WM-WD-KH01-00":
