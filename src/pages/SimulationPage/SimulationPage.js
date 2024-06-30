@@ -234,6 +234,15 @@ const SimulationPage = () => {
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
 
+        if (waterInOHT < PermeateFlowRate) {
+          setFlow3(false);
+          updateLog("Flow stopped from since OHT is empty.");
+          toast.error("Flow stopped from since OHT is empty.");
+        }
+        else{
+          setFlow3(true);
+        }
+
         // If water in OHT is less than 20%, turn on the motor automatically
         // if (waterInOHT < (20*inputValues.ohtCapacity)/100) {
         //   setMotorOn(true);
@@ -586,10 +595,12 @@ const SimulationPage = () => {
   const handleConsumeWater = () => {
     // Consumption is 10% of the filteration. 
     if (waterInROFilter >= (PermeateFlowRate/10)) {
+      setFlow4(true);
       setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
       setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
     } else {
       // alert("Not enough water in RO Filter to consume.")
+      setFlow4(false);
       toast.error("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
     }
@@ -840,13 +851,13 @@ const SimulationPage = () => {
                   iconRefs={iconRefs}
                   flow1={flow1}
                   flow2={flow1}
-                  flow3={flow2}
+                  flow3={flow1}
                   flow4={flow2}
-                  flow5={flow1}
-                  flow6={flow1}
-                  flow7={flow1}
-                  flow8={flow1}
-                  flow9={flow1}
+                  flow5={flow3}
+                  flow6={flow3}
+                  flow7={flow3}
+                  flow8={flow4}
+                  flow9={flow4}
                   setFlow1={setFlow1}
                   waterInSump={waterInSump}
                   sumpCapacity={inputValues.sumpCapacity}
@@ -904,7 +915,7 @@ const SimulationPage = () => {
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} />
               </div>
 
-              <div style={{ position: "absolute", top: "6.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <div style={{ position: "absolute", top: "7.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} />
               </div>
 

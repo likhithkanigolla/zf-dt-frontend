@@ -189,7 +189,7 @@ const RealValueVisualisation = () => {
       const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
       if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
       if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
-      if (WaterQuantityDataR1.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
+      if (WaterQuantityDataR1.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
       if (WaterQuantityDataR2.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
       if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
       // if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
@@ -330,7 +330,7 @@ const RealValueVisualisation = () => {
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} />
               </div>
 
-              <div style={{ position: "absolute", top: "6.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <div style={{ position: "absolute", top: "7.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} />
               </div>
 

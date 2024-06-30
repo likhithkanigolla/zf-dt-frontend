@@ -66,7 +66,6 @@ function LShapePipeOHT({ flow, onClick, text }) {
                                 className="lshape-wave-path"
                             />
                         </g>
-
                       
                     </>
                 )}
