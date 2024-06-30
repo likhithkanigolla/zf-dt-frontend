@@ -275,14 +275,7 @@ const RealValueVisualisation = () => {
               <div id="tableContainer"></div>
             </div>
           </div>
-            <div
-                          style={{
-                            position: 'relative',
-                            width: '60vw',
-                            height: '20vw',
-                            border: '',
-                          }}
-                          >
+            <div style={{ position: 'relative', width: '60vw',height: '20vw',border: '',}}>
               <SimulationCanvas
                 handleIconClick={handleIconClick}
                 iconRefs={iconRefs}
