@@ -287,13 +287,13 @@ const RealValueVisualisation = () => {
     <div className='page'>
       <NavigationBar title="Digital Twin for Water Quality " style={{position:'fixed'}} />
       <div style={{ display: "flex"}} className='Page'>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw', border: "0px" }}>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw', border: "0px" }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
     </div>
-      <div style={{ height: "53vw", width: "60vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+      <div style={{ height: "45vw", width: "60vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
         <div>
           <div>
           <div id="myModal" className="modal" style={{
@@ -416,7 +416,7 @@ const RealValueVisualisation = () => {
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw' }}>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
       <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
