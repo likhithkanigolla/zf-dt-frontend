@@ -1,6 +1,10 @@
 .page{
-    width: 99.99vw;
+    width: 98.6vw;
 }
+
+.page::-webkit-scrollbar {
+    display: none;
+  }
 
 .canvas {
     background-color: rgb(255, 255, 255);
