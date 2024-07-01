@@ -114,6 +114,7 @@ label {
 
 .heading {
     display: normal;
+    white-space: nowrap;
     font-size: 1vw;
     align-items: center;
     justify-content: space-between; /* Distributes content to start and end */

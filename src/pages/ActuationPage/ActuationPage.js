@@ -9,7 +9,7 @@ import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
 import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
 import LongLShapePipe from '../SimulationPage/components/LongLShapePipe/Pipe';
 import LongEShapePipe from '../SimulationPage/components/LongEShapePipe/Pipe';
-import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
+// import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
 
 import roPlantImage from "../images/ro_plant.png";
 import roCoolerImage from "../images/ro_cooler.png";
