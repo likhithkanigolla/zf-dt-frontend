@@ -14,23 +14,7 @@
 
   .node-on {
     background-color: green; /* Change background color when node is on */
-    color: white; /* Change text co
-    ￼￼
-    Motor
-    Admin Block Washrooms
-    ￼￼
-    KRB Washrooms
-    ￼
-    KRB OHT
-    ￼
-    RO Plant
-    RO Filtered Water OHT
-    ￼￼
-    RO 1
-    ￼
-    RO 2
-    ￼
-    RO 3lor when node is on */
+    color: white; 
     border-radius: 5vw; 
     border: 2px solid green; /* Thick border */
   }

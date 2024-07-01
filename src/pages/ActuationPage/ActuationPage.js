@@ -214,7 +214,7 @@ const ActuationPage = () => {
     }
     console.log(tmpIsOn);
     setIsOn(tmpIsOn);
-    console.log("Done"); 
+    console.log("Done", isOn); 
   };
 
   const getRealData = async (tableName) => {
