@@ -45,6 +45,7 @@ label {
 .dropdown-content-n {
     padding: 0.5vw;
     width: 3.5vw;
+    margin-bottom: 0.3vw;
     height: 1.5vw;
     max-width: 30vw;
     border: 0vw solid #ccc;
@@ -102,6 +103,21 @@ label {
     background-color: #0056b3;
 }
 
+.simulation-speed {
+    display: flex;
+    align-items: center;
+    background-color: #123462;
+    border-radius: 0.5vw;
+    margin-bottom: 0.4vw;
+}
+
+.simulation-speed .dropdown-content-n {
+    margin-left: 1px; /* Adjust as needed for spacing */
+    height: 2vw;
+    align-items: center;
+    border: 1px solid #1a1a1a;
+}
+
 
 .container {
     display: flex;
@@ -124,6 +140,18 @@ label {
     background: linear-gradient(45deg, #123462, #123462); /* Blacish gradient background */
     border-radius: 5px; /* Rounded corners for a modern look */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+}
+
+.heading-as {
+    display: normal;
+    white-space: nowrap;
+    font-size: 1vw;
+    align-items: center;
+    justify-content: space-between; /* Distributes content to start and end */
+    cursor: pointer;
+    padding: 10px 20px; /* Added horizontal padding for better spacing */
+    border-radius: 5px; /* Rounded corners for a modern look */
     transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
 }
 
@@ -253,4 +281,15 @@ label {
     justify-content: space-between;
     display: flex;
     flex-wrap: nowrap;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Adjust as needed to control spacing between buttons */
+}
+
+.button-form {
+    flex: 1; /* Adjust as needed to control button width */
+    margin: 0 5px; /* Adjust as needed for spacing */
+    height: 3vw;
 }
