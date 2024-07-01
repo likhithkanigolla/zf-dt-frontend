@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// Ensure all necessary imports are included
 import { Link } from 'react-router-dom';
 import './NavigationBar.css';
 import {
@@ -14,18 +15,22 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  // Import Menu and Close icons from MUI
 } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu'; // Import for MenuIcon
+import CloseIcon from '@mui/icons-material/Close'; // Import for CloseIcon
 import {
   NotificationsActive as NotificationsIcon,
   Alarm as AlarmIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
+// Your existing imports
 import IITHLOGO from './images/iiith.png';
 import SCRCLOGO from './images/scrc_logo.png';
 import ZFLOGO from './images/zf_logo.png';
-
 import config from '../../config';
+
 
 const useStyles = styled((theme) => ({
   notificationCard: {
@@ -81,6 +86,11 @@ const NavigationBar = ({ title }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlarmId, setSelectedAlarmId] = useState(null);
   const [remarks, setRemarks] = useState('');
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false); // Define state for hamburger menu
+
+  const handleHamburgerClick = () => {
+    setIsHamburgerOpen(!isHamburgerOpen); // Toggle the state
+  };
 
   const handleNotificationOpen = async (event = null) => {
     if (event !== null) {
@@ -224,9 +234,9 @@ const NavigationBar = ({ title }) => {
       <div>
         {/* Dropdown to select the pages */}
         <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
-          <option value="/dt_waternetwork/" selected={window.location.pathname === '/dt_waternetwork'}>Home</option>
-          <option value="/dt_waternetwork/analytics" selected={window.location.pathname === '/dt_waternetwork/analytics'}>Analytics</option>
-          <option value="/dt_waternetwork/actuation" selected={window.location.pathname === '/dt_waternetwork/actuation'}>Actuation</option>
+          <option value="/dt_waternetwork/" selected={window.location.pathname === '/dt_waternetwork'}>Live</option>
+          {/* <option value="/dt_waternetwork/analytics" selected={window.location.pathname === '/dt_waternetwork/analytics'}>Analytics</option> */}
+          {/* <option value="/dt_waternetwork/actuation" selected={window.location.pathname === '/dt_waternetwork/actuation'}>Actuation</option> */}
           <option value="/dt_waternetwork/simulation" selected={window.location.pathname === '/dt_waternetwork/simulation'}>Simulation</option>
         </select>
       </div>
@@ -263,47 +273,70 @@ const NavigationBar = ({ title }) => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </Popover>
-      </div>
+            </div>
+            </Popover>
+            </div>
 
-      <div>
-        <IconButton color="inherit" onClick={handleAlarmOpen}>
-          <Badge badgeContent={acount !== null ? acount : 0} color="secondary">
-            <AlarmIcon />
-          </Badge>
-        </IconButton>
-        <Popover
-          open={Boolean(alarmAnchorEl)}
-          anchorEl={alarmAnchorEl}
-          onClose={handleAlarmClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-        >
-          <div className={classes.popover}>
-            {issue.map((item, index) => (
-              <Card key={index} className={classes.notificationCard}>
-                <CardContent className={classes.notificationCardContent}>
-                  <div>
-                    <Typography variant="h6">{item.title}</Typography>
-                    <Typography variant="body1">id: {item.id}</Typography>
-                    <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
+            <div>
+            <IconButton color="inherit" onClick={handleAlarmOpen}>
+              <Badge badgeContent={acount !== null ? acount : 0} color="secondary">
+                <AlarmIcon />
+              </Badge>
+            </IconButton>
+            <Popover
+              open={Boolean(alarmAnchorEl)}
+              anchorEl={alarmAnchorEl}
+              onClose={handleAlarmClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <div className={classes.popover}>
+                {issue.map((item, index) => (
+                  <Card key={index} className={classes.notificationCard}>
+                    <CardContent className={classes.notificationCardContent}>
+                      <div>
+                        <Typography variant="h6">{item.title}</Typography>
+                        <Typography variant="body1">id: {item.id}</Typography>
+                        <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
+                      </div>
+                      <Button className={classes.markAsResolvedButton} onClick={() => handleMarkAsResolved(item.id)}>Mark as Resolved</Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </Popover>
+            </div>
+
+            <div>
+              <IconButton color="inherit" onClick={handleHamburgerClick}>
+                {isHamburgerOpen ? <CloseIcon /> : <MenuIcon />}
+              </IconButton>
+              {isHamburgerOpen && (
+                <div className="full-screen-overlay">
+                  <div className="iframe-container">
+                    {/* Your content here, e.g., a close button or the menu items */}
+                    <IconButton color="inherit" onClick={handleHamburgerClick}>
+                    <div style={{ width: '100vw', height: '92vh', overflow: 'hidden', zIndex:15 }}>
+                      <iframe 
+                        src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=dark&background=transparent" 
+                        title="Live" 
+                        style={{ width: '100vw', height: '92vh', border: 'none' }}
+                        allowTransparency="true"
+                      ></iframe>
+                    </div>
+                     </IconButton>
                   </div>
-                  <Button className={classes.markAsResolvedButton} onClick={() => handleMarkAsResolved(item.id)}>Mark as Resolved</Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </Popover>
-      </div>
+                </div>
+              )}
+            </div>
 
-      {/* Dialog for resolving alarms */}
+
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Resolve Alarm</DialogTitle>
         <DialogContent>

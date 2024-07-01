@@ -82,7 +82,7 @@ animation: wave-animation 4s infinite linear reverse;
   top: calc(70% + 0.5vw); /* Adjust the top value to position the text below the sump */
   left: 23%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 5;
   color: black;
   text-align: center;
   width: 100%;
