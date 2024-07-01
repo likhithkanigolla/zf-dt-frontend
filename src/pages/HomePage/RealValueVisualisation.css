@@ -46,3 +46,91 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+
+
+.buttons-row {
+    display: flex;
+    justify-content: space-between; /* Adjusts spacing between buttons */
+  }
+  
+  /* Container Styling */
+  #tableContainer {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table Styling */
+  #tableContainer table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #tableContainer th, #tableContainer td {
+    border: 1px solid #0a0a0a;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  #tableContainer th {
+    background-color: #3498db;
+    color: rgb(19, 19, 19);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  
+  #tableContainer tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  #tableContainer tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Button Styling */
+  #tableContainer button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 5px;
+  }
+  
+  #turnOnButton {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  #powerResetButton {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  #nodeResetButton {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  #updateValuesButton {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  #tableContainer button:hover {
+    opacity: 0.8;
+  }
+  
+  /* Button Container Styling */
+  .buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+  }
+  
