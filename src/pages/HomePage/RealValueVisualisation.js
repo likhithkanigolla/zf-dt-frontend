@@ -48,24 +48,6 @@ const RealValueVisualisation = () => {
     "WM-WF-KH95-40": false, 
   });
 
-  const nodePositions = {
-    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "17vw", left: "35vw", zIndex: '3' }, //WL at sump
-    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '10vw', left: '49vw', zIndex: '3' }, //WL at OHT
-    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '42vw',  zIndex: '3'}, //motor
-    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw' ,  zIndex: '3'}, //WQ at sump
-    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '50vw',  zIndex: '3'}, //WQ at OHT
-    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '15vw', left: '70.6vw', zIndex: '3'}, //WQ to RO plant
-    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '72vw' }, //ro 2
-    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '78vw' },  //faculty launge(ro1)
-    "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
-    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '72vw', transform: 'rotate(90deg)'},
-    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '78vw', transform: 'rotate(90deg)'}, 
-    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '60vw',transform: 'rotate(90deg)',zIndex: '3'},
-    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '65vw',transform: 'rotate(90deg)',zIndex: '3'},   
-    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '14vw', left: '27vw', transform: 'rotate(90deg)', zIndex: '3'},
-    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '16.3vw', left: '47vw',transform: 'rotate(90deg)',  zIndex: '3'},   
-  };
-
 
   const [units, setUnits] = useState ({
     flowrate : "Kl/min",
@@ -121,30 +103,6 @@ const RealValueVisualisation = () => {
   const toggleIsOn = (valve) => {};
   const handleIconClick = (icon) => {};
 
-  const [log, setLog] = useState([]); 
-  const updateLog = (message) => {
-    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
-  };
-  const handleDownloadLog = () => {
-    const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, 'actuation_log.txt');
-  };
-  const AllNodes = () => {
-    return (
-      <div>
-        <h1>All Nodes</h1>
-        {Object.keys(isOn).map((node_id) => {
-          //   console.log("Here: ", node_id)
-          return (
-            <p key={node_id}>
-              {node_id}: {isOn[node_id].toString()}{" "}
-              {/* Convert boolean to string */}
-            </p>
-          );
-        })}
-      </div>
-    );
-  };
 
   const parseTime = (timeString) => {
     const regex = /(\d+)([mhr])/;
@@ -177,43 +135,8 @@ const RealValueVisualisation = () => {
       if (timeDifference > parseTime(time)) {
         // Show toast notification using react-toastify
         const message = `Node ${nodeId} is down!`;
-        updateLog(message);  // Customize message as needed
-        // sendTelegramNotification(message);
-        // toast.info("Alert sent to the telegram");  // Notification after sending to Telegram
       }
-      
-      // Check TDS value for WM-WD-KH98-00 node
-      if ((nodeId === "WM-WD-KH98-00" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
-        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        updateLog(tdsAlertMessage);  // Display toast alert
-        console.log(tdsAlertMessage)
-        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
-        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
-      }
-      if ((nodeId === "WM-WD-KH96-00" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
-        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        updateLog(tdsAlertMessage);  // Display toast alert
-        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
-        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
-      }
-      if ((nodeId === "WM-WD-KH96-02" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
-        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        updateLog(tdsAlertMessage);  // Display toast alert
-        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
-        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
-      }
-      if ((nodeId === "WM-WD-KH95-00" && data.compensated_tds > 150) || data.compensated_tds < 50 ) {
-        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        updateLog(tdsAlertMessage);  // Display toast alert
-        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
-        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
-      }
-      if ((nodeId === "WM-WD-KH96-01" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
-        const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
-        updateLog(tdsAlertMessage);  // Display toast alert
-        // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
-        // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
-      }
+
       return timeDifference <= parseTime(time);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -228,7 +151,7 @@ const RealValueVisualisation = () => {
     }
     console.log(tmpIsOn);
     setIsOn(tmpIsOn);
-    console.log("Done"); 
+    console.log("Done", isOn); 
   };
 
   const getRealData = async (tableName) => {
@@ -306,11 +229,6 @@ const RealValueVisualisation = () => {
 
   if (!isAuthenticated) {return <LoginPage />;}
 
-  const handleClearLog = () => {
-    // Assuming logContent is a state variable holding the log data
-    setLog(''); // Clear the log by setting the log content to an empty string
-    updateLog('Log cleared'); // Log the action
-  };
 
   const NodeActuation = async (nodeName, status) => {
     // Update the state based on the current state
@@ -457,7 +375,7 @@ const RealValueVisualisation = () => {
         width: "3vw",
         height: "3vw",
         position: "absolute",
-        ...(nodePositions[nodeId] || {}),
+        
         }}
         className={isOn ? "node-on" : "node-off"}
         onClick={handleNodeClick}
@@ -488,16 +406,6 @@ const RealValueVisualisation = () => {
   };
 
 
-
-  // const ResultCard = React.forwardRef(({ title, value }, ref) => {
-  //   return (
-  //     <div ref={ref} className="result-card">
-  //       <h5>{title}</h5>
-  //       <p>{value}</p>
-  //     </div>
-  //   );
-  // });
-
   const Box = ({ color, src }) => (
     <div style={{
       flex: 1,
@@ -519,8 +427,13 @@ const RealValueVisualisation = () => {
         console.log("No valid data available for", tableName);
         return; // Exit the function if no valid data is available
       }
+
       // Create a table element
       const table = document.createElement('table');
+      // Keep the table name as heading for the box
+      const heading = document.createElement('h2');
+      heading.textContent = tableName;
+      table.appendChild(heading);
       // Create table header row
       const headerRow = document.createElement('tr');
       // Create table header cells
@@ -605,15 +518,69 @@ const RealValueVisualisation = () => {
       console.error(error);
     }
   };
+
+  // function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam }) {
+  //   const iconStyle = {
+  //     width: "2vw",
+  //     height: "2vw",
+  //     transition: "transform 0.3s, filter 0.3s", // Smooth transition for transform and filter
+  //     zIndex:10,
+  //     cursor: "pointer" // Change cursor to indicate it's clickable
+  //   };
+  
+  //   const handleMouseOver = (e) => {
+  //     e.currentTarget.style.transform = "scale(1.2)"; // Zoom effect
+  //     e.currentTarget.style.filter = "brightness(0.5)"; // Change color effect
+  //     if (isOn[fetchNodeDataParam]) {
+  //       e.currentTarget.style.backgroundColor = "green"; // Change background color to green if node is on
+  //     } else {
+  //       e.currentTarget.style.backgroundColor = "red"; // Change background color to red if node is off
+  //     }
+  //   };
+  
+  //   const handleMouseOut = (e) => {
+  //     e.currentTarget.style.transform = "scale(1)"; // Return to normal size
+  //     e.currentTarget.style.filter = "none"; // Remove color change effect
+  //     e.currentTarget.style.backgroundColor = "transparent"; // Reset background color
+  //   };
+  
+  //   return (
+  //     <div style={{ position: "absolute"}}>
+  //     <img
+  //       src={src}
+  //       alt={alt}
+  //       style={iconStyle}
+  //       onClick={() => onClick(fetchNodeDataParam)}
+  //       onMouseOver={handleMouseOver}
+  //       onMouseOut={handleMouseOut}
+  //     />
+  //   </div>
+  //   );
+  // }
   
 
-  function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam }) {
+  function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam,rotation }) {
+    const [backgroundColor, setBackgroundColor] = useState('transparent');
+
+    useEffect(() => {
+      const newColor = isOn[fetchNodeDataParam] ? 'green' : 'red';
+      setBackgroundColor(newColor);
+    }, [isOn, fetchNodeDataParam]);
+
     const iconStyle = {
       width: "2vw",
       height: "2vw",
       transition: "transform 0.3s, filter 0.3s", // Smooth transition for transform and filter
-      zIndex:10,
+      zIndex: 10,
       cursor: "pointer" // Change cursor to indicate it's clickable
+    };
+    const overlayStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      color: isOn[fetchNodeDataParam] ? 'green' : 'red',
+      fontSize: '20px',
+      transform: rotation ? `rotate(${-rotation}deg)` : 'none', // Counter-rotation applied here
     };
   
     const handleMouseOver = (e) => {
@@ -636,187 +603,156 @@ const RealValueVisualisation = () => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         />
+        <span style={overlayStyle}>
+        {isOn[fetchNodeDataParam] ? '✓' : '✕'} {/* Unicode characters for tick and cross */}
+      </span>
       </div>
     );
   }
-
-
 
   return (
     <div className='page'>
       <NavigationBar title="Digital Twin for Water Quality " style={{position:'fixed'}} />
       <div style={{ display: "flex"}} className='Page'>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw', border: "0px" }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw', border: "0px" }}>
 
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
-      {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
-    </div>
-      {/* <div style={{ height: "50vw", width: "60vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
-        <div>
-            <div style={{position: 'relative', width: '60vw',height: '30vw',border: '',}}>
-              <SimulationCanvas
-                handleIconClick={handleIconClick}
-                iconRefs={iconRefs}
-                flow1={flow1}
-                flow2={flow2}
-                flow3={flow3}
-                flow4={flow4}
-                flow5={flow5}
-                flow6={flow6}
-                flow7={flow7}
-                flow8={flow8}
-                flow9={flow9}
-                setFlow1={setFlow1}
-                setFlow2={setFlow2} 
-                waterInSump={waterInSump}
-                sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
-                waterInOHT={waterInOHT}
-                ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
-                waterInROFilter={waterInROFilter}
-                toggleIsOn={toggleIsOn}
-                motorOn={motorOn}
-                waterConsumed={waterConsumed}
-                flowrate={flowrate}
-              />
-            </div>
-            {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
-          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog}/>
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
         </div>
-      </div> */}
 
-<div style={{ height: "46vw", width: "100%",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
-        <div>
-          <div>
-          <div id="myModal" className="modal" style={{
-              position: 'fixed', // Keeps the modal above all other content
-              top: '50%', // Centers vertically
-              left: '50%', // Centers horizontally
-              transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
-              width: '60vw',
-              zIndex: 1000, // Ensures it's on top of everything
-              }}>
-            <div className="modal-content">
-              <span className="close" onClick={() => closeModal()}>&times;</span>
-              <div id="tableContainer"></div>
+        <div style={{ height: "46vw", width: "100%",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+            <div>
+              <div>
+              <div id="myModal" className="modal" style={{
+                  position: 'fixed', // Keeps the modal above all other content
+                  top: '50%', // Centers vertically
+                  left: '50%', // Centers horizontally
+                  transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
+                  width: '60vw',
+                  zIndex: 1000, // Ensures it's on top of everything
+                  }}>
+                <div className="modal-content">
+                  <span className="close" onClick={() => closeModal()}>&times;</span>
+                  <div id="tableContainer"></div>
+                </div>
+              </div>
+                <div style={{ position: 'relative', width: '60vw',height: '20vw',border: '',}}>
+                  <SimulationCanvas
+                    handleIconClick={handleIconClick}
+                    iconRefs={iconRefs}
+                    flow1={flow1}
+                    flow2={flow2}
+                    flow3={flow3}
+                    flow4={flow4}
+                    flow5={flow5}
+                    flow6={flow6}
+                    flow7={flow7}
+                    flow8={flow8}
+                    flow9={flow9}
+                    setFlow1={setFlow1}
+                    setFlow2={setFlow2} 
+                    waterInSump={waterInSump}
+                    sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
+                    waterInOHT={waterInOHT}
+                    ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
+                    waterInROFilter={waterInROFilter}
+                    toggleIsOn={toggleIsOn}
+                    motorOn={motorOn}
+                    waterConsumed={waterConsumed}
+                    flowrate={flowrate}
+                  />
+                  {/* IoT Nodes  */}
+                  <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "2vw", left: "30vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-01')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-01'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-02')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-02'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH95-00')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH95-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH03-00')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH03-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "8vw", left: "14vw", textAlign: "center" }}>
+                    {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH98-00')} /> */}
+                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH98-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center" }}>
+                    {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} /> */}
+                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH00-00'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 2 }}>
+                    {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('DM-KH98-60')} /> */}
+                    <InteractiveIcon src={MotorNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='DM-KH98-60'/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "7vw", left: "9vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40' rotation={90}/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "7.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40' rotation={90}/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "7.2vw", left: "42vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70' rotation={90}/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "7.2vw", left: "48vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73' rotation={90}/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "11vw", left: "54vw", textAlign: "center", transform: "rotate(90deg)" }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-71')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71' rotation={90}/>
+                  </div>
+
+                  <div style={{ position: "absolute", top: "11vw", left: "60vw", textAlign: "center", transform: "rotate(90deg)" }}>
+                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-72')} /> */}
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72' rotation={90}/>
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '15vw' }}>
+                <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
+                <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
+              </div>
             </div>
-          </div>
-            <div style={{ position: 'relative', width: '60vw',height: '20vw',border: '',}}>
-              <SimulationCanvas
-                handleIconClick={handleIconClick}
-                iconRefs={iconRefs}
-                flow1={flow1}
-                flow2={flow2}
-                flow3={flow3}
-                flow4={flow4}
-                flow5={flow5}
-                flow6={flow6}
-                flow7={flow7}
-                flow8={flow8}
-                flow9={flow9}
-                setFlow1={setFlow1}
-                setFlow2={setFlow2} 
-                waterInSump={waterInSump}
-                sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
-                waterInOHT={waterInOHT}
-                ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
-                waterInROFilter={waterInROFilter}
-                toggleIsOn={toggleIsOn}
-                motorOn={motorOn}
-                waterConsumed={waterConsumed}
-                flowrate={flowrate}
-              />
-              {/* IoT Nodes  */}
-              <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "2vw", left: "30vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-01')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-01'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-02')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-02'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH95-00')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH95-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH03-00')} /> */}
-                <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH03-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "8vw", left: "14vw", textAlign: "center" }}>
-                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH98-00')} /> */}
-                <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH98-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center" }}>
-                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} /> */}
-                <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH00-00'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 2 }}>
-                {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('DM-KH98-60')} /> */}
-                <InteractiveIcon src={MotorNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='DM-KH98-60'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "7vw", left: "9vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "7.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "7.2vw", left: "42vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "7.2vw", left: "48vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "11vw", left: "54vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-71')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71'/>
-              </div>
-
-              <div style={{ position: "absolute", top: "11vw", left: "60vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-72')} /> */}
-                <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72'/>
-              </div>
-            </div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '15vw' }}>
-            <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
-            <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
-          </div>
         </div>
-      </div>
-      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw' }}>
 
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
-      {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" /> */}
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
-      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
-    </div>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw' }}>
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
+          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" /> */}
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
+          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+        </div>
       </div>
     </div>
   );

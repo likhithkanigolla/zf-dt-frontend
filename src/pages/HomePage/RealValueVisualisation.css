@@ -11,6 +11,21 @@
     padding-top: '4vw';
 }
 
+.node-on {
+  background-color: green; /* Change background color when node is on */
+  color: white; 
+  border-radius: 5vw; 
+  border: 2px solid green; /* Thick border */
+}
+
+.node-off {
+  background-color: red; /* Change background color when node is off */
+  color: black; /* Change text color when node is off */
+  border-radius: 50%;
+  border: 20px solid red; /* Thick border */
+  z-index: 10;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
