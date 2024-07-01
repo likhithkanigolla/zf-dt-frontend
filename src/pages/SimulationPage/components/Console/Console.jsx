@@ -37,12 +37,12 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
   }, [log]);
 
   return (
-    <div className="container console-container">
+    <div className="container-n console-container">
       <div className='flex-container heading-container'>
         <h3 className='heading-n'>Console</h3>
-        <button onClick={handleDownloadLog} className='button'><FaDownload className='icon' /></button>
-        <button onClick={() => handleSaveLog(log)} className='button'><FaSave className='icon' /></button>
-        <button onClick={handleClearLog} className='button'><IoIosCloseCircle className='icon' /></button>
+        <button onClick={handleDownloadLog} className='button-c'><FaDownload className='icon' /></button>
+        <button onClick={() => handleSaveLog(log)} className='button-c'><FaSave className='icon' /></button>
+        <button onClick={handleClearLog} className='button-c'><IoIosCloseCircle className='icon' /></button>
       </div>
       <div className='log-container' ref={listRef}>
         {log.map((log, index) => (

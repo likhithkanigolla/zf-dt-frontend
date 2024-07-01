@@ -8,9 +8,10 @@
   overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  height: 20vh;
+  height: 13vw;
   width: 60vw;
   -webkit-overflow-scrolling: touch;
+  margin-top: 1vw;
 }
 
 .console-container::-webkit-scrollbar {
@@ -24,10 +25,10 @@
   background-color: rgba(240, 243, 243, 0);
 }
 
-.button {
+.button-c {
   margin-right: 1vw;
-  height: 2vw;  /* Adjust height */
-  width: 2.5vw;  /* Adjust width */
+  height: 1.5vw;  /* Adjust height */
+  width: 1.5vw;  /* Adjust width */
   display: flex;
   justify-content: center;
   align-items: center;
