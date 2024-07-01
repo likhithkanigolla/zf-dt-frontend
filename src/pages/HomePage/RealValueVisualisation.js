@@ -559,21 +559,28 @@ const RealValueVisualisation = () => {
   // }
   
 
-  function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam }) {
+  function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam,rotation }) {
     const [backgroundColor, setBackgroundColor] = useState('transparent');
+
     useEffect(() => {
-      // Update backgroundColor based on isOn[fetchNodeDataParam]
       const newColor = isOn[fetchNodeDataParam] ? 'green' : 'red';
       setBackgroundColor(newColor);
-    }, [isOn, fetchNodeDataParam]); 
+    }, [isOn, fetchNodeDataParam]);
 
     const iconStyle = {
       width: "2vw",
       height: "2vw",
       transition: "transform 0.3s, filter 0.3s", // Smooth transition for transform and filter
       zIndex: 10,
-      cursor: "pointer", // Change cursor to indicate it's clickable
-      backgroundColor: backgroundColor // Dynamic background color
+      cursor: "pointer" // Change cursor to indicate it's clickable
+    };
+    const overlayStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      color: isOn[fetchNodeDataParam] ? 'green' : 'red',
+      fontSize: '20px',
+      transform: rotation ? `rotate(${-rotation}deg)` : 'none', // Counter-rotation applied here
     };
   
     const handleMouseOver = (e) => {
@@ -596,6 +603,9 @@ const RealValueVisualisation = () => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         />
+        <span style={overlayStyle}>
+        {isOn[fetchNodeDataParam] ? '✓' : '✕'} {/* Unicode characters for tick and cross */}
+      </span>
       </div>
     );
   }
@@ -656,12 +666,12 @@ const RealValueVisualisation = () => {
                   {/* IoT Nodes  */}
                   <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
                     {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'  className={isOn['WM-WD-KH98-00'] ? "node-on" : "node-off"}/>
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'/>
                   </div>
 
                   <div style={{ position: "absolute", top: "2vw", left: "30vw", textAlign: "center" }}>
                     {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'  className={'node-off'}/>
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'/>
                   </div>
 
                   <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center" }}>
@@ -701,32 +711,32 @@ const RealValueVisualisation = () => {
 
                   <div style={{ position: "absolute", top: "7vw", left: "9vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40' rotation={90}/>
                   </div>
 
                   <div style={{ position: "absolute", top: "7.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40' rotation={90}/>
                   </div>
 
                   <div style={{ position: "absolute", top: "7.2vw", left: "42vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70' rotation={90}/>
                   </div>
 
                   <div style={{ position: "absolute", top: "7.2vw", left: "48vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73' rotation={90}/>
                   </div>
 
                   <div style={{ position: "absolute", top: "11vw", left: "54vw", textAlign: "center", transform: "rotate(90deg)" }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-71')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71' rotation={90}/>
                   </div>
 
                   <div style={{ position: "absolute", top: "11vw", left: "60vw", textAlign: "center", transform: "rotate(90deg)" }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-72')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72'/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72' rotation={90}/>
                   </div>
                 </div>
               </div>
