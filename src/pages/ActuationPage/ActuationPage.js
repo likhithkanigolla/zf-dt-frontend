@@ -5,8 +5,12 @@ import "./ActuationPage.css";
 import NavigationBar from "../../components/navigation/Navigation";
 import LoginPage from '../LoginPage/LoginPage';
 import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
-
-
+import ZshapePipe from '../SimulationPage/components/ZShapePipe/Pipe';
+import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
+import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
+import LongLShapePipe from '../SimulationPage/components/LongLShapePipe/Pipe';
+import LongEShapePipe from '../SimulationPage/components/LongEShapePipe/Pipe';
+// import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
 import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
 import MotorNode from "../images/MotorNode.png"; 

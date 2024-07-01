@@ -15,7 +15,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
     }, [flow]);
 
     return (
-        <div className="lshape-svg-container" onClick={onClick}>
+        <div className="lshapeoht-svg-container" onClick={onClick}>
             <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="lshapePipeClipPath">
@@ -66,6 +66,37 @@ function LShapePipeOHT({ flow, onClick, text }) {
                                 className="lshape-wave-path"
                             />
                         </g>
+
+                        <path
+                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            fill="none"
+                            stroke=" rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-wateroht"
+                        />
+
+                        <path
+                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            fill="none"
+                            stroke=" rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-water2oht"
+                        />
+
+                        <path
+                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            fill="none"
+                            stroke=" rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-water3oht"
+                        />
+
+                        {/* Water Bubbles */}
+                        <circle className="bubbleoht" cx="98" cy="140" r="1" />
+                        <circle className="bubbleoht" cx="102" cy="145" r="1.5" />
+                        <circle className="bubbleoht" cx="94" cy="138" r="2.5" />
+                        <circle className="bubbleoht" cx="99" cy="145" r="2.8" />
+                       
                       
                     </>
                 )}

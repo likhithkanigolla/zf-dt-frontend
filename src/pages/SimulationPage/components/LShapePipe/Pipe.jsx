@@ -21,7 +21,7 @@ function LShapePipe({ flow, onClick, text }) {
                     <clipPath id="lshapePipeClipPath">
                         <polygon points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75" />
                     </clipPath>
-                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
+                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="0%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
