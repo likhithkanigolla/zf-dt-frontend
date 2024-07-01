@@ -1,68 +1,45 @@
-// ActuationPage.js
-import React, { useState, useEffect } from 'react';
-import './ActuationPage.css';
-import NavigationBar from '../../components/navigation/Navigation';
-import LoginPage from '../LoginPage/LoginPage';
+import React, { useRef,useState, useEffect } from 'react';
 
+import "./ActuationPage.css";
+
+import NavigationBar from "../../components/navigation/Navigation";
+import LoginPage from '../LoginPage/LoginPage';
+import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
 import ZshapePipe from '../SimulationPage/components/ZShapePipe/Pipe';
 import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
 import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
 import LongLShapePipe from '../SimulationPage/components/LongLShapePipe/Pipe';
 import LongEShapePipe from '../SimulationPage/components/LongEShapePipe/Pipe';
 // import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
-
-import roPlantImage from "../images/ro_plant.png";
-import roCoolerImage from "../images/ro_cooler.png";
-import Motor from "../images/Motor.png";
-import SumpIcon from "../images/Sump.png";
-import PumpHouse from "../images/pump_house.png";
-import Borewell from "../images/borewell.png";
-import Watertank from "../images/watertank.png";
-import ROWatertank from "../images/tank_ro.png";
-import Washrooms from "../images/Washrooms.png";
+import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
 import MotorNode from "../images/MotorNode.png"; 
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
-import LeakageIcon from "../images/borewell.png"; 
-import SimulationCanvas from '../SimulationPage/components/SimulationCanvas';
-import { saveAs } from 'file-saver';
-
-import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
-
-import 'react-toastify/dist/ReactToastify.css';
- 
-import { ToastContainer, toast } from 'react-toastify';
-import { CgLayoutGrid } from 'react-icons/cg';
-
 import config from '../../config';
-
+import { saveAs } from 'file-saver';
 
 
 const ActuationPage = () => {
+  // State for holding input values and results
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [inputValues, setInputValues] = useState({
-    number1: '',
-    number2: '',
-    number3: '',
-    number4: ''
-  });
-  const [result, setResult] = useState(null);
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValues({
-      ...inputValues,
-      [name]: value
-    });
-  };
+  const iconRefs = [];
+  const [flow1, setFlow1] = useState(false);
+  const [flow2, setFlow2] = useState(false);
+  const [flow3, setFlow3] = useState(false);
+  const [flow4, setFlow4] = useState(false);
+  const [flow5, setFlow5] = useState(false);
+  const [flow6, setFlow6] = useState(false);
+  const [flow7, setFlow7] = useState(false);
+  const [flow8, setFlow8] = useState(false);
+  const [flow9, setFlow9] = useState(false);
+
 
   const [isOn, setIsOn] = useState({
     "WM-WL-KH98-00": false,
     "WM-WL-KH00-00": false,
     "DM-KH98-60": false,
-
     "WM-WD-KH98-00": false,
     "WM-WD-KH96-00": false,
     "WM-WD-KH96-02": false,
@@ -74,33 +51,62 @@ const ActuationPage = () => {
     "WM-WF-KB04-71": false,
     "WM-WF-KB04-72": false,
     "WM-WF-KH98-40": false,
-    "WM-WF-KH95-40": false,
-    
-    
+    "WM-WF-KH95-40": false, 
   });
 
   const nodePositions = {
-    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "13.9vw", left: "32vw", zIndex: '3' }, //WL at sump
-    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '11vw', left: '49vw', zIndex: '3' }, //WL at OHT
-    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '40vw',  zIndex: '3'}, //motor
-    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '18vw', left: '30vw' ,  zIndex: '3'}, //WQ at sump
-    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '13.9vw', left: '48vw',  zIndex: '3'}, //WQ at OHT
-    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '16vw', left: '53.5vw' }, //WQ to RO plant
-    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '67.1vw' }, //ro 2
-    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '28vw', left: '61.7vw' },  //faculty launge
+    "WM-WL-KH98-00": {width: '2vw',height: '2vw', position: 'absolute', top: "17vw", left: "35vw", zIndex: '3' }, //WL at sump
+    "WM-WL-KH00-00": {width: '2vw',height: '2vw', position: 'absolute', top: '10vw', left: '49vw', zIndex: '3' }, //WL at OHT
+    "DM-KH98-60"  :  {width: '2vw',height: '2vw', position: 'absolute', top: '19vw', left: '42vw',  zIndex: '3'}, //motor
+    "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw' ,  zIndex: '3'}, //WQ at sump
+    "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '50vw',  zIndex: '3'}, //WQ at OHT
+    "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '15vw', left: '70.6vw', zIndex: '3'}, //WQ to RO plant
+    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '72vw' }, //ro 2
+    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '78vw' },  //faculty launge(ro1)
     "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
-    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '61.5vw', transform: 'rotate(90deg)'},
-    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '25vw', left: '67.1vw', transform: 'rotate(90deg)'}, 
-    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '8.5vw', left: '52vw'},
-    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '54vw'},   
-    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '26vw', transform: 'rotate(90deg)', zIndex: '3'},
-    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '15vw', left: '43vw',transform: 'rotate(90deg)',  zIndex: '3'},   
+    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '72vw', transform: 'rotate(90deg)'},
+    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '78vw', transform: 'rotate(90deg)'}, 
+    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '60vw',transform: 'rotate(90deg)',zIndex: '3'},
+    "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '65vw',transform: 'rotate(90deg)',zIndex: '3'},   
+    "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '14vw', left: '27vw', transform: 'rotate(90deg)', zIndex: '3'},
+    "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '16.3vw', left: '47vw',transform: 'rotate(90deg)',  zIndex: '3'},   
   };
-  // const handleDownloadLog = () => {
-  //   const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
-  //   saveAs(blob, 'simulation_log.txt');
-  // };
-  // Debug Statements for Printing the usestate
+
+
+  const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
+  const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
+  const [motorOn, setMotorOn] = useState(false); // Initial motor state
+  const [waterInROFilter, setWaterInROFilter] = useState(465.32); // Initial water level in RO Filter
+  const [waterConsumed, setWaterConsumed] = useState(0);
+  const [flowrate, setFlowrate] = useState(10);
+  // All measurements are in m(meters)
+  const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.08});
+  const [ohtMeasurements, setOhtMeasurements] = useState({length: 11.28,breadth: 8.82, height: 1.15});
+
+
+  const WaterLevelCalculate = async (waterlevel, length, breadth, height) => {
+  const WaterPercentage = (((height * 100) - waterlevel) / (height * 100)) * 100;
+  const EstimatedWaterCapacity = (length * breadth * height * 1000) * (WaterPercentage / 100);
+  return [WaterPercentage, EstimatedWaterCapacity]; // Return values inside an array
+  };
+  
+  const MotorFlow = async (voltage, current, power_factor, motor_efficiency, depth, status) => {
+    const power_input = voltage * current * (1.73205080757) * power_factor; // 1.73205080757 is sqrt(3), considering 3 phase motor
+    const p_mechanical = power_input * motor_efficiency;
+    const p_hydraulic = p_mechanical;
+    const flowrate = p_hydraulic / (1000 * 9.81 * depth);
+    const flowrate_lpm = flowrate * 1000 * status;
+    return flowrate_lpm;
+  }
+
+  const closeModal = () => {
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  };
+
+  const toggleIsOn = (valve) => {};
+  const handleIconClick = (icon) => {};
+
   const [log, setLog] = useState([]); 
   const updateLog = (message) => {
     setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
@@ -211,29 +217,86 @@ const ActuationPage = () => {
     console.log("Done"); 
   };
 
+  const getRealData = async (tableName) => {
+    try {
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json(); // Assuming this returns an object
+      // console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return { error: "Failed to fetch data" }; // Update accordingly
+    }
+  };
+  
   useEffect(() => {
-    // Call getNodeStatus for each node when the component mounts
+    setFlow2(true);
+    setFlow3(true);
+    setFlow5(true);
+    setFlow8(true);
+    const fetchData = async () => {
+      // Calculate Water in Sump
+      const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
+      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate((SumpWaterLevelData.waterlevel-20), sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
+      setWaterInSump(SumpEstimatedWaterCapacity);
+
+      const RO1FlowData = await getRealData('WM-WF-KB04-71');
+      const RO2FlowData = await getRealData('WM-WF-KB04-72');
+      setWaterConsumed((RO1FlowData.totalflow + RO2FlowData.totalflow)*1000); //Converting to Litres from Kl
+
+      // Calculate Water in OHT
+      const OHTWaterLevelData = await getRealData('WM-WL-KH00-00');
+      const [OHTWaterPercentage, OHTEstimatedWaterCapacity] = await WaterLevelCalculate(OHTWaterLevelData.waterlevel, ohtMeasurements.length, ohtMeasurements.breadth, ohtMeasurements.height);
+      setWaterInOHT(OHTEstimatedWaterCapacity);
+
+      // Calculate Motor Running Status
+      const MotorData = await getRealData('DM-KH98-60');
+      const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
+      setMotorOn(MotorData.status === 1 ? true : false);
+      setFlow4(MotorData.status === 1 ? true : false);
+      console.log("Motor FlowRate", MotorFlowrate);
+
+      // WaterQuantityNode Data 
+      const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
+      const WaterQuantityDataKW2 = await getRealData('WM-WF-KB04-73');
+      const WaterQuantityDataR1 = await getRealData('WM-WF-KB04-71');
+      const WaterQuantityDataR2 = await getRealData('WM-WF-KB04-72');
+      const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KH98-40');
+      console.log("WaterQuantityBorewelltoSump", WaterQuantityBorewelltoSump)
+      const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
+      if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
+      if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
+      if (WaterQuantityDataR1.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
+      if (WaterQuantityDataR2.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
+      if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
+      // if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
+
+    };
+    fetchData();
+
     const nodeIds = Object.keys(isOn);
     updateNodeStatus(nodeIds)
     const token = localStorage.getItem('token');
     if (token) {
         setIsAuthenticated(true);
     }
+    const interval = setInterval(() => {
+      fetchData();
+    }, 120000); // Run every 2 minutes
 
-    // const interval = setInterval(() => {
-    //     getNodeStatus('WM-WF-KB04-72', '15m');
-    //   }, 5000);
+    return () => clearInterval(interval);
   }, []);
-  if (!isAuthenticated) {
-    return <LoginPage />;
-}
 
-const handleClearLog = () => {
-  // Assuming logContent is a state variable holding the log data
-  setLog(''); // Clear the log by setting the log content to an empty string
-  updateLog('Log cleared'); // Log the action
-};
+  if (!isAuthenticated) {return <LoginPage />;}
 
+  const handleClearLog = () => {
+    // Assuming logContent is a state variable holding the log data
+    setLog(''); // Clear the log by setting the log content to an empty string
+    updateLog('Log cleared'); // Log the action
+  };
 
   const NodeActuation = async (nodeName, status) => {
     // Update the state based on the current state
@@ -270,7 +333,6 @@ const handleClearLog = () => {
   const UpdateCoef = async (nodeType, nodeName) => {
     // Update the coefficients 
     // Get the Token
-
   };
 
   const Node = ({ nodeId, isOn }) => {
@@ -409,6 +471,17 @@ const handleClearLog = () => {
     );
   };
 
+
+
+  // const ResultCard = React.forwardRef(({ title, value }, ref) => {
+  //   return (
+  //     <div ref={ref} className="result-card">
+  //       <h5>{title}</h5>
+  //       <p>{value}</p>
+  //     </div>
+  //   );
+  // });
+
   const Box = ({ color, src }) => (
     <div style={{
       flex: 1,
@@ -421,194 +494,58 @@ const handleClearLog = () => {
       <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
     </div>
   );
-  
-  
 
   return (
-    <div className="actuation-page">
-      {/* <h2>Actuation Page</h2> */}
-      <NavigationBar title="Digital Twin for Water Quality - Actuation" />
+    <div className='page'>
+      <NavigationBar title="Digital Twin for Water Quality " style={{position:'fixed'}} />
       <div style={{ display: "flex"}} className='Page'>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
-        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
-        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
-        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
-        <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
-      </div>
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw', border: "0px" }}>
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
+    </div>
+      <div style={{ height: "50vw", width: "60vw",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
         <div>
-      {/* <img src={blueprint} alt="blueprint" style={{ width: '100vw', height: '34vw', marginTop: '5vw' }} /> */}
-      {/* Components */}
-        <div style={{ height: "30vw", display: "flex",flex:3, justifyContent: "flex-start", alignItems: "flex-start" }}>
-          {/* Box for the actuation display */}
-          
-          <div style={{position: "relative", width: "65vw", height: "29vw", top: "0.5vw", border: "1px solid black", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-          <div className="demo-page"> 
-              <div style={{ position: "absolute", 
-                top: "-3.2vw", 
-                left: "-24.3vw",
-                zIndex: "2"
-                }}
-                 id="pumpHouseIcon">
-                <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }}/>
-                <div style={{ fontSize: "1vw" }}>PumpHouse</div>
-              </div>
-
-              {/* Z Shape Pipe Pumphouse to Sump*/}
-              <div style={{ position: "absolute", top: "-2vw", left: "-20vw" }}>
-                <ZshapePipe/>
-              </div>
-
-              {/* Borewell */}
-              <div id="borewellIcon" style={{ position: "absolute", top: "6.1vw", left: "-24vw" }}>
-                <img src={Borewell} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}/>
-                <div style={{ fontSize: "1vw" }}>Borewell</div>
-              </div>
-
-              {/* Straight Pipe from Borewell to Sump */}
-              <div style={{ position: "absolute", top: "10vw", left: "-12.5vw" }}>
-              <StraightPipe style={{ width: "4.8vw", height: "4.8vw" }} 
-              ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump";  } }}
+            <div style={{position: 'relative', width: '60vw',height: '30vw',border: '',}}>
+              <SimulationCanvas
+                handleIconClick={handleIconClick}
+                iconRefs={iconRefs}
+                flow1={flow1}
+                flow2={flow2}
+                flow3={flow3}
+                flow4={flow4}
+                flow5={flow5}
+                flow6={flow6}
+                flow7={flow7}
+                flow8={flow8}
+                flow9={flow9}
+                setFlow1={setFlow1}
+                setFlow2={setFlow2} 
+                waterInSump={waterInSump}
+                sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
+                waterInOHT={waterInOHT}
+                ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
+                waterInROFilter={waterInROFilter}
+                toggleIsOn={toggleIsOn}
+                motorOn={motorOn}
+                waterConsumed={waterConsumed}
+                flowrate={flowrate}
               />
-              </div>
-
-              {/* SUMP */}
-              <div style={{ position: "absolute", top: "2vw", left: "-16vw", textAlign: "center", zIndex: "1"}}>
-                  <img src={SumpIcon} alt="sump" style={{ width: "7vw", height: "8.5vw" }} />
-                </div>
-
-              {/* Straight Pipes Sump to Motor*/}
-              <div>
-                <div style={{ position: "absolute", top: "9.7vw", left: "-3.5vw" }}>
-                  <StraightPipe/>
-                </div>
-
-                {/* Motor */}
-                <div style={{ position: "absolute", top: "6vw", left: "-6vw", textAlign: "center", width: "5.8vw", zIndex: "3"}}>
-                  <img src={Motor} alt="Motor" className={`motor`}style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)"}}/>
-                  <div style={{ fontSize: "1vw" }}>Motor</div>
-                </div>
-
-                {/* MirrorZPipe */}
-                <div style={{ position: "absolute", top: "0.8vw", left: "-2vw" }}>
-                  <MirrorZPipe/>
-                </div>
-
-
-                {/* Water Tower */}
-                <div style={{ position: "absolute", 
-                  top: "0vw", 
-                  left: "1.9vw",
-                  textAlign: "center",
-                  zIndex: "2"
-                  }}>
-                  <img src={Watertank} alt="WaterTank" style={{ width: "7vw", height: "7vw" }}/>
-                  <div style={{ fontSize: "1vw" }}>KRB OHT</div>
-                </div>
-
-
-                {/* L Shape Pipe OHT to Admin Block Washrooms*/}
-                <div style={{ position: "absolute", top: "4vw", left: "4vw", transform: "rotate(90deg)" }}>
-                  <LongLShapePipe/>
-                </div>
-                    
-                <div style={{ position: "absolute", top: "-5vw", left: "7vw", textAlign: "center" }}>
-                <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-                <div style={{ fontSize: "1vw", whiteSpace: "nowrap" }}>Admin Block Washrooms</div>
-                </div>
-
-
-                {/* Straight Pipe OHT to KRB Washrooms */}
-                <div style={{ position: "absolute", top: "4vw", left: "14vw" }}>
-                  <StraightPipe/>
-                </div>
-
-                <div style={{ position: "absolute", top: "0vw", left: "11vw", textAlign: "center" }}>
-                  <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }} />
-                  <div style={{ fontSize: "1vw", whiteSpace: "nowrap" }}>KRB Washrooms</div>
-                </div>
-
-                
-              {/* L Shape Pipe  OHT to RO PLANT*/}
-              <div style={{ position: "absolute", top: "2vw", left: "4.5vw", transform: "rotate(180deg)" }}>
-                  <LongLShapePipe/>
-                </div>
-
-                {/* RO Plant */}
-                <div style={{ position: "absolute", top: "7vw", left: "9.3vw" }}>
-                  <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}/>
-                  <div style={{ fontSize: "1vw" }}>RO Plant</div>
-                </div>
-
-                {/* Straight Pipe RO Plant to RO OHT*/}
-                <div style={{ position: "absolute", top: "13.2vw", left: "20vw" }}>
-                  <StraightPipe/>
-                </div>
-
-                {/* Water Tower */}
-                <div style={{ position: "absolute", top: "2.5vw", left: "18.3vw" , textAlign: "center", zIndex: "2"}}>
-                  <div style={{ fontSize: "1vw" }}>RO Filtered Water OHT</div>
-                  <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5.2vw" }}/>
-                </div>
-
-                {/* E Shape Pipe RO OHT to Ro Filters*/}
-                <div style={{ position: "absolute", top: "19.5vw", left: "23.8vw" }}>
-                  <LongEShapePipe/>
-                </div>
-
-                {/* RO Coolers */}
-                <div style={{ position: "absolute", top: "17.5vw", left: "16.4vw", textAlign: "center", }} >
-                  <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.8vw", height: "3.8vw" }}/>
-                  <div style={{ fontSize: "1vw" }}>RO 1</div>
-                </div>
-
-                <div style={{ position: "absolute", top: "17.5vw", left: "19vw", textAlign: "center", }}>
-                  <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.8vw", height: "3.8vw" }} />
-                  <div style={{ fontSize: "1vw" }}>RO 2</div>
-                </div>
-
-                <div style={{ position: "absolute", top: "17.5vw", left: "21.7vw", textAlign: "center", }}>
-                  <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.8vw", height: "3.8vw" }}/>
-                  <div style={{ fontSize: "1vw" }}>RO 3</div>
-                </div>
-                
-              </div>
-              
-      
             </div>
-          </div>
-        </div>
-      {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
-      <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog}/>
-        </div>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '45vw' }}>
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+            {Object.entries(isOn).map(([nodeId, isNodeOn]) => (<Node key={nodeId} nodeId={nodeId} isOn={isNodeOn} />))}
+          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog}/>
         </div>
       </div>
-      <div>
-        {/* <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log}/> */}
-              {/* {<div className="custom-toast-container">
-              
-      <ToastContainer 
-         position="bottom-center"
-         autoClose={false}
-         hideProgressBar={false}
-         newestOnTop={false}
-         closeOnClick
-         rtl={false}
-         pauseOnFocusLoss
-         draggable
-         pauseOnHover
-         className="horizontal-toasts"
-         toastClassName="toast-item" }
-
-      /> */}
+      <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '53vw' }}>
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
+      <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+    </div>
       </div>
     </div>
-    
   );
-}
+};
 
 export default ActuationPage;
