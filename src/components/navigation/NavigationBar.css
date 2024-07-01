@@ -1,9 +1,9 @@
 /* NavigationBar.css */
 .navbar {
-    position: sticky;
+    position: relative;
     top: 0vw;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 5vw;
     background-color: #123462;
     color: white;

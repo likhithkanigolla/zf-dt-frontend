@@ -8,7 +8,7 @@ function EShapePipe({ flow, onClick, text }) {
         if (flow) {
             const timer = setTimeout(() => {
                 setInitialFlowComplete(true);
-            }, 2000); // Match this duration to the initialFlow animation duration
+            }, 3000); // Match this duration to the initialFlow animation duration
 
             return () => clearTimeout(timer);
         }
@@ -66,8 +66,6 @@ function EShapePipe({ flow, onClick, text }) {
                                 className="eshape-wave-path"
                             />
                         </g>
-
-                       
                     </>
                 )}
                 <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>

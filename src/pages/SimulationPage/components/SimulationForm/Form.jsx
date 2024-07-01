@@ -42,7 +42,7 @@ function SimulationForm({inputValues, handleChange, handleStartSimulation, isSim
                 <option value="3">Scenario 3</option>
                 <option value="4">Scenario 4</option>
             </select></label>
-            <label style={{color: 'white', height: '4vw'}} className="heading"><b>Simulation Speed: </b>
+            <label style={{color: 'white', height: '4vw', whiteSpace: 'now'}} className="heading"><b>Simulation Speed: </b>
             <select name="timeMultiplier" onChange={handleChange} class="dropdown-content-n"  style={{ height: '30vw'}} value={inputValues.timeMultiplier}>
                 <option value="1">1x</option>
                 <option value="2">2x</option>
