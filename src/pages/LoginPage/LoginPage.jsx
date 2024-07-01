@@ -31,7 +31,7 @@ const LoginPage = () => {
     return (
         <div className="login-container">
             <div className="login-box">
-                <h2>Digital Twin Actuation Login</h2>
+                <h2>Digital Twin</h2>
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-group">
                         <label htmlFor="username">Username:</label>
