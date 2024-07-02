@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import './Pipe.css';
 
-function ZshapePipe({ flow, onClick }) {
+const ZshapePipe = forwardRef(({ flow, onClick }, ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,13 +15,14 @@ function ZshapePipe({ flow, onClick }) {
     }, [flow]);
 
     return (
-        <div className="svg-container" onClick={onClick}>
+        <div className="svg-container" onClick={onClick} >
             <svg 
                 viewBox="0 0 100 100"
                 width="100vw" // Set width to 100% of the parent container
                 height="50vw" // Set height to 50% of the parent container
                 className='absolute bottom-10 right-52'
                 style={{ maxWidth: '100vw', maxHeight: '50vw' }}
+                ref={ref}
             >
                 <defs>
                     <clipPath id="pipeClipPath">
@@ -110,6 +111,6 @@ function ZshapePipe({ flow, onClick }) {
             </svg>
         </div>
     );
-}
+});
 
 export default ZshapePipe;
