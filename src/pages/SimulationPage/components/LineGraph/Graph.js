@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef,useState} from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -22,12 +22,24 @@ ChartJS.register(
 );
 
 const LineGraph = ({ data, title , feild }) => {
+  const [isEnlarged, setIsEnlarged] = useState(false);
+  const chartRef = useRef(null);
+
+  const toggleEnlargedMode = () => {
+    setIsEnlarged(!isEnlarged);
+  };
+
+  const closeEnlargedMode = () => {
+    setIsEnlarged(false);
+  };
+
+
+
   // Separate data for ID1, ID2, and ID3
   const id1Data = data.filter(entry => entry.id === 1);
   const id2Data = data.filter(entry => entry.id === 2);
   const id3Data = data.filter(entry => entry.id === 3);
   const id4Data = data.filter(entry => entry.id === 4);
-  const chartRef = useRef(null);
 
   // Extract timestamps for ID1, ID2, and ID3
   const id1Timestamps = id1Data.map(entry => entry.time);
@@ -138,6 +150,8 @@ const LineGraph = ({ data, title , feild }) => {
     },
   };
 
+  const containerClassName = isEnlarged ? 'chart-container enlarged' : 'chart-container';
+
   const downloadChart = () => {
     const chart = chartData.current; // Access the chart instance
     if (!chart) {
@@ -154,8 +168,89 @@ const LineGraph = ({ data, title , feild }) => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '18vw', height: '13vw'}}>
-      <Line data={chartData} options={options} />
+    <div className={containerClassName} onClick={toggleEnlargedMode}>
+      <div className="chart-content">
+        <Line data={chartData} options={options} ref={chartRef} />
+        {isEnlarged && (
+          <div className="close-button" onClick={closeEnlargedMode}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="feather feather-x-circle"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
+          </div>
+        )}
+      </div>
+       <style jsx>{`
+        .chart-container {
+          position: relative;
+          width: 18vw;
+          height: 13vw;
+          transition: all 0.3s ease;
+        }
+
+        .enlarged {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 1000;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .chart-content {
+          width: 100%;
+          height: 100%;
+          max-width: 1000px; /* Adjust max width as needed */
+          max-height: 80vh; /* Adjust max height as needed */
+          background-color: ${isEnlarged ? '#fff' : 'none'};
+        }
+
+        .close-button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          background-color: red;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .close-button svg {
+          width: 20px;
+          height: 20px;
+          stroke: #fff;
+        }
+
+        .close-button:hover {
+          background-color: darkred;
+        }
+
+        .chart-content canvas {
+          width: 100% !important;
+          height: 100% !important;
+        }
+       
+       `}</style>
     </div>
   );
 };
