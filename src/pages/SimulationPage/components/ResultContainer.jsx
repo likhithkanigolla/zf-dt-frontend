@@ -22,14 +22,15 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
   return (
     <div style={{ flex: 1}}>
       <h1 style={{ textAlign: 'center', color: '#123462' }}>Results</h1>
-      <LineGraph data={datagraph}/>
+      <LineGraph data={datagraph} title={'IMPURITIES vs TDS Timeseries'}/>
+      <LineGraph data={datagraph} title={'IMPURITIES vs TDS Timeseries'}/>
       <div className="result-container">
         <div className="result-cards">
-          {/* <ResultCard
+          <ResultCard
             title="TDS Value(mg/L) - At SUMP"
             value={result?.calculated_tds_value.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.calculated_tds_value ?? 0}
-          /> */}
+          />
           <ResultCard
             title="Permeate Flow Rate(l/s)"
             value={PermeateFlowRate.toFixed(4) ?? "N/A"}

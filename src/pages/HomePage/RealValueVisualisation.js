@@ -7,12 +7,13 @@ import LoginPage from '../LoginPage/LoginPage';
 import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
 import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
-import MotorNode from "../images/MotorNode.png"; 
-import WaterLevelNode from "../images/WaterLevelNode.png";
-import WaterQualityNode from "../images/WaterQualityNode.png";
-import WaterQuantityNode from "../images/WaterQuantityNode.png";
+import MotorNode from "../images/MotorNode-removebg.png"; 
+import WaterLevelNode from "../images/WaterLevelNode-removebg.png";
+import WaterQualityNode from "../images/WaterQualityNode-removebg.png";
+import WaterQuantityNode from "../images/WaterQuantityNode-removebg.png";
 import config from '../../config';
 import { saveAs } from 'file-saver';
+import { BorderAllRounded } from '@mui/icons-material';
 
 
 const RealValueVisualisation = () => {
@@ -572,13 +573,15 @@ const RealValueVisualisation = () => {
       height: "2vw",
       transition: "transform 0.3s, filter 0.3s", // Smooth transition for transform and filter
       zIndex: 10,
-      cursor: "pointer" // Change cursor to indicate it's clickable
+      cursor: "pointer",
+      backgroundColor: isOn[fetchNodeDataParam] ? '#7bae37' : '#d51c3f',
+      borderRadius: "50%",
     };
     const overlayStyle = {
       position: 'absolute',
       top: 0,
       right: 0,
-      color: isOn[fetchNodeDataParam] ? 'green' : 'red',
+      color: isOn[fetchNodeDataParam] ? '#7bae37' : '#d51c3f',
       fontSize: '20px',
       transform: rotation ? `rotate(${-rotation}deg)` : 'none', // Counter-rotation applied here
     };
@@ -603,9 +606,9 @@ const RealValueVisualisation = () => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         />
-        <span style={overlayStyle}>
-        {isOn[fetchNodeDataParam] ? '✓' : '✕'} {/* Unicode characters for tick and cross */}
-      </span>
+        {/* <span style={overlayStyle}>
+        {isOn[fetchNodeDataParam] ? '✓' : '✕'} 
+      </span> */}
       </div>
     );
   }
