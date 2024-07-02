@@ -74,19 +74,6 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         />
                     </>
                 )}
-                {(isScenario1 || isScenario2 || isScenario3) && (
-                    <>
-                        <h4 className="heading-in">Temperature (°C):</h4>
-                        <input
-                            className="input-box"
-                            type="number"
-                            name="temperature"
-                            id="temperature"
-                            value={inputValues.temperature}
-                            onChange={handleChange}
-                        />
-                    </>
-                )}
                 {(isScenario1 || isScenario3) && (
                     <>
                         <h4 className="heading-in" htmlFor="SandQuantity">
@@ -97,6 +84,19 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             name="SandQuantity"
                             id="SandQuantity"
                             value={inputValues.SandQuantity}
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+                {(isScenario1 || isScenario2 || isScenario3) && (
+                    <>
+                        <h4 className="heading-in">Temperature (°C):</h4>
+                        <input
+                            className="input-box"
+                            type="number"
+                            name="temperature"
+                            id="temperature"
+                            value={inputValues.temperature}
                             onChange={handleChange}
                         />
                     </>
