@@ -905,7 +905,7 @@ const SimulationPage = () => {
   return (
     <div>
       <ToastContainer />
-      <NavigationBar title="Digital Twin for Water Quality - Simulation" />
+      <NavigationBar title="Digital Twin for Water Quality" />
       <div style={{ display: "flex"}}>
         {/* Left Section */}
         <SimulationForm 
@@ -1031,7 +1031,7 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH98-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH98-40']}L`} rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "7.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <div style={{ position: "absolute", top: "6.7vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH95-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH95-40'].toFixed(2)}L`}  rotation={90}/>
               </div>
