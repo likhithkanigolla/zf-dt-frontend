@@ -157,7 +157,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe OHT to RO PIPE */}
-        <div style={{ position: "absolute", top: "2.6vw", left: "35.7vw", transform: "rotate(270deg)" }}>
+        <div style={{ position: "absolute", top: "2.5vw", left: "34.7vw", transform: "rotate(270deg)" }}>
           <ELpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
@@ -210,7 +210,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe RO to RO OHT */}
-        <div style={{ position: "absolute", top: "4vw", left: "52vw",  }}>
+        <div style={{ position: "absolute", top: "3vw", left: "49.9vw",  }}>
           <ROLpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeROtoROOHT"; iconRefs.push(ref); } }} />
         </div>
@@ -238,7 +238,7 @@ const SimulationCanvas = ({
 
         {/* Lpipe from ROOHT to RO3 */}
 
-        <div style={{ position: "absolute", top: "10.1vw", left: "53.5vw" }}>
+        <div style={{ position: "absolute", top: "10.1vw", left: "51vw" }}>
           <ROLpipe flow={flow9} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO2"; iconRefs.push(ref); } }} />
         </div>
