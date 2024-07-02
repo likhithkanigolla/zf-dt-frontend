@@ -65,11 +65,12 @@
 .navbar__dropdown {
     background-color: #123462;
     color: white;
-    padding: 1vw;
-    font-size: 1rem;
+    padding: 0.5vw;
+    font-size: 1vw;
+    text-align: center;
     cursor: pointer;
     border: 2px solid white;
-    border-radius: 1vw;
+    border-radius: 0.6vw;
     margin: 2vw;
 
 }
@@ -77,14 +78,15 @@
 .navbar__dropdown option {
     background-color: #123462;
     color: white;
-    padding: 12vw;
-    border: none;
-    font-size: 1rem;
+    padding: 1vw;
+    border: 5vw solid black;
+    font-size: 1vw;
     cursor: pointer;
 }
 
 .navbar__dropdown option:checked {
-    background-color: #456789;
+    background-color: #384c69;
+    cursor: pointer;
 }
 
 
