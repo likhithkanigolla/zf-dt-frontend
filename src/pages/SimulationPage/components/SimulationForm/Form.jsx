@@ -35,10 +35,14 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
-                            <option value="1">Scenario 1</option>
-                            <option value="2">Scenario 2</option>
-                            <option value="3">Scenario 3</option>
-                            <option value="4">Scenario 4</option>
+                            <option value="1">Multiple Impurities</option>
+                            <option value="2">Soil Impurities vs TDS</option>
+                            <option value="3">Sand Impurities vs TDS</option>
+                            <option value="4" disabled>Flow vs TDS</option>
+                            <option value="5" disabled>Water Quality Node Failed</option>
+                            <option value="6" disabled>Water Level Node Failed</option>
+                            <option value="7" disabled>Water Purifiation Agents vs TDS</option>
+
                         </select>
                     </label>
                     <div className="simulation-speed">
