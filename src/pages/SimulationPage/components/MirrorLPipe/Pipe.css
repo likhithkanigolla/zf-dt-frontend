@@ -52,7 +52,7 @@
 }
 
 .mirror-wave-path {
-    animation: mirrorWaveAnimation 2s infinite linear;
+    animation: mirrorWaveAnimation 600ms infinite linear;
 }
 
 .mirror-falling-water {

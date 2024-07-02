@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Pipe.css';
+import './PipeOHT.css';
 
 function LShapePipe({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
@@ -15,13 +15,13 @@ function LShapePipe({ flow, onClick, text }) {
     }, [flow]);
 
     return (
-        <div className="lshape-svg-container" onClick={onClick}>
+        <div className="lshapeoht-svg-container" onClick={onClick}>
             <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="lshapePipeClipPath">
-                        <polygon points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75" />
+                        <polygon points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30" />
                     </clipPath>
-                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="0%">
+                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
@@ -29,7 +29,7 @@ function LShapePipe({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75"
+                    points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30"
                     className="lshape-pipe-border"
                 />
 
@@ -42,7 +42,7 @@ function LShapePipe({ flow, onClick, text }) {
                                     y="0"
                                     width="100"
                                     height="10"
-                                    fill="white"
+                                    fill="lightblue"
                                     className="lshape-initial-flow"
                                 />
                             )}
@@ -54,7 +54,7 @@ function LShapePipe({ flow, onClick, text }) {
                                     height="200"
                                     fill="lightblue"
                                     className="lshape-initial-flow"
-                                    style={{ transform: 'translateY(-50)' }}
+                                    style={{ transform: 'translateY(0)' }}
                                 />
                             )}
                             <rect
@@ -66,6 +66,9 @@ function LShapePipe({ flow, onClick, text }) {
                                 className="lshape-wave-path"
                             />
                         </g>
+
+                        
+                      
                     </>
                 )}
                 <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
