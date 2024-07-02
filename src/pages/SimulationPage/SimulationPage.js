@@ -851,7 +851,7 @@ const SimulationPage = () => {
   return (
     <div>
       <ToastContainer />
-      <NavigationBar title="Digital Twin for Water Quality - Simulation" />
+      <NavigationBar title="Digital Twin for Water Quality" />
       <div style={{ display: "flex"}}>
         {/* Left Section */}
         <SimulationForm 

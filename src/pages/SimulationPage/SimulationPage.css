@@ -8,14 +8,13 @@ body {
 
 /* General Container Styling */
 .container, .result-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color:none ;
+  border-radius: 0vw;
   padding: 20px;
   margin: 5px 0;
-  height: 20vh;
+  height: 22vh;
   width: 18.5vw;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden; /* Ensure horizontal scrollbar is hidden */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
