@@ -13,7 +13,7 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 5px 0;
-  height: 80vh;
+  height: 30vh;
   width: 18.5vw;
   overflow-y: scroll;
   overflow-x: hidden; /* Ensure horizontal scrollbar is hidden */
@@ -324,4 +324,51 @@ div[style*='display: flex'] {
 /* For screens larger than 1200px (e.g., large desktops) */
 @media (min-width: 1200px) {
   /* Add responsive styles for large desktops here */
+}
+
+.float-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  background-color: #f9f9f9;
+  padding: 30px;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  width: 20vw; /* Adjusted width */
+  max-width: 20vw; /* Ensures the box doesn't get too large on wider screens */
+}
+
+.float-box-heading {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1vw;
+}
+
+.float-box-heading span {
+  font-weight: normal;
+  color: #666;
+}
+
+.float-box-value {
+  display: block; /* Ensures it takes up the full width */
+  margin-bottom: 20px; /* Adds some space below the value */
+}
+
+.float-box-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+}
+
+.float-box-close:hover {
+  background-color: #e0e0e0;
+  border-radius: 50%;
 }
