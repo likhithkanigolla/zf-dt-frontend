@@ -17,7 +17,7 @@ import {
   TextField,
   // Import Menu and Close icons from MUI
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu'; // Import for MenuIcon
+import Analytics from '@mui/icons-material/BarChartSharp';
 import CloseIcon from '@mui/icons-material/Close'; // Import for CloseIcon
 import {
   NotificationsActive as NotificationsIcon,
@@ -315,7 +315,7 @@ const NavigationBar = ({ title }) => {
 
             <div>
               <IconButton color="inherit" onClick={handleHamburgerClick}>
-                {isHamburgerOpen ? <CloseIcon /> : <MenuIcon />}
+                {isHamburgerOpen ? <CloseIcon /> : <Analytics />}
               </IconButton>
               {isHamburgerOpen && (
                 <div className="full-screen-overlay">
