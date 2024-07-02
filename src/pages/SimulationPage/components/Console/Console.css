@@ -8,8 +8,9 @@
   overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  height: 13vw;
+  height: 12.5vw;
   width: 60vw;
+ 
   -webkit-overflow-scrolling: touch;
   margin-top: 1vw;
 }
