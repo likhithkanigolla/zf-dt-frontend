@@ -147,13 +147,13 @@ const RealValueVisualisation = () => {
 
   const updateNodeStatus = async (nodeIds) => {
     let tmpIsOn = {};
-    for (let idx in nodeIds) {
-      tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
+    for (const nodeId of nodeIds) { // Use for...of loop
+        tmpIsOn[nodeId] = await getNodeStatus(nodeId, "6h"); // Await the completion of each call
     }
     console.log(tmpIsOn);
-    setIsOn(tmpIsOn);
-    console.log("Done", isOn); 
-  };
+    setIsOn(tmpIsOn); // Assuming setIsOn is a state setter or similar function
+    console.log("Done", tmpIsOn); // Log tmpIsOn instead of isOn to ensure the updated object is logged
+};
 
   const getRealData = async (tableName) => {
     try {
