@@ -47,12 +47,12 @@
 
 
 .mirror-initial-flow {
-    animation: mirrorInitialFlowAnimation 3s forwards;
+    animation: mirrorInitialFlowAnimation 1s forwards;
     fill: lightblue;
 }
 
 .mirror-wave-path {
-    animation: mirrorWaveAnimation 600ms infinite linear;
+    animation: mirrorWaveAnimation 30ms infinite linear;
 }
 
 .mirror-falling-water {

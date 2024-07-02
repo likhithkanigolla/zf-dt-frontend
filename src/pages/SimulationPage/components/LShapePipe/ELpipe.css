@@ -15,7 +15,7 @@
 }
 
 .el-initial-flow {
-    animation: initialFlow 2s linear forwards;
+    animation: initialFlow 1ms linear forwards;
 }
 
 .el-wave-path {

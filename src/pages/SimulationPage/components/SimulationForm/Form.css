@@ -123,7 +123,7 @@ label {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 10vh;
+    height: 8vw;
     padding: 40px;
     background-color: #ffffff;
 }
@@ -228,7 +228,7 @@ label {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 100vh;
+    height: 1vw;
     padding: 20px;
     /* background-color: #f5f5f5; */
 }

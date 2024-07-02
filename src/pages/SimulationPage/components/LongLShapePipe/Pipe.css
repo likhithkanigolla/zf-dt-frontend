@@ -71,7 +71,7 @@
 }
 
 .lshape-initial-flow {
-    animation: lshapeInitialFlowAnimation 3s forwards;
+    animation: lshapeInitialFlowAnimation 2s forwards;
     fill: lightblue;
 }
 
