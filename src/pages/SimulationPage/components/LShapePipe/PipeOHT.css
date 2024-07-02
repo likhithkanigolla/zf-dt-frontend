@@ -46,15 +46,15 @@
 
 @keyframes falling-wateroht {
     0% {
-        transform: translateY(0);
+        transform: translateY(10);
         opacity: 1;
     }
     50% {
-        transform: translateY(6vw) scaleX(1.2);
-        opacity: 0.8;
+        transform: translateY(6vw) ;
+        opacity: 2;
     }
     100% {
-        transform: translateY(6vw) scaleX(0);
+        transform: translateY(0vw);
         opacity: 0;
     }
 }
@@ -82,22 +82,24 @@
 .falling-wateroht {
     fill: rgb(37, 194, 226);
     animation: fallingWater 300ms infinite ease-in;
-    transform-origin: top;
-    height: 2vw;
+    transform-origin: bottom;
+   
+    height: 0vw;
     z-index: 2;
 }
 
 .falling-water2oht {
     fill: rgb(37, 194, 226);
     animation: fallingWater 300ms infinite ease-in;
-    transform-origin: top;
+    transform-origin: bottom;
+    margin-right: 20vw;
     z-index: 2;
 }
 
 .falling-water3oht {
     fill: rgb(37, 194, 226);
     animation: fallingWater 1s infinite ease-in;
-    transform-origin: top;
+    transform-origin: bottom;
     z-index: 2;
 }
 

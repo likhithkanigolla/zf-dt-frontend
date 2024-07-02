@@ -19,7 +19,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
             <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="lshapePipeClipPath">
-                        <polygon points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75" />
+                        <polygon points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30" />
                     </clipPath>
                     <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
@@ -29,7 +29,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="9 75, 9 92, 100 91, 100 100, 0 100, 0 94, 0 75"
+                    points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30"
                     className="lshape-pipe-border"
                 />
 
@@ -67,35 +67,36 @@ function LShapePipeOHT({ flow, onClick, text }) {
                             />
                         </g>
 
+                        {/* Water falling animation */}
                         <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
                             className="falling-wateroht"
                         />
 
                         <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
                             className="falling-water2oht"
                         />
 
                         <path
-                            d="M 98,98 Q 100,105 98,110 T 98,120 T 98,130 T 98,140"
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
                             fill="none"
-                            stroke=" rgb(37, 194, 226)"
+                            stroke="rgb(37, 194, 226)"
                             strokeWidth="4"
                             className="falling-water3oht"
                         />
 
-                        {/* Water Bubbles */}
-                        <circle className="bubbleoht" cx="98" cy="140" r="1" />
-                        <circle className="bubbleoht" cx="102" cy="145" r="1.5" />
-                        <circle className="bubbleoht" cx="94" cy="138" r="2.5" />
-                        <circle className="bubbleoht" cx="99" cy="145" r="2.8" />
+                        {/* Water bubbles */}
+                        <circle className="bubbleoht" cx="20" cy="50" r="1" />
+                        <circle className="bubbleoht" cx="24" cy="55" r="1.5" />
+                        <circle className="bubbleoht" cx="16" cy="48" r="2.5" />
+                        <circle className="bubbleoht" cx="21" cy="55" r="2.8" />
                        
                       
                     </>
