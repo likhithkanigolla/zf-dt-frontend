@@ -1,4 +1,5 @@
 import React from 'react';
+import LineGraph from './LineGraph/Graph';
 
 const ResultCard = ({ title, value, previousValue }) => {
   const difference = value - previousValue;
@@ -17,25 +18,18 @@ const ResultCard = ({ title, value, previousValue }) => {
   );
 };
 
-const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate }) => {
+const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate, datagraph }) => {
   return (
     <div style={{ flex: 1}}>
+      <h1 style={{ textAlign: 'center', color: '#123462' }}>Results</h1>
+      <LineGraph data={datagraph}/>
       <div className="result-container">
-        <div style={{ backgroundColor: '#123462',
-           padding: '0%', 
-           textAlign: 'center',
-          height : '2.6vw',
-           width: '17vw',
-           borderRadius: '0.3vw',
-           color: 'white' }}>
-          <h2>Results:</h2>
-        </div>
         <div className="result-cards">
-          <ResultCard
+          {/* <ResultCard
             title="TDS Value(mg/L) - At SUMP"
             value={result?.calculated_tds_value.toFixed(4) ?? "N/A"}
             previousValue={previousResult?.calculated_tds_value ?? 0}
-          />
+          /> */}
           <ResultCard
             title="Permeate Flow Rate(l/s)"
             value={PermeateFlowRate.toFixed(4) ?? "N/A"}
@@ -47,7 +41,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
             previousValue={previousResult?.final_tds_concentration_after_ro_tank ?? 0}
           />
           <ResultCard
-            title="Cycle Count"
+            title="RO Cycle Count"
             value={result?.cycle_count ?? "N/A"}
             previousValue={previousResult?.cycle_count ?? 0}
           />

@@ -30,81 +30,108 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, isSi
 
     return (
         <div>
-            <div className="container" style={{ flex: 5, overflowY: 'scroll', height: '73vh', color: 'white' }}>
-                <div>
-                    <h3 style={{
-                        backgroundColor: '#123462',
-                        padding: '4px',
-                        textAlign: 'center',
-                        height: '3vw',
-                        width: '16vw',
-                        borderRadius: '0.3vw',
-                        color: 'white'
-                    }}>Configuration</h3>
-                    <label>
-                        <select name="Scenarios" className="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
-                            <option value="1">Scenario 1</option>
-                            <option value="2">Scenario 2</option>
-                            <option value="3">Scenario 3</option>
-                            <option value="4">Scenario 4</option>
-                        </select>
-                    </label>
-                    <div className="simulation-speed">
-                        <label style={{ color: 'white', background:'#ffffff00' ,whiteSpace: 'nowrap'}} className="heading-as"><b>Simulation Speed: </b></label>
-                        <select name="timeMultiplier" onChange={handleChange} className="dropdown-content-n" value={inputValues.timeMultiplier}>
-                            <option value="1">1x</option>
-                            <option value="2">2x</option>
-                            <option value="4">4x</option>
-                            <option value="8">8x</option>
-                            <option value="16">16x</option>
-                            <option value="32">32x</option>
-                            <option value="64">64x</option>
-                        </select>
-                    </div>
-                </div>
-                <h4 className="heading" onClick={toggleWaterConfig}>Parameter Configuration</h4>
-                {(isScenario1 || isScenario2) && (
-                    <>
-                        <h4 className="heading-in" htmlFor="SoilQuantity">
-                            Soil Impurities (In grams)
-                        </h4>
-                        <input
-                            type="number"
-                            name="SoilQuantity"
-                            id="SoilQuantity"
-                            value={inputValues.SoilQuantity}
-                            className='input-box'
-                            onChange={handleChange}
-                        />
-                    </>
-                )}
-                {(isScenario1 || isScenario2 || isScenario3) && (
-                    <>
-                        <h4 className="heading-in">Temperature (°C):</h4>
-                        <input
-                            className="input-box"
-                            type="number"
-                            name="temperature"
-                            id="temperature"
-                            value={inputValues.temperature}
-                            onChange={handleChange}
-                        />
-                    </>
-                )}
-                {(isScenario1 || isScenario3) && (
-                    <>
-                        <h4 className="heading-in" htmlFor="SandQuantity">
-                            Sand Impurities (In grams)
-                        </h4>
-                        <input
-                            type="number"
-                            name="SandQuantity"
-                            id="SandQuantity"
-                            value={inputValues.SandQuantity}
-                            onChange={handleChange}
-                        />
-                    </>
-                )}
+        <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
+        <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '73vh', color: 'white' }}>
+            <div>
+            <label><select name="Scenarios" class="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
+                <option value="1">Scenario 1</option>
+                <option value="2">Scenario 2</option>
+                <option value="3">Scenario 3</option>
+                <option value="4">Scenario 4</option>
+            </select></label>
+            <label style={{color: 'white', height: '4vw', whiteSpace: 'now'}} className="heading"><b>Simulation Speed: </b>
+            <select name="timeMultiplier" onChange={handleChange} class="dropdown-content-n"  style={{ height: '30vw'}} value={inputValues.timeMultiplier}>
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="4">4x</option>
+                <option value="8">8x</option>
+                <option value="16">16x</option>
+                <option value="32">32x</option>
+                <option value="64">64x</option>
+            </select></label>
+            </div>
+            <h4 className="heading" onClick={toggleWaterConfig}>Water Parameter Configuration </h4>
+            <h4 className="heading-in" htmlFor="SoilQuantity">
+                        Soil Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SoilQuantity"
+                        id="SoilQuantity"
+                        value={inputValues.SoilQuantity}
+                        className='input-box'
+                        // onChange={(e) => {
+                        //     setSoilQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in" htmlFor="SandQuantity">
+                        Sand Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SandQuantity"
+                        id="SandQuantity"
+                        value={inputValues.SandQuantity}
+                        // onChange={(e) => {
+                        //     setSandQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in">Temperature (°C):</h4>
+                    <input
+                        className="input-box"
+                        type="number"
+                        name="temperature"
+                        id="temperature"
+                        value={inputValues.temperature}
+                        onChange={handleChange}
+                    />
+
+            {/* {isWaterConfigCollapsed && (
+                <>
+                    <h4 className="heading-in" htmlFor="SoilQuantity">
+                        Soil Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SoilQuantity"
+                        id="SoilQuantity"
+                        value={inputValues.SoilQuantity}
+                        className='input-box'
+                        // onChange={(e) => {
+                        //     setSoilQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in" htmlFor="SandQuantity">
+                        Sand Impurities (In grams)
+                    </h4>
+                    <input
+                        type="number"
+                        name="SandQuantity"
+                        id="SandQuantity"
+                        value={inputValues.SandQuantity}
+                        // onChange={(e) => {
+                        //     setSandQuantity(e.target.value);
+                        //     handleChange(e);
+                        // }}
+                        onChange={handleChange}
+                    />
+                    <h4 className="heading-in">Temperature (°C):</h4>
+                    <input
+                        className="input-box"
+                        type="number"
+                        name="temperature"
+                        id="temperature"
+                        value={inputValues.temperature}
+                        onChange={handleChange}
+                    />
+                </>
+            )} */}
 
                 {isScenario1 && (
                     <>

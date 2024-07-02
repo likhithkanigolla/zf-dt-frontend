@@ -263,7 +263,7 @@ const SimulationCanvas = ({
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler1"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 1</div>
-          <div style={{ fontSize: "0.7vw" }}><b>{((3 * waterConsumed) / 4).toFixed(1)}L</b></div>
+          {/* <div style={{ fontSize: "0.7vw" }}><b>{((3 * waterConsumed) / 4).toFixed(1)}L</b></div> */}
         </div>
 
         <div style={{ position: "absolute", top: "14vw", left: "54.3vw", textAlign: "center" }}>
@@ -278,7 +278,7 @@ const SimulationCanvas = ({
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler3"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 3</div>
-          <div style={{ fontSize: "0.7vw" }}><b>{(waterConsumed / 4).toFixed(1)}L</b></div>
+          {/* <div style={{ fontSize: "0.7vw" }}><b>{(waterConsumed / 4).toFixed(1)}L</b></div> */}
         </div>
       </div>
     </div>
