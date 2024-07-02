@@ -21,26 +21,28 @@ ChartJS.register(
   Legend
 );
 
-const LineGraph = ({ data, title }) => {
+const LineGraph = ({ data, title , feild }) => {
   // Separate data for ID1, ID2, and ID3
   const id1Data = data.filter(entry => entry.id === 1);
   const id2Data = data.filter(entry => entry.id === 2);
   const id3Data = data.filter(entry => entry.id === 3);
+  const id4Data = data.filter(entry => entry.id === 4);
   const chartRef = useRef(null);
 
   // Extract timestamps for ID1, ID2, and ID3
   const id1Timestamps = id1Data.map(entry => entry.time);
   const id2Timestamps = id2Data.map(entry => entry.time);
   const id3Timestamps = id3Data.map(entry => entry.time);
+  const id4Timestamps = id4Data.map(entry => entry.time);
 
   // Combine all unique timestamps and sort them chronologically
-  const timestamps = Array.from(new Set([...id1Timestamps, ...id2Timestamps, ...id3Timestamps])).sort();
+  const timestamps = Array.from(new Set([...id1Timestamps, ...id2Timestamps, ...id3Timestamps, ...id4Timestamps])).sort();
 
   // Function to create datasets for each ID with updated labels
-  const createDataset = (id, timestamps) => {
+  const createDataset = (id, timestamps, propertyName) => {
     const dataPoints = timestamps.map(time => {
       const entry = data.find(item => item.id === id && item.time === time);
-      return entry ? entry.tds : null; // Return tds or null if no data
+      return entry ? entry[propertyName] : null; // Return tds or null if no data
     });
 
     let label, borderColor, backgroundColor;
@@ -60,6 +62,11 @@ const LineGraph = ({ data, title }) => {
         borderColor = 'rgba(153, 102, 255, 1)';
         backgroundColor = 'rgba(153, 102, 255, 0.2)';
         break;
+      case 4:
+        label = 'Permative Flow Rate';
+        borderColor = 'rgba(255, 159, 64, 1)';
+        backgroundColor = 'rgba(255, 159, 64, 0.2)';
+        break;
       default:
         label = `ID ${id}`;
         borderColor = 'rgba(0, 0, 0, 1)';
@@ -77,14 +84,17 @@ const LineGraph = ({ data, title }) => {
   };
 
   const datasets = [
-    createDataset(1, timestamps),
-    createDataset(2, timestamps),
-    createDataset(3, timestamps),
+    createDataset(1, timestamps, feild),
+    createDataset(2, timestamps, feild),
+    createDataset(3, timestamps, feild),
+    createDataset(4, timestamps, feild),
   ];
+
+  const filteredDatasets = datasets.filter(dataset => dataset.data.some(point => point !== null));
 
   const chartData = {
     labels: timestamps,
-    datasets: datasets,
+    datasets: filteredDatasets,
   };
 
   // Debugging: Log the chartData to ensure it's structured correctly

@@ -18,12 +18,12 @@ const ResultCard = ({ title, value, previousValue }) => {
   );
 };
 
-const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate, datagraph }) => {
+const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate, datagraph , flowgraph}) => {
   return (
     <div style={{ flex: 1}}>
       <h1 style={{ textAlign: 'center', color: '#123462' }}>Results</h1>
-      <LineGraph data={datagraph} title={'IMPURITIES vs TDS Timeseries'}/>
-      <LineGraph data={datagraph} title={'IMPURITIES vs TDS Timeseries'}/>
+      <LineGraph data={datagraph} title={'IMPURITIES vs TDS Timeseries'} feild={'tds'}/>
+      <LineGraph data={flowgraph} title={'Permative Flow Rate'} feild={'flowrate'}/>
       <div className="result-container">
         <div className="result-cards">
           <ResultCard

@@ -116,6 +116,7 @@ const SimulationPage = () => {
   //   { time: '17:00:00', tds: 1020, id: 2 },
   // ];
   const [datagraph, setDatagraph] = useState([]);
+  const [flowgraph, setFlowgraph] = useState([]);
 
 
   // Logging Code 
@@ -244,6 +245,8 @@ const SimulationPage = () => {
         const temp_permeate = PermeateFlowRate+ (Math.random() - 0.5);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
+        setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
+        console.log("Flow Graph:", flowgraph);
         setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         
@@ -502,6 +505,8 @@ const SimulationPage = () => {
 
       // console.log("Result PR:", data_RO.permeate_flow_rate);
       setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
+      setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
+      console.log("Flow Graph:", flowgraph);
       setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate)* timeMultiplier);
       setFlowrate(parseFloat(flow.flowrate_per_min)* timeMultiplier);
       console.log("Flow Rate:", flowrate);
@@ -1106,7 +1111,7 @@ const SimulationPage = () => {
 
 
         {/* Right Section */}
-        <ResultContainer result={result} previousResult={previousResult} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate} PreviousPermeateFlowRate={PreviousPermeateFlowRate} datagraph={datagraph}/>
+        <ResultContainer result={result} previousResult={previousResult} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate} PreviousPermeateFlowRate={PreviousPermeateFlowRate} datagraph={datagraph} flowgraph={flowgraph}/>
         
       </div>
     </div>
