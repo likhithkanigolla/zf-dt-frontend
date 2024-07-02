@@ -151,13 +151,13 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe from motor to oht */}
-        <div style={{ position: "absolute", top: "8.6vw", left: "34.5vw",  zIndex: "1" }}>
+        <div style={{ position: "absolute", top: "8.8vw", left: "34.5vw",  zIndex: "1" }}>
           <Lshapepipeoht flow={flow4} 
           ref={(ref) => { if (ref) { ref.id = "PipeMotorToOHT"; iconRefs.push(ref); } }} />
         </div>
 
         {/* L Shape Pipe OHT to RO PIPE */}
-        <div style={{ position: "absolute", top: "1.09vw", left: "34.5vw", transform: "rotate(270deg)" }}>
+        <div style={{ position: "absolute", top: "2.6vw", left: "35.7vw", transform: "rotate(270deg)" }}>
           <ELpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
@@ -186,7 +186,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe OHT to RO plant */}
-        <div style={{ position: "absolute", top: "9vw", left: "58vw", zIndex: "-2"}}>
+        <div style={{ position: "absolute", top: "9vw", left: "58vw", }}>
           <LShapePipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
@@ -210,7 +210,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe RO to RO OHT */}
-        <div style={{ position: "absolute", top: "2.6vw", left: "50.7vw",  }}>
+        <div style={{ position: "absolute", top: "4vw", left: "52vw",  }}>
           <ROLpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeROtoROOHT"; iconRefs.push(ref); } }} />
         </div>
@@ -238,7 +238,7 @@ const SimulationCanvas = ({
 
         {/* Lpipe from ROOHT to RO3 */}
 
-        <div style={{ position: "absolute", top: "10.1vw", left: "52vw" }}>
+        <div style={{ position: "absolute", top: "10.1vw", left: "53.5vw" }}>
           <ROLpipe flow={flow9} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO2"; iconRefs.push(ref); } }} />
         </div>
