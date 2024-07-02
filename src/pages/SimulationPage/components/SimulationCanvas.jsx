@@ -6,6 +6,7 @@ import StraightPipe from './StraightPipe/Pipe';
 import LShapePipe from './LShapePipe/Pipe';
 import EShapePipe from './EShapePipe/Pipe';
 
+
 import roPlantImage from "../../images/ro_plant.png";
 import roCoolerImage from "../../images/ro_cooler.png";
 import Motor from "../../images/Motor.png";
@@ -18,6 +19,8 @@ import Washrooms from "../../images/Washrooms.png";
 import Sump from './Sump/Sump';
 import WaterTank from './WaterTank/Watertank';
 import Lshapepipeoht from './LShapePipe/PipeOHT'
+import ROLpipe from './LShapePipe/ROLpipe';
+import ELpipe from './LShapePipe/ELpipe';
 
 const SimulationCanvas = ({
   handleIconClick,
@@ -148,14 +151,14 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe from motor to oht */}
-        <div style={{ position: "absolute", top: "9.6vw", left: "26.5vw", transform: "rotate(90deg)", zIndex: "1" }}>
+        <div style={{ position: "absolute", top: "8.8vw", left: "34.5vw",  zIndex: "1" }}>
           <Lshapepipeoht flow={flow4} 
           ref={(ref) => { if (ref) { ref.id = "PipeMotorToOHT"; iconRefs.push(ref); } }} />
         </div>
 
         {/* L Shape Pipe OHT to RO PIPE */}
-        <div style={{ position: "absolute", top: "8.9vw", left: "40.4vw", }}>
-          <LShapePipe flow={flow5} 
+        <div style={{ position: "absolute", top: "2.6vw", left: "35.7vw", transform: "rotate(270deg)" }}>
+          <ELpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
 
@@ -183,7 +186,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe OHT to RO plant */}
-        <div style={{ position: "absolute", top: "8vw", left: "50.1vw", transform: "rotate(90deg)" }}>
+        <div style={{ position: "absolute", top: "9vw", left: "58vw", }}>
           <LShapePipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
@@ -207,8 +210,8 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe RO to RO OHT */}
-        <div style={{ position: "absolute", top: "8.8vw", left: "58.8vw", transform: "scaleX(-1) rotate(90deg)" }}>
-          <LShapePipe flow={flow5} 
+        <div style={{ position: "absolute", top: "4vw", left: "52vw",  }}>
+          <ROLpipe flow={flow5} 
           ref={(ref) => { if (ref) { ref.id = "PipeROtoROOHT"; iconRefs.push(ref); } }} />
         </div>
 
@@ -216,23 +219,27 @@ const SimulationCanvas = ({
         <div style={{ position: "absolute", top: "0vw", left: "52vw" }}>
         <div style={{ fontSize: "0.6vw" }}><b>RO Plant</b></div>
           <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
-            onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "ROPlant"; iconRefs.push(ref); } }} />
-            
+            onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "ROPlant"; iconRefs.push(ref); } }} /> 
         </div>
 
-        <div style={{ position: "absolute", top: "16vw", left: "52vw", transform: "rotate(90deg)" }}>
-          <LShapePipe flow={flow8} 
+        {/* Lpipe from ROOHT to RO1 */}
+
+        <div style={{ position: "absolute", top: "10.1vw", left: "52.8vw" }}>
+          <ELpipe flow={flow8} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO1"; iconRefs.push(ref); } }} />
         </div>
 
+       {/* Straight from ROOHT to RO2 */}
 
         <div style={{ position: "absolute", top: "16vw", left: "54vw", transform: "rotate(90deg)" }}>
           <StraightPipe
           ref={(ref) => { if (ref) { ref.id = "PipetoRO2"; iconRefs.push(ref); } }} />
         </div>
 
-        <div style={{ position: "absolute", top: "16vw", left: "60vw", transform: "scaleX(-1) rotate(90deg)" }}>
-          <LShapePipe flow={flow9} 
+        {/* Lpipe from ROOHT to RO3 */}
+
+        <div style={{ position: "absolute", top: "10.1vw", left: "53.5vw" }}>
+          <ROLpipe flow={flow9} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO2"; iconRefs.push(ref); } }} />
         </div>
 

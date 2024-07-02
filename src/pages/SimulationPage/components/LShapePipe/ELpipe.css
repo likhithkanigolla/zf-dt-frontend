@@ -1,0 +1,41 @@
+.el-svg-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.el-pipe-border {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2;
+}
+
+.el-pipe-water {
+    clip-path: url(#elPipeClipPath);
+}
+
+.el-initial-flow {
+    animation: initialFlow 2s linear forwards;
+}
+
+.el-wave-path {
+    animation: waveFlow 2s linear infinite;
+}
+
+@keyframes initialFlow {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes waveFlow {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}

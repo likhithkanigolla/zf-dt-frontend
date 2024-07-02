@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Pipe.css';
 
-function LongLShapePipe({ flow, onClick, text }) {
+function LShapePipeOHT({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,11 +15,11 @@ function LongLShapePipe({ flow, onClick, text }) {
     }, [flow]);
 
     return (
-        <div className="lshape-svg-container" onClick={onClick}>
+        <div className="lshapeoht-svg-container" onClick={onClick}>
             <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="lshapePipeClipPath">
-                        <polygon points="10 0, 10 90, 100 90, 100 100, 0 100, 0 0" />
+                        <polygon points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30" />
                     </clipPath>
                     <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
                         <stop offset="0%" stopColor="lightblue" />
@@ -29,7 +29,7 @@ function LongLShapePipe({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="10 0, 10 90, 100 90, 100 100, 0 100, 0 0"
+                    points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30"
                     className="lshape-pipe-border"
                 />
 
@@ -67,6 +67,37 @@ function LongLShapePipe({ flow, onClick, text }) {
                             />
                         </g>
 
+                        {/* Water falling animation */}
+                        <path
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-wateroht"
+                        />
+
+                        <path
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-water2oht"
+                        />
+
+                        <path
+                            d="M 20,8 Q 22,15 20,20 T 20,30 T 20,40 T 20,50"
+                            fill="none"
+                            stroke="rgb(37, 194, 226)"
+                            strokeWidth="4"
+                            className="falling-water3oht"
+                        />
+
+                        {/* Water bubbles */}
+                        <circle className="bubbleoht" cx="20" cy="50" r="1" />
+                        <circle className="bubbleoht" cx="24" cy="55" r="1.5" />
+                        <circle className="bubbleoht" cx="16" cy="48" r="2.5" />
+                        <circle className="bubbleoht" cx="21" cy="55" r="2.8" />
+                       
                       
                     </>
                 )}
@@ -76,4 +107,4 @@ function LongLShapePipe({ flow, onClick, text }) {
     );
 }
 
-export default LongLShapePipe;
+export default LShapePipeOHT;

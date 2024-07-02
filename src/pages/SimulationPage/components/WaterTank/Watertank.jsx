@@ -11,7 +11,7 @@ const WaterTank = forwardRef(({ waterInOHT, ohtCapacity, handleIconClick }, ref)
   }, [waterInOHT, ohtCapacity]);
 
   return (
-    <div className="water-tank-container" ref={ref} style={{ position: "absolute", top: "0.5vw", left: "28.5vw" }}>
+    <div className="water-tank-container" ref={ref} style={{ position: "absolute", top: "0.3vw", left: "28.2vw" }}>
       <div className={`water-pour ${isOverflowing ? 'overflowing' : ''}`}></div>
       <div className="water-tank" onClick={handleIconClick}>
         <div className="water-tank-cap"></div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './PipeOHT.css';
+import './ELpipe.css';
 
-function LShapePipe({ flow, onClick, text }) {
+function ELpipe({ flow, onClick, text }) {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -15,13 +15,13 @@ function LShapePipe({ flow, onClick, text }) {
     }, [flow]);
 
     return (
-        <div className="lshapeoht-svg-container" onClick={onClick}>
+        <div className="el-svg-container" onClick={onClick}>
             <svg viewBox="0 0 100 100">
                 <defs>
-                    <clipPath id="lshapePipeClipPath">
-                        <polygon points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30" />
+                    <clipPath id="elPipeClipPath">
+                        <polygon points="30 0, 30 10, 10 10, 10 87, 0 87, 0 60, 0 0" />
                     </clipPath>
-                    <linearGradient id="lshapeWaveGradient" x1="0%" y1="0%" x2="0%" y2="50%">
+                    <linearGradient id="elWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="lightblue" />
                         <stop offset="50%" stopColor="#008ECC" />
                         <stop offset="100%" stopColor="lightblue" />
@@ -29,52 +29,49 @@ function LShapePipe({ flow, onClick, text }) {
                 </defs>
 
                 <polygon
-                    points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30"
-                    className="lshape-pipe-border"
+                    points="30 0, 30 10, 10 10, 10 87, 0 87, 0 60, 0 0"
+                    className="el-pipe-border"
                 />
 
                 {flow && (
                     <>
-                        <g className="lshape-pipe-water">
+                        <g className="el-pipe-water">
                             {!initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
-                                    width="100"
-                                    height="10"
-                                    fill="lightblue"
-                                    className="lshape-initial-flow"
+                                    width="30"
+                                    height="87"
+                                    fill="white"
+                                    className="el-initial-flow"
                                 />
                             )}
                             {initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
-                                    width="100"
-                                    height="200"
+                                    width="30"
+                                    height="87"
                                     fill="lightblue"
-                                    className="lshape-initial-flow"
-                                    style={{ transform: 'translateY(0)' }}
+                                    className="el-initial-flow"
+                                    style={{ transform: 'translateY(-100%)' }}
                                 />
                             )}
                             <rect
                                 x="0"
                                 y="0"
-                                width="100"
-                                height="200"
-                                fill="url(#lshapeWaveGradient)"
-                                className="lshape-wave-path"
+                                width="30"
+                                height="87"
+                                fill="url(#elWaveGradient)"
+                                className="el-wave-path"
                             />
                         </g>
-
-                        
-                      
                     </>
                 )}
-                <text x="50" y="50" textAnchor="middle" dominantBaseline="middle">{text}</text>
+                <text x="15" y="40" textAnchor="middle" dominantBaseline="middle">{text}</text>
             </svg>
         </div>
     );
 }
 
-export default LShapePipe;
+export default ELpipe;
