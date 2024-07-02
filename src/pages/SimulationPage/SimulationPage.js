@@ -130,6 +130,40 @@ const SimulationPage = () => {
     saveAs(blob, 'simulation_log.txt');
   };
 
+  const handleSaveLog = () => {
+    const logData = log ;
+    handleStopSimulation();
+    try{
+      const response = fetch(`${config.backendAPI}/save_log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ log: logData }),
+      });
+      updateLog("Log data saved successfully.");
+      setLog(['']); // Clear the log after saving
+      // reset everything 
+      setWaterInSump(60000);
+      setWaterInOHT(0);
+      setWaterFlowAdmin(0);
+      setWaterFlowKRB(0);
+      setMotorOn(false);
+      setWaterInROFilter(100);
+      setAlertShown(false);
+      setWaterFlowStarted(false);
+      setWaterConsumed(0.00);
+      setFlowrate(10);
+      setPermeateFlowRate(1);
+      setPreviousPermeateFlowRate(0);
+      // toast.success("Log data saved successfully.");
+    } catch (error) {
+      console.error("Error saving log data:", error);
+      updateLog("Error saving log data.");
+      // toast.error("Error saving log data.");
+    }
+  };  
+
   const handleMultiplierChange = (e) => {
     setTimeMultiplier(parseFloat(e.target.value));
     updateLog(`Speed Multiplier changed to ${e.target.value}.`);
@@ -186,6 +220,19 @@ const SimulationPage = () => {
     } // ... (rest of your logic)
     return { x, y };
   };
+
+  const handleStopSimulation = () => {
+    handleStopWaterFlow();
+    setIsSimulationRunning(false);
+    setFlow1(false);
+    setFlow2(false);
+    setFlow3(false);
+    setFlow4(false);
+    setMotorOn(false);
+    updateLog("Simulation stopped.");
+    // toast.error("Simulation stopped!");
+  };
+
   
 
 
@@ -320,6 +367,8 @@ const SimulationPage = () => {
     alertShown,
     leakageRate
   ]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -867,6 +916,7 @@ const SimulationPage = () => {
             handleMultiplierChange={handleMultiplierChange}
             timeMultiplier={timeMultiplier}
             handleDownloadLog={handleDownloadLog}
+            handleSaveLog={handleSaveLog}
             log={log}
         />
 

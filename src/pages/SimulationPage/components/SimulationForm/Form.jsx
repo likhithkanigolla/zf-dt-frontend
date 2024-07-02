@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Form.css';
 import { colors } from '@mui/material';
 
-function SimulationForm({ inputValues, handleChange, handleStartSimulation, isSimulationRunning }) {
+function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning }) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
@@ -193,7 +193,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, isSi
                 <button onClick={handleStartSimulation} className="button-form" style={{background: isSimulationRunning? "blue":"rgb(15, 140, 17)"}}>
                     {isSimulationRunning ? "Pause" : "Start"}
                 </button>
-                <button className="button-form" style={{background:'rgb(231, 76, 60)'}}>
+                <button onClick={handleSaveLog} className="button-form" style={{background:'rgb(231, 76, 60)'}}>
                     End
                 </button>
             </div>
