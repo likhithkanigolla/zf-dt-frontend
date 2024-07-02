@@ -13,7 +13,7 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 5px 0;
-  height: 30vh;
+  height: 20vh;
   width: 18.5vw;
   overflow-y: scroll;
   overflow-x: hidden; /* Ensure horizontal scrollbar is hidden */

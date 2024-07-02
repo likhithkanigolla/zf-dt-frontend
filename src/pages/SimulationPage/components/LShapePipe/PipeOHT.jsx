@@ -36,7 +36,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
                 {flow && (
                     <>
                         <g className="lshape-pipe-water">
-                            {!initialFlowComplete && (
+                            {/* {!initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
@@ -45,7 +45,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
                                     fill="lightblue"
                                     className="lshape-initial-flow"
                                 />
-                            )}
+                            )} */}
                             {initialFlowComplete && (
                                 <rect
                                     x="0"

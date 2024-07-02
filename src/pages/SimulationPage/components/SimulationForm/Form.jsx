@@ -31,7 +31,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, isSi
     return (
         <div>
       <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
-           <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '73vh', color: 'white' }}>
+           <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '68vh', color: 'white' }}>
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>

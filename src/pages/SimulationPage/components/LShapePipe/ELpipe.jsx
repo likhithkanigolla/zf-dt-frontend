@@ -36,7 +36,7 @@ function ELpipe({ flow, onClick, text }) {
                 {flow && (
                     <>
                         <g className="el-pipe-water">
-                            {!initialFlowComplete && (
+                            {/* {!initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
@@ -45,7 +45,7 @@ function ELpipe({ flow, onClick, text }) {
                                     fill="white"
                                     className="el-initial-flow"
                                 />
-                            )}
+                            )} */}
                             {initialFlowComplete && (
                                 <rect
                                     x="0"
