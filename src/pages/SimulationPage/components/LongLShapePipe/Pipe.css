@@ -1,9 +1,9 @@
-.lshape-svg-container {
+.lshapeoht-svg-container {
     position: absolute;
     bottom: 10%;
-    right: 52%;
+    right: 1vw;
     width: 6vw;
-    height: 8vw;
+    height: 7vw;
     z-index: 2;
 }
 
@@ -44,22 +44,22 @@
     }
 }
 
-@keyframes lshapeFallingWater {
+@keyframes falling-wateroht {
     0% {
-        transform: translateY(0);
+        transform: translateY(10);
         opacity: 1;
     }
     50% {
-        transform: translateY(6vw) scaleX(1.2);
-        opacity: 0.8;
+        transform: translateY(6vw) ;
+        opacity: 2;
     }
     100% {
-        transform: translateY(11vw) scaleX(1);
+        transform: translateY(0vw);
         opacity: 0;
     }
 }
 
-@keyframes lshapeBubbleAnimation {
+@keyframes bubbleohtAnimation {
     0% {
         transform: translateY(0);
         opacity: 1;
@@ -78,4 +78,35 @@
 .lshape-wave-path {
     animation: lshapeWaveAnimation 2s infinite linear;
 }
+
+.falling-wateroht {
+    fill: rgb(37, 194, 226);
+    animation: fallingWater 300ms infinite ease-in;
+    transform-origin: bottom;
+   
+    height: 0vw;
+    z-index: 2;
+}
+
+.falling-water2oht {
+    fill: rgb(37, 194, 226);
+    animation: fallingWater 300ms infinite ease-in;
+    transform-origin: bottom;
+    margin-right: 20vw;
+    z-index: 2;
+}
+
+.falling-water3oht {
+    fill: rgb(37, 194, 226);
+    animation: fallingWater 1s infinite ease-in;
+    transform-origin: bottom;
+    z-index: 2;
+}
+
+.bubbleoht {
+    fill: rgb(15, 62, 155);
+    animation: bubbleAnimation 1s infinite ease-in-out;
+  
+}
+
 
