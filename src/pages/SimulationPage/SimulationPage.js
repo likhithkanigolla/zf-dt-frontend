@@ -33,8 +33,8 @@ const SimulationPage = () => {
   const [inputValues, setInputValues] = useState({
     Scenarios: "1",
     timeMultiplier: "1",
-    SandQuantity: "2000",
-    SoilQuantity: "3000",
+    SandQuantity: "0",
+    SoilQuantity: "0",
     voltage: "240",
     current: "11",
     power_factor: "0.11",
@@ -103,18 +103,19 @@ const SimulationPage = () => {
   const [leakageMarkers, setLeakageMarkers] = useState([]);
 
 
-  const datagraph = [
-    { time: '08:00:00', tds: 150, id: 1 },
-    { time: '09:00:00', tds: 230, id: 2 },
-    { time: '10:00:00', tds: 310, id: 1 },
-    { time: '11:00:00', tds: 450, id: 1 },
-    { time: '12:00:00', tds: 560, id: 1 },
-    { time: '13:00:00', tds: 670, id: 2 },
-    { time: '14:00:00', tds: 780, id: 2 },
-    { time: '15:00:00', tds: 890, id: 2 },
-    { time: '16:00:00', tds: 910, id: 1 },
-    { time: '17:00:00', tds: 1020, id: 2 },
-  ];
+  // const datagraph = [
+  //   { time: '08:00:00', tds: 150, id: 1 },
+  //   { time: '09:00:00', tds: 230, id: 2 },
+  //   { time: '10:00:00', tds: 310, id: 1 },
+  //   { time: '11:00:00', tds: 450, id: 1 },
+  //   { time: '12:00:00', tds: 560, id: 1 },
+  //   { time: '13:00:00', tds: 670, id: 2 },
+  //   { time: '14:00:00', tds: 780, id: 2 },
+  //   { time: '15:00:00', tds: 890, id: 2 },
+  //   { time: '16:00:00', tds: 910, id: 1 },
+  //   { time: '17:00:00', tds: 1020, id: 2 },
+  // ];
+  const [datagraph, setDatagraph] = useState([]);
 
 
   // Logging Code 
@@ -459,53 +460,42 @@ const SimulationPage = () => {
 
   const handleCalculate = async () => {
     try {
-      // const selectedNumberValue = parseInt(SoilQuantity);
-      // if (isNaN(selectedNumberValue) || selectedNumberValue < 1 || selectedNumberValue > 500) {
-      //   alert("Please select a number between 1 and 500.");
-      //   return;
-      // }
-    
-
-      // // Retrieve voltage value from the voltageData object
-      // const voltageValue = await fetchVoltageValue(selectedNumberValue);
-      // console.log("Voltage Value:", voltageValue);
-      // // Calculate initial TDS based on input values
-      // const initialTDS = calculateInitialTDS(inputValues);
-      
-
-      const soilQuantity = parseInt(SoilQuantity);
-      const sandQuantity = parseInt(SandQuantity);
+      const soilQuantity = parseInt(inputValues.SoilQuantity);
+      const sandQuantity = parseInt(inputValues.SandQuantity);
       let calculatedTDS;
+      // store the result.calculated_tds_value in this format in { time: currenttime', tds: result.calculated_tds_value, id: 1 } id 1 if only soil is there and id 2 if only sand is there id 3 if both are there
+    
 
       if (soilQuantity !== 0 && sandQuantity === 0) {
         const soilContaminationValue = await calculateSoilContamination(inputValues);
-        console.log("Soil Value:", soilContaminationValue)
+        console.log("Soil Value:", soilContaminationValue);
         calculatedTDS = soilContaminationValue;
-      } 
-      
-      else if (soilQuantity === 0 && sandQuantity !== 0) {
+        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: soilContaminationValue, id: 1 }]);
+        console.log("Data Graph:", datagraph);
+      } else if (soilQuantity === 0 && sandQuantity !== 0) {
         const sandContaminationValue = await calculateSandContamination(inputValues);
-        console.log("Sand Value:", sandContaminationValue)
+        console.log("Sand Value:", sandContaminationValue);
         calculatedTDS = sandContaminationValue;
-        
-      } 
-      
-      else {
+        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: sandContaminationValue, id: 2 }]);
+        console.log("Data Graph:", datagraph);
+      } else {
         const SandTDS = await calculateSandContamination(inputValues);
         const SoilTDS = await calculateSoilContamination(inputValues);
-
-        console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS)
+  
+        console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS);
         updateLog(`Soil TDS Value calculated: ${SoilTDS}`);
         updateLog(`Sand TDS Value calculated: ${SandTDS}`);
-
+  
         calculatedTDS = (SoilTDS + SandTDS) / 2;
+        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
+        console.log("Data Graph:", datagraph);
         updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
 
       const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5, inputValues.timeMultiplier)
       const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area, inputValues.timeMultiplier);
       setpreviousResult(result); // Store the current result in previousResult
-      setResult({
+        setResult({
         ...data_RO,
         calculated_tds_value: parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25
       });
