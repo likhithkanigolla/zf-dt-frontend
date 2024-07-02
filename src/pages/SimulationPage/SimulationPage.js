@@ -16,6 +16,7 @@ import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
+import HoverableIcon from "./components/HoverableIcon";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,6 +28,8 @@ const SimulationPage = () => {
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [timeMultiplier, setTimeMultiplier] = useState(1);
+  const [floatBox, setFloatBox] = useState({ isVisible: false, value: '' , nodeId: null});
+  const [hoverData, setHoverData] = useState({isVisible: false, data: '',x: 0,y: 0});
   const [inputValues, setInputValues] = useState({
     Scenarios: "1",
     timeMultiplier: "1",
@@ -72,11 +75,13 @@ const SimulationPage = () => {
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
+  const [waterFlowAdmin, setWaterFlowAdmin] = useState(0); // Initial water flow in Admin
+  const [waterFlowKRB, setWaterFlowKRB] = useState(0); // Initial water flow in KRB
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
   const [waterInROFilter, setWaterInROFilter] = useState(100); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
-  const [waterConsumed, setWaterConsumed] = useState(0);
+  const [waterConsumed, setWaterConsumed] = useState(0.00);
   const [flowrate, setFlowrate] = useState(10);
   const [PermeateFlowRate, setPermeateFlowRate] = useState(1);
   const [PreviousPermeateFlowRate, setPreviousPermeateFlowRate] = useState(0);
@@ -96,6 +101,21 @@ const SimulationPage = () => {
   const [leakageLocation, setLeakageLocation] = useState("");
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
+
+
+  const datagraph = [
+    { time: '08:00:00', tds: 150, id: 1 },
+    { time: '09:00:00', tds: 230, id: 2 },
+    { time: '10:00:00', tds: 310, id: 1 },
+    { time: '11:00:00', tds: 450, id: 1 },
+    { time: '12:00:00', tds: 560, id: 1 },
+    { time: '13:00:00', tds: 670, id: 2 },
+    { time: '14:00:00', tds: 780, id: 2 },
+    { time: '15:00:00', tds: 890, id: 2 },
+    { time: '16:00:00', tds: 910, id: 1 },
+    { time: '17:00:00', tds: 1020, id: 2 },
+  ];
+
 
   // Logging Code 
   const [log, setLog] = useState([]); 
@@ -132,7 +152,8 @@ const SimulationPage = () => {
     }
     setLeakageMarkers(newMarkers);
     setShowLeakageOptions(false);
-    toast.success("Leakages applied successfully!");
+    // toast.success("Leakages applied successfully!");
+
   };
   // Function to calculate leakage position (you'll need to implement the logic)
   const calculateLeakagePosition = (location, index, totalLeakages) => {
@@ -208,7 +229,7 @@ const SimulationPage = () => {
 
             if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
               updateLog("Motor turned off automatically since water tank is full.");
-              toast.error("Motor turned off automatically since water tank is full.");
+              // toast.error("Motor turned off automatically since water tank is full.");
               setMotorOn(false);
               setFlow2(false);
               setAlertShown(true); // Set alertShown to true to prevent repeated alerts
@@ -228,7 +249,9 @@ const SimulationPage = () => {
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
           console.log("Permeate_Flow_here:",PermeateFlowRate)
-          setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
+          setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)) - (flowrate*0.06), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
+          setWaterFlowAdmin((prev) => prev + (flowrate*0.02));
+          setWaterFlowKRB((prev) => prev + (flowrate*0.04));
           setWaterInROFilter(
             (prev) => prev + PermeateFlowRate 
           ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
@@ -237,7 +260,7 @@ const SimulationPage = () => {
         if (waterInOHT < PermeateFlowRate) {
           setFlow3(false);
           updateLog("Flow stopped from since OHT is empty.");
-          toast.error("Flow stopped from since OHT is empty.");
+          // toast.error("Flow stopped from since OHT is empty.");
         }
         else{
           setFlow3(true);
@@ -252,7 +275,7 @@ const SimulationPage = () => {
           setMotorOn(false);
           setFlow2(false);
           updateLog("Motor turned off automatically since sump is empty.");
-          toast.error("No water in sump.");
+          // toast.error("No water in sump.");
         }
       }, 1000); // Run every second
 
@@ -577,7 +600,7 @@ const SimulationPage = () => {
       setFlow2(true);
       setMotorOn(true);
       updateLog("Simulation started.")
-      toast.success("Simulation started!");
+      // toast.success("Simulation started!");
     } else {
       handleStopWaterFlow(); // Stop water flow
       setIsSimulationRunning(false);
@@ -587,7 +610,7 @@ const SimulationPage = () => {
       setFlow4(false);
       setMotorOn(false);
       updateLog("Simulation stopped.")
-      toast.error("Simulation stopped!");
+      // toast.error("Simulation stopped!");
     }
   };
 
@@ -601,7 +624,7 @@ const SimulationPage = () => {
     } else {
       // alert("Not enough water in RO Filter to consume.")
       setFlow4(false);
-      toast.error("Not enough water in RO Filter to consume.");
+      // toast.error("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
     }
   };
@@ -629,7 +652,7 @@ const SimulationPage = () => {
     // Call function to check if marker overlaps with any icon
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates);
     console.log("Marker is placed on:", iconId);
-    toast.success(`Marker is placed on: ${iconId}`);
+    // toast.success(`Marker is placed on: ${iconId}`);
     updateLog(`Marker is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
@@ -660,11 +683,11 @@ const SimulationPage = () => {
   
     if (!isPlaced) {
       // console.log("checkMarkerOverlap - Marker is not placed on any icon: ");
-      toast.error("Marker is not placed on any icon.");
+      // toast.error("Marker is not placed on any icon.");
     }
      else {
       // console.log(`checkMarkerOverlap - Marker is placed on: ${iconId}`);
-      toast.success(`Marker is placed on: ${iconId}`);
+      // toast.success(`Marker is placed on: ${iconId}`);
     }
   
     return { isPlaced, iconId };
@@ -699,7 +722,7 @@ const SimulationPage = () => {
       setCanvasItems([...canvasItems, newItem]);
       setItemToAdd(null); // Reset the itemToAdd since it has been added
       // console.log(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
-      toast.success(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
+      // toast.success(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
       updateLog(`Added item of type ${itemToAdd}`);
     }
   };
@@ -803,6 +826,38 @@ const SimulationPage = () => {
   };
 
 
+  const SimulatedValues = {
+    "WM-WL-KH98-00": (waterInSump / inputValues.sumpCapacity) * 100,
+    "WM-WL-KH00-00": (waterInOHT / inputValues.ohtCapacity) * 100,
+    "DM-KH98-60": 0,
+    "WM-WD-KH98-00": result? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10: 0,
+    "WM-WD-KH96-00": result? (result.calculated_tds_value+30) + Math.floor(Math.random() * 21) - 10 : 0,
+    "WM-WD-KH96-02": result? (result.final_tds_concentration_after_ro_tank)+Math.floor(Math.random() * 11) - 5: 0,
+    "WM-WD-KH95-00": result? (result.final_tds_concentration_after_ro_tank-5)+Math.floor(Math.random() * 11) - 5: 0,
+    "WM-WD-KH96-01": result? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10 : 0,
+    "WM-WD-KH03-00": result? (result.final_tds_concentration_after_ro_tank-5)+Math.floor(Math.random() * 11) - 5: 0,
+    "WM-WF-KB04-70": waterFlowAdmin,
+    "WM-WF-KB04-73": waterFlowKRB,
+    "WM-WF-KB04-71": ((3 * waterConsumed) / 4),
+    "WM-WF-KB04-72": ((waterConsumed) / 4),
+    "WM-WF-KH98-40": inputValues?inputValues.sumpCapacity:0,
+    "WM-WF-KH95-40": inputValues?inputValues.sumpCapacity-waterInSump:0, 
+  };
+
+  const displayValueOnClick = (id) => {
+    const value = SimulatedValues[id];
+    // Display the value in the floated text box with close button
+    // You can implement the UI logic here
+    console.log("value", value)
+    setFloatBox({ isVisible: true, value: value, nodeId: id });
+  };
+
+  // Ensure this function is correctly defined in your component
+  const handleFloatBoxClose = () => {
+    setFloatBox({ isVisible: false, value: '' });
+  };
+  
+
   return (
     <div>
       <ToastContainer />
@@ -846,6 +901,7 @@ const SimulationPage = () => {
                 width: '60vw',
                 height: '23vw',
                 border: '1px solid black',
+                background: "#ffffff"
               }}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
@@ -881,63 +937,78 @@ const SimulationPage = () => {
 
               {/* IoT Nodes  */}
               <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} />
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH98-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH98-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "4vw", left: "31.5vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} />
+              <div style={{ position: "absolute", top: "1vw", left: "30vw", textAlign: "center" }}>
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-00'].toFixed(2)}ppm`}/>
               </div>
 
               <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} />
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-01" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-01'].toFixed(2)}ppm`}/>
               </div>
 
               <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} />
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-02" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-02'].toFixed(2)}ppm`}/>
               </div>
 
               <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} />
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH95-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH95-00'].toFixed(2)}ppm`}/>
               </div>
 
               <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
-                <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} />
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} /> */}
+                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH03-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH03-00'].toFixed(2)}ppm`}/>
               </div>
 
               <div style={{ position: "absolute", top: "8vw", left: "13vw", textAlign: "center" }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} />
+                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
+                <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH98-00" data={`Water Level: ${SimulatedValues['WM-WL-KH98-00'].toFixed(2)}%`}/>
               </div>
 
               <div style={{ position: "absolute", top: "1vw", left: "32vw", textAlign: "center" }}>
-                <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH00-00')} />
+                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
+                <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH00-00" data={`Water Level: ${SimulatedValues['WM-WL-KH00-00'].toFixed(2)}%`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center" }}>
-                <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} />
+              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex:15}}>
+                {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
+                <HoverableIcon src={MotorNode}  alt="MotorNode" aId="DM-KH98-60" dataId="DM-KH98-60" data={`Motor Status: ${motorOn ? "ON" : "OFF"}`}/>
               </div>
 
               <div style={{ position: "absolute", top: "7vw", left: "7vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH98-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH98-40']}L`} rotation={90}/>
               </div>
 
               <div style={{ position: "absolute", top: "7.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH95-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH95-40'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
               <div style={{ position: "absolute", top: "7.3vw", left: "39.6vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-70" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-70'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
               <div style={{ position: "absolute", top: "7.3vw", left: "45.3vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-73" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-73'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
               <div style={{ position: "absolute", top: "11vw", left: "52.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-71" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-71'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
               <div style={{ position: "absolute", top: "11vw", left: "57.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} />
+                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
+                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-72" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-72'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
             {
@@ -985,7 +1056,22 @@ const SimulationPage = () => {
               </div>
             )
             }
-
+            {
+              floatBox.isVisible && (
+                <div className="float-box">
+                  <h2 className="float-box-heading">Node ID: {floatBox.nodeId}</h2>
+                  <span className="float-box-value">{floatBox.value}</span>
+                  <button className="float-box-close" onClick={handleFloatBoxClose}>✕</button>
+                </div>
+              )
+            }
+            {
+                hoverData.isVisible && (
+                  <div style={{ position: 'absolute', top: hoverData.y, left: hoverData.x, zIndex: 100, backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
+                    {hoverData.data}
+                  </div>
+                )
+            }
             </div>
           <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog} className={"consoleContainer"} />
           </div>
@@ -1030,7 +1116,7 @@ const SimulationPage = () => {
 
 
         {/* Right Section */}
-        <ResultContainer result={result} previousResult={previousResult} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate} PreviousPermeateFlowRate={PreviousPermeateFlowRate}/>
+        <ResultContainer result={result} previousResult={previousResult} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate} PreviousPermeateFlowRate={PreviousPermeateFlowRate} datagraph={datagraph}/>
         
       </div>
     </div>
