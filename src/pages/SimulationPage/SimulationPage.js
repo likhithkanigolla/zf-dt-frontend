@@ -920,7 +920,7 @@ const SimulationPage = () => {
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} />
               </div>
 
-              <div style={{ position: "absolute", top: "7.5vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <div style={{ position: "absolute", top: "7vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
                 <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} />
               </div>
 
