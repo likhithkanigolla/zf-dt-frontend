@@ -63,7 +63,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
               <ResultTable
                 key={index}
                 title={title}
-                value={value}
+                value={value.toFixed(2) ?? "N/A"}
                 // previousValue={result?.previous_sensor_values?.[title] ?? 0}
               />
             ))}
