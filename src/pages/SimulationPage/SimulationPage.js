@@ -986,7 +986,7 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH98-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH98-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "30vw", textAlign: "center" }}>
+              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex:10 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-00'].toFixed(2)}ppm`}/>
               </div>

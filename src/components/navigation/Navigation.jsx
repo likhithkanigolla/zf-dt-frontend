@@ -219,12 +219,12 @@ const NavigationBar = ({ title }) => {
 
   return (
     <nav className="navbar">
-      <Link to="/">
+      <Link to="/dt_waternetwork/">
         <div className="navbar__logo">
           <img src={IITHLOGO} alt="IIITH Logo" />
         </div>
       </Link>
-      <Link to="/">
+      <Link to="/dt_waternetwork/">
         <div className="navbar__logo">
           <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
         </div>
@@ -360,7 +360,7 @@ const NavigationBar = ({ title }) => {
         </DialogActions>
       </Dialog>
 
-      <Link to="/">
+      <Link to="/dt_waternetwork/">
         <div className="navbar__logo">
           <img src={ZFLOGO} alt="ZF Logo" />
         </div>

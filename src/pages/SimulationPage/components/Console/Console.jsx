@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaDownload, FaSave } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
+import { GrPowerReset } from "react-icons/gr";
 import './Console.css';
 import config from '../../../../config';
 
@@ -42,7 +43,7 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
         <h3 className='heading-n'>Console</h3>
         <button onClick={handleDownloadLog} className='button-c'>< FaDownload className='icon' /></button>
         {/* <button onClick={() => handleSaveLog(log)} className='button-c'><FaSave className='icon' /></button> */}
-        <button onClick={handleClearLog} className='button-c'><IoIosCloseCircle className='icon' /></button>
+        <button onClick={handleClearLog} className='button-c'><GrPowerReset className='icon' /></button>
       </div>
       <div className='log-container' ref={listRef}>
         {log.map((log, index) => (
