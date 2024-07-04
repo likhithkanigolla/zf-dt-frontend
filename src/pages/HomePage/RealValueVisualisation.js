@@ -232,10 +232,6 @@ const RealValueVisualisation = () => {
 
 
   const NodeActuation = async (nodeName, status) => {
-    // Update the state based on the current state
-    // Add nodeID in params if needed 
-    // setIsOn((prevState) => ({ ...prevState, [nodeID]: !prevState[nodeID] }));
-    // console.log(isOn)
   
     // Determine the status based on the updated state
     const node_status = !isOn[nodeName] ? 'on' : 'off';
@@ -520,44 +516,6 @@ const RealValueVisualisation = () => {
     }
   };
 
-  // function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam }) {
-  //   const iconStyle = {
-  //     width: "2vw",
-  //     height: "2vw",
-  //     transition: "transform 0.3s, filter 0.3s", // Smooth transition for transform and filter
-  //     zIndex:10,
-  //     cursor: "pointer" // Change cursor to indicate it's clickable
-  //   };
-  
-  //   const handleMouseOver = (e) => {
-  //     e.currentTarget.style.transform = "scale(1.2)"; // Zoom effect
-  //     e.currentTarget.style.filter = "brightness(0.5)"; // Change color effect
-  //     if (isOn[fetchNodeDataParam]) {
-  //       e.currentTarget.style.backgroundColor = "green"; // Change background color to green if node is on
-  //     } else {
-  //       e.currentTarget.style.backgroundColor = "red"; // Change background color to red if node is off
-  //     }
-  //   };
-  
-  //   const handleMouseOut = (e) => {
-  //     e.currentTarget.style.transform = "scale(1)"; // Return to normal size
-  //     e.currentTarget.style.filter = "none"; // Remove color change effect
-  //     e.currentTarget.style.backgroundColor = "transparent"; // Reset background color
-  //   };
-  
-  //   return (
-  //     <div style={{ position: "absolute"}}>
-  //     <img
-  //       src={src}
-  //       alt={alt}
-  //       style={iconStyle}
-  //       onClick={() => onClick(fetchNodeDataParam)}
-  //       onMouseOver={handleMouseOver}
-  //       onMouseOut={handleMouseOut}
-  //     />
-  //   </div>
-  //   );
-  // }
   
 
   function InteractiveIcon({ src, alt, onClick, fetchNodeDataParam,rotation }) {
