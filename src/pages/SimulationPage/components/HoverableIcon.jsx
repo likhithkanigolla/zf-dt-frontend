@@ -20,6 +20,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation }) => {
           width: '2vw',
           height: '2vw',
           borderRadius: '50%', // Makes the image circular (adjust as needed)
+          zIndex:15
         }}
         onClick={onClick}
       />

@@ -18,6 +18,8 @@ import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png"; 
 import HoverableIcon from "./components/HoverableIcon";
 
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -66,10 +68,10 @@ const SimulationPage = () => {
   const [flow4, setFlow4] = useState(false);
 
   const [sensorValues, setSensorValues] = useState({
-    WaterQuality: 0,
-    WaterFlow: 0,
-    WaterLevel: 0,
-    MotorFlow:  0
+    waterqualitysensor: 0,
+    waterquantitysensor: 0,
+    waterlevelsensor: 0,
+    motorsensor:  0
   });
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
@@ -102,24 +104,8 @@ const SimulationPage = () => {
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
 
-
-  // const datagraph = [
-  //   { time: '08:00:00', tds: 150, id: 1 },
-  //   { time: '09:00:00', tds: 230, id: 2 },
-  //   { time: '10:00:00', tds: 310, id: 1 },
-  //   { time: '11:00:00', tds: 450, id: 1 },
-  //   { time: '12:00:00', tds: 560, id: 1 },
-  //   { time: '13:00:00', tds: 670, id: 2 },
-  //   { time: '14:00:00', tds: 780, id: 2 },
-  //   { time: '15:00:00', tds: 890, id: 2 },
-  //   { time: '16:00:00', tds: 910, id: 1 },
-  //   { time: '17:00:00', tds: 1020, id: 2 },
-  // ];
   const [datagraph, setDatagraph] = useState([]);
   const [flowgraph, setFlowgraph] = useState([]);
-
-
-  // Logging Code 
   const [log, setLog] = useState([]); 
   const updateLog = (message) => {
     setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
@@ -191,6 +177,7 @@ const SimulationPage = () => {
     // toast.success("Leakages applied successfully!");
 
   };
+
   // Function to calculate leakage position (you'll need to implement the logic)
   const calculateLeakagePosition = (location, index, totalLeakages) => {
     let x, y;
@@ -233,13 +220,10 @@ const SimulationPage = () => {
     // toast.error("Simulation stopped!");
   };
 
-  
-
-
   useEffect(() => {
     let intervalId;
     let intervalwaterConsume;
-    console.log("iconRefs",iconRefs);
+    // console.log("iconRefs",iconRefs);
     if (waterFlowStarted) {
       intervalId = setInterval(() => {
         if (motorOn) {
@@ -349,7 +333,7 @@ const SimulationPage = () => {
           y: rect.top,
         };
         // These coordinates are used to know the postions of the SUMP, OHT etc 
-        console.log(`Icon ${iconId} coordinates:`, iconCoordinates);
+        // console.log(`Icon ${iconId} coordinates:`, iconCoordinates);
         // You can now use iconCoordinates as needed
       });
     };
@@ -624,14 +608,6 @@ const SimulationPage = () => {
       toast.info("Motor turned off!");
     }
   };
-  // const handleMotorToggle = () => {
-  //   if (!motorOn) {
-  //     setAlertShown(false); // Reset alertShown state when motor is manually turned off
-  //   }
-  //   setMotorOn((prev) => !prev); // Toggle motor state
-  //   updateLog(`Motor turned ${motorOn ? "off" : "on"}.`);
-  //   setFlow2((flow2) => !flow2);
-  // };
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
@@ -658,7 +634,6 @@ const SimulationPage = () => {
     }
   };
 
-
   const handleConsumeWater = () => {
     // Consumption is 10% of the filteration. 
     if (waterInROFilter >= (PermeateFlowRate/10)) {
@@ -674,35 +649,34 @@ const SimulationPage = () => {
   };
 
   const [canvasItems, setCanvasItems] = useState([]);
-
-  // This state is used to track the type of item that we need to add to the canvas
   const [itemToAdd, setItemToAdd] = useState(null);
   
   const handleDragStart = (event, index) => {
-    // Set the dataTransfer object with the item's index if we are moving an existing item
     if (index !== undefined) {
       event.dataTransfer.setData('index', index);
+      console.log(`Dragging item at index: ${index}`);
     }
-    
-    // Capture the coordinates of the draggable marker
+
     const markerCoordinates = {
       x: event.clientX,
       y: event.clientY,
     };
-    
-    // Log the marker coordinates
-    // console.log("Marker coordinates during drag start:", markerCoordinates);
-    
-    // Call function to check if marker overlaps with any icon
-    const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates);
-    console.log("Marker is placed on:", iconId);
-    // toast.success(`Marker is placed on: ${iconId}`);
+
+    const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates, index);
+    console.log('Marker is placed on:', iconId);
     updateLog(`Marker is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
+
+  const handleDeleteItem = (index) => {
+    const updatedItems = [...canvasItems];
+    updatedItems.splice(index, 1);
+    setCanvasItems(updatedItems);
+    updateLog(`Deleted item at index ${index}.`);
+    // toast.error(`Deleted item at index ${index}.`);
+  };
   
-  
-  const checkMarkerOverlap = (markerCoordinates) => {
+  const checkMarkerOverlap = (markerCoordinates, index) => {
     let isPlaced = false;
     let iconId = null;
   
@@ -715,28 +689,26 @@ const SimulationPage = () => {
         markerCoordinates.y >= rect.top &&
         markerCoordinates.y <= rect.top + rect.height
       ) {
-        iconId = ref.id; // Update iconId if the marker overlaps with the icon
-        // console.log(`Marker is placed on ${iconId}`);
-        // if (iconId === 'KRBSump') {
-        //   // console.log("Marker is Placed on KRB Sump");
-        //   toast.success("Marker is Placed on KRB Sump");
-        // }
+        iconId = ref.id; 
         isPlaced = true;
       }
     });
-  
+
+    if(iconId === 'dustbin'){
+      console.log("Dustbin is clicked");
+      handleDeleteItem(index);
+    }
+
     if (!isPlaced) {
-      // console.log("checkMarkerOverlap - Marker is not placed on any icon: ");
       // toast.error("Marker is not placed on any icon.");
     }
      else {
-      // console.log(`checkMarkerOverlap - Marker is placed on: ${iconId}`);
+
       // toast.success(`Marker is placed on: ${iconId}`);
     }
   
     return { isPlaced, iconId };
   };
-
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -744,31 +716,38 @@ const SimulationPage = () => {
     const index = event.dataTransfer.getData('index');
     const x = event.clientX - canvasRect.left;
     const y = event.clientY - canvasRect.top;
-    
+    console.log(`Dropped at x dustbin: ${x}, y: ${y}`);
 
-    if (index) {
-      // We're dragging an existing item, update its position
-      const updatedItems = [...canvasItems];
-      updatedItems[index] = {
-        ...updatedItems[index],
-        x: x,
-        y: y
-      };
-      setCanvasItems(updatedItems);
-      console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
-    } else if (itemToAdd) {
-      // We're adding a new item, add it to the canvasItems state with the dropped position
-      const newItem = {
-        type: itemToAdd,
-        x: x,
-        y: y
-      };
-      setCanvasItems([...canvasItems, newItem]);
-      setItemToAdd(null); // Reset the itemToAdd since it has been added
-      // console.log(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
-      // toast.success(`Added item of type ${itemToAdd} at x: ${x}, y: ${y}`);
-      updateLog(`Added item of type ${itemToAdd}`);
-    }
+
+      console.log(`Dropped at x: ${x}, y: ${y}`);
+      if (index) {
+        const updatedItems = [...canvasItems];
+        updatedItems[index] = {
+          ...updatedItems[index],
+          x: x,
+          y: y,
+        };
+        setCanvasItems(updatedItems);
+        console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
+      } else if (itemToAdd) {
+        const newItem = {
+          type: itemToAdd,
+          x: x,
+          y: y,
+        };
+        setCanvasItems([...canvasItems, newItem]);
+        setItemToAdd(null);
+        updateLog(`Added item of type ${itemToAdd}`);
+      }
+      else {  
+        console.log("Dropped at x: ", x, "y: ", y);
+      }
+    
+  };
+  
+
+  const handleDeleteAllItems = (event) => {
+    setCanvasItems([]); 
   };
 
   const handleDragOver = (event) => {
@@ -792,7 +771,7 @@ const SimulationPage = () => {
       y: clientY,
     };
     
-    const { isPlaced, iconId } = checkMarkerOverlap(coordinates);
+    const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
     updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
@@ -802,39 +781,39 @@ const SimulationPage = () => {
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterLevel: (waterInSump/inputValues.sumpCapacity)*100,
+        waterlevelsensor: (waterInSump/inputValues.sumpCapacity)*100,
       }));
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterLevel: (waterInOHT/inputValues.ohtCapacity)*100,
+        waterlevelsensor: (waterInOHT/inputValues.ohtCapacity)*100,
       }));
     }
     if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterLevel: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
+        waterlevelsensor: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
     if(iconId=='KRBSump' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterQuality: caltds,
+        waterqualitysensor: caltds,
       }));
 
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterQuality: caltds + Math.floor(Math.random() * 21) - 10,
+        waterqualitysensor: caltds + Math.floor(Math.random() * 21) - 10,
       }));
 
     }
     if(iconId=='KRBROOHT' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        WaterQuality: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
+        waterqualitysensor: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
       }));
     }
     
@@ -923,34 +902,10 @@ const SimulationPage = () => {
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
           {/* Toolbar */}
-          <Toolbar 
-              handleToolbarItemClick={handleToolbarItemClick} 
-              handleLeakageIconClick={handleLeakageIconClick} 
-        />
-        {/* <div><br></br></div> */}
-          <LeakageOptions
-          showLeakageOptions={showLeakageOptions}
-          numLeakages={numLeakages}
-          setNumLeakages={setNumLeakages}
-          leakageLocation={leakageLocation}
-          setLeakageLocation={setLeakageLocation}
-          leakageRate={leakageRate}
-          setLeakageRate={setLeakageRate}
-          handleApplyLeakages={handleApplyLeakages}
-          />
-
+          <Toolbar handleToolbarItemClick={handleToolbarItemClick} handleLeakageIconClick={handleLeakageIconClick} />
+          <LeakageOptions showLeakageOptions={showLeakageOptions} numLeakages={numLeakages} setNumLeakages={setNumLeakages} leakageLocation={leakageLocation} setLeakageLocation={setLeakageLocation} leakageRate={leakageRate} setLeakageRate={setLeakageRate} handleApplyLeakages={handleApplyLeakages}/>
           <div className="demo-page">
-            <div
-              style={{
-                position: 'relative',
-                width: '60vw',
-                height: '23vw',
-                border: '1px solid black',
-                background: "#ffffff"
-              }}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
+            <div style={{ position: 'relative', width: '60vw', height: '23vw', border: '1px solid black', background: "#ffffff"}} onDrop={handleDrop} onDragOver={handleDragOver}>
               <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
               <SimulationCanvas 
                   handleIconClick={handleIconClick}
@@ -986,12 +941,12 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH98-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH98-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex:10 }}>
+              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex: 3 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center", zIndex: "3" }}>
+              <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center", zIndex: 3 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-01" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-01'].toFixed(2)}ppm`}/>
               </div>
@@ -1061,7 +1016,7 @@ const SimulationPage = () => {
                 <div
                   key={index}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
                   style={{
                     position: 'absolute',
                     left: `${item.x}px`,
@@ -1072,14 +1027,39 @@ const SimulationPage = () => {
                   }}
                   onClick={(e) => handleMarkerClick(item, index, e)}
                 >
-                  <img
+                  {/* <img
                     src={getImageForType(item.type)}
                     alt={item.type}
                     style={{ maxWidth: '2vw', maxHeight: '2vw', filter:"grayscale(200%)", zIndex: 10}}
-                  />
+                  /> */}
+                  <HoverableIcon src={getImageForType(item.type)} alt={item.type} dataId="VirtualNode" data={sensorValues[item.type]}/>
                 </div>
               ))
             }
+
+        {/* Dustbin Icon for Deleting Items */}
+        <div
+          id="dustbin"
+          onDragOver={(e) => e.preventDefault()}
+          onClick={handleDeleteAllItems}
+          style={{
+            position: 'absolute',
+            bottom: '1vw',
+            right: '1vw',
+            width: '2vw',
+            height: '2vw',
+            cursor: 'pointer',
+            zIndex: 10,
+            backgroundColor: 'red',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 0
+          }}
+          ref={(ref) => { if (ref) { ref.id = "dustbin"; iconRefs.push(ref); } }}
+        >
+          <DeleteIcon style={{ color: 'white', fontSize: '40px' }} />
+        </div>
 
             {
             itemToAdd && (
@@ -1093,22 +1073,15 @@ const SimulationPage = () => {
                   cursor: 'move',
                 }}
               >
-                <img
+                {/* <img
                   src={getImageForType(itemToAdd)}
                   alt={itemToAdd}
                   style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
-                />
+                /> */}
+                <HoverableIcon src={getImageForType(itemToAdd)} alt={itemToAdd} dataId="WM-WF-KB04-72" data={`Virtual Node`}/>
+
               </div>
             )
-            }
-            {
-              floatBox.isVisible && (
-                <div className="float-box">
-                  <h2 className="float-box-heading">Node ID: {floatBox.nodeId}</h2>
-                  <span className="float-box-value">{floatBox.value}</span>
-                  <button className="float-box-close" onClick={handleFloatBoxClose}>✕</button>
-                </div>
-              )
             }
             {
                 hoverData.isVisible && (
@@ -1127,14 +1100,7 @@ const SimulationPage = () => {
 
           {/* Leakage Markers */}
           {leakageMarkers.map((marker, index) => (
-            <div 
-              key={index}
-              style={{
-                position: 'absolute',
-                left: `${marker.x}px`,
-                top: `${marker.y}px`,
-                cursor: 'pointer',
-              }}
+            <div key={index} style={{position: 'absolute', left: `${marker.x}px`, top: `${marker.y}px`, cursor: 'pointer', }}
             onClick={() => { 
               // Handle clicking on a leakage marker (e.g., show information about the leakage)
               console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);

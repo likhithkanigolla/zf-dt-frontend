@@ -59,14 +59,14 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
               value={result?.time_estimation_hours.toFixed(2) ?? "N/A"}
               previousValue={previousResult?.time_estimation_hours ?? 0}
             />
-            {Object.entries(sensorValues).map(([title, value], index) => (
+            {/* {Object.entries(sensorValues).map(([title, value], index) => (
               <ResultTable
                 key={index}
                 title={title}
                 value={value.toFixed(2) ?? "N/A"}
                 // previousValue={result?.previous_sensor_values?.[title] ?? 0}
               />
-            ))}
+            ))} */}
             {data.map((item, index) => (
               <ResultTable
                 key={index}
