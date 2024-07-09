@@ -169,6 +169,27 @@ const RealValueVisualisation = () => {
       return { error: "Failed to fetch data" }; // Update accordingly
     }
   };
+
+  const checkTokenValidity = async (token) => {
+    try {
+      const response = await fetch(`${config.backendAPI}/introspect`, {
+        method: 'POST', // Specify the method
+        headers: {
+          'Content-Type': 'application/json', // Set the content type
+        },
+        body: JSON.stringify({ token }), // Pass the token in the body
+      });
+      if (!response.ok) {
+        // Token is not valid, ask user to login again
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
   
   useEffect(() => {
     setFlow2(true);
@@ -218,28 +239,7 @@ const RealValueVisualisation = () => {
     const nodeIds = Object.keys(isOn);
     updateNodeStatus(nodeIds)
     const token = localStorage.getItem('token');
-    console.log("token:", token)
-    const checkTokenValidity = async (token) => {
-      try {
-        const response = await fetch(`${config.backendAPI}/introspect`, {
-          method: 'POST', // Specify the method
-          headers: {
-            'Content-Type': 'application/json', // Set the content type
-          },
-          body: JSON.stringify({ token }), // Pass the token in the body
-        });
-        if (!response.ok) {
-          // Token is not valid, ask user to login again
-          localStorage.removeItem('token');
-          setIsAuthenticated(false);
-        } else {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    };
-    
+    console.log("token:", token)    
     if (token) {
       checkTokenValidity(token); // Pass the token to the function
     } else {
