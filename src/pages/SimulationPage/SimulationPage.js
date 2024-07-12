@@ -1016,7 +1016,8 @@ const SimulationPage = () => {
                 <div
                   key={index}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
+                  // onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
+                  onDragStart={(e) => handleDragStart(e, index)}
                   style={{
                     position: 'absolute',
                     left: `${item.x}px`,
@@ -1025,7 +1026,7 @@ const SimulationPage = () => {
                     border: isMarkerPlaced ? '2px solid green' : 'none',
                     zIndex:5
                   }}
-                  onClick={(e) => handleMarkerClick(item, index, e)}
+                  // onClick={(e) => handleMarkerClick(item, index, e)}
                 >
                   {/* <img
                     src={getImageForType(item.type)}
@@ -1063,23 +1064,9 @@ const SimulationPage = () => {
 
             {
             itemToAdd && (
-              <div
-                draggable
-                onDragStart={(e) => handleDragStart(e)}
-                style={{
-                  position: 'absolute',
-                  left: '20px', // Default x position
-                  top: '20px', // Default y position
-                  cursor: 'move',
-                }}
-              >
-                {/* <img
-                  src={getImageForType(itemToAdd)}
-                  alt={itemToAdd}
-                  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}
-                /> */}
-                <HoverableIcon src={getImageForType(itemToAdd)} alt={itemToAdd} dataId="WM-WF-KB04-72" data={`Virtual Node`}/>
-
+              <div draggable onDragStart={(e) => handleDragStart(e)} style={{position: 'absolute', left: '20px',top: '20px',cursor: 'move',}}>
+                {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
+                <HoverableIcon src={getImageForType(itemToAdd)} alt={itemToAdd} dataId="Virtual Node" data={`NULL`}/>
               </div>
             )
             }
