@@ -242,18 +242,15 @@ const SimulationPage = () => {
               4 // Maximum leakage rate
             );
             updateLog(`Total Leakage Rate: ${totalLeakageRate}`);
-            console.log("Total Leakage Rate:", totalLeakageRate); // Check the calculated value
         
         // Calculate the effective flow rate into OHT
         updateLog(`Motor Flow Rate: ${flowrate}`);
         const effectiveFlowRate = Math.max(flowrate - totalLeakageRate + (Math.random() - 0.5), 1); 
   
         updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
-        // console.log("Effective Flow Rate:", effectiveFlowRate); // Check the flow rate
 
         const prevWaterInOHT = waterInOHT; // Get previous water level
         setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
-        console.log("Water in OHT:", waterInOHT, "(Previous:", prevWaterInOHT, ")"); // Verify state update 
         }
         
           if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
@@ -272,18 +269,15 @@ const SimulationPage = () => {
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-        // console.log("Permate_Flow_here:",PermeateFlowRate)
         const temp_permeate = PermeateFlowRate+ (Math.random() - 0.5);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
         setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
-        console.log("Flow Graph:", flowgraph);
         setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
-          console.log("Permeate_Flow_here:",PermeateFlowRate)
           setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)) - (flowrate*0.06), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
           setWaterFlowAdmin((prev) => prev + (flowrate*0.02));
           setWaterFlowKRB((prev) => prev + (flowrate*0.04));
@@ -507,13 +501,11 @@ const SimulationPage = () => {
         console.log("Soil Value:", soilContaminationValue);
         calculatedTDS = soilContaminationValue;
         setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: soilContaminationValue, id: 1 }]);
-        console.log("Data Graph:", datagraph);
       } else if (soilQuantity === 0 && sandQuantity !== 0) {
         const sandContaminationValue = await calculateSandContamination(inputValues);
         console.log("Sand Value:", sandContaminationValue);
         calculatedTDS = sandContaminationValue;
         setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: sandContaminationValue, id: 2 }]);
-        console.log("Data Graph:", datagraph);
       } else {
         const SandTDS = await calculateSandContamination(inputValues);
         const SoilTDS = await calculateSoilContamination(inputValues);
@@ -524,7 +516,6 @@ const SimulationPage = () => {
   
         calculatedTDS = (SoilTDS + SandTDS) / 2;
         setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
-        console.log("Data Graph:", datagraph);
         updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
 
@@ -536,14 +527,10 @@ const SimulationPage = () => {
         calculated_tds_value: parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25
       });
 
-      // console.log("Result PR:", data_RO.permeate_flow_rate);
       setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
       setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
-      console.log("Flow Graph:", flowgraph);
       setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate)* timeMultiplier);
       setFlowrate(parseFloat(flow.flowrate_per_min)* timeMultiplier);
-      console.log("Flow Rate:", flowrate);
-      console.log("Permeate Flow Rate:", PermeateFlowRate);
 
       updateLog(`Motor flow rate calculated: ${flow.flowrate_per_min}`);
       updateLog(`RO filtration data: ${JSON.stringify(data_RO)}`);
@@ -654,7 +641,6 @@ const SimulationPage = () => {
   const handleDragStart = (event, index) => {
     if (index !== undefined) {
       event.dataTransfer.setData('index', index);
-      console.log(`Dragging item at index: ${index}`);
     }
 
     const markerCoordinates = {
@@ -695,7 +681,6 @@ const SimulationPage = () => {
     });
 
     if(iconId === 'dustbin'){
-      console.log("Dustbin is clicked");
       handleDeleteItem(index);
     }
 
@@ -716,10 +701,7 @@ const SimulationPage = () => {
     const index = event.dataTransfer.getData('index');
     const x = event.clientX - canvasRect.left;
     const y = event.clientY - canvasRect.top;
-    console.log(`Dropped at x dustbin: ${x}, y: ${y}`);
-
-
-      console.log(`Dropped at x: ${x}, y: ${y}`);
+    
       if (index) {
         const updatedItems = [...canvasItems];
         updatedItems[index] = {
@@ -760,8 +742,8 @@ const SimulationPage = () => {
       x: event.clientX,
       y: event.clientY,
     };
-    console.log(refId, "coordinates:", iconCoordinates);
-    console.log("Icon clicked:", refId);
+    // console.log(refId, "coordinates:", iconCoordinates);
+    // console.log("Icon clicked:", refId);
   };
 
   const handleMarkerClick = async (item, index, event) => {
@@ -772,11 +754,9 @@ const SimulationPage = () => {
     };
     
     const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
-    console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
     updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
     const caltds= await handleCalculate()
-    console.log("Calculated TDS:",caltds)
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
@@ -871,7 +851,6 @@ const SimulationPage = () => {
     const value = SimulatedValues[id];
     // Display the value in the floated text box with close button
     // You can implement the UI logic here
-    console.log("value", value)
     setFloatBox({ isVisible: true, value: value, nodeId: id });
   };
 
@@ -1090,7 +1069,6 @@ const SimulationPage = () => {
             <div key={index} style={{position: 'absolute', left: `${marker.x}px`, top: `${marker.y}px`, cursor: 'pointer', }}
             onClick={() => { 
               // Handle clicking on a leakage marker (e.g., show information about the leakage)
-              console.log(`Clicked leakage marker at x: ${marker.x}, y: ${marker.y}, rate: ${marker.rate} L/s`);
             }}
             >
             <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }

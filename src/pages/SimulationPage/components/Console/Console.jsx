@@ -11,7 +11,6 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
 
   const handleSaveLog = async (logMessages) => {
     const logString = logMessages.join('\n'); // Convert array to string
-    console.log('Saving log:', logString);
     try {
       const response = await fetch(`${config.backendAPI}/save_log`, {
         method: 'POST',

@@ -1,4 +1,4 @@
-import React, { useRef,useState, useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 
 import "./ActuationPage.css";
 
@@ -71,9 +71,9 @@ const ActuationPage = () => {
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
   const [waterInOHT, setWaterInOHT] = useState(0); // Initial water level in OHT
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
-  const [waterInROFilter, setWaterInROFilter] = useState(465.32); // Initial water level in RO Filter
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [flowrate, setFlowrate] = useState(10);
+  const [waterInROFilter, setWaterInROFilter] = useState(465.32); // Initial water level in RO Filter
   // All measurements are in m(meters)
   const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.08});
   const [ohtMeasurements, setOhtMeasurements] = useState({length: 11.28,breadth: 8.82, height: 1.15});
@@ -115,7 +115,6 @@ const ActuationPage = () => {
       <div>
         <h1>All Nodes</h1>
         {Object.keys(isOn).map((node_id) => {
-          //   console.log("Here: ", node_id)
           return (
             <p key={node_id}>
               {node_id}: {isOn[node_id].toString()}{" "}
@@ -154,9 +153,8 @@ const ActuationPage = () => {
   
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
-      console.log(timeDifference, parseTime(time));
+
       if (timeDifference > parseTime(time)) {
-        // Show toast notification using react-toastify
         const message = `Node ${nodeId} is down!`;
         updateLog(message);  // Customize message as needed
         // sendTelegramNotification(message);
@@ -167,7 +165,7 @@ const ActuationPage = () => {
       if ((nodeId === "WM-WD-KH98-00" && data.compensated_tds > 500) || data.compensated_tds < 50 ) {
         const tdsAlertMessage = `Alert! Node ${nodeId} TDS value is ${data.compensated_tds}`;
         updateLog(tdsAlertMessage);  // Display toast alert
-        console.log(tdsAlertMessage)
+        // console.log(tdsAlertMessage)
         // sendTelegramNotification(tdsAlertMessage);  // Send Telegram alert
         // toast.info("TDS Alert sent to the telegram");  // Notification after sending to Telegram
       }
@@ -207,9 +205,7 @@ const ActuationPage = () => {
     for (let idx in nodeIds) {
       tmpIsOn[nodeIds[idx]] = await getNodeStatus(nodeIds[idx], "6h");
     }
-    console.log(tmpIsOn);
     setIsOn(tmpIsOn);
-    console.log("Done", isOn); 
   };
 
   const getRealData = async (tableName) => {
@@ -252,7 +248,7 @@ const ActuationPage = () => {
       const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
       setMotorOn(MotorData.status === 1 ? true : false);
       setFlow4(MotorData.status === 1 ? true : false);
-      console.log("Motor FlowRate", MotorFlowrate);
+      // console.log("Motor FlowRate", MotorFlowrate);
 
       // WaterQuantityNode Data 
       const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
@@ -260,7 +256,6 @@ const ActuationPage = () => {
       const WaterQuantityDataR1 = await getRealData('WM-WF-KB04-71');
       const WaterQuantityDataR2 = await getRealData('WM-WF-KB04-72');
       const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KH98-40');
-      console.log("WaterQuantityBorewelltoSump", WaterQuantityBorewelltoSump)
       const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
       if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
       if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
@@ -319,7 +314,6 @@ const ActuationPage = () => {
       );
   
       const data = await response.json();
-      console.log(data); // Log the response data if needed
     } catch (error) {
       console.error('Error:', error);
     }
@@ -337,7 +331,6 @@ const ActuationPage = () => {
 
     const handleButtonClick = (number) => {
       setSelectedButton(number);
-      console.log(number);
     };
 
     const handleCloseButtonClick = () => {
@@ -350,7 +343,6 @@ const ActuationPage = () => {
 
     const handleSubmit = async () => {
       try {
-        console.log("I am here")
         // Step 1: Get the token
         const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
           method: 'POST',
@@ -369,7 +361,6 @@ const ActuationPage = () => {
     
         const tokenData = await tokenResponse.json();
         const token = tokenData.access_token;
-        console.log(token);
     
         // Step 2: Use the token in the next request
         const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${nodeId}`, {
@@ -389,7 +380,6 @@ const ActuationPage = () => {
         }
     
         const updateData = await updateResponse.json();
-        console.log('Update response:', updateData);
     
         // Reset the state
         setSelectedButton(null);

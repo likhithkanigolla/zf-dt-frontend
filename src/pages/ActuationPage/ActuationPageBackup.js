@@ -150,7 +150,6 @@ const ActuationPage = () => {
   
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
-      console.log(timeDifference, parseTime(time));
       if (timeDifference > parseTime(time)) {
         // Show toast notification using react-toastify
         const message = `Node ${nodeId} is down!`;

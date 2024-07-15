@@ -79,7 +79,7 @@ const NavigationBar = ({ title }) => {
   const classes = useStyles();
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [alarmAnchorEl, setAlarmAnchorEl] = useState(null);
-  const [closedNotifications, setClosedNotifications] = useState([]);
+  const [setClosedNotifications] = useState([]);
   const [ncount, setNcount] = useState(0); // State for unread notification count
   const [acount, setAcount] = useState(0); // State for alarm count
   const [issue, setIssue] = useState([]); // State for notifications
@@ -113,7 +113,7 @@ const NavigationBar = ({ title }) => {
       const unreadCount = notificationsWithTimestamp.filter(item => !item.read).length;
       setNcount(unreadCount);
       
-      console.log(`Number of notifications: ${notificationsWithTimestamp.length}`);
+      // console.log(`Number of notifications: ${notificationsWithTimestamp.length}`);
     } catch (error) {
       console.error(error.message);
     }
@@ -171,7 +171,7 @@ const NavigationBar = ({ title }) => {
         if (issue.length === 1) {
           handleNotificationClose();
         }
-        console.log('Notification marked as read successfully');
+        // console.log('Notification marked as read successfully');
       } else {
         console.error('Failed to mark notification as read');
       }
@@ -199,7 +199,7 @@ const NavigationBar = ({ title }) => {
         body: JSON.stringify({ remarks }),
       });
       if (response.ok) {
-        console.log('Alarm resolved successfully');
+        // console.log('Alarm resolved successfully');
         // Optionally update UI after resolving alarm
         setAcount(acount - 1); // Reduce alarm count after resolving
         handleCloseDialog();

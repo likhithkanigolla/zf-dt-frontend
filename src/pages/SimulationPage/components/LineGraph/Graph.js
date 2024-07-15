@@ -109,9 +109,6 @@ const LineGraph = ({ data, title , feild }) => {
     datasets: filteredDatasets,
   };
 
-  // Debugging: Log the chartData to ensure it's structured correctly
-  console.log(chartData);
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,

@@ -1,4 +1,4 @@
-import React, { useRef,useState, useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 
 import "./RealValueVisualisation.css";
 
@@ -132,7 +132,6 @@ const RealValueVisualisation = () => {
   
       // Check if the timestamp is within the specified time range
       const timeDifference = currentTime - timestamp;
-      console.log(timeDifference, parseTime(time));
       if (timeDifference > parseTime(time)) {
         // Show toast notification using react-toastify
         const message = `Node ${nodeId} is down!`;
@@ -150,9 +149,7 @@ const RealValueVisualisation = () => {
     for (const nodeId of nodeIds) { // Use for...of loop
         tmpIsOn[nodeId] = await getNodeStatus(nodeId, "6h"); // Await the completion of each call
     }
-    console.log(tmpIsOn);
     setIsOn(tmpIsOn); // Assuming setIsOn is a state setter or similar function
-    console.log("Done", tmpIsOn); // Log tmpIsOn instead of isOn to ensure the updated object is logged
 };
 
   const getRealData = async (tableName) => {
@@ -162,7 +159,6 @@ const RealValueVisualisation = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json(); // Assuming this returns an object
-      // console.log(data);
       return data;
     } catch (error) {
       console.error("Fetch error:", error);
@@ -216,7 +212,7 @@ const RealValueVisualisation = () => {
       const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
       setMotorOn(MotorData.status === 1 ? true : false);
       setFlow4(MotorData.status === 1 ? true : false);
-      console.log("Motor FlowRate", MotorFlowrate);
+
 
       // WaterQuantityNode Data 
       const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
@@ -224,7 +220,6 @@ const RealValueVisualisation = () => {
       const WaterQuantityDataR1 = await getRealData('WM-WF-KB04-71');
       const WaterQuantityDataR2 = await getRealData('WM-WF-KB04-72');
       const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KH98-40');
-      console.log("WaterQuantityBorewelltoSump", WaterQuantityBorewelltoSump)
       const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
       if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
       if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
@@ -239,7 +234,6 @@ const RealValueVisualisation = () => {
     const nodeIds = Object.keys(isOn);
     updateNodeStatus(nodeIds)
     const token = localStorage.getItem('token');
-    console.log("token:", token)    
     if (token) {
       checkTokenValidity(token); // Pass the token to the function
     } else {
@@ -277,7 +271,6 @@ const RealValueVisualisation = () => {
       );
   
       const data = await response.json();
-      console.log(data); // Log the response data if needed
     } catch (error) {
       console.error('Error:', error);
     }
@@ -295,7 +288,7 @@ const RealValueVisualisation = () => {
 
     const handleButtonClick = (number) => {
       setSelectedButton(number);
-      console.log(number);
+
     };
 
     const handleCloseButtonClick = () => {
@@ -308,7 +301,6 @@ const RealValueVisualisation = () => {
 
     const handleSubmit = async () => {
       try {
-        console.log("I am here")
         // Step 1: Get the token
         const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
           method: 'POST',
@@ -327,7 +319,6 @@ const RealValueVisualisation = () => {
     
         const tokenData = await tokenResponse.json();
         const token = tokenData.access_token;
-        console.log(token);
     
         // Step 2: Use the token in the next request
         const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${nodeId}`, {
@@ -347,7 +338,6 @@ const RealValueVisualisation = () => {
         }
     
         const updateData = await updateResponse.json();
-        console.log('Update response:', updateData);
     
         // Reset the state
         setSelectedButton(null);
@@ -441,7 +431,6 @@ const RealValueVisualisation = () => {
   );
 
   const fetchNodeData = async (tableName) => {
-    console.log("Fetching data for", tableName);
     try {
       const jsonData = await getRealData(tableName);
       if (typeof jsonData !== 'object' || jsonData === null) {
@@ -499,8 +488,6 @@ const RealValueVisualisation = () => {
         row.appendChild(unitCell);
         table.appendChild(row);
       });
-      // Display the table in a suitable container or console.log for debugging
-      console.log(table.outerHTML); // For debugging, replace with your actual display logic
       const tableContainer = document.getElementById("tableContainer"); // Get the table container element
       tableContainer.innerHTML = ""; // Clear the table container
       tableContainer.appendChild(table); // Append the table to the table container
