@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import './Pipe.css';
 
-function MirrorLPipe({ flow, onClick }) {
+const MirrorLPipe= forwardRef(({ flow, onClick }, ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function MirrorLPipe({ flow, onClick }) {
 
     return (
         <div className="mirror-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 110 150">
+            <svg viewBox="0 0 110 150" ref={ref}>
                 <defs>
                     <clipPath id="mirrorPipeClipPath">
                         <polygon points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92" />
@@ -102,6 +102,6 @@ function MirrorLPipe({ flow, onClick }) {
             </svg>
         </div>
     );
-}
+});
 
 export default MirrorLPipe;

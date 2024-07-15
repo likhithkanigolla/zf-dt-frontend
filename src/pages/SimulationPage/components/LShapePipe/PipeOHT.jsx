@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import './PipeOHT.css';
 
-function LShapePipeOHT({ flow, onClick, text }) {
+const LShapePipeOHT= forwardRef(({ flow, onClick, text },ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function LShapePipeOHT({ flow, onClick, text }) {
 
     return (
         <div className="lshapeoht-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 100 100" ref={ref}>
                 <defs>
                     <clipPath id="lshapePipeClipPath">
                         <polygon points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30" />
@@ -105,6 +105,6 @@ function LShapePipeOHT({ flow, onClick, text }) {
             </svg>
         </div>
     );
-}
+});
 
 export default LShapePipeOHT;

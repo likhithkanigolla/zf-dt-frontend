@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import './ROLpipe.css';
 
-function ROLpipe({ flow, onClick, text }) {
+const ROLpipe=forwardRef(({ flow, onClick, text }, ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function ROLpipe({ flow, onClick, text }) {
 
     return (
         <div className="rol-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 100 100" ref={ref}>
                 <defs>
                     <clipPath id="rolPipeClipPath">
                         <polygon points="80 0, 100 0, 100 60, 100 80, 91 80, 91 9, 80 9" />
@@ -72,6 +72,6 @@ function ROLpipe({ flow, onClick, text }) {
             </svg>
         </div>
     );
-}
+});
 
 export default ROLpipe;

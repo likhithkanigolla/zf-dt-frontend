@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import './ELpipe.css';
 
-function ELpipe({ flow, onClick, text }) {
+const ELpipe= forwardRef(({ flow, onClick, text }, ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function ELpipe({ flow, onClick, text }) {
 
     return (
         <div className="el-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 100 100" ref={ref}>
                 <defs>
                     <clipPath id="elPipeClipPath">
                         <polygon points="30 0, 30 10, 10 10, 10 87, 0 87, 0 60, 0 0" />
@@ -72,6 +72,6 @@ function ELpipe({ flow, onClick, text }) {
             </svg>
         </div>
     );
-}
+});
 
 export default ELpipe;

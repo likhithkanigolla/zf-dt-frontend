@@ -58,12 +58,6 @@ const SimulationCanvas = ({
   const roCooler2Ref = useRef(null);
   const roCooler3Ref = useRef(null);
 
-  const pipeRefs = useRef([]);
-  const addPipeRef = (el) => {
-    if (el && !pipeRefs.current.includes(el)) {
-      pipeRefs.current.push(el);
-    }
-  };
 
   useEffect(() => {
     iconRefs.current = [
@@ -77,8 +71,8 @@ const SimulationCanvas = ({
       roCooler1Ref.current,
       roCooler2Ref.current,
       roCooler3Ref.current,
-      ...pipeRefs.current
     ].filter(Boolean);
+    console.log(iconRefs);
   }, [iconRefs]);
   return (
     <div>
@@ -164,12 +158,14 @@ const SimulationCanvas = ({
 
         {/* Straight Pipe1 for extension  */}
       <div style={{ position: "absolute", top: "9.7vw", left: "47.9vw" }}>
-        <StraightPipe flow={flow5} style={{ width: "4.8vw", height: "4.8vw" }}/>
+        <StraightPipe flow={flow5} ref={(ref) => { if (ref) { ref.id = "P1ext"; iconRefs.push(ref); } }}
+        style={{ width: "4.8vw", height: "4.8vw" }}/>
       </div>
 
       {/* Straight Pipe2 for extension  */}
       <div style={{ position: "absolute", top: "9.7vw", left: "53.9vw" }}>
         <StraightPipe flow={flow5} style={{ width: "4.8vw", height: "4.8vw" }} 
+        ref={(ref) => { if (ref) { ref.id = "P2ext"; iconRefs.push(ref); } }}
         />
       </div>
           
@@ -240,7 +236,7 @@ const SimulationCanvas = ({
 
         <div style={{ position: "absolute", top: "10.1vw", left: "51vw" }}>
           <ROLpipe flow={flow9} 
-          ref={(ref) => { if (ref) { ref.id = "PipetoRO2"; iconRefs.push(ref); } }} />
+          ref={(ref) => { if (ref) { ref.id = "PipetoRO3"; iconRefs.push(ref); } }} />
         </div>
 
         {/* E Shape Pipe RO OHT to Ro Filters

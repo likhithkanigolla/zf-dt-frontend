@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,forwardRef } from 'react';
 import './Pipe.css';
 
-function StraightPipe({ flow, onClick }) {
+const StraightPipe = forwardRef(({flow, onClick}, ref) => {
     const [initialFlowComplete, setInitialFlowComplete] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function StraightPipe({ flow, onClick }) {
 
     return (
         <div className="straight-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 100 100" ref={ref}>
                 <defs>
                     <clipPath id="straightPipeClipPath">
                         <polygon points="0 45, 100 45, 100 55, 0 55" />
@@ -73,6 +73,6 @@ function StraightPipe({ flow, onClick }) {
             </svg>
         </div>
     );
-}
+});
 
 export default StraightPipe;
