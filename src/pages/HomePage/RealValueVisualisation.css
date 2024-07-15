@@ -123,9 +123,14 @@
     background-color: #28a745;
     color: white;
   }
+
+  #turnOffButton {
+    background-color: #dc3545;
+    color: white;
+  }
   
   #powerResetButton {
-    background-color: #dc3545;
+    background-color: #ffc107;
     color: white;
   }
   

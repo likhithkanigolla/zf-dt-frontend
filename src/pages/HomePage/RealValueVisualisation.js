@@ -276,147 +276,6 @@ const RealValueVisualisation = () => {
     }
   };
 
-  const UpdateCoef = async (nodeType, nodeName) => {
-    // Update the coefficients 
-    // Get the Token
-  };
-
-  const Node = ({ nodeId, isOn }) => {
-    const [showPopup, setShowPopup] = useState(false);
-    const [selectedButton, setSelectedButton] = useState(null);
-    const [inputValue, setInputValue] = useState('');
-
-    const handleButtonClick = (number) => {
-      setSelectedButton(number);
-
-    };
-
-    const handleCloseButtonClick = () => {
-      setShowPopup(false);
-    };
-
-    const handleChange = (event) => {
-      setInputValue(event.target.value); // Update the input value state
-    };
-
-    const handleSubmit = async () => {
-      try {
-        // Step 1: Get the token
-        const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            'username': 'smartcity_water',
-            'password': 'WaterQualityNode'
-          })
-        });
-    
-        if (!tokenResponse.ok) {
-          throw new Error('Failed to fetch token');
-        }
-    
-        const tokenData = await tokenResponse.json();
-        const token = tokenData.access_token;
-    
-        // Step 2: Use the token in the next request
-        const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${nodeId}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model_name: nodeId,
-            coefficients: inputValue
-          })
-        });
-    
-        if (!updateResponse.ok) {
-          throw new Error('Failed to update coefficients');
-        }
-    
-        const updateData = await updateResponse.json();
-    
-        // Reset the state
-        setSelectedButton(null);
-        setInputValue('');
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    
-
-
-    let nodeImage, nodeType, ControlNode;
-    switch (nodeId) {
-      case "DM-KH98-60":
-        nodeType = "Motor";
-        ControlNode = "DM-KH98-80";
-        nodeImage = MotorNode;
-        break;
-      case "WM-WL-KH00-00":
-      case "WM-WL-KH98-00":
-        nodeImage = WaterLevelNode;
-        break;
-      case "WM-WD-KH98-00":
-      case "WM-WD-KH96-02":
-      case "WM-WD-KH96-00":
-      case "WM-WD-KH95-00":
-      case "WM-WD-KH03-00":
-      case "WM-WD-KH96-01":
-        nodeImage = WaterQualityNode;
-        break;
-      default:
-        nodeImage = WaterQuantityNode;
-        break;
-    }
-
-    const handleNodeClick = () => {
-      setShowPopup(true);
-    };
-
-    return (
-      <>
-      <img
-        src={nodeImage}
-        alt={`${nodeId} Node`}
-        style={{
-        width: "3vw",
-        height: "3vw",
-        position: "absolute",
-        
-        }}
-        className={isOn ? "node-on" : "node-off"}
-        onClick={handleNodeClick}
-      />
-
-      {showPopup && (
-        <div className="PopUpContent" id="PopUpPopup" style={{zIndex:100}}>
-        <button className="close" onClick={handleCloseButtonClick}>✖</button>
-        <img src={nodeImage} alt="PopUp-img" />
-        <p>Clicked Node: {nodeId}</p>
-        <div className="buttons-row">
-          <button className="accept" onClick={() => NodeActuation(nodeId, 1)}>Turn On</button>
-          <button className="accept" onClick={() => NodeActuation(nodeId, 2)}>Power Reset</button>
-          <button className="accept" onClick={() => NodeActuation(nodeId, 3)}>Node Reset</button>
-          <button className="accept" onClick={() => handleButtonClick(4)}>Update Calibrated Values</button>
-        </div>
-          {selectedButton === 4 && (
-            <div>
-              {/* <label htmlFor="calibratedvalues" className="input-label">Enter Calibrated Values:</label> */}
-              <input type="text" onChange={handleChange} name="calibratedvalues" value={inputValue} className="input-field" placeholder="[5.6,4.3,2.8,.....]"/><br></br>
-              <button onClick={handleSubmit} className="submit-button">Submit</button>
-            </div>
-          )}
-          </div>
-      )}
-      </>
-    );
-  };
-
-
   const Box = ({ color, src }) => (
     <div style={{
       flex: 1,
@@ -431,26 +290,34 @@ const RealValueVisualisation = () => {
   );
 
   const fetchNodeData = async (tableName) => {
+    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH03-00'];
+    const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
+    const MotorNodes = ['DM-KH98-60'];
+    const WaterFlowNodes = ['WM-WF-KB04-70', 'WM-WF-KB04-73', 'WM-WF-KB04-71', 'WM-WF-KB04-72', 'WM-WF-KH98-40', 'WM-WF-KH95-40'];
+    
     try {
       const jsonData = await getRealData(tableName);
       if (typeof jsonData !== 'object' || jsonData === null) {
         console.log("No valid data available for", tableName);
         return; // Exit the function if no valid data is available
       }
-
+  
       // Create a table element
       const table = document.createElement('table');
       // Keep the table name as heading for the box
       const heading = document.createElement('h2');
       heading.textContent = tableName;
       table.appendChild(heading);
+  
       // Create table header row
       const headerRow = document.createElement('tr');
       // Create table header cells
       const headers = ['Parameter', 'Value', 'Units']; // Modify the headers here
+  
       // Add styles to the table
       table.style.width = '100%';
       table.style.borderCollapse = 'collapse';
+  
       // Add styles to table headers
       headers.forEach(header => {
         const th = document.createElement('th');
@@ -488,6 +355,7 @@ const RealValueVisualisation = () => {
         row.appendChild(unitCell);
         table.appendChild(row);
       });
+  
       const tableContainer = document.getElementById("tableContainer"); // Get the table container element
       tableContainer.innerHTML = ""; // Clear the table container
       tableContainer.appendChild(table); // Append the table to the table container
@@ -498,34 +366,140 @@ const RealValueVisualisation = () => {
       buttonContainer.style.justifyContent = 'space-around'; // Adjust as needed
       buttonContainer.style.marginTop = '20px'; // Space above the buttons
   
+      let selectedButton = null;
+      let inputValue = '';
+  
+      const handleChange = (event) => {
+        inputValue = event.target.value;
+      };
+  
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        // Assuming 'inputField' is accessible here, or you find it by its class or name
+        const inputField = document.querySelector('.input-field');
+        const inputValue = inputField.value.trim();
+
+        // Check if the input field is empty
+        if (inputValue === '') {
+          // Display an error message or handle the error
+          alert('Input cannot be blank');
+          return; // Stop the function here
+        }
+        try {
+          // Step 1: Get the token
+          const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              'username': 'smartcity_water',
+              'password': 'WaterQualityNode'
+            })
+          });
+  
+          if (!tokenResponse.ok) {
+            throw new Error('Failed to fetch token');
+          }
+  
+          const tokenData = await tokenResponse.json();
+          const token = tokenData.access_token;
+  
+          // Step 2: Use the token in the next request
+          const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${tableName}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model_name: tableName,
+              coefficients: inputValue
+            })
+          });
+  
+          if (!updateResponse.ok) {
+            throw new Error('Failed to update coefficients');
+          }
+  
+          const updateData = await updateResponse.json();
+  
+          // Reset the state
+          selectedButton = null;
+          inputValue = '';
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+
+
       // Create buttons
       const buttonsInfo = [
         { text: 'Turn On', id: 'turnOnButton', onClick: () => NodeActuation(tableName, 1) },
-        { text: 'Power Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
-        { text: 'Node Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
-        { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => console.log('Update Calibrated Values clicked') }
+        { text: 'Turn Off', id: 'turnOffButton', onClick: () => NodeActuation(tableName, 0) },
+        { text: 'Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
+        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+        { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
+            selectedButton = 4;
+            renderButtons();
+          }
+        }
       ];
   
-      buttonsInfo.forEach(buttonInfo => {
-        const button = document.createElement('button');
-        button.textContent = buttonInfo.text;
-        button.id = buttonInfo.id;
-        button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-        // Optional: Add classes or styles to button
-        button.style.padding = '10px 20px';
-        button.style.margin = '0 10px'; // Adjust spacing between buttons
-        button.style.cursor = 'pointer';
-        buttonContainer.appendChild(button);
-      });
+      const renderButtons = () => {
+        buttonContainer.innerHTML = ''; // Clear the button container
+        buttonsInfo.forEach(buttonInfo => {
+          const button = document.createElement('button');
+          button.textContent = buttonInfo.text;
+          button.id = buttonInfo.id;
+          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
+          // Optional: Add classes or styles to button
+          button.style.padding = '10px 20px';
+          button.style.margin = '0 10px'; // Adjust spacing between buttons
+          button.style.cursor = 'pointer';
+          buttonContainer.appendChild(button);
+        });
   
-      // Append the button container to the table container or directly to the modal
-      tableContainer.appendChild(buttonContainer);
+        tableContainer.appendChild(buttonContainer);
+  
+        if (selectedButton === 4) {
+          const inputDiv = document.createElement('div');
+          inputDiv.style.marginTop = '10px'; // Add some margin above the input field
+          inputDiv.style.textAlign= 'center';
+  
+          const inputField = document.createElement('input');
+          inputField.type = 'text';
+          inputField.onchange = handleChange;
+          inputField.name = 'calibratedvalues';
+          inputField.value = inputValue;
+          inputField.className = 'input-field';
+          inputField.placeholder = '[5.6,4.3,2.8,.....]';
+          inputField.style.padding = '8px';
+          inputField.style.width = '15vw';
+  
+          const submitButton = document.createElement('button');
+          submitButton.textContent = 'Submit';
+          submitButton.className = 'submit-button';
+          submitButton.style.marginTop = '10px';
+          submitButton.style.padding = '10px 20px';
+          submitButton.style.cursor = 'pointer';
+          submitButton.onclick = handleSubmit;
+  
+          inputDiv.appendChild(inputField);
+          inputDiv.appendChild(submitButton);
+          tableContainer.appendChild(inputDiv);
+        }
+      };
+  
+      renderButtons();
       const modal = document.getElementById("myModal"); // Get the modal element
       modal.style.display = "block"; // Show the modal after fetching and displaying the data
     } catch (error) {
       console.error(error);
     }
   };
+  
+  
 
   
 
