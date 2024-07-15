@@ -489,6 +489,7 @@ const SimulationPage = () => {
   }
 
   const handleCalculate = async () => {
+    if(isSimulationRunning){
     try {
       const soilQuantity = parseInt(inputValues.SoilQuantity);
       const sandQuantity = parseInt(inputValues.SandQuantity);
@@ -541,7 +542,7 @@ const SimulationPage = () => {
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
-
+  }
   };
 
   const getRealData = async (tableName) => {
@@ -757,6 +758,7 @@ const SimulationPage = () => {
     updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
     const caltds= await handleCalculate()
+    // const caltds=100;
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
@@ -995,8 +997,8 @@ const SimulationPage = () => {
                 <div
                   key={index}
                   draggable
-                  // onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
-                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
+                  // onDragStart={(e) => handleDragStart(e, index)}
                   style={{
                     position: 'absolute',
                     left: `${item.x}px`,
