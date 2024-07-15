@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation }) => {
+const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation }) => {
         display: 'inline-block',
         cursor: 'pointer', // Add cursor pointer to indicate clickable element
       }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => setIsHovered(true)&refreshData}
       onMouseLeave={() => setIsHovered(false)}
     >
       <img

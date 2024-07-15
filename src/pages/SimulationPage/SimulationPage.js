@@ -50,6 +50,8 @@ const SimulationPage = () => {
     // flowrate: "5"
   });
 
+  const pipeList = ["PipeP1toSump","PipeBoreToSump", "PipeSumpToMotor","PipeMotorToOHT","PipeOHTtoRO","PipeOHTtoAdminWashrooms","PipeOHTtoKRBWashrooms","PipetoRO1","PipetoRO3"]
+
   const [result, setResult] = useState(null);
   const [previousResult, setpreviousResult] = useState(null)
   const [soilContamination, setSoilContamination] = useState(null);
@@ -759,43 +761,44 @@ const SimulationPage = () => {
 
     const caltds= await handleCalculate()
     // const caltds=100;
+    item.id = iconId;
 
     if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterlevelsensor: (waterInSump/inputValues.sumpCapacity)*100,
+        [iconId]: (waterInSump/inputValues.sumpCapacity)*100,
       }));
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterlevelsensor: (waterInOHT/inputValues.ohtCapacity)*100,
+        [iconId]: (waterInOHT/inputValues.ohtCapacity)*100,
       }));
     }
     if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterlevelsensor: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
+        [iconId]: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
     if(iconId=='KRBSump' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterqualitysensor: caltds,
+        [iconId]: caltds,
       }));
 
     }
     if(iconId=='KRBOHTIcon' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterqualitysensor: caltds + Math.floor(Math.random() * 21) - 10,
+        [iconId]: caltds + Math.floor(Math.random() * 21) - 10,
       }));
 
     }
     if(iconId=='KRBROOHT' && item.type=='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
-        waterqualitysensor: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
+       [iconId]: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
       }));
     }
     
@@ -1013,7 +1016,7 @@ const SimulationPage = () => {
                     alt={item.type}
                     style={{ maxWidth: '2vw', maxHeight: '2vw', filter:"grayscale(200%)", zIndex: 10}}
                   /> */}
-                  <HoverableIcon src={getImageForType(item.type)} alt={item.type} dataId="VirtualNode" data={sensorValues[item.type]}/>
+                  <HoverableIcon src={getImageForType(item.type)} alt={item.type} dataId="VirtualNode" data={sensorValues[item.id]} onClick={(e)=>handleMarkerClick(item, index, e)}/>
                 </div>
               ))
             }
