@@ -16,10 +16,10 @@ const ROLpipe=forwardRef(({ flow, onClick, text }, ref) => {
 
     return (
         <div className="rol-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100" ref={ref}>
+            <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="rolPipeClipPath">
-                        <polygon points="80 0, 100 0, 100 60, 100 80, 91 80, 91 9, 80 9" />
+                        <polygon ref={ref} points="80 0, 100 0, 100 60, 100 80, 91 80, 91 9, 80 9" />
                     </clipPath>
                     <linearGradient id="rolWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="lightblue" />

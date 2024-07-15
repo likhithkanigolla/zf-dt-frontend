@@ -16,10 +16,10 @@ const MirrorLPipe= forwardRef(({ flow, onClick }, ref) => {
 
     return (
         <div className="mirror-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 110 150" ref={ref}>
+            <svg viewBox="0 0 110 150" >
                 <defs>
                     <clipPath id="mirrorPipeClipPath">
-                        <polygon points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92" />
+                        <polygon ref={ref} points="37 92, 91 91, 92 0, 91 0, 100 0, 100 15, 100 85, 100 100, 85 100, 37 100, 37 100, 37 92" />
                     </clipPath>
                     <linearGradient id="mirrorWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
                         <stop offset="0%" stopColor="lightblue" />

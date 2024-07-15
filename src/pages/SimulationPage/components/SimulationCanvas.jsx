@@ -4,16 +4,12 @@ import ZshapePipe from './ZShapePipe/Pipe';
 import MirrorLPipe from './MirrorLPipe/Pipe';
 import StraightPipe from './StraightPipe/Pipe';
 import LShapePipe from './LShapePipe/Pipe';
-import EShapePipe from './EShapePipe/Pipe';
-
 
 import roPlantImage from "../../images/ro_plant.png";
 import roCoolerImage from "../../images/ro_cooler.png";
 import Motor from "../../images/Motor.png";
-import SumpIcon from "../../images/Sump.png";
 import PumpHouse from "../../images/pump_house.png";
 import Borewell from "../../images/borewell.png";
-import Watertank from "../../images/watertank.png";
 import ROWatertank from "../../images/tank_ro.png";
 import Washrooms from "../../images/Washrooms.png";
 import Sump from './Sump/Sump';

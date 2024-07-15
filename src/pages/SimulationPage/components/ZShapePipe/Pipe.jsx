@@ -22,11 +22,11 @@ const ZshapePipe = forwardRef(({ flow, onClick }, ref) => {
                 height="50vw" // Set height to 50% of the parent container
                 className='absolute bottom-10 right-52'
                 style={{ maxWidth: '100vw', maxHeight: '50vw' }}
-                ref={ref}
+                
             >
                 <defs>
                     <clipPath id="pipeClipPath">
-                        <path
+                        <path ref={ref}
                             d="M 50,0 L 50,90 L 100,90 L 100,100 L 40,100 L 40,10 L 0,10 L 0,0 Z"
                         />
                     </clipPath>

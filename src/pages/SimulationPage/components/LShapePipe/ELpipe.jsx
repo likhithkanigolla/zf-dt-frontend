@@ -16,10 +16,10 @@ const ELpipe= forwardRef(({ flow, onClick, text }, ref) => {
 
     return (
         <div className="el-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100" ref={ref}>
+            <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="elPipeClipPath">
-                        <polygon points="30 0, 30 10, 10 10, 10 87, 0 87, 0 60, 0 0" />
+                        <polygon ref={ref} points="30 0, 30 10, 10 10, 10 87, 0 87, 0 60, 0 0" />
                     </clipPath>
                     <linearGradient id="elWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="lightblue" />

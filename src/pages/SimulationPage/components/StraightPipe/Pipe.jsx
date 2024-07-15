@@ -16,10 +16,10 @@ const StraightPipe = forwardRef(({flow, onClick}, ref) => {
 
     return (
         <div className="straight-svg-container" onClick={onClick}>
-            <svg viewBox="0 0 100 100" ref={ref}>
+            <svg viewBox="0 0 100 100">
                 <defs>
                     <clipPath id="straightPipeClipPath">
-                        <polygon points="0 45, 100 45, 100 55, 0 55" />
+                        <polygon ref={ref} points="0 45, 100 45, 100 55, 0 55" />
                     </clipPath>
                     <linearGradient id="straightWaveGradient" x1="5%" y1="0%" x2="50%" y2="0%">
                         <stop offset="0%" stopColor="lightblue" />

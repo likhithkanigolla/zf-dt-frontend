@@ -8,7 +8,6 @@ import ZshapePipe from '../SimulationPage/components/ZShapePipe/Pipe';
 import MirrorZPipe from '../SimulationPage/components/MirrorZPipe/Pipe';
 import StraightPipe from '../SimulationPage/components/StraightPipe/Pipe';
 import LongLShapePipe from '../SimulationPage/components/LongLShapePipe/Pipe';
-import LongEShapePipe from '../SimulationPage/components/LongEShapePipe/Pipe';
 import LShapePipeOHT from '../SimulationPage/components/LShapePipe/PipeOHT';
 
 import roPlantImage from "../images/ro_plant.png";
@@ -546,9 +545,9 @@ const handleClearLog = () => {
                 </div>
 
                 {/* E Shape Pipe RO OHT to Ro Filters*/}
-                <div style={{ position: "absolute", top: "19.5vw", left: "23.8vw" }}>
+                {/* <div style={{ position: "absolute", top: "19.5vw", left: "23.8vw" }}>
                   <LongEShapePipe/>
-                </div>
+                </div> */}
 
                 {/* RO Coolers */}
                 <div style={{ position: "absolute", top: "17.5vw", left: "16.4vw", textAlign: "center", }} >
