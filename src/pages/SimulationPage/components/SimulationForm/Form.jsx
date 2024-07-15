@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Form.css';
-import { colors } from '@mui/material';
 
 function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning }) {
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);

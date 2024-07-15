@@ -548,32 +548,32 @@ const SimulationScenario1 = () => {
     const { isPlaced, iconId } = checkMarkerOverlap(coordinates);
     console.log("Marker of type ", item.type , "placed on",iconId, "at coordinates:", coordinates);
 
-    if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBSump' && item.type==='waterlevelsensor'){
       setSensorValues({'Water Level at Sump': (waterInSump/inputValues.sumpCapacity)*100});
     }
-    if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBOHTIcon' && item.type==='waterlevelsensor'){
       const ohtwaterlevel = (waterInOHT/inputValues.ohtCapacity)*100
       setSensorValues({ 'Water Level at OHT': ohtwaterlevel});
       setWaterLevelOHT(ohtwaterlevel);
     }
-    // if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
+    // if(iconId==='KRBROOHT' && item.type==='waterlevelsensor'){
     //   setSensorValues(prevValues => ({
     //     ...prevValues,
     //     'KRBROOHT': (waterInROFilter/inputValues.roCapacity)*100,
     //   }));
     // }
-    if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBROOHT' && item.type==='waterlevelsensor'){
       const rowaterlevel = (waterInROFilter/inputValues.roCapacity)*100
       setSensorValues({'Water Level at RO OHT': rowaterlevel});
       
     }
-    if(iconId=='Motor' && item.type=='waterquantitysensor'){
+    if(iconId==='Motor' && item.type==='waterquantitysensor'){
       setSensorValues({'Total Water Flow from Sump to OHT': waterFlowOHT});
     }
-    if(iconId=='ROPlant' && item.type=='waterquantitysensor'){
+    if(iconId==='ROPlant' && item.type==='waterquantitysensor'){
       setSensorValues({'Total Water Flow from OHT to RO Filter': waterFlowRO});
     }
-    if(iconId=='Motor' && item.type=='motorsensor'){
+    if(iconId==='Motor' && item.type==='motorsensor'){
       setSensorValues({'Motor Status here': motorOn ? 'ON' : 'OFF'});
     }
   };

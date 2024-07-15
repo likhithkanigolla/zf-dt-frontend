@@ -763,45 +763,51 @@ const SimulationPage = () => {
     // const caltds=100;
     item.id = iconId;
 
-    if(iconId=='KRBSump' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBSump' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
         [iconId]: (waterInSump/inputValues.sumpCapacity)*100,
       }));
     }
-    if(iconId=='KRBOHTIcon' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBOHTIcon' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
         [iconId]: (waterInOHT/inputValues.ohtCapacity)*100,
       }));
     }
-    if(iconId=='KRBROOHT' && item.type=='waterlevelsensor'){
+    if(iconId==='KRBROOHT' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
         [iconId]: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
-    if(iconId=='KRBSump' && item.type=='waterqualitysensor'){
+    if(iconId ==='KRBSump' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
         [iconId]: caltds,
       }));
 
     }
-    if(iconId=='KRBOHTIcon' && item.type=='waterqualitysensor'){
+    if(iconId==='KRBOHTIcon' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
         [iconId]: caltds + Math.floor(Math.random() * 21) - 10,
       }));
 
     }
-    if(iconId=='KRBROOHT' && item.type=='waterqualitysensor'){
+    if(iconId==='KRBROOHT' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
        [iconId]: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
       }));
     }
-    
+
+    if (pipeList.includes(iconId) && item.type === 'waterquantitysensor') {
+      setSensorValues(prevValues => ({
+        ...prevValues,
+        [iconId] : index,
+      }));
+    }
 
   };
 
