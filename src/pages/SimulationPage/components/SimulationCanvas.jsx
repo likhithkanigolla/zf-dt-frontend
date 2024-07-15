@@ -21,16 +21,15 @@ import ELpipe from './LShapePipe/ELpipe';
 const SimulationCanvas = ({
   handleIconClick,
   iconRefs,
-  flow1,
-  setFlow1,
-  flow2,
-  flow3,
-  flow4,
-  flow5,
-  flow6,
-  flow7,
-  flow8,
-  flow9,
+  PipeP1toSump,
+  PipeBoreToSump,
+  PipeSumpToMotor,
+  PipeMotorToOHT,
+  PipeOHTtoRO,
+  PipeOHTtoAdminWashrooms,
+  PipeOHTtoKRBWashrooms,
+  PipetoRO1,
+  PipetoRO3,
   waterInSump,
   sumpCapacity,
   motorOn,
@@ -82,13 +81,13 @@ const SimulationCanvas = ({
 
       {/* Z Shape Pipe Pumphouse to Sump */}
       <div style={{ position: "absolute", top: "2.5vw", left: "5.5vw" }}>
-        <ZshapePipe flow={flow1}
+        <ZshapePipe flow={PipeP1toSump}
         ref={(ref) => { if (ref) { ref.id = "PipeP1toSump"; iconRefs.push(ref); } }} />
       </div>
 
       {/* Straight Pipe from Borewell to Sump */}
       <div style={{ position: "absolute", top: "16vw", left: "13vw" }}>
-        <StraightPipe flow={flow2} style={{ width: "4.8vw", height: "4.8vw" }} 
+        <StraightPipe flow={PipeBoreToSump} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "PipeBoreToSump"; iconRefs.push(ref); } }}
         />
       </div>
@@ -108,7 +107,7 @@ const SimulationCanvas = ({
       {/* Straight Pipes Sump to Motor */}
       <div>
         <div style={{ position: "absolute", top: "16.2vw", left: "24vw" }}>
-          <StraightPipe flow={flow3} 
+          <StraightPipe flow={PipeSumpToMotor} 
           ref={(ref) => { if (ref) { ref.id = "PipeSumpToMotor"; iconRefs.push(ref); } }} />
         </div>
 
@@ -118,7 +117,7 @@ const SimulationCanvas = ({
          
          {/* MirrorLPipe Motor to OHT P1 */}
         <div style={{ position: "absolute", top: "7.5vw", left: "23vw" }}>
-          <MirrorLPipe flow={flow4} 
+          <MirrorLPipe flow={PipeMotorToOHT} 
           ref={(ref) => { if (ref) { ref.id = "PipeMotorToOHT"; iconRefs.push(ref); } }} />
         </div>
 
@@ -142,25 +141,25 @@ const SimulationCanvas = ({
 
         {/* L Shape Pipe from motor to oht */}
         <div style={{ position: "absolute", top: "8vw", left: "34.5vw",  zIndex: "1" }}>
-          <Lshapepipeoht flow={flow4} 
+          <Lshapepipeoht flow={PipeMotorToOHT} 
           ref={(ref) => { if (ref) { ref.id = "PipeMotorToOHT"; iconRefs.push(ref); } }} />
         </div>
 
         {/* L Shape Pipe OHT to RO PIPE */}
         <div style={{ position: "absolute", top: "2.5vw", left: "34.7vw", transform: "rotate(270deg)" }}>
-          <ELpipe flow={flow5} 
+          <ELpipe flow={PipeOHTtoRO} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
 
         {/* Straight Pipe1 for extension  */}
       <div style={{ position: "absolute", top: "9.7vw", left: "47.9vw" }}>
-        <StraightPipe flow={flow5} ref={(ref) => { if (ref) { ref.id = "P1ext"; iconRefs.push(ref); } }}
+        <StraightPipe flow={PipeOHTtoRO} ref={(ref) => { if (ref) { ref.id = "P1ext"; iconRefs.push(ref); } }}
         style={{ width: "4.8vw", height: "4.8vw" }}/>
       </div>
 
       {/* Straight Pipe2 for extension  */}
       <div style={{ position: "absolute", top: "9.7vw", left: "53.9vw" }}>
-        <StraightPipe flow={flow5} style={{ width: "4.8vw", height: "4.8vw" }} 
+        <StraightPipe flow={PipeOHTtoRO} style={{ width: "4.8vw", height: "4.8vw" }} 
         ref={(ref) => { if (ref) { ref.id = "P2ext"; iconRefs.push(ref); } }}
         />
       </div>
@@ -179,13 +178,13 @@ const SimulationCanvas = ({
 
         {/* L Shape Pipe OHT to RO plant */}
         <div style={{ position: "absolute", top: "9vw", left: "58vw", }}>
-          <LShapePipe flow={flow5} 
+          <LShapePipe flow={PipeOHTtoRO} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoRO"; iconRefs.push(ref); } }} />
         </div>
 
         {/* Straight Pipe OHT to Admin block Washrooms */}
         <div style={{ position: "absolute", top: "16vw", left: "38.7vw", transform: "rotate(90deg)" }}>
-          <StraightPipe flow={flow6} 
+          <StraightPipe flow={PipeOHTtoAdminWashrooms} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoAdminWashrooms"; iconRefs.push(ref); } }} />
         </div>
 
@@ -197,13 +196,13 @@ const SimulationCanvas = ({
 
         {/* Straight Pipe to KRB Washrooms */}
         <div style={{ position: "absolute", top: "16vw", left: "44.5vw", transform: "rotate(90deg)" }}>
-          <StraightPipe flow={flow7} 
+          <StraightPipe flow={PipeOHTtoKRBWashrooms} 
           ref={(ref) => { if (ref) { ref.id = "PipeOHTtoKRBWashrooms"; iconRefs.push(ref); } }} />
         </div>
 
         {/* L Shape Pipe RO to RO OHT */}
         <div style={{ position: "absolute", top: "3vw", left: "49.9vw",  }}>
-          <ROLpipe flow={flow5} 
+          <ROLpipe flow={PipeOHTtoRO} 
           ref={(ref) => { if (ref) { ref.id = "PipeROtoROOHT"; iconRefs.push(ref); } }} />
         </div>
 
@@ -217,7 +216,7 @@ const SimulationCanvas = ({
         {/* Lpipe from ROOHT to RO1 */}
 
         <div style={{ position: "absolute", top: "10.1vw", left: "52.8vw" }}>
-          <ELpipe flow={flow8} 
+          <ELpipe flow={PipetoRO1} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO1"; iconRefs.push(ref); } }} />
         </div>
 
@@ -231,13 +230,13 @@ const SimulationCanvas = ({
         {/* Lpipe from ROOHT to RO3 */}
 
         <div style={{ position: "absolute", top: "10.1vw", left: "51vw" }}>
-          <ROLpipe flow={flow9} 
+          <ROLpipe flow={PipetoRO3} 
           ref={(ref) => { if (ref) { ref.id = "PipetoRO3"; iconRefs.push(ref); } }} />
         </div>
 
         {/* E Shape Pipe RO OHT to Ro Filters
         <div style={{ position: "absolute", top: "15vw", left: "59vw" }}>
-          <EShapePipe flow={flow9} 
+          <EShapePipe flow={PipetoRO3} 
           ref={(ref) => { if (ref) { ref.id = "PipeROOHTtoFilters"; iconRefs.push(ref); } }} />
         </div> */}
 

@@ -891,16 +891,15 @@ const SimulationPage = () => {
               <SimulationCanvas 
                   handleIconClick={handleIconClick}
                   iconRefs={iconRefs}
-                  flow1={flow1}
-                  flow2={flow1}
-                  flow3={flow1}
-                  flow4={flow2}
-                  flow5={flow3}
-                  flow6={flow3}
-                  flow7={flow3}
-                  flow8={flow4}
-                  flow9={flow4}
-                  setFlow1={setFlow1}
+                  PipeP1toSump={flow1}
+                  PipeBoreToSump={flow1}
+                  PipeSumpToMotor={flow1}
+                  PipeMotorToOHT={flow2}
+                  PipeOHTtoRO={flow3}
+                  PipeOHTtoAdminWashrooms={flow3}
+                  PipeOHTtoKRBWashrooms= {flow3}
+                  PipetoRO1={flow4}
+                  PipetoRO3={flow4}
                   waterInSump={waterInSump}
                   sumpCapacity={inputValues.sumpCapacity}
                   motorOn={motorOn}

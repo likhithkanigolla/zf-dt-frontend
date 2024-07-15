@@ -614,15 +614,15 @@ const RealValueVisualisation = () => {
                   <SimulationCanvas
                     handleIconClick={handleIconClick}
                     iconRefs={iconRefs}
-                    flow1={flow1}
-                    flow2={flow2}
-                    flow3={flow3}
-                    flow4={flow4}
-                    flow5={flow5}
-                    flow6={flow6}
-                    flow7={flow7}
-                    flow8={flow8}
-                    flow9={flow9}
+                    PipeP1toSump={flow1}
+                    PipeBoreToSump={flow2}
+                    PipeSumpToMotor={flow3}
+                    PipeMotorToOHT={flow4}
+                    PipeOHTtoRO={flow5}
+                    PipeOHTtoAdminWashrooms={flow6}
+                    PipeOHTtoKRBWashrooms= {flow7}
+                    PipetoRO1={flow8}
+                    PipetoRO3={flow9}
                     setFlow1={setFlow1}
                     setFlow2={setFlow2} 
                     waterInSump={waterInSump}
