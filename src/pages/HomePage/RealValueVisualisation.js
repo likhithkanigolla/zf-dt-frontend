@@ -432,11 +432,9 @@ const RealValueVisualisation = () => {
         }
       };
 
-
+      if (WaterQualityNodes.includes(tableName)) {
       // Create buttons
       const buttonsInfo = [
-        { text: 'Turn On', id: 'turnOnButton', onClick: () => NodeActuation(tableName, 1) },
-        { text: 'Turn Off', id: 'turnOffButton', onClick: () => NodeActuation(tableName, 0) },
         { text: 'Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
         { text: 'Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
         { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
@@ -490,8 +488,58 @@ const RealValueVisualisation = () => {
           tableContainer.appendChild(inputDiv);
         }
       };
-  
       renderButtons();
+    }
+    else if (MotorNodes.includes(tableName)) { 
+      const buttonsInfo = [
+        { text: 'Motor on', id: 'turnOnButton', onClick: () => NodeActuation(tableName, 1) },
+        { text: 'Motor off', id: 'turnOffButton', onClick: () => NodeActuation(tableName, 0) },
+        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
+        { text: 'Motor Node Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+      ];
+  
+      const renderButtons = () => {
+        buttonContainer.innerHTML = ''; // Clear the button container
+        buttonsInfo.forEach(buttonInfo => {
+          const button = document.createElement('button');
+          button.textContent = buttonInfo.text;
+          button.id = buttonInfo.id;
+          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
+          // Optional: Add classes or styles to button
+          button.style.padding = '10px 20px';
+          button.style.margin = '0 10px'; // Adjust spacing between buttons
+          button.style.cursor = 'pointer';
+          buttonContainer.appendChild(button);
+        });
+  
+        tableContainer.appendChild(buttonContainer);
+      };
+      renderButtons();
+    }
+    else{
+      const buttonsInfo = [
+        { text: 'Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
+        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+      ];
+  
+      const renderButtons = () => {
+        buttonContainer.innerHTML = ''; // Clear the button container
+        buttonsInfo.forEach(buttonInfo => {
+          const button = document.createElement('button');
+          button.textContent = buttonInfo.text;
+          button.id = buttonInfo.id;
+          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
+          // Optional: Add classes or styles to button
+          button.style.padding = '10px 20px';
+          button.style.margin = '0 10px'; // Adjust spacing between buttons
+          button.style.cursor = 'pointer';
+          buttonContainer.appendChild(button);
+        });
+  
+        tableContainer.appendChild(buttonContainer);
+      };
+      renderButtons();
+    }
       const modal = document.getElementById("myModal"); // Get the modal element
       modal.style.display = "block"; // Show the modal after fetching and displaying the data
     } catch (error) {
