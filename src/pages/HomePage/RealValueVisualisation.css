@@ -113,7 +113,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
+    /* cursor: pointer; */
     font-size: 16px;
     transition: background-color 0.3s ease, transform 0.3s ease;
     margin: 5px;
@@ -157,16 +157,16 @@
   #updateValuesButton:disabled {
     background-color: #cccccc;
     color: #666666;
-    cursor: not-allowed;
+    cursor: progress;
     position: relative; /* Ensure this is set for positioning the ::after content */
   }
   
-  #turnOnButton:disabled::after,
+  /* #turnOnButton:disabled::after,
   #turnOffButton:disabled::after,
   #powerResetButton:disabled::after,
   #nodeResetButton:disabled::after,
   #updateValuesButton:disabled::after {
-    content: ''; /* Use an empty string if you're drawing the symbol with CSS */
+    content: '';
     position: absolute;
     top: 0;
     left: 50%;
@@ -175,8 +175,8 @@
     height: 100%;
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><circle cx="12" cy="12" r="10"/><line x1="6" y1="6" x2="18" y2="18" stroke="white" stroke-width="2"/></svg>') no-repeat center;
     background-size: contain;
-    pointer-events: none; /* Ignore pointer events */
-  }
+    pointer-events: none;
+  } */
   /* Button Container Styling */
   .buttonContainer {
     display: flex;
