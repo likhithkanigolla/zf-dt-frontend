@@ -129,9 +129,11 @@
     color: white;
   }
   
+  /* General style for the powerResetButton */
   #powerResetButton {
-    background-color: #435e9f;
-    color: white;
+    background-color: #435e9f; /* Dark blue background */
+    color: white; /* White text */
+    /* Add other styling as needed */
   }
   
   #nodeResetButton {
@@ -147,7 +149,34 @@
   #tableContainer button:hover {
     opacity: 0.8;
   }
+
+  #turnOnButton:disabled,
+  #turnOffButton:disabled,
+  #powerResetButton:disabled,
+  #nodeResetButton:disabled,
+  #updateValuesButton:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    position: relative; /* Ensure this is set for positioning the ::after content */
+  }
   
+  #turnOnButton:disabled::after,
+  #turnOffButton:disabled::after,
+  #powerResetButton:disabled::after,
+  #nodeResetButton:disabled::after,
+  #updateValuesButton:disabled::after {
+    content: ''; /* Use an empty string if you're drawing the symbol with CSS */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><circle cx="12" cy="12" r="10"/><line x1="6" y1="6" x2="18" y2="18" stroke="white" stroke-width="2"/></svg>') no-repeat center;
+    background-size: contain;
+    pointer-events: none; /* Ignore pointer events */
+  }
   /* Button Container Styling */
   .buttonContainer {
     display: flex;

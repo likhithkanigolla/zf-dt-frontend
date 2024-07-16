@@ -248,9 +248,25 @@ const RealValueVisualisation = () => {
 
   if (!isAuthenticated) {return <LoginPage />;}
 
+  // Modified onClick functions to disable the button and re-enable it after the operation
+  const modifiedOnClick = async (buttonId, tableName, actionType) => {
+    // Call NodeActuation with the button ID, tableName, and actionType
+    document.getElementById(buttonId).disabled = true;
+    try{
+      await NodeActuation(tableName, actionType, buttonId, () => {
+        console.log('Operation complete');
+    });
+  }
+  catch (error) {
+    console.error('Error:', error);
+  }
+  finally{
+    document.getElementById(buttonId).disabled = false;
+  };
+};
 
-  const NodeActuation = async (nodeName, status) => {
-  
+  async function NodeActuation(nodeName, status, buttonId, callback){
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a delay
     // Determine the status based on the updated state
     const node_status = !isOn[nodeName] ? 'on' : 'off';
     const requestBody = {
@@ -273,6 +289,11 @@ const RealValueVisualisation = () => {
       const data = await response.json();
     } catch (error) {
       console.error('Error:', error);
+    }
+    finally{
+      if (callback) {
+        callback();
+      }
     }
   };
 
@@ -435,8 +456,8 @@ const RealValueVisualisation = () => {
       if (WaterQualityNodes.includes(tableName)) {
       // Create buttons
       const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
+        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
         { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
             selectedButton = 4;
             renderButtons();
@@ -492,10 +513,10 @@ const RealValueVisualisation = () => {
     }
     else if (MotorNodes.includes(tableName)) { 
       const buttonsInfo = [
-        { text: 'Motor on', id: 'turnOnButton', onClick: () => NodeActuation(tableName, 1) },
-        { text: 'Motor off', id: 'turnOffButton', onClick: () => NodeActuation(tableName, 0) },
-        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
-        { text: 'Motor Node Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+        { text: 'Motor on', id: 'turnOnButton', onClick: () => modifiedOnClick('turnOnButton', tableName, 1)},
+        { text: 'Motor off', id: 'turnOffButton', onClick: () => modifiedOnClick('turnOffButton', tableName, 0) },
+        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
+        { text: 'Motor Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
       ];
   
       const renderButtons = () => {
@@ -518,8 +539,8 @@ const RealValueVisualisation = () => {
     }
     else{
       const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => NodeActuation(tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => NodeActuation(tableName, 3) },
+        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
+        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
       ];
   
       const renderButtons = () => {
