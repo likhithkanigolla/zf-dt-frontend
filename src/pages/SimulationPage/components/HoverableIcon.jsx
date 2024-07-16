@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 
 const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    else{
+    setIsEnabled(!isEnabled);
+    }
+  };
 
   return (
     <div
@@ -22,9 +32,9 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
           borderRadius: '50%', // Makes the image circular (adjust as needed)
           zIndex:15
         }}
-        onClick={onClick}
+        onClick={onClick ? onClick : handleClick} 
       />
-      {isHovered && (
+      {isEnabled && isHovered && (
         <div
           style={{
             position: 'absolute',
@@ -47,6 +57,23 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
           <br></br>
           {data}
         </div>
+      )}
+      {!isEnabled && (
+        <div
+          style={{
+            content: '',
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100%',
+            height: '100%',
+            background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><circle cx="12" cy="12" r="10"/><line x1="6" y1="6" x2="18" y2="18" stroke="white" stroke-width="2"/></svg>') no-repeat center`,
+            backgroundSize: 'contain',
+            pointerEvents: 'none',
+            borderRadius: '50%', // Keep the circular shape
+          }}
+        />
       )}
     </div>
   );
