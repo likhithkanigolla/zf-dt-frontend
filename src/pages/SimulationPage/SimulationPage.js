@@ -88,6 +88,7 @@ const SimulationPage = () => {
   const [waterConsumed, setWaterConsumed] = useState(0.00);
   const [flowrate, setFlowrate] = useState(10);
   const [PermeateFlowRate, setPermeateFlowRate] = useState(1);
+  const [PermeateFlowRate_B, setPermeateFlowRate_B] = useState(1);
   const [PreviousPermeateFlowRate, setPreviousPermeateFlowRate] = useState(0);
   const [showMotorStatus, setShowMotorStatus] = useState(false);
   const [message, setMessage] = useState("");
@@ -271,10 +272,10 @@ const SimulationPage = () => {
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-        const temp_permeate = PermeateFlowRate+ (Math.random() - 0.5);
+        const temp_permeate = Math.max(0.00, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B+5));
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
-        setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
+        setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: temp_permeate, id: 4 }]);
         setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         
@@ -435,7 +436,7 @@ const SimulationPage = () => {
     }
   };
 
-  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area, timeMultiplier) => {
+  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area) => {
     const requestBody = {
       initial_tds: calculatedTDS,
       desired_tds: desired_tds,
@@ -443,8 +444,6 @@ const SimulationPage = () => {
       temperature: temperature,
       effective_membrane_area: membrane_area,
       sump_capacity: inputValues.sumpCapacity,
-      timeMultiplier: timeMultiplier,
-      // Other parameters as needed
     };
 
     let response = await fetch(
@@ -462,14 +461,13 @@ const SimulationPage = () => {
     return data;
   };
 
-  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth,timeMultiplier) => {
+  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth) => {
     const requestBody = {
       voltage: voltage,
       current: current,
       power_factor: power_factor,
       motor_efficiency: motor_efficiency,
       depth: depth, 
-      timeMultiplier: timeMultiplier
     };
 
     let response = await fetch(
@@ -519,9 +517,8 @@ const SimulationPage = () => {
         setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
         updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
-
-      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5, inputValues.timeMultiplier)
-      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area, inputValues.timeMultiplier);
+      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5)
+      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
       setpreviousResult(result); // Store the current result in previousResult
         setResult({
         ...data_RO,
@@ -530,8 +527,9 @@ const SimulationPage = () => {
 
       setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
       setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
-      setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate)* timeMultiplier);
-      setFlowrate(parseFloat(flow.flowrate_per_min)* timeMultiplier);
+      setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate));
+      setPermeateFlowRate_B(parseFloat(data_RO.permeate_flow_rate));
+      setFlowrate(parseFloat(flow.flowrate_per_min));
 
       updateLog(`Motor flow rate calculated: ${flow.flowrate_per_min}`);
       updateLog(`RO filtration data: ${JSON.stringify(data_RO)}`);
