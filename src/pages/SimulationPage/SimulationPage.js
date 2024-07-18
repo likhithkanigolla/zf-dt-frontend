@@ -999,7 +999,7 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-72" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-72'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "18vw", left: "2vw", textAlign: "center"}}>
+              <div style={{ position: "absolute", top: "19vw", left: "1vw", textAlign: "center"}}>
                 <Timer elapsedTime={timeElapsed} />
               </div>
 
