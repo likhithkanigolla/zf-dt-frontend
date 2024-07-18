@@ -308,17 +308,14 @@ const SimulationPage = () => {
           updateLog("Motor turned off automatically since sump is empty.");
           // toast.error("No water in sump.");
         }
-      }, 1000); // Run every second
+      }, 1000/inputValues.timeMultiplier); // Run every half second
 
       intervalwaterConsume = setInterval(() => {
         if (waterInROFilter > 1) {
           handleConsumeWater();
         }
-      }, 1000);
+      }, 1000/inputValues.timeMultiplier);
     }
-
-
-
 
     const logIconCoordinates = () => {
       iconRefs.forEach((ref, index) => {
@@ -334,6 +331,7 @@ const SimulationPage = () => {
       });
     };
     logIconCoordinates();
+
     return () => {
       clearInterval(intervalId);
       clearInterval(intervalwaterConsume);
