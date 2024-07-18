@@ -9,6 +9,7 @@ import ResultContainer from "./components/ResultContainer";
 import LeakageOptions from "./components/LeakageOptions";
 import SimulationCanvas from "./components/SimulationCanvas";
 import ConsoleHeader from "./components/Console/Console";
+import Timer from "./components/timer-component";
 
 import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png"; 
@@ -93,7 +94,7 @@ const SimulationPage = () => {
   const [showMotorStatus, setShowMotorStatus] = useState(false);
   const [message, setMessage] = useState("");
   const [data, setData] = useState([]);
-
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   const [infoText, setInfoText] = useState("");
   const [SoilQuantity, setSoilQuantity] = useState("");
@@ -309,6 +310,8 @@ const SimulationPage = () => {
           updateLog("Motor turned off automatically since sump is empty.");
           // toast.error("No water in sump.");
         }
+
+        setTimeElapsed(prevTimeElapsed => prevTimeElapsed + 1);
       }, 1000/inputValues.timeMultiplier); // Run every half second
 
       intervalwaterConsume = setInterval(() => {
@@ -994,6 +997,10 @@ const SimulationPage = () => {
               <div style={{ position: "absolute", top: "11vw", left: "57.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-72" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-72'].toFixed(2)}L`}  rotation={90}/>
+              </div>
+
+              <div style={{ position: "absolute", top: "18vw", left: "2vw", textAlign: "center"}}>
+                <Timer elapsedTime={timeElapsed} />
               </div>
 
             {
