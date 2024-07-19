@@ -352,7 +352,7 @@ const SimulationPage = () => {
 
 
 
-  const handleChange = (e) => {
+  const handleChange = async(e) => {
     const { name, value } = e.target;
 
     // Check if simulation is running
@@ -370,7 +370,7 @@ const SimulationPage = () => {
 
       updateLog(`Updated the Value ${name} to ${value}.`)
       // Restart the simulation
-      handleCalculate(); // Recalculate
+      await handleCalculate(); // Recalculate
       handleStartWaterFlow(); // Restart the simulation
       setIsSimulationRunning(true);
       updateLog("Simulation restarted after updating values.")
@@ -490,6 +490,7 @@ const SimulationPage = () => {
   }
 
   const handleCalculate = async () => {
+    // console.log("Calculating TDS Value... TDD");
     if(isSimulationRunning){
     try {
       const soilQuantity = parseInt(inputValues.SoilQuantity);
@@ -522,8 +523,9 @@ const SimulationPage = () => {
       }
       const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5)
       const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
+      // console.log("RO Filtration Data:", data_RO);
       setpreviousResult(result); // Store the current result in previousResult
-        setResult({
+      setResult({
         ...data_RO,
         calculated_tds_value: parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25
       });
@@ -600,6 +602,7 @@ const SimulationPage = () => {
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
+      // console.log("Simulation started. TDD");
       await handleCalculate(); 
       // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
