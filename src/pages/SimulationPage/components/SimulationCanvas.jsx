@@ -140,7 +140,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* L Shape Pipe from motor to oht */}
-        <div style={{ position: "absolute", top: "8vw", left: "34.5vw",  zIndex: "1" }}>
+        <div style={{ position: "absolute", top: "8vw", left: "34.5vw",  zIndex: "3" }}>
           <Lshapepipeoht flow={PipeMotorToOHT} 
           ref={(ref) => { if (ref) { ref.id = "PipeMotorToOHT"; iconRefs.push(ref); } }} />
         </div>
