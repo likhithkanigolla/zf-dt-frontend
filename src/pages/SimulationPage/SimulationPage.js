@@ -491,7 +491,6 @@ const SimulationPage = () => {
 
   const handleCalculate = async () => {
     // console.log("Calculating TDS Value... TDD");
-    if(isSimulationRunning){
     try {
       const soilQuantity = parseInt(inputValues.SoilQuantity);
       const sandQuantity = parseInt(inputValues.SandQuantity);
@@ -545,7 +544,6 @@ const SimulationPage = () => {
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
-  }
   };
 
   const getRealData = async (tableName) => {
