@@ -56,12 +56,12 @@ const ActuationPage = () => {
     "WM-WD-KH98-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '32vw' ,  zIndex: '3'}, //WQ at sump
     "WM-WD-KH96-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '12vw', left: '50vw',  zIndex: '3'}, //WQ at OHT
     "WM-WD-KH96-01" : {width: '2vw',height: '2vw', position: 'absolute', top: '15vw', left: '70.6vw', zIndex: '3'}, //WQ to RO plant
-    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '72vw' }, //ro 2
-    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '78vw' },  //faculty launge(ro1)
-    "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw' }, //after ro
-    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '72vw', transform: 'rotate(90deg)'},
-    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '78vw', transform: 'rotate(90deg)'}, 
-    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '60vw',transform: 'rotate(90deg)',zIndex: '3'},
+    "WM-WD-KH03-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '72vw', zIndex: 3}, //ro 2
+    "WM-WD-KH95-00" : {width: '2vw',height: '2vw', position: 'absolute', top: '23vw', left: '78vw', zIndex: 3},  //faculty launge(ro1)
+    "WM-WD-KH96-02" : {width: '2vw',height: '2vw', position: 'absolute', top: '21vw', left: '60vw', zIndex: 3}, //after ro
+    "WM-WF-KB04-71" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '72vw', transform: 'rotate(90deg)', zIndex: '6'},
+    "WM-WF-KB04-72" : {width: '2vw',height: '2vw', position: 'absolute', top: '20vw', left: '78vw', transform: 'rotate(90deg)', zIndex: '6'}, 
+    "WM-WF-KB04-70" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '60vw',transform: 'rotate(90deg)',zIndex: '6'},
     "WM-WF-KB04-73" : {width: '2vw',height: '2vw', position: 'absolute', top: '15.5vw', left: '65vw',transform: 'rotate(90deg)',zIndex: '3'},   
     "WM-WF-KH98-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '14vw', left: '27vw', transform: 'rotate(90deg)', zIndex: '3'},
     "WM-WF-KH95-40" : {width: '2vw',height: '2vw', position: 'absolute', top: '16.3vw', left: '47vw',transform: 'rotate(90deg)',  zIndex: '3'},   

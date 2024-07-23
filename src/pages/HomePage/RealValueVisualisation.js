@@ -714,7 +714,7 @@ const RealValueVisualisation = () => {
                     <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH98-00'/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center" }}>
+                  <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center", zIndex: 3 }}>
                     {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} /> */}
                     <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH00-00'/>
                   </div>
