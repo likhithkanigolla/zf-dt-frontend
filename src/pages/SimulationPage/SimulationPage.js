@@ -69,6 +69,7 @@ const SimulationPage = () => {
   const [flow2, setFlow2] = useState(false);
   const [flow3, setFlow3] = useState(false);
   const [flow4, setFlow4] = useState(false);
+  const [flow5, setFlow5] = useState(false);
 
   const [sensorValues, setSensorValues] = useState({
     waterqualitysensor: 0,
@@ -229,6 +230,7 @@ const SimulationPage = () => {
     setFlow2(false);
     setFlow3(false);
     setFlow4(false);
+    setFlow5(false);
     setMotorOn(false);
     updateLog("Simulation stopped.");
     // toast.error("Simulation stopped!");
@@ -260,21 +262,17 @@ const SimulationPage = () => {
         const prevWaterInOHT = waterInOHT; // Get previous water level
         setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
         }
-        
-          if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
-            updateLog("Motor turned off automatically since water tank is full.");
-            // ...
 
-            if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
-              updateLog("Motor turned off automatically since water tank is full.");
+        if (waterInSump === 0) {
+          setFlow5(false);
+        }
+        
+        if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
+          updateLog("Motor turned off automatically since water tank is full.");
               // toast.error("Motor turned off automatically since water tank is full.");
-              setMotorOn(false);
-              setFlow2(false);
-              setAlertShown(true); // Set alertShown to true to prevent repeated alerts
-            }
-            setMotorOn(false);
-            setFlow2(false);
-            setAlertShown(true); // Set alertShown to true to prevent repeated alerts
+          setMotorOn(false);
+          setFlow2(false);
+          setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
         const totalAfterOHTLeakageRate = Math.min(leakageMarkers.reduce((sum, marker) => {
@@ -286,7 +284,7 @@ const SimulationPage = () => {
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
         setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: temp_permeate, id: 4 }]);
-        setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
+        // setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
         updateLog("Permeate Flow Rate: "+PermeateFlowRate);
         
         // Pump water from OHT to RO Filter continuously
@@ -320,11 +318,18 @@ const SimulationPage = () => {
           // toast.error("No water in sump.");
         }
 
+        if (waterInOHT <PermeateFlowRate && waterInSump <= flowrate && waterInROFilter < 10) {
+          handleStopSimulation();
+          updateLog("Simulation stopped automatically since all tanks are empty.");
+          // toast.error("Simulation stopped automatically since all tanks are empty.");
+        }
+
         setTimeElapsed(prevTimeElapsed => prevTimeElapsed + 1);
       }, 1000/inputValues.timeMultiplier); // Run every half second
 
       intervalwaterConsume = setInterval(() => {
         if (waterInROFilter > 1) {
+          console.log("TDD Consuming water from RO Filter. here");
           handleConsumeWater();
         }
       }, 1000/inputValues.timeMultiplier);
@@ -616,6 +621,7 @@ const SimulationPage = () => {
       setIsSimulationRunning(true);
       // setFlow4((flow4) => !flow4);
       setFlow1((flow1) => !flow1);
+      setFlow5((flow5) => !flow5);
       setFlow2(true);
       setMotorOn(true);
       updateLog("Simulation started.")
@@ -627,6 +633,7 @@ const SimulationPage = () => {
       setFlow2(false);
       setFlow3(false);
       setFlow4(false);
+      setFlow5(false);
       setMotorOn(false);
       updateLog("Simulation stopped.")
       // toast.error("Simulation stopped!");
@@ -635,15 +642,25 @@ const SimulationPage = () => {
 
   const handleConsumeWater = () => {
     // Consumption is 10% of the filteration. 
-    if (waterInROFilter >= (PermeateFlowRate/10)) {
+    console.log("TDD Consuming water from RO Filter.", PermeateFlowRate);
+    // if (waterInROFilter >= (PermeateFlowRate/10)) {
+    //   setFlow4(true);
+    //   setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
+    //   setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
+    //   console.log(" TDD Consumed water from RO Filter.");
+    // }
+    if (waterInROFilter >= 10) {
       setFlow4(true);
-      setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
-      setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
-    } else {
+      setWaterInROFilter((prev) => prev - 10); 
+      setWaterConsumed((prev) => prev + 10); 
+      console.log(" TDD Consumed water from RO Filter.");
+    } 
+    else {
       // alert("Not enough water in RO Filter to consume.")
       setFlow4(false);
       // toast.error("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
+      console.log("Not enough water in RO Filter to consume. TDD");
     }
   };
 
@@ -911,7 +928,7 @@ const SimulationPage = () => {
                   iconRefs={iconRefs}
                   PipeP1toSump={flow1}
                   PipeBoreToSump={flow1}
-                  PipeSumpToMotor={flow1}
+                  PipeSumpToMotor={flow5}
                   PipeMotorToOHT={flow2}
                   PipeOHTtoRO={flow3}
                   PipeOHTtoAdminWashrooms={flow3}
