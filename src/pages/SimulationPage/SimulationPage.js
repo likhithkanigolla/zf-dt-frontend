@@ -36,6 +36,7 @@ const SimulationPage = () => {
   const [inputValues, setInputValues] = useState({
     Scenarios: "1",
     timeMultiplier: "1",
+    simulationTime: "3600",
     SandQuantity: "0",
     SoilQuantity: "0",
     voltage: "240",
@@ -123,6 +124,13 @@ const SimulationPage = () => {
 
   const handleSaveLog = () => {
     const logData = log ;
+    updateLog("Water in Sump: "+waterInSump);
+    updateLog("Water in OHT: "+waterInOHT);
+    updateLog("Water in RO Filter: "+waterInROFilter);
+    updateLog("Water Flow Admin: "+waterFlowAdmin);
+    updateLog("Water Flow KRB: "+waterFlowKRB);
+    updateLog("Motor On: "+motorOn);
+    updateLog("Saving log data...");
     handleStopSimulation();
     try{
       const response = fetch(`${config.backendAPI}/save_log`, {
@@ -240,6 +248,14 @@ const SimulationPage = () => {
     let intervalId;
     let intervalwaterConsume;
     // console.log("iconRefs",iconRefs);
+    console.log("TIMES", timeElapsed, inputValues.simulationTime);
+    if (timeElapsed >= inputValues.simulationTime) {
+      handleSaveLog();
+      setTimeElapsed(0);
+      updateLog("Simulation stopped automatically after reaching simulation time.");
+      updateLog("Data saved successfully.");
+    }
+
     if (waterFlowStarted) {
       intervalId = setInterval(() => {
         if (motorOn) {
@@ -329,7 +345,6 @@ const SimulationPage = () => {
 
       intervalwaterConsume = setInterval(() => {
         if (waterInROFilter > 1) {
-          console.log("TDD Consuming water from RO Filter. here");
           handleConsumeWater();
         }
       }, 1000/inputValues.timeMultiplier);
@@ -504,7 +519,6 @@ const SimulationPage = () => {
   }
 
   const handleCalculate = async () => {
-    // console.log("Calculating TDS Value... TDD");
     try {
       const soilQuantity = parseInt(inputValues.SoilQuantity);
       const sandQuantity = parseInt(inputValues.SandQuantity);
@@ -614,7 +628,6 @@ const SimulationPage = () => {
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
-      // console.log("Simulation started. TDD");
       await handleCalculate(); 
       // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
@@ -642,7 +655,6 @@ const SimulationPage = () => {
 
   const handleConsumeWater = () => {
     // Consumption is 10% of the filteration. 
-    console.log("TDD Consuming water from RO Filter.", PermeateFlowRate);
     // if (waterInROFilter >= (PermeateFlowRate/10)) {
     //   setFlow4(true);
     //   setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
@@ -653,14 +665,12 @@ const SimulationPage = () => {
       setFlow4(true);
       setWaterInROFilter((prev) => prev - 10); 
       setWaterConsumed((prev) => prev + 10); 
-      console.log(" TDD Consumed water from RO Filter.");
     } 
     else {
       // alert("Not enough water in RO Filter to consume.")
       setFlow4(false);
       // toast.error("Not enough water in RO Filter to consume.");
       updateLog("Not enough water in RO Filter to consume.");
-      console.log("Not enough water in RO Filter to consume. TDD");
     }
   };
 

@@ -29,8 +29,8 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
     return (
         <div>
-      <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
-           <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '68vh', color: 'white' }}>
+            <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
+            <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '68vh', color: 'white' }}>
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
@@ -57,6 +57,10 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         </select> */}
                     </div>
                     <input style={{width:'15vw'}} type="range" min="1" max="500" value={inputValues.timeMultiplier} className="slider" id="myRange" onChange={handleChange} name="timeMultiplier"/>
+                    <div className='simulation-speed'>
+                        <label style={{ color: 'white', background:'#ffffff00' ,whiteSpace: 'nowrap'}} className="heading-as"><b>Simulation Time:  <span>{inputValues.simulationTime} sec</span></b></label>
+                    </div>
+                    <input type='number' value={inputValues.simulationTime} className='input-box' name='simulationTime' onChange={handleChange}/>
                 </div>
                 <h4 className="heading" onClick={toggleWaterConfig}>Parameter Configuration</h4>
                 {(isScenario1 || isScenario2) && (
