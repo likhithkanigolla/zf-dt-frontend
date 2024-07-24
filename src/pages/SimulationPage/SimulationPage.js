@@ -168,12 +168,14 @@ const SimulationPage = () => {
     const newMarkers = [];
     for (let i = 0; i < numLeakages; i++) {
       // Calculate position based on leakageLocation and index (to distribute markers)
+      // console.log("Marker Leakage Location:", leakageLocation);
       const position = calculateLeakagePosition(leakageLocation, i, numLeakages);
       newMarkers.push({
         type: "leakage",
         x: position.x,
         y: position.y,
         rate: leakageRate, // Include leakage rate in the marker data
+        location: leakageLocation,
       });
     }
     setLeakageMarkers(newMarkers);
@@ -185,14 +187,23 @@ const SimulationPage = () => {
   // Function to calculate leakage position (you'll need to implement the logic)
   const calculateLeakagePosition = (location, index, totalLeakages) => {
     let x, y;
+    let leakagePositions = [];
     if (location === "motorOHT") {
       // Hardcoded coordinates for the three possible leakage positions
-      const leakagePositions = [
-        { x: 890, y: 510 }, // Motor end
-        { x: 920, y: 460 }, // Middle pipe
-        { x: 950, y: 410 }, // Near OHT
+      leakagePositions = [
+        { x: 13.5, y: 19 }, // Motor end
+        { x: 11, y: 27 }, // Middle pipe
+        { x: 4, y: 27 }, // Near OHT
       ];
-  
+    } // ... (rest of your logic)
+    if (location === "roPlant") {
+      // Hardcoded coordinates for the three possible leakage positions
+      leakagePositions = [
+        { x: 7, y: 38 }, // Motor end
+        { x: 7, y: 43 }, // Middle pipe
+        { x: 7, y: 48 }, // Near OHT
+      ];
+    }
       // Ensure totalLeakages is within the allowed range (1 to 3)
       totalLeakages = Math.max(1, Math.min(3, totalLeakages));
   
@@ -208,7 +219,6 @@ const SimulationPage = () => {
   
       // Get the coordinates from the leakagePositions array
       ({ x, y } = leakagePositions[positionIndex]);
-    } // ... (rest of your logic)
     return { x, y };
   };
 
@@ -236,20 +246,14 @@ const SimulationPage = () => {
             setWaterInSump((prev) => Math.max((prev - flowrate), 0));
 
         // Calculate total leakage rate (limited to 4 L/s)
-            const totalLeakageRate = Math.min(
-              leakageMarkers.reduce((sum, marker) => {
-                if (marker.type === "leakage" && marker.location === "motorOHT") {
-                  return sum + marker.rate;
-                }
-                return sum;
-              }, 0),
-              4 // Maximum leakage rate
-            );
-            updateLog(`Total Leakage Rate: ${totalLeakageRate}`);
-        
+
+            const totalAfterMotorLeakageRate = Math.min(leakageMarkers.reduce((sum, marker) => {
+              if (marker.type === "leakage" && marker.location === "motorOHT") {return sum + marker.rate;}
+                return sum;}, 0),20 );// Maximum leakage rate     
+            updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}`);   
         // Calculate the effective flow rate into OHT
         updateLog(`Motor Flow Rate: ${flowrate}`);
-        const effectiveFlowRate = Math.max(flowrate - totalLeakageRate + (Math.random() - 0.5), 1); 
+        const effectiveFlowRate = Math.max(flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5), 1); 
   
         updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
 
@@ -273,7 +277,12 @@ const SimulationPage = () => {
             setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-        const temp_permeate = Math.max(0.00, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B+5));
+        const totalAfterOHTLeakageRate = Math.min(leakageMarkers.reduce((sum, marker) => {
+          if (marker.type === "leakage" && marker.location === "roPlant") {return sum + marker.rate;}
+            return sum;}, 0),20 );// Maximum leakage rate
+        console.log("Total Leakage Rate: ", totalAfterOHTLeakageRate);
+        
+        const temp_permeate = Math.max((Math.max(0.00, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B+5)))-totalAfterOHTLeakageRate,0);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
         setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: temp_permeate, id: 4 }]);
@@ -491,7 +500,6 @@ const SimulationPage = () => {
 
   const handleCalculate = async () => {
     // console.log("Calculating TDS Value... TDD");
-    if(isSimulationRunning){
     try {
       const soilQuantity = parseInt(inputValues.SoilQuantity);
       const sandQuantity = parseInt(inputValues.SandQuantity);
@@ -545,7 +553,6 @@ const SimulationPage = () => {
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
-  }
   };
 
   const getRealData = async (tableName) => {
@@ -1006,6 +1013,12 @@ const SimulationPage = () => {
                 <Timer elapsedTime={timeElapsed} />
               </div>
 
+                    {/* Leakage Markers */}
+              {leakageMarkers.map((marker, index) => (
+              <div key={index} style={{position: 'absolute', top: `${marker.x}vw`, left: `${marker.y}vw`, cursor: 'pointer', zIndex:20 }} onClick={() => {}}>
+              <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }}/>
+              </div>))}
+
             {
               canvasItems.map((item, index) => (
                 <div
@@ -1055,6 +1068,7 @@ const SimulationPage = () => {
           ref={(ref) => { if (ref) { ref.id = "dustbin"; iconRefs.push(ref); } }}
         >
           <DeleteIcon style={{ color: 'white', fontSize: '40px' }} />
+        
         </div>
 
             {
@@ -1077,24 +1091,6 @@ const SimulationPage = () => {
           </div>
 
           <br></br>
-
-
-
-          {/* Leakage Markers */}
-          {leakageMarkers.map((marker, index) => (
-            <div key={index} style={{position: 'absolute', left: `${marker.x}px`, top: `${marker.y}px`, cursor: 'pointer', }}
-            onClick={() => { 
-              // Handle clicking on a leakage marker (e.g., show information about the leakage)
-            }}
-            >
-            <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }
-          }
-        />
-        
-  </div>
-
-  
-))}
 
       {/* <div className="container" style={{overflowY: 'scroll', height: '25vh', color: 'white' }}>
             <div className='flex-container'>

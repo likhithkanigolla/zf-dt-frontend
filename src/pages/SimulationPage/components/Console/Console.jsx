@@ -45,7 +45,7 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
         <button onClick={handleClearLog} className='button-c'><GrPowerReset className='icon' /></button>
       </div>
       <div className='log-container' ref={listRef}>
-        {log.map((log, index) => (
+        {log.slice(-50).map((log, index) => (
           <div key={index} className='log'>{log}</div>
         ))}
       </div>

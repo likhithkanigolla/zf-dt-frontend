@@ -67,7 +67,7 @@ const SimulationCanvas = ({
       roCooler2Ref.current,
       roCooler3Ref.current,
     ].filter(Boolean);
-    console.log(iconRefs);
+    // console.log(iconRefs);
   }, [iconRefs]);
   return (
     <div>
