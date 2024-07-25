@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
+import React, { useEffect, useState } from "react";
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import Toolbar from "./components/ToolBar/ToolBar";
-import SimulationForm from "./components/SimulationForm/Form";
-import ResultContainer from "./components/ResultContainer";
-import LeakageOptions from "./components/LeakageOptions";
-import SimulationCanvas from "./components/SimulationCanvas";
 import ConsoleHeader from "./components/Console/Console";
+import LeakageOptions from "./components/LeakageOptions";
+import ResultContainer from "./components/ResultContainer";
+import SimulationCanvas from "./components/SimulationCanvas";
+import SimulationForm from "./components/SimulationForm/Form";
+import Toolbar from "./components/ToolBar/ToolBar";
 import Timer from "./components/timer-component";
 
-import whiteimage from "../images/white.png";
 import MotorNode from "../images/MotorNode.png";
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
 import LeakageIcon from "../images/leakage_water.png";
+import whiteimage from "../images/white.png";
 import HoverableIcon from "./components/HoverableIcon";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import config from "../../config";
