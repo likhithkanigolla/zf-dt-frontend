@@ -46,7 +46,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
             backdropFilter: 'blur(7px)', // Glassmorphism backdrop filter
             WebkitBackdropFilter: 'blur(7px)', // Vendor prefix for backdrop filter
             borderRadius: '10px', // Rounded corners
-            zIndex: 8,
+            zIndex: 100,
             minWidth: '10vw', // Ensure a minimum width for the tooltip
             textAlign: 'center', // Center text within the tooltip
             whiteSpace: 'nowrap', // Prevent text wrapping
@@ -72,6 +72,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
             backgroundSize: 'contain',
             pointerEvents: 'none',
             borderRadius: '50%', // Keep the circular shape
+            zIndex: 100,
           }}
         />
       )}

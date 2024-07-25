@@ -72,12 +72,7 @@ const SimulationPage = () => {
   const [flow4, setFlow4] = useState(false);
   const [flow5, setFlow5] = useState(false);
 
-  const [sensorValues, setSensorValues] = useState({
-    waterqualitysensor: 0,
-    waterquantitysensor: 0,
-    waterlevelsensor: 0,
-    motorsensor:  0
-  });
+  const [sensorValues, setSensorValues] = useState({});
 
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
   const [waterInSump, setWaterInSump] = useState(60000); // Initial water level in Sump
@@ -112,6 +107,32 @@ const SimulationPage = () => {
 
   const [datagraph, setDatagraph] = useState([]);
   const [flowgraph, setFlowgraph] = useState([]);
+
+  const pipeFlowPresence = {
+    PipeP1toSump: flow1,
+    PipeBoreToSump: flow1,
+    PipeSumpToMotor: flow5,
+    PipeMotorToOHT: flow2,
+    PipeOHTtoRO: flow3,
+    PipeOHTtoAdminWashrooms: flow3,
+    PipeOHTtoKRBWashrooms: flow3,
+    PipetoRO1: flow4,
+    PipetoRO3: flow4
+  };
+  
+  // Define the flow rates for each pipe
+  const pipeFlowRates = {
+    PipeP1toSump: 10,
+    PipeBoreToSump: 15,
+    PipeSumpToMotor: 5,
+    PipeMotorToOHT: flowrate,
+    PipeOHTtoRO: PermeateFlowRate + 15,
+    PipeOHTtoAdminWashrooms: 10,
+    PipeOHTtoKRBWashrooms: 5,
+    PipetoRO1: 2.5,
+    PipetoRO3: 7.5
+  };
+
   const [log, setLog] = useState([]); 
   const updateLog = (message) => {
     setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
@@ -246,9 +267,10 @@ const SimulationPage = () => {
 
   useEffect(() => {
     let intervalId;
+    let interval_val_update_wq;
     let intervalwaterConsume;
     // console.log("iconRefs",iconRefs);
-    console.log("TIMES", timeElapsed, inputValues.simulationTime);
+    // console.log("TIMES", timeElapsed, inputValues.simulationTime);
     if (timeElapsed >= inputValues.simulationTime) {
       handleSaveLog();
       setTimeElapsed(0);
@@ -349,6 +371,39 @@ const SimulationPage = () => {
         }
       }, 1000/inputValues.timeMultiplier);
     }
+    
+    interval_val_update_wq = setInterval(() => {
+      setSensorValues(prevValues => {
+        const newValues = { ...prevValues };
+        
+  
+        // Iterate over the current sensor values
+        Object.keys(newValues).forEach(index => {
+          console.log("Index Here TDD: ",index)
+          const sensor = newValues[index];
+          console.log("Sensor Here TDD: ",sensor);
+          if (sensor.type === 'waterquantitysensor') {
+            const pipeId = sensor.iconId; // Correctly use the ID from the sensor
+            console.log("Pipe ID Here TDD: ",pipeId);
+            const hasFlow = pipeFlowPresence[pipeId]; // Get flow presence for the pipe ID
+            const flowRate = pipeFlowRates[pipeId] || 0; // Get flow rate for the pipe ID, default to 0 if not found
+            console.log("Flow Rate Here TDD: ",flowRate);  
+            if (hasFlow && flowRate > 0) {
+              console.log("Flow Rate TDD: ",flowRate);
+              newValues[index] = {
+                ...sensor,
+                totalFlow: sensor.totalFlow + flowRate, // Adjust the totalFlow increment based on timeMultiplier
+              };
+            }
+          }
+        });
+  
+        return newValues;
+      });
+  
+      console.log("Sensor Values: ", sensorValues);
+  
+    }, 1000 / inputValues.timeMultiplier);
 
     const logIconCoordinates = () => {
       iconRefs.forEach((ref, index) => {
@@ -368,6 +423,7 @@ const SimulationPage = () => {
     return () => {
       clearInterval(intervalId);
       clearInterval(intervalwaterConsume);
+      clearInterval(interval_val_update_wq);
     }; // Cleanup interval on unmount or when simulation stops
   }, [
     waterFlowStarted,
@@ -786,6 +842,7 @@ const SimulationPage = () => {
   };
 
   const handleMarkerClick = async (item, index, event) => {
+    if(isSimulationRunning){
     const { clientX, clientY } = event; 
     const coordinates = {
       x: clientX,
@@ -802,24 +859,28 @@ const SimulationPage = () => {
     if(iconId==='KRBSump' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterlevelsensor',
         [iconId]: (waterInSump/inputValues.sumpCapacity)*100,
       }));
     }
     if(iconId==='KRBOHTIcon' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterlevelsensor',
         [iconId]: (waterInOHT/inputValues.ohtCapacity)*100,
       }));
     }
     if(iconId==='KRBROOHT' && item.type==='waterlevelsensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterlevelsensor',
         [iconId]: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
       }));
     }
     if(iconId ==='KRBSump' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterqualitysensor',
         [iconId]: caltds,
       }));
 
@@ -827,6 +888,7 @@ const SimulationPage = () => {
     if(iconId==='KRBOHTIcon' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterqualitysensor',
         [iconId]: caltds + Math.floor(Math.random() * 21) - 10,
       }));
 
@@ -834,16 +896,27 @@ const SimulationPage = () => {
     if(iconId==='KRBROOHT' && item.type==='waterqualitysensor'){
       setSensorValues(prevValues => ({
         ...prevValues,
+        type: 'waterqualitysensor',
        [iconId]: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
       }));
     }
 
     if (pipeList.includes(iconId) && item.type === 'waterquantitysensor') {
+      console.log("Pipe Icon Id: ", iconId);
+      const pipeId = iconId; // Assuming iconId corresponds to the pipe ID
+      const hasFlow = pipeFlowPresence[pipeId]; // Get the flow presence for the pipe ID
+      const flowRate = pipeFlowRates[pipeId] || 0; // Get the flow rate for the pipe ID, default to 0 if not found
       setSensorValues(prevValues => ({
         ...prevValues,
-        [iconId] : index,
+        [index]: {
+          index,
+          type: 'waterquantitysensor',
+          iconId: iconId,
+          totalFlow: hasFlow ? flowRate : 0 // Initialize total flow with the pipe's flow rate if flow is present, otherwise 0
+        }
       }));
     }
+  }
 
   };
 
@@ -966,7 +1039,7 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH98-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH98-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex: 6 }}>
+              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex: 3 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-00'].toFixed(2)}ppm`}/>
               </div>
@@ -991,7 +1064,7 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH03-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH03-00'].toFixed(2)}ppm`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "8vw", left: "13vw", textAlign: "center", zIndex: 4}}>
+              <div style={{ position: "absolute", top: "8vw", left: "13vw", textAlign: "center", zIndex: 3}}>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
                 <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH98-00" data={`Water Level: ${SimulatedValues['WM-WL-KH98-00'].toFixed(2)}%`}/>
               </div>
@@ -1001,37 +1074,37 @@ const SimulationPage = () => {
                 <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH00-00" data={`Water Level: ${SimulatedValues['WM-WL-KH00-00'].toFixed(2)}%`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex:15}}>
+              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 4}}>
                 {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
                 <HoverableIcon src={MotorNode}  alt="MotorNode" aId="DM-KH98-60" dataId="DM-KH98-60" data={`Motor Status: ${motorOn ? "ON" : "OFF"}`}/>
               </div>
 
-              <div style={{ position: "absolute", top: "7vw", left: "7vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+              <div style={{ position: "absolute", top: "7vw", left: "7vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH98-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH98-40']}L`} rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "6.7vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 6 }}>
+              <div style={{ position: "absolute", top: "6.7vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH95-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH95-40'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "39.6vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
+              <div style={{ position: "absolute", top: "7.3vw", left: "39.6vw", textAlign: "center", transform: "rotate(90deg)", zIndex: 3 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-70" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-70'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "45.3vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
+              <div style={{ position: "absolute", top: "7.3vw", left: "45.3vw", textAlign: "center", transform: "rotate(90deg)", zIndex: 3  }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-73" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-73'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "11vw", left: "52.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
+              <div style={{ position: "absolute", top: "11vw", left: "52.5vw", textAlign: "center", transform: "rotate(90deg)" , zIndex: 3}}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-71" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-71'].toFixed(2)}L`}  rotation={90}/>
               </div>
 
-              <div style={{ position: "absolute", top: "11vw", left: "57.5vw", textAlign: "center", transform: "rotate(90deg)" }}>
+              <div style={{ position: "absolute", top: "11vw", left: "57.5vw", textAlign: "center", transform: "rotate(90deg)" , zIndex: 3}}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-72" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-72'].toFixed(2)}L`}  rotation={90}/>
               </div>
@@ -1046,32 +1119,34 @@ const SimulationPage = () => {
               <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }}/>
               </div>))}
 
-            {
-              canvasItems.map((item, index) => (
-                <div
-                  key={index}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, index)&handleMarkerClick(item, index, e)}
-                  // onDragStart={(e) => handleDragStart(e, index)}
-                  style={{
-                    position: 'absolute',
-                    left: `${item.x}px`,
-                    top: `${item.y}px`,
-                    cursor: 'move',
-                    border: isMarkerPlaced ? '2px solid green' : 'none',
-                    zIndex:5
-                  }}
-                  // onClick={(e) => handleMarkerClick(item, index, e)}
-                >
-                  {/* <img
-                    src={getImageForType(item.type)}
-                    alt={item.type}
-                    style={{ maxWidth: '2vw', maxHeight: '2vw', filter:"grayscale(200%)", zIndex: 10}}
-                  /> */}
-                  <HoverableIcon src={getImageForType(item.type)} alt={item.type} dataId="VirtualNode" data={sensorValues[item.id]} onClick={(e)=>handleMarkerClick(item, index, e)}/>
-                </div>
-              ))
-            }
+              {
+                canvasItems.map((item, index) => (
+                  <div
+                    key={index}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    style={{
+                      position: 'absolute',
+                      left: `${item.x}px`,
+                      top: `${item.y}px`,
+                      cursor: 'move',
+                      border: isMarkerPlaced ? '2px solid green' : 'none',
+                      zIndex: 5,
+                    }}
+                  >
+                    <HoverableIcon
+                      src={getImageForType(item.type)}
+                      alt={item.type}
+                      dataId="VirtualNode"
+                      data={item.type === 'waterquantitysensor' ? sensorValues[index]?.totalFlow : sensorValues[item.id]}
+                      onClick={(e) => handleMarkerClick(item, index, e)}
+                    />
+                  </div>
+                ))
+              }
+
+
+        
 
         {/* Dustbin Icon for Deleting Items */}
         <div
