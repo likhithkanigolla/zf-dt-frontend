@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
@@ -12,27 +12,36 @@ import ConsoleHeader from "./components/Console/Console";
 import Timer from "./components/timer-component";
 
 import whiteimage from "../images/white.png";
-import MotorNode from "../images/MotorNode.png"; 
+import MotorNode from "../images/MotorNode.png";
 import WaterLevelNode from "../images/WaterLevelNode.png";
 import WaterQualityNode from "../images/WaterQualityNode.png";
 import WaterQuantityNode from "../images/WaterQuantityNode.png";
-import LeakageIcon from "../images/leakage_water.png"; 
+import LeakageIcon from "../images/leakage_water.png";
 import HoverableIcon from "./components/HoverableIcon";
 
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import config from '../../config';
+import config from "../../config";
 
 const SimulationPage = () => {
   // State for holding input values and results
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [timeMultiplier, setTimeMultiplier] = useState(1);
-  const [floatBox, setFloatBox] = useState({ isVisible: false, value: '' , nodeId: null});
-  const [hoverData, setHoverData] = useState({isVisible: false, data: '',x: 0,y: 0});
+  const [floatBox, setFloatBox] = useState({
+    isVisible: false,
+    value: "",
+    nodeId: null,
+  });
+  const [hoverData, setHoverData] = useState({
+    isVisible: false,
+    data: "",
+    x: 0,
+    y: 0,
+  });
   const [inputValues, setInputValues] = useState({
     Scenarios: "1",
     timeMultiplier: "1",
@@ -52,10 +61,20 @@ const SimulationPage = () => {
     // flowrate: "5"
   });
 
-  const pipeList = ["PipeP1toSump","PipeBoreToSump", "PipeSumpToMotor","PipeMotorToOHT","PipeOHTtoRO","PipeOHTtoAdminWashrooms","PipeOHTtoKRBWashrooms","PipetoRO1","PipetoRO3"]
+  const pipeList = [
+    "PipeP1toSump",
+    "PipeBoreToSump",
+    "PipeSumpToMotor",
+    "PipeMotorToOHT",
+    "PipeOHTtoRO",
+    "PipeOHTtoAdminWashrooms",
+    "PipeOHTtoKRBWashrooms",
+    "PipetoRO1",
+    "PipetoRO3",
+  ];
 
   const [result, setResult] = useState(null);
-  const [previousResult, setpreviousResult] = useState(null)
+  const [previousResult, setpreviousResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
   const [sandContamination, setSandContamination] = useState(null);
   const [isOn, setIsOn] = useState({
@@ -83,7 +102,7 @@ const SimulationPage = () => {
   const [waterInROFilter, setWaterInROFilter] = useState(100); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
-  const [waterConsumed, setWaterConsumed] = useState(0.00);
+  const [waterConsumed, setWaterConsumed] = useState(0.0);
   const [flowrate, setFlowrate] = useState(10);
   const [PermeateFlowRate, setPermeateFlowRate] = useState(1);
   const [PermeateFlowRate_B, setPermeateFlowRate_B] = useState(1);
@@ -97,7 +116,7 @@ const SimulationPage = () => {
   const [SoilQuantity, setSoilQuantity] = useState("");
   const [SandQuantity, setSandQuantity] = useState("");
   const [voltageValue, setVoltageValue] = useState("");
-  const voltageData = {0: 1.2, 1: 2.3, 2: 3.4, 3: 4.5, 4: 5.6, 5: 6.7,};
+  const voltageData = { 0: 1.2, 1: 2.3, 2: 3.4, 3: 4.5, 4: 5.6, 5: 6.7 };
 
   const [showLeakageOptions, setShowLeakageOptions] = useState(false);
   const [numLeakages, setNumLeakages] = useState(1);
@@ -117,9 +136,9 @@ const SimulationPage = () => {
     PipeOHTtoAdminWashrooms: flow3,
     PipeOHTtoKRBWashrooms: flow3,
     PipetoRO1: flow4,
-    PipetoRO3: flow4
+    PipetoRO3: flow4,
   };
-  
+
   // Define the flow rates for each pipe
   const pipeFlowRates = {
     PipeP1toSump: 10,
@@ -130,30 +149,35 @@ const SimulationPage = () => {
     PipeOHTtoAdminWashrooms: 10,
     PipeOHTtoKRBWashrooms: 5,
     PipetoRO1: 2.5,
-    PipetoRO3: 7.5
+    PipetoRO3: 7.5,
   };
 
-  const [log, setLog] = useState([]); 
+  const [log, setLog] = useState([]);
   const updateLog = (message) => {
-    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+    setLog((prevLog) => [
+      ...prevLog,
+      `${new Date().toISOString()}: ${message}`,
+    ]);
   };
 
   const handleDownloadLog = () => {
-    const blob = new Blob([log.join('\n')], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, 'simulation_log.txt');
+    const blob = new Blob([log.join("\n")], {
+      type: "text/plain;charset=utf-8",
+    });
+    saveAs(blob, "simulation_log.txt");
   };
 
   const handleSaveLog = () => {
-    const logData = log ;
-    updateLog("Water in Sump: "+waterInSump);
-    updateLog("Water in OHT: "+waterInOHT);
-    updateLog("Water in RO Filter: "+waterInROFilter);
-    updateLog("Water Flow Admin: "+waterFlowAdmin);
-    updateLog("Water Flow KRB: "+waterFlowKRB);
-    updateLog("Motor On: "+motorOn);
+    const logData = log;
+    updateLog("Water in Sump: " + waterInSump);
+    updateLog("Water in OHT: " + waterInOHT);
+    updateLog("Water in RO Filter: " + waterInROFilter);
+    updateLog("Water Flow Admin: " + waterFlowAdmin);
+    updateLog("Water Flow KRB: " + waterFlowKRB);
+    updateLog("Motor On: " + motorOn);
     updateLog("Saving log data...");
     handleStopSimulation();
-    try{
+    try {
       const response = fetch(`${config.backendAPI}/save_log`, {
         method: "POST",
         headers: {
@@ -162,8 +186,8 @@ const SimulationPage = () => {
         body: JSON.stringify({ log: logData }),
       });
       updateLog("Log data saved successfully.");
-      setLog(['']); // Clear the log after saving
-      // reset everything 
+      setLog([""]); // Clear the log after saving
+      // reset everything
       setWaterInSump(60000);
       setWaterInOHT(0);
       setWaterFlowAdmin(0);
@@ -172,7 +196,7 @@ const SimulationPage = () => {
       setWaterInROFilter(100);
       setAlertShown(false);
       setWaterFlowStarted(false);
-      setWaterConsumed(0.00);
+      setWaterConsumed(0.0);
       setFlowrate(10);
       setPermeateFlowRate(1);
       setPreviousPermeateFlowRate(0);
@@ -182,7 +206,7 @@ const SimulationPage = () => {
       updateLog("Error saving log data.");
       // toast.error("Error saving log data.");
     }
-  };  
+  };
 
   const handleMultiplierChange = (e) => {
     setTimeMultiplier(parseFloat(e.target.value));
@@ -199,7 +223,11 @@ const SimulationPage = () => {
     for (let i = 0; i < numLeakages; i++) {
       // Calculate position based on leakageLocation and index (to distribute markers)
       // console.log("Marker Leakage Location:", leakageLocation);
-      const position = calculateLeakagePosition(leakageLocation, i, numLeakages);
+      const position = calculateLeakagePosition(
+        leakageLocation,
+        i,
+        numLeakages
+      );
       newMarkers.push({
         type: "leakage",
         x: position.x,
@@ -211,7 +239,6 @@ const SimulationPage = () => {
     setLeakageMarkers(newMarkers);
     setShowLeakageOptions(false);
     // toast.success("Leakages applied successfully!");
-
   };
 
   // Function to calculate leakage position (you'll need to implement the logic)
@@ -234,21 +261,21 @@ const SimulationPage = () => {
         { x: 7, y: 48 }, // Near OHT
       ];
     }
-      // Ensure totalLeakages is within the allowed range (1 to 3)
-      totalLeakages = Math.max(1, Math.min(3, totalLeakages));
-  
-      // Determine the index for the leakage position based on totalLeakages
-      let positionIndex;
-      if (totalLeakages === 1) {
-        positionIndex = 0; // Only use the motor end position
-      } else if (totalLeakages === 2) {
-        positionIndex = index * 2; // Use motor end and middle positions
-      } else {
-        positionIndex = index; // Use all three positions
-      }
-  
-      // Get the coordinates from the leakagePositions array
-      ({ x, y } = leakagePositions[positionIndex]);
+    // Ensure totalLeakages is within the allowed range (1 to 3)
+    totalLeakages = Math.max(1, Math.min(3, totalLeakages));
+
+    // Determine the index for the leakage position based on totalLeakages
+    let positionIndex;
+    if (totalLeakages === 1) {
+      positionIndex = 0; // Only use the motor end position
+    } else if (totalLeakages === 2) {
+      positionIndex = index * 2; // Use motor end and middle positions
+    } else {
+      positionIndex = index; // Use all three positions
+    }
+
+    // Get the coordinates from the leakagePositions array
+    ({ x, y } = leakagePositions[positionIndex]);
     return { x, y };
   };
 
@@ -274,7 +301,9 @@ const SimulationPage = () => {
     if (timeElapsed >= inputValues.simulationTime) {
       handleSaveLog();
       setTimeElapsed(0);
-      updateLog("Simulation stopped automatically after reaching simulation time.");
+      updateLog(
+        "Simulation stopped automatically after reaching simulation time."
+      );
       updateLog("Data saved successfully.");
     }
 
@@ -283,64 +312,112 @@ const SimulationPage = () => {
         if (motorOn) {
           // Pump water from Sump to OHT if motor is on
           if (waterInSump > 0 && waterInOHT < inputValues.ohtCapacity) {
-            setWaterInSump((prev) => Math.max((prev - flowrate), 0));
+            setWaterInSump((prev) => Math.max(prev - flowrate, 0));
 
-        // Calculate total leakage rate (limited to 4 L/s)
+            // Calculate total leakage rate (limited to 4 L/s)
 
-            const totalAfterMotorLeakageRate = Math.min(leakageMarkers.reduce((sum, marker) => {
-              if (marker.type === "leakage" && marker.location === "motorOHT") {return sum + marker.rate;}
-                return sum;}, 0),20 );// Maximum leakage rate     
-            updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}`);   
-        // Calculate the effective flow rate into OHT
-        updateLog(`Motor Flow Rate: ${flowrate}`);
-        const effectiveFlowRate = Math.max(flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5), 1); 
-  
-        updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
+            const totalAfterMotorLeakageRate = Math.min(
+              leakageMarkers.reduce((sum, marker) => {
+                if (
+                  marker.type === "leakage" &&
+                  marker.location === "motorOHT"
+                ) {
+                  return sum + marker.rate;
+                }
+                return sum;
+              }, 0),
+              20
+            ); // Maximum leakage rate
+            updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}`);
+            // Calculate the effective flow rate into OHT
+            updateLog(`Motor Flow Rate: ${flowrate}`);
+            const effectiveFlowRate = Math.max(
+              flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5),
+              1
+            );
 
-        const prevWaterInOHT = waterInOHT; // Get previous water level
-        setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)); 
-        }
+            updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
 
-        if (waterInSump === 0) {
-          setFlow5(false);
-        }
-        
-        if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
-          updateLog("Motor turned off automatically since water tank is full.");
-              // toast.error("Motor turned off automatically since water tank is full.");
-          setMotorOn(false);
-          setFlow2(false);
-          setAlertShown(true); // Set alertShown to true to prevent repeated alerts
+            const prevWaterInOHT = waterInOHT; // Get previous water level
+            setWaterInOHT((prev) =>
+              Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)
+            );
+          }
+
+          if (waterInSump === 0) {
+            setFlow5(false);
+          }
+
+          if (
+            (waterInOHT === inputValues.ohtCapacity || waterInSump === 0) &&
+            !alertShown
+          ) {
+            updateLog(
+              "Motor turned off automatically since water tank is full."
+            );
+            // toast.error("Motor turned off automatically since water tank is full.");
+            setMotorOn(false);
+            setFlow2(false);
+            setAlertShown(true); // Set alertShown to true to prevent repeated alerts
           }
         }
-        const totalAfterOHTLeakageRate = Math.min(leakageMarkers.reduce((sum, marker) => {
-          if (marker.type === "leakage" && marker.location === "roPlant") {return sum + marker.rate;}
-            return sum;}, 0),20 );// Maximum leakage rate
+        const totalAfterOHTLeakageRate = Math.min(
+          leakageMarkers.reduce((sum, marker) => {
+            if (marker.type === "leakage" && marker.location === "roPlant") {
+              return sum + marker.rate;
+            }
+            return sum;
+          }, 0),
+          20
+        ); // Maximum leakage rate
         console.log("Total Leakage Rate: ", totalAfterOHTLeakageRate);
-        
-        const temp_permeate = Math.max((Math.max(0.00, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B+5)))-totalAfterOHTLeakageRate,0);
+
+        const temp_permeate = Math.max(
+          Math.max(
+            0.0,
+            Math.min(
+              PermeateFlowRate + (Math.random() - 0.5) * 10,
+              PermeateFlowRate_B + 5
+            )
+          ) - totalAfterOHTLeakageRate,
+          0
+        );
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
-        setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: temp_permeate, id: 4 }]);
+        setFlowgraph((flowgraph) => [
+          ...flowgraph,
+          {
+            time: new Date().toLocaleTimeString(),
+            flowrate: temp_permeate,
+            id: 4,
+          },
+        ]);
         // setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
-        updateLog("Permeate Flow Rate: "+PermeateFlowRate);
-        
+        updateLog("Permeate Flow Rate: " + PermeateFlowRate);
+
         // Pump water from OHT to RO Filter continuously
-        if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
-          setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate+(PermeateFlowRate*0.3)) - (flowrate*0.06), 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
-          setWaterFlowAdmin((prev) => prev + (flowrate*0.02));
-          setWaterFlowKRB((prev) => prev + (flowrate*0.04));
-          setWaterInROFilter(
-            (prev) => prev + PermeateFlowRate 
-          ); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
+        if (
+          waterInOHT > PermeateFlowRate &&
+          waterInROFilter < inputValues.ro_ohtCapacity
+        ) {
+          setWaterInOHT((prev) =>
+            Math.max(
+              prev -
+              (PermeateFlowRate + PermeateFlowRate * 0.3) -
+              flowrate * 0.06,
+              0
+            )
+          ); // Tds Reduction rate is 70% so 30% water will be wasted.
+          setWaterFlowAdmin((prev) => prev + flowrate * 0.02);
+          setWaterFlowKRB((prev) => prev + flowrate * 0.04);
+          setWaterInROFilter((prev) => prev + PermeateFlowRate); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
         }
 
         if (waterInOHT < PermeateFlowRate) {
           setFlow3(false);
           updateLog("Flow stopped from since OHT is empty.");
           // toast.error("Flow stopped from since OHT is empty.");
-        }
-        else{
+        } else {
           setFlow3(true);
         }
 
@@ -356,40 +433,45 @@ const SimulationPage = () => {
           // toast.error("No water in sump.");
         }
 
-        if (waterInOHT <PermeateFlowRate && waterInSump <= flowrate && waterInROFilter < 10) {
+        if (
+          waterInOHT < PermeateFlowRate &&
+          waterInSump <= flowrate &&
+          waterInROFilter < 10
+        ) {
           handleStopSimulation();
-          updateLog("Simulation stopped automatically since all tanks are empty.");
+          updateLog(
+            "Simulation stopped automatically since all tanks are empty."
+          );
           // toast.error("Simulation stopped automatically since all tanks are empty.");
         }
 
-        setTimeElapsed(prevTimeElapsed => prevTimeElapsed + 1);
-      }, 1000/inputValues.timeMultiplier); // Run every half second
+        setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
+      }, 1000 / inputValues.timeMultiplier); // Run every half second
 
       intervalwaterConsume = setInterval(() => {
         if (waterInROFilter > 1) {
           handleConsumeWater();
         }
-      }, 1000/inputValues.timeMultiplier);
+      }, 1000 / inputValues.timeMultiplier);
     }
-    
+
     interval_val_update_wq = setInterval(() => {
-      setSensorValues(prevValues => {
+      setSensorValues((prevValues) => {
         const newValues = { ...prevValues };
-        
-  
+
         // Iterate over the current sensor values
-        Object.keys(newValues).forEach(index => {
-          console.log("Index Here TDD: ",index)
+        Object.keys(newValues).forEach((index) => {
+          console.log("Index Here TDD: ", index);
           const sensor = newValues[index];
-          console.log("Sensor Here TDD: ",sensor);
-          if (sensor.type === 'waterquantitysensor') {
+          console.log("Sensor Here TDD: ", sensor);
+          if (sensor.type === "waterquantitysensor") {
             const pipeId = sensor.iconId; // Correctly use the ID from the sensor
-            console.log("Pipe ID Here TDD: ",pipeId);
+            console.log("Pipe ID Here TDD: ", pipeId);
             const hasFlow = pipeFlowPresence[pipeId]; // Get flow presence for the pipe ID
             const flowRate = pipeFlowRates[pipeId] || 0; // Get flow rate for the pipe ID, default to 0 if not found
-            console.log("Flow Rate Here TDD: ",flowRate);  
+            console.log("Flow Rate Here TDD: ", flowRate);
             if (hasFlow && flowRate > 0) {
-              console.log("Flow Rate TDD: ",flowRate);
+              console.log("Flow Rate TDD: ", flowRate);
               newValues[index] = {
                 ...sensor,
                 totalFlow: sensor.totalFlow + flowRate, // Adjust the totalFlow increment based on timeMultiplier
@@ -397,12 +479,11 @@ const SimulationPage = () => {
             }
           }
         });
-  
+
         return newValues;
       });
-  
+
       console.log("Sensor Values: ", sensorValues);
-  
     }, 1000 / inputValues.timeMultiplier);
 
     const logIconCoordinates = () => {
@@ -413,7 +494,7 @@ const SimulationPage = () => {
           x: rect.left,
           y: rect.top,
         };
-        // These coordinates are used to know the postions of the SUMP, OHT etc 
+        // These coordinates are used to know the postions of the SUMP, OHT etc
         // console.log(`Icon ${iconId} coordinates:`, iconCoordinates);
         // You can now use iconCoordinates as needed
       });
@@ -432,12 +513,10 @@ const SimulationPage = () => {
     waterInOHT,
     waterInROFilter,
     alertShown,
-    leakageRate
+    leakageRate,
   ]);
 
-
-
-  const handleChange = async(e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
 
     // Check if simulation is running
@@ -453,19 +532,19 @@ const SimulationPage = () => {
         [name]: value,
       }));
 
-      updateLog(`Updated the Value ${name} to ${value}.`)
+      updateLog(`Updated the Value ${name} to ${value}.`);
       // Restart the simulation
       await handleCalculate(); // Recalculate
       handleStartWaterFlow(); // Restart the simulation
       setIsSimulationRunning(true);
-      updateLog("Simulation restarted after updating values.")
+      updateLog("Simulation restarted after updating values.");
     } else {
       // If simulation is not running, simply update input values
       setInputValues((prevInputValues) => ({
         ...prevInputValues,
         [name]: value,
       }));
-      updateLog(`Updated the Value ${name} to ${value}.`)
+      updateLog(`Updated the Value ${name} to ${value}.`);
     }
     if (name === "sumpCapacity") {
       setWaterInSump(parseInt(value) || 0); // Parse value as integer and set waterInSump
@@ -484,19 +563,24 @@ const SimulationPage = () => {
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
     try {
-      const response = await fetch(`${config.backendAPI}/calculate_soil_contamination`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(inputValues)
-      });
+      const response = await fetch(
+        `${config.backendAPI}/calculate_soil_contamination`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(inputValues),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to calculate soil contamination");
       }
       const soilContamination = await response.json();
       setSoilContamination(soilContamination);
-      updateLog(`TDS Value Soil Contamination calculated: ${soilContamination}`);
+      updateLog(
+        `TDS Value Soil Contamination calculated: ${soilContamination}`
+      );
       return soilContamination; // Return the soil contamination value
     } catch (error) {
       console.error(error);
@@ -505,26 +589,36 @@ const SimulationPage = () => {
 
   const calculateSandContamination = async () => {
     try {
-      const response = await fetch(`${config.backendAPI}/calculate_sand_contamination`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(inputValues)
-      });
+      const response = await fetch(
+        `${config.backendAPI}/calculate_sand_contamination`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(inputValues),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to calculate sand contamination");
       }
       const sandContamination = await response.json();
       setSandContamination(sandContamination);
-      updateLog(`TDS Value Sand Contamination calculated: ${sandContamination}`);
+      updateLog(
+        `TDS Value Sand Contamination calculated: ${sandContamination}`
+      );
       return sandContamination; // Return the sand contamination value
     } catch (error) {
       console.error(error);
     }
   };
 
-  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature,membrane_area) => {
+  const calculateROFiltration = async (
+    calculatedTDS,
+    desired_tds,
+    temperature,
+    membrane_area
+  ) => {
     const requestBody = {
       initial_tds: calculatedTDS,
       desired_tds: desired_tds,
@@ -534,28 +628,31 @@ const SimulationPage = () => {
       sump_capacity: inputValues.sumpCapacity,
     };
 
-    let response = await fetch(
-      `${config.backendAPI}/calculate_ro_filtration`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    let response = await fetch(`${config.backendAPI}/calculate_ro_filtration`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
     let data = await response.json();
     updateLog(`RO Filtration Data: ${JSON.stringify(data, null, 2)}`);
     return data;
   };
 
-  const calculateMotorFlowRate = async(voltage, current, power_factor, motor_efficiency, depth) => {
+  const calculateMotorFlowRate = async (
+    voltage,
+    current,
+    power_factor,
+    motor_efficiency,
+    depth
+  ) => {
     const requestBody = {
       voltage: voltage,
       current: current,
       power_factor: power_factor,
       motor_efficiency: motor_efficiency,
-      depth: depth, 
+      depth: depth,
     };
 
     let response = await fetch(
@@ -568,11 +665,11 @@ const SimulationPage = () => {
         body: JSON.stringify(requestBody),
       }
     );
-    
+
     let data = await response.json();
     updateLog(`Motor Flow Rate Data: ${JSON.stringify(data, null, 2)}`);
     return data;
-  }
+  };
 
   const handleCalculate = async () => {
     try {
@@ -580,41 +677,80 @@ const SimulationPage = () => {
       const sandQuantity = parseInt(inputValues.SandQuantity);
       let calculatedTDS;
       // store the result.calculated_tds_value in this format in { time: currenttime', tds: result.calculated_tds_value, id: 1 } id 1 if only soil is there and id 2 if only sand is there id 3 if both are there
-    
 
       if (soilQuantity !== 0 && sandQuantity === 0) {
-        const soilContaminationValue = await calculateSoilContamination(inputValues);
+        const soilContaminationValue = await calculateSoilContamination(
+          inputValues
+        );
         console.log("Soil Value:", soilContaminationValue);
         calculatedTDS = soilContaminationValue;
-        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: soilContaminationValue, id: 1 }]);
+        setDatagraph((datagraph) => [
+          ...datagraph,
+          {
+            time: new Date().toLocaleTimeString(),
+            tds: soilContaminationValue,
+            id: 1,
+          },
+        ]);
       } else if (soilQuantity === 0 && sandQuantity !== 0) {
-        const sandContaminationValue = await calculateSandContamination(inputValues);
+        const sandContaminationValue = await calculateSandContamination(
+          inputValues
+        );
         console.log("Sand Value:", sandContaminationValue);
         calculatedTDS = sandContaminationValue;
-        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: sandContaminationValue, id: 2 }]);
+        setDatagraph((datagraph) => [
+          ...datagraph,
+          {
+            time: new Date().toLocaleTimeString(),
+            tds: sandContaminationValue,
+            id: 2,
+          },
+        ]);
       } else {
         const SandTDS = await calculateSandContamination(inputValues);
         const SoilTDS = await calculateSoilContamination(inputValues);
-  
+
         console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS);
         updateLog(`Soil TDS Value calculated: ${SoilTDS}`);
         updateLog(`Sand TDS Value calculated: ${SandTDS}`);
-  
+
         calculatedTDS = (SoilTDS + SandTDS) / 2;
-        setDatagraph(datagraph => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
+        setDatagraph((datagraph) => [
+          ...datagraph,
+          { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 },
+        ]);
         updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
-      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5)
-      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
+      const flow = await calculateMotorFlowRate(
+        inputValues.voltage,
+        inputValues.current,
+        inputValues.power_factor,
+        inputValues.motor_efficiency,
+        2.5
+      );
+      const data_RO = await calculateROFiltration(
+        calculatedTDS,
+        inputValues.desired_tds,
+        inputValues.temperature,
+        inputValues.membrane_area
+      );
       // console.log("RO Filtration Data:", data_RO);
       setpreviousResult(result); // Store the current result in previousResult
       setResult({
         ...data_RO,
-        calculated_tds_value: parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25
+        calculated_tds_value:
+          parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25,
       });
 
       setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
-      setFlowgraph(flowgraph => [...flowgraph, { time: new Date().toLocaleTimeString(), flowrate: PermeateFlowRate, id: 4 }]);
+      setFlowgraph((flowgraph) => [
+        ...flowgraph,
+        {
+          time: new Date().toLocaleTimeString(),
+          flowrate: PermeateFlowRate,
+          id: 4,
+        },
+      ]);
       setPermeateFlowRate(parseFloat(data_RO.permeate_flow_rate));
       setPermeateFlowRate_B(parseFloat(data_RO.permeate_flow_rate));
       setFlowrate(parseFloat(flow.flowrate_per_min));
@@ -624,7 +760,6 @@ const SimulationPage = () => {
 
       setWaterFlowStarted(true);
       return calculatedTDS;
-
     } catch (error) {
       console.error("Error calculating RO filtration:", error);
     }
@@ -632,16 +767,18 @@ const SimulationPage = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
+      const response = await fetch(
+        `${config.backendAPI}/get_value?table_name=${tableName}`
+      );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json(); // Assuming this returns an object
       // Transform the data object into an array of objects for each key-value pair,
       // ensuring null values are handled gracefully.
       const dataArray = Object.entries(data).map(([key, value]) => ({
         title: key,
-        value: value === null ? 'N/A' : value.toString(), // Use 'N/A' for null values
+        value: value === null ? "N/A" : value.toString(), // Use 'N/A' for null values
       }));
       setData(dataArray); // Assuming you have a setData function to update state
     } catch (error) {
@@ -684,7 +821,7 @@ const SimulationPage = () => {
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
-      await handleCalculate(); 
+      await handleCalculate();
       // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
       setIsSimulationRunning(true);
@@ -693,7 +830,7 @@ const SimulationPage = () => {
       setFlow5((flow5) => !flow5);
       setFlow2(true);
       setMotorOn(true);
-      updateLog("Simulation started.")
+      updateLog("Simulation started.");
       // toast.success("Simulation started!");
     } else {
       handleStopWaterFlow(); // Stop water flow
@@ -704,25 +841,24 @@ const SimulationPage = () => {
       setFlow4(false);
       setFlow5(false);
       setMotorOn(false);
-      updateLog("Simulation stopped.")
+      updateLog("Simulation stopped.");
       // toast.error("Simulation stopped!");
     }
   };
 
   const handleConsumeWater = () => {
-    // Consumption is 10% of the filteration. 
+    // Consumption is 10% of the filteration.
     // if (waterInROFilter >= (PermeateFlowRate/10)) {
     //   setFlow4(true);
-    //   setWaterInROFilter((prev) => prev - (PermeateFlowRate/10)); 
-    //   setWaterConsumed((prev) => prev + (PermeateFlowRate/10)); 
+    //   setWaterInROFilter((prev) => prev - (PermeateFlowRate/10));
+    //   setWaterConsumed((prev) => prev + (PermeateFlowRate/10));
     //   console.log(" TDD Consumed water from RO Filter.");
     // }
     if (waterInROFilter >= 10) {
       setFlow4(true);
-      setWaterInROFilter((prev) => prev - 10); 
-      setWaterConsumed((prev) => prev + 10); 
-    } 
-    else {
+      setWaterInROFilter((prev) => prev - 10);
+      setWaterConsumed((prev) => prev + 10);
+    } else {
       // alert("Not enough water in RO Filter to consume.")
       setFlow4(false);
       // toast.error("Not enough water in RO Filter to consume.");
@@ -732,10 +868,10 @@ const SimulationPage = () => {
 
   const [canvasItems, setCanvasItems] = useState([]);
   const [itemToAdd, setItemToAdd] = useState(null);
-  
+
   const handleDragStart = (event, index) => {
     if (index !== undefined) {
-      event.dataTransfer.setData('index', index);
+      event.dataTransfer.setData("index", index);
     }
 
     const markerCoordinates = {
@@ -744,7 +880,7 @@ const SimulationPage = () => {
     };
 
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates, index);
-    console.log('Marker is placed on:', iconId);
+    console.log("Marker is placed on:", iconId);
     updateLog(`Marker is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
@@ -756,11 +892,11 @@ const SimulationPage = () => {
     updateLog(`Deleted item at index ${index}.`);
     // toast.error(`Deleted item at index ${index}.`);
   };
-  
+
   const checkMarkerOverlap = (markerCoordinates, index) => {
     let isPlaced = false;
     let iconId = null;
-  
+
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref, index) => {
       const rect = ref.getBoundingClientRect();
@@ -770,61 +906,56 @@ const SimulationPage = () => {
         markerCoordinates.y >= rect.top &&
         markerCoordinates.y <= rect.top + rect.height
       ) {
-        iconId = ref.id; 
+        iconId = ref.id;
         isPlaced = true;
       }
     });
 
-    if(iconId === 'dustbin'){
+    if (iconId === "dustbin") {
       handleDeleteItem(index);
     }
 
     if (!isPlaced) {
       // toast.error("Marker is not placed on any icon.");
-    }
-     else {
-
+    } else {
       // toast.success(`Marker is placed on: ${iconId}`);
     }
-  
+
     return { isPlaced, iconId };
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const canvasRect = event.currentTarget.getBoundingClientRect();
-    const index = event.dataTransfer.getData('index');
+    const index = event.dataTransfer.getData("index");
     const x = event.clientX - canvasRect.left;
     const y = event.clientY - canvasRect.top;
-    
-      if (index) {
-        const updatedItems = [...canvasItems];
-        updatedItems[index] = {
-          ...updatedItems[index],
-          x: x,
-          y: y,
-        };
-        setCanvasItems(updatedItems);
-        console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
-      } else if (itemToAdd) {
-        const newItem = {
-          type: itemToAdd,
-          x: x,
-          y: y,
-        };
-        setCanvasItems([...canvasItems, newItem]);
-        setItemToAdd(null);
-        updateLog(`Added item of type ${itemToAdd}`);
-      }
-      else {  
-        console.log("Dropped at x: ", x, "y: ", y);
-      }
-    
+
+    if (index) {
+      const updatedItems = [...canvasItems];
+      updatedItems[index] = {
+        ...updatedItems[index],
+        x: x,
+        y: y,
+      };
+      setCanvasItems(updatedItems);
+      console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
+    } else if (itemToAdd) {
+      const newItem = {
+        type: itemToAdd,
+        x: x,
+        y: y,
+      };
+      setCanvasItems([...canvasItems, newItem]);
+      setItemToAdd(null);
+      updateLog(`Added item of type ${itemToAdd}`);
+    } else {
+      console.log("Dropped at x: ", x, "y: ", y);
+    }
   };
-  
 
   const handleDeleteAllItems = (event) => {
-    setCanvasItems([]); 
+    setCanvasItems([]);
   };
 
   const handleDragOver = (event) => {
@@ -842,82 +973,85 @@ const SimulationPage = () => {
   };
 
   const handleMarkerClick = async (item, index, event) => {
-    if(isSimulationRunning){
-    const { clientX, clientY } = event; 
-    const coordinates = {
-      x: clientX,
-      y: clientY,
-    };
-    
-    const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
-    updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
+    if (isSimulationRunning) {
+      const { clientX, clientY } = event;
+      const coordinates = {
+        x: clientX,
+        y: clientY,
+      };
 
-    const caltds= await handleCalculate()
-    // const caltds=100;
-    item.id = iconId;
+      const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
+      updateLog(
+        `Marker of type ${item.type
+        } placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`
+      );
 
-    if(iconId==='KRBSump' && item.type==='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterlevelsensor',
-        [iconId]: (waterInSump/inputValues.sumpCapacity)*100,
-      }));
-    }
-    if(iconId==='KRBOHTIcon' && item.type==='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterlevelsensor',
-        [iconId]: (waterInOHT/inputValues.ohtCapacity)*100,
-      }));
-    }
-    if(iconId==='KRBROOHT' && item.type==='waterlevelsensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterlevelsensor',
-        [iconId]: (waterInROFilter/inputValues.ro_ohtCapacity)*100,
-      }));
-    }
-    if(iconId ==='KRBSump' && item.type==='waterqualitysensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterqualitysensor',
-        [iconId]: caltds,
-      }));
+      const caltds = await handleCalculate();
+      // const caltds=100;
+      item.id = iconId;
 
-    }
-    if(iconId==='KRBOHTIcon' && item.type==='waterqualitysensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterqualitysensor',
-        [iconId]: caltds + Math.floor(Math.random() * 21) - 10,
-      }));
+      if (iconId === "KRBSump" && item.type === "waterlevelsensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterlevelsensor",
+          [iconId]: (waterInSump / inputValues.sumpCapacity) * 100,
+        }));
+      }
+      if (iconId === "KRBOHTIcon" && item.type === "waterlevelsensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterlevelsensor",
+          [iconId]: (waterInOHT / inputValues.ohtCapacity) * 100,
+        }));
+      }
+      if (iconId === "KRBROOHT" && item.type === "waterlevelsensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterlevelsensor",
+          [iconId]: (waterInROFilter / inputValues.ro_ohtCapacity) * 100,
+        }));
+      }
+      if (iconId === "KRBSump" && item.type === "waterqualitysensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterqualitysensor",
+          [iconId]: caltds,
+        }));
+      }
+      if (iconId === "KRBOHTIcon" && item.type === "waterqualitysensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterqualitysensor",
+          [iconId]: caltds + Math.floor(Math.random() * 21) - 10,
+        }));
+      }
+      if (iconId === "KRBROOHT" && item.type === "waterqualitysensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "waterqualitysensor",
+          [iconId]:
+            result.final_tds_concentration_after_ro_tank +
+            Math.floor(Math.random() * 11) -
+            5,
+        }));
+      }
 
+      if (pipeList.includes(iconId) && item.type === "waterquantitysensor") {
+        console.log("Pipe Icon Id: ", iconId);
+        const pipeId = iconId; // Assuming iconId corresponds to the pipe ID
+        const hasFlow = pipeFlowPresence[pipeId]; // Get the flow presence for the pipe ID
+        const flowRate = pipeFlowRates[pipeId] || 0; // Get the flow rate for the pipe ID, default to 0 if not found
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          [index]: {
+            index,
+            type: "waterquantitysensor",
+            iconId: iconId,
+            totalFlow: hasFlow ? flowRate : 0, // Initialize total flow with the pipe's flow rate if flow is present, otherwise 0
+          },
+        }));
+      }
     }
-    if(iconId==='KRBROOHT' && item.type==='waterqualitysensor'){
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        type: 'waterqualitysensor',
-       [iconId]: result.final_tds_concentration_after_ro_tank+Math.floor(Math.random() * 11) - 5,
-      }));
-    }
-
-    if (pipeList.includes(iconId) && item.type === 'waterquantitysensor') {
-      console.log("Pipe Icon Id: ", iconId);
-      const pipeId = iconId; // Assuming iconId corresponds to the pipe ID
-      const hasFlow = pipeFlowPresence[pipeId]; // Get the flow presence for the pipe ID
-      const flowRate = pipeFlowRates[pipeId] || 0; // Get the flow rate for the pipe ID, default to 0 if not found
-      setSensorValues(prevValues => ({
-        ...prevValues,
-        [index]: {
-          index,
-          type: 'waterquantitysensor',
-          iconId: iconId,
-          totalFlow: hasFlow ? flowRate : 0 // Initialize total flow with the pipe's flow rate if flow is present, otherwise 0
-        }
-      }));
-    }
-  }
-
   };
 
   const handleToolbarItemClick = (type) => {
@@ -928,43 +1062,61 @@ const SimulationPage = () => {
 
   const handleClearLog = () => {
     // Assuming logContent is a state variable holding the log data
-    setLog(''); // Clear the log by setting the log content to an empty string
-    updateLog('Log cleared'); // Log the action
+    setLog(""); // Clear the log by setting the log content to an empty string
+    updateLog("Log cleared"); // Log the action
   };
 
-  
   const getImageForType = (type) => {
     switch (type) {
-      case 'waterqualitysensor':
+      case "waterqualitysensor":
         return WaterQualityNode;
-      case 'waterquantitysensor':
+      case "waterquantitysensor":
         return WaterQuantityNode;
-      case 'waterlevelsensor':
+      case "waterlevelsensor":
         return WaterLevelNode;
-      case 'motorsensor':
+      case "motorsensor":
         return MotorNode;
       default:
-        return ''; // default image or empty string if none
+        return ""; // default image or empty string if none
     }
   };
-
 
   const SimulatedValues = {
     "WM-WL-KH98-00": (waterInSump / inputValues.sumpCapacity) * 100,
     "WM-WL-KH00-00": (waterInOHT / inputValues.ohtCapacity) * 100,
     "DM-KH98-60": 0,
-    "WM-WD-KH98-00": result? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10: 0,
-    "WM-WD-KH96-00": result? (result.calculated_tds_value+30) + Math.floor(Math.random() * 21) - 10 : 0,
-    "WM-WD-KH96-02": result? (result.final_tds_concentration_after_ro_tank)+Math.floor(Math.random() * 11) - 5: 0,
-    "WM-WD-KH95-00": result? (result.final_tds_concentration_after_ro_tank-5)+Math.floor(Math.random() * 11) - 5: 0,
-    "WM-WD-KH96-01": result? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10 : 0,
-    "WM-WD-KH03-00": result? (result.final_tds_concentration_after_ro_tank-5)+Math.floor(Math.random() * 11) - 5: 0,
+    "WM-WD-KH98-00": result
+      ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10
+      : 0,
+    "WM-WD-KH96-00": result
+      ? result.calculated_tds_value + 30 + Math.floor(Math.random() * 21) - 10
+      : 0,
+    "WM-WD-KH96-02": result
+      ? result.final_tds_concentration_after_ro_tank +
+      Math.floor(Math.random() * 11) -
+      5
+      : 0,
+    "WM-WD-KH95-00": result
+      ? result.final_tds_concentration_after_ro_tank -
+      5 +
+      Math.floor(Math.random() * 11) -
+      5
+      : 0,
+    "WM-WD-KH96-01": result
+      ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10
+      : 0,
+    "WM-WD-KH03-00": result
+      ? result.final_tds_concentration_after_ro_tank -
+      5 +
+      Math.floor(Math.random() * 11) -
+      5
+      : 0,
     "WM-WF-KB04-70": waterFlowAdmin,
     "WM-WF-KB04-73": waterFlowKRB,
-    "WM-WF-KB04-71": ((3 * waterConsumed) / 4),
-    "WM-WF-KB04-72": ((waterConsumed) / 4),
-    "WM-WF-KH98-40": inputValues?inputValues.sumpCapacity:0,
-    "WM-WF-KH95-40": inputValues?inputValues.sumpCapacity-waterInSump:0, 
+    "WM-WF-KB04-71": (3 * waterConsumed) / 4,
+    "WM-WF-KB04-72": waterConsumed / 4,
+    "WM-WF-KH98-40": inputValues ? inputValues.sumpCapacity : 0,
+    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump : 0,
   };
 
   const displayValueOnClick = (id) => {
@@ -976,238 +1128,548 @@ const SimulationPage = () => {
 
   // Ensure this function is correctly defined in your component
   const handleFloatBoxClose = () => {
-    setFloatBox({ isVisible: false, value: '' });
+    setFloatBox({ isVisible: false, value: "" });
   };
-  
 
   return (
     <div>
       {/* <ToastContainer /> */}
       <NavigationBar title="Digital Twin for Water Quality" />
-      <div style={{ display: "flex"}}>
+      <div style={{ display: "flex" }}>
         {/* Left Section */}
-        <SimulationForm 
-            inputValues={inputValues} 
-            handleChange={handleChange} 
-            handleStartSimulation={handleStartSimulation} 
-            isSimulationRunning={isSimulationRunning} 
-            handleMultiplierChange={handleMultiplierChange}
-            timeMultiplier={timeMultiplier}
-            handleDownloadLog={handleDownloadLog}
-            handleSaveLog={handleSaveLog}
-            log={log}
+        <SimulationForm
+          inputValues={inputValues}
+          handleChange={handleChange}
+          handleStartSimulation={handleStartSimulation}
+          isSimulationRunning={isSimulationRunning}
+          handleMultiplierChange={handleMultiplierChange}
+          timeMultiplier={timeMultiplier}
+          handleDownloadLog={handleDownloadLog}
+          handleSaveLog={handleSaveLog}
+          log={log}
         />
 
         {/* Middle Section */}
         <div style={{ flex: 3 }}>
           {/* Toolbar */}
-          <Toolbar handleToolbarItemClick={handleToolbarItemClick} handleLeakageIconClick={handleLeakageIconClick} />
-          <LeakageOptions showLeakageOptions={showLeakageOptions} numLeakages={numLeakages} setNumLeakages={setNumLeakages} leakageLocation={leakageLocation} setLeakageLocation={setLeakageLocation} leakageRate={leakageRate} setLeakageRate={setLeakageRate} handleApplyLeakages={handleApplyLeakages}/>
+          <Toolbar
+            handleToolbarItemClick={handleToolbarItemClick}
+            handleLeakageIconClick={handleLeakageIconClick}
+          />
+          <LeakageOptions
+            showLeakageOptions={showLeakageOptions}
+            numLeakages={numLeakages}
+            setNumLeakages={setNumLeakages}
+            leakageLocation={leakageLocation}
+            setLeakageLocation={setLeakageLocation}
+            leakageRate={leakageRate}
+            setLeakageRate={setLeakageRate}
+            handleApplyLeakages={handleApplyLeakages}
+          />
           <div className="demo-page">
-            <div style={{ position: 'relative', width: '60vw', height: '23vw', border: '1px solid black', background: "#ffffff"}} onDrop={handleDrop} onDragOver={handleDragOver}>
-              <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }}/>
-              <SimulationCanvas 
-                  handleIconClick={handleIconClick}
-                  iconRefs={iconRefs}
-                  PipeP1toSump={flow1}
-                  PipeBoreToSump={flow1}
-                  PipeSumpToMotor={flow5}
-                  PipeMotorToOHT={flow2}
-                  PipeOHTtoRO={flow3}
-                  PipeOHTtoAdminWashrooms={flow3}
-                  PipeOHTtoKRBWashrooms= {flow3}
-                  PipetoRO1={flow4}
-                  PipetoRO3={flow4}
-                  waterInSump={waterInSump}
-                  sumpCapacity={inputValues.sumpCapacity}
-                  motorOn={motorOn}
-                  toggleIsOn={toggleIsOn}
-                  isSimulationRunning={isSimulationRunning}
-                  handleMotorToggle={handleMotorToggle}
-                  waterInOHT={waterInOHT}
-                  ohtCapacity={inputValues.ohtCapacity}
-                  waterInROFilter={waterInROFilter}
-                  waterConsumed={waterConsumed}
-                  flowrate={flowrate}
-                  result={result}
-                />
-              
+            <div
+              style={{
+                position: "relative",
+                width: "60vw",
+                height: "23vw",
+                border: "1px solid black",
+                background: "#ffffff",
+              }}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <img
+                src={whiteimage}
+                alt="blueprint"
+                style={{ width: "100%", height: "100%" }}
+              />
+              <SimulationCanvas
+                handleIconClick={handleIconClick}
+                iconRefs={iconRefs}
+                PipeP1toSump={flow1}
+                PipeBoreToSump={flow1}
+                PipeSumpToMotor={flow5}
+                PipeMotorToOHT={flow2}
+                PipeOHTtoRO={flow3}
+                PipeOHTtoAdminWashrooms={flow3}
+                PipeOHTtoKRBWashrooms={flow3}
+                PipetoRO1={flow4}
+                PipetoRO3={flow4}
+                waterInSump={waterInSump}
+                sumpCapacity={inputValues.sumpCapacity}
+                motorOn={motorOn}
+                toggleIsOn={toggleIsOn}
+                isSimulationRunning={isSimulationRunning}
+                handleMotorToggle={handleMotorToggle}
+                waterInOHT={waterInOHT}
+                ohtCapacity={inputValues.ohtCapacity}
+                waterInROFilter={waterInROFilter}
+                waterConsumed={waterConsumed}
+                flowrate={flowrate}
+                result={result}
+              />
 
               {/* IoT Nodes  */}
-              <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "12.5vw",
+                  left: "14vw",
+                  textAlign: "center",
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH98-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH98-00'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH98-00"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH98-00"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "29.5vw", textAlign: "center", zIndex: 3 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "1vw",
+                  left: "29.5vw",
+                  textAlign: "center",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-00'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH96-00"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH96-00"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center", zIndex: 3 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "6.5vw",
+                  left: "50.6vw",
+                  textAlign: "center",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-01" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-01'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH96-01"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH96-01"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "9vw", left: "55vw", textAlign: "center" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "9vw",
+                  left: "55vw",
+                  textAlign: "center",
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH96-02" data={`Water Quality: ${SimulatedValues['WM-WD-KH96-02'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH96-02"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH96-02"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "15vw",
+                  left: "52.3vw",
+                  textAlign: "center",
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH95-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH95-00'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH95-00"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH95-00"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "15vw",
+                  left: "57.9vw",
+                  textAlign: "center",
+                }}
+              >
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} /> */}
-                <HoverableIcon src={WaterQualityNode}  alt="WaterQualityNode" dataId="WM-WD-KH03-00" data={`Water Quality: ${SimulatedValues['WM-WD-KH03-00'].toFixed(2)}ppm`}/>
+                <HoverableIcon
+                  src={WaterQualityNode}
+                  alt="WaterQualityNode"
+                  dataId="WM-WD-KH03-00"
+                  data={`Water Quality: ${SimulatedValues[
+                    "WM-WD-KH03-00"
+                  ].toFixed(2)}ppm`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "8vw", left: "13vw", textAlign: "center", zIndex: 3}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "8vw",
+                  left: "13vw",
+                  textAlign: "center",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
-                <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH98-00" data={`Water Level: ${SimulatedValues['WM-WL-KH98-00'].toFixed(2)}%`}/>
+                <HoverableIcon
+                  src={WaterLevelNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WL-KH98-00"
+                  data={`Water Level: ${SimulatedValues[
+                    "WM-WL-KH98-00"
+                  ].toFixed(2)}%`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "1vw", left: "32vw", textAlign: "center", zIndex: 3}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "1vw",
+                  left: "32vw",
+                  textAlign: "center",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
-                <HoverableIcon src={WaterLevelNode}  alt="WaterQuantityNode" dataId="WM-WL-KH00-00" data={`Water Level: ${SimulatedValues['WM-WL-KH00-00'].toFixed(2)}%`}/>
+                <HoverableIcon
+                  src={WaterLevelNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WL-KH00-00"
+                  data={`Water Level: ${SimulatedValues[
+                    "WM-WL-KH00-00"
+                  ].toFixed(2)}%`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 4}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10vw",
+                  left: "22vw",
+                  textAlign: "center",
+                  zIndex: 4,
+                }}
+              >
                 {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
-                <HoverableIcon src={MotorNode}  alt="MotorNode" aId="DM-KH98-60" dataId="DM-KH98-60" data={`Motor Status: ${motorOn ? "ON" : "OFF"}`}/>
+                <HoverableIcon
+                  src={MotorNode}
+                  alt="MotorNode"
+                  aId="DM-KH98-60"
+                  dataId="DM-KH98-60"
+                  data={`Motor Status: ${motorOn ? "ON" : "OFF"}`}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "7vw", left: "7vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "7vw",
+                  left: "7vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH98-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH98-40']}L`} rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KH98-40"
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KH98-40"]}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "6.7vw", left: "26.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "6.7vw",
+                  left: "26.5vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KH95-40" data={`Total Water Flow: ${SimulatedValues['WM-WF-KH95-40'].toFixed(2)}L`}  rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KH95-40"
+                  data={`Total Water Flow: ${SimulatedValues[
+                    "WM-WF-KH95-40"
+                  ].toFixed(2)}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "39.6vw", textAlign: "center", transform: "rotate(90deg)", zIndex: 3 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "7.3vw",
+                  left: "39.6vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-70" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-70'].toFixed(2)}L`}  rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KB04-70"
+                  data={`Total Water Flow: ${SimulatedValues[
+                    "WM-WF-KB04-70"
+                  ].toFixed(2)}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "7.3vw", left: "45.3vw", textAlign: "center", transform: "rotate(90deg)", zIndex: 3  }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "7.3vw",
+                  left: "45.3vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-73" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-73'].toFixed(2)}L`}  rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KB04-73"
+                  data={`Total Water Flow: ${SimulatedValues[
+                    "WM-WF-KB04-73"
+                  ].toFixed(2)}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "11vw", left: "52.5vw", textAlign: "center", transform: "rotate(90deg)" , zIndex: 3}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "11vw",
+                  left: "52.5vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-71" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-71'].toFixed(2)}L`}  rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KB04-71"
+                  data={`Total Water Flow: ${SimulatedValues[
+                    "WM-WF-KB04-71"
+                  ].toFixed(2)}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "11vw", left: "57.5vw", textAlign: "center", transform: "rotate(90deg)" , zIndex: 3}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "11vw",
+                  left: "57.5vw",
+                  textAlign: "center",
+                  transform: "rotate(90deg)",
+                  zIndex: 3,
+                }}
+              >
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
-                <HoverableIcon src={WaterQuantityNode}  alt="WaterQuantityNode" dataId="WM-WF-KB04-72" data={`Total Water Flow: ${SimulatedValues['WM-WF-KB04-72'].toFixed(2)}L`}  rotation={90}/>
+                <HoverableIcon
+                  src={WaterQuantityNode}
+                  alt="WaterQuantityNode"
+                  dataId="WM-WF-KB04-72"
+                  data={`Total Water Flow: ${SimulatedValues[
+                    "WM-WF-KB04-72"
+                  ].toFixed(2)}L`}
+                  rotation={90}
+                />
               </div>
 
-              <div style={{ position: "absolute", top: "19vw", left: "1vw", textAlign: "center"}}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "19vw",
+                  left: "1vw",
+                  textAlign: "center",
+                }}
+              >
                 <Timer elapsedTime={timeElapsed} />
               </div>
 
-                    {/* Leakage Markers */}
+              {/* Leakage Markers */}
               {leakageMarkers.map((marker, index) => (
-              <div key={index} style={{position: 'absolute', top: `${marker.x}vw`, left: `${marker.y}vw`, cursor: 'pointer', zIndex:20 }} onClick={() => {}}>
-              <img src={LeakageIcon} alt="Leakage" style={{ width: '20px', height: '20px' }}/>
-              </div>))}
+                <div
+                  key={index}
+                  style={{
+                    position: "absolute",
+                    top: `${marker.x}vw`,
+                    left: `${marker.y}vw`,
+                    cursor: "pointer",
+                    zIndex: 20,
+                  }}
+                  onClick={() => { }}
+                >
+                  <img
+                    src={LeakageIcon}
+                    alt="Leakage"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                </div>
+              ))}
 
-              {
-                canvasItems.map((item, index) => (
-                  <div
-                    key={index}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, index)}
-                    style={{
-                      position: 'absolute',
-                      left: `${item.x}px`,
-                      top: `${item.y}px`,
-                      cursor: 'move',
-                      border: isMarkerPlaced ? '2px solid green' : 'none',
-                      zIndex: 5,
-                    }}
-                  >
-                    <HoverableIcon
-                      src={getImageForType(item.type)}
-                      alt={item.type}
-                      dataId="VirtualNode"
-                      data={item.type === 'waterquantitysensor' ? sensorValues[index]?.totalFlow : sensorValues[item.id]}
-                      onClick={(e) => handleMarkerClick(item, index, e)}
-                    />
-                  </div>
-                ))
-              }
+              {canvasItems.map((item, index) => (
+                <div
+                  key={index}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  style={{
+                    position: "absolute",
+                    left: `${item.x}px`,
+                    top: `${item.y}px`,
+                    cursor: "move",
+                    border: isMarkerPlaced ? "2px solid green" : "none",
+                    zIndex: 5,
+                  }}
+                >
+                  <HoverableIcon
+                    src={getImageForType(item.type)}
+                    alt={item.type}
+                    dataId="VirtualNode"
+                    data={
+                      item.type === "waterquantitysensor"
+                        ? sensorValues[index]?.totalFlow
+                        : sensorValues[item.id]
+                    }
+                    onClick={(e) => handleMarkerClick(item, index, e)}
+                  />
+                </div>
+              ))}
 
-
-        
-
-        {/* Dustbin Icon for Deleting Items */}
-        <div
-          id="dustbin"
-          onDragOver={(e) => e.preventDefault()}
-          onClick={handleDeleteAllItems}
-          style={{
-            position: 'absolute',
-            bottom: '1vw',
-            right: '1vw',
-            width: '2vw',
-            height: '2vw',
-            cursor: 'pointer',
-            zIndex: 10,
-            backgroundColor: 'red',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 0
-          }}
-          ref={(ref) => { if (ref) { ref.id = "dustbin"; iconRefs.push(ref); } }}
-        >
-          <DeleteIcon style={{ color: 'white', fontSize: '40px' }} />
-        
-        </div>
-
-            {
-            itemToAdd && (
-              <div draggable onDragStart={(e) => handleDragStart(e)} style={{position: 'absolute', left: '20px',top: '20px',cursor: 'move',}}>
-                {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
-                <HoverableIcon src={getImageForType(itemToAdd)} alt={itemToAdd} dataId="Virtual Node" data={`NULL`}/>
+              {/* Dustbin Icon for Deleting Items */}
+              <div
+                id="dustbin"
+                onDragOver={(e) => e.preventDefault()}
+                onClick={handleDeleteAllItems}
+                style={{
+                  position: "absolute",
+                  bottom: "1vw",
+                  right: "1vw",
+                  width: "2vw",
+                  height: "2vw",
+                  cursor: "pointer",
+                  zIndex: 10,
+                  backgroundColor: "red",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  zIndex: 0,
+                }}
+                ref={(ref) => {
+                  if (ref) {
+                    ref.id = "dustbin";
+                    iconRefs.push(ref);
+                  }
+                }}
+              >
+                <DeleteIcon style={{ color: "white", fontSize: "40px" }} />
               </div>
-            )
-            }
-            {
-                hoverData.isVisible && (
-                  <div style={{ position: 'absolute', top: hoverData.y, left: hoverData.x, zIndex: 100, backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
-                    {hoverData.data}
-                  </div>
-                )
-            }
+
+              {itemToAdd && (
+                <div
+                  draggable
+                  onDragStart={(e) => handleDragStart(e)}
+                  style={{
+                    position: "absolute",
+                    left: "20px",
+                    top: "20px",
+                    cursor: "move",
+                  }}
+                >
+                  {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
+                  <HoverableIcon
+                    src={getImageForType(itemToAdd)}
+                    alt={itemToAdd}
+                    dataId="Virtual Node"
+                    data={`NULL`}
+                  />
+                </div>
+              )}
+              {hoverData.isVisible && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: hoverData.y,
+                    left: hoverData.x,
+                    zIndex: 100,
+                    backgroundColor: "white",
+                    padding: "10px",
+                    border: "1px solid black",
+                  }}
+                >
+                  {hoverData.data}
+                </div>
+              )}
             </div>
-          <ConsoleHeader handleDownloadLog={handleDownloadLog} log={log} handleClearLog={handleClearLog} className={"consoleContainer"} />
+            <ConsoleHeader
+              handleDownloadLog={handleDownloadLog}
+              log={log}
+              handleClearLog={handleClearLog}
+              className={"consoleContainer"}
+            />
           </div>
 
           <br></br>
 
-      {/* <div className="container" style={{overflowY: 'scroll', height: '25vh', color: 'white' }}>
+          {/* <div className="container" style={{overflowY: 'scroll', height: '25vh', color: 'white' }}>
             <div className='flex-container'>
             <button onClick={handleDownloadLog} className='button' style={{background: 'blue', height:'1vw', width:'6vw'}}>Download</button>
             <button onClick={handleDownloadLog} className='button' sstyle={{background: 'blue', height:'1vw', width:'6vw'}}>Save</button>
             <button onClick={handleDownloadLog} className='button' sstyle={{background: 'blue', height:'1vw', width:'6vw'}}>Close</button>
             </div>
         </div> */}
-
-  </div>
-
+        </div>
 
         {/* Right Section */}
-        <ResultContainer result={result} previousResult={previousResult} data={data} sensorValues={sensorValues} PermeateFlowRate={PermeateFlowRate} PreviousPermeateFlowRate={PreviousPermeateFlowRate} datagraph={datagraph} flowgraph={flowgraph}/>
-        
+        <ResultContainer
+          result={result}
+          previousResult={previousResult}
+          data={data}
+          sensorValues={sensorValues}
+          PermeateFlowRate={PermeateFlowRate}
+          PreviousPermeateFlowRate={PreviousPermeateFlowRate}
+          datagraph={datagraph}
+          flowgraph={flowgraph}
+        />
       </div>
     </div>
   );
