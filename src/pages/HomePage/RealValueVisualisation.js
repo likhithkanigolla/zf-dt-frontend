@@ -1,19 +1,16 @@
-import React, {useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "./RealValueVisualisation.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
 import LoginPage from '../LoginPage/LoginPage';
-import ConsoleHeader from '../SimulationPage/components/Console/Console.jsx';
 import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
-import MotorNode from "../images/MotorNode-removebg.png"; 
+import config from '../../config';
+import MotorNode from "../images/MotorNode-removebg.png";
 import WaterLevelNode from "../images/WaterLevelNode-removebg.png";
 import WaterQualityNode from "../images/WaterQualityNode-removebg.png";
 import WaterQuantityNode from "../images/WaterQuantityNode-removebg.png";
-import config from '../../config';
-import { saveAs } from 'file-saver';
-import { BorderAllRounded } from '@mui/icons-material';
 
 
 const RealValueVisualisation = () => {

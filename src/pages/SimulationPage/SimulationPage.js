@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
-import ConsoleHeader from "./components/Console/Console";
+import ConsoleHeader from "../../components/Console/Console";
 import LeakageOptions from "./components/LeakageOptions";
 import ResultContainer from "./components/ResultContainer";
 import SimulationCanvas from "./components/SimulationCanvas";
 import SimulationForm from "./components/SimulationForm/Form";
 import Toolbar from "./components/ToolBar/ToolBar";
-import Timer from "./components/timer-component";
+import Timer from "../../components/timer-component";
 
 import MotorNode from "../images/MotorNode.png";
 import WaterLevelNode from "../images/WaterLevelNode.png";
