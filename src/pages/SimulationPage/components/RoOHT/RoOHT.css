@@ -12,7 +12,7 @@
   
   
   
-  .tank-fill {
+  .Ro-tank-fill {
     position: absolute;
     bottom: -1%; /* Start filling from the bottom */
     width: 20vw;
@@ -29,13 +29,13 @@
   .ro-wave {
     background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
     position: absolute;
-    width: 3000.3vw;
-    height: 1.3vw;
+    width: 300.3vw;
+    height: 3vw;
     bottom: 0;
     background: rgb(62, 195, 221);
     
     opacity: 1;
-    animation: wave 3s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite, swell 5s ease -1.25s infinite;
+    animation: wave 3s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite, swell 2s ease -1.25s infinite;
     transform: translate3d(0, 0, 0);
    
   }

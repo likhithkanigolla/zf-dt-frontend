@@ -20,9 +20,9 @@ const RoOHT = forwardRef(({ waterInROFilter, ro_ohtCapacity, handleIconClick }, 
         {/* <div className="overflow-tube" style={{ top: '10%' }}>
           {isOverflowing && <div className="overflow-water"></div>}
         </div> */}
-        <div className="tank-fill" style={{ height: `${fillPercentage}%` }}></div>
-          <div className="ro-wave" style={{ height: `${fillPercentage}%` }}></div>
-          <div className="ro-wave wave2" style={{ height: `${fillPercentage}%` }}></div>
+        <div className="Ro-tank-fill" style={{ height: `${fillPercentage}%` }}></div>
+          <div className="ro-wave" ></div>
+          <div className="ro-wave wave2" ></div>
           
       </div>
       <div style={{ fontSize: "0.5vw", position: "relative", bottom: "3.35vw", right: "2vw" }}>RO OHT</div>

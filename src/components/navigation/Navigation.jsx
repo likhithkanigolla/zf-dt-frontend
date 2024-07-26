@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// Ensure all necessary imports are included
 import { Link } from 'react-router-dom';
-import './NavigationBar.css';
 import {
   Badge,
   Typography,
@@ -15,81 +13,77 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  // Import Menu and Close icons from MUI
 } from '@mui/material';
-import Analytics from '@mui/icons-material/BarChartSharp';
-import CloseIcon from '@mui/icons-material/Close'; // Import for CloseIcon
-import {
-  NotificationsActive as NotificationsIcon,
-  Alarm as AlarmIcon,
-} from '@mui/icons-material';
+import Analyticsicon from '@mui/icons-material/BarChartSharp';
+import CloseIcon from '@mui/icons-material/Close';
+import NotificationsIcon from '@mui/icons-material/NotificationsActive';
+import AlarmIcon from '@mui/icons-material/Alarm';
 import { styled } from '@mui/material/styles';
-
-// Your existing imports
 import IITHLOGO from './images/iiith.png';
 import SCRCLOGO from './images/scrc_logo.png';
 import ZFLOGO from './images/zf_logo.png';
 import config from '../../config';
+import './NavigationBar.css';
 
+// Styled components using MUI's styled API
+const NotificationCard = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  position: 'relative',
+}));
 
-const useStyles = styled((theme) => ({
-  notificationCard: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
+const NotificationCardContent = styled(CardContent)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+});
+
+const MarkAsReadButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#FF8000',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#FFA500',
   },
-  notificationCardContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
+  fontSize: '0.7rem',
+  padding: theme.spacing(0.2, 1),
+  minWidth: 'unset',
+  height: 'unset',
+  borderRadius: '10px',
+  alignSelf: 'flex-end',
+  marginBottom: theme.spacing(1),
+}));
+
+const MarkAsResolvedButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#4CAF50',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#388E3C',
   },
-  markAsReadButton: {
-    backgroundColor: '#FF8000',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#FFA500',
-    },
-    fontSize: '0.7rem',
-    padding: theme.spacing(0.2, 1),
-    minWidth: 'unset',
-    height: 'unset',
-    borderRadius: '10px',
-    alignSelf: 'flex-end',
-    marginBottom: theme.spacing(1),
-  },
-  markAsResolvedButton: {
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#388E3C',
-    },
-    fontSize: '0.7rem',
-    padding: theme.spacing(0.2, 1),
-    minWidth: 'unset',
-    height: 'unset',
-    borderRadius: '10px',
-    alignSelf: 'flex-end',
-    marginBottom: theme.spacing(1),
-  },
-  popover: {
-    padding: theme.spacing(2),
-  },
+  fontSize: '0.7rem',
+  padding: theme.spacing(0.2, 1),
+  minWidth: 'unset',
+  height: 'unset',
+  borderRadius: '10px',
+  alignSelf: 'flex-end',
+  marginBottom: theme.spacing(1),
+}));
+
+const PopoverContent = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
 }));
 
 const NavigationBar = ({ title }) => {
-  const classes = useStyles();
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [alarmAnchorEl, setAlarmAnchorEl] = useState(null);
-  const [setClosedNotifications] = useState([]);
-  const [ncount, setNcount] = useState(0); // State for unread notification count
-  const [acount, setAcount] = useState(0); // State for alarm count
-  const [issue, setIssue] = useState([]); // State for notifications
+  const [ncount, setNcount] = useState(0);
+  const [acount, setAcount] = useState(0);
+  const [issue, setIssue] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlarmId, setSelectedAlarmId] = useState(null);
   const [remarks, setRemarks] = useState('');
-  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false); // Define state for hamburger menu
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
   const handleHamburgerClick = () => {
-    setIsHamburgerOpen(!isHamburgerOpen); // Toggle the state
+    setIsHamburgerOpen(!isHamburgerOpen);
   };
 
   const handleNotificationOpen = async (event = null) => {
@@ -98,7 +92,15 @@ const NavigationBar = ({ title }) => {
     }
     try {
       const response = await fetch(`${config.backendAPI}/notifications`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
       const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Unexpected response format: expected an array');
+      }
       const notificationsWithTimestamp = data.map((item) => ({
         id: item[0],
         timestamp: new Date(item[1]).toLocaleString(),
@@ -108,14 +110,11 @@ const NavigationBar = ({ title }) => {
         read: item[5],
       }));
       setIssue(notificationsWithTimestamp);
-      
-      // Update ncount with the count of unread notifications
+
       const unreadCount = notificationsWithTimestamp.filter(item => !item.read).length;
       setNcount(unreadCount);
-      
-      // console.log(`Number of notifications: ${notificationsWithTimestamp.length}`);
     } catch (error) {
-      console.error(error.message);
+      console.error('Error fetching notifications:',error.message);
     }
   };
 
@@ -123,13 +122,21 @@ const NavigationBar = ({ title }) => {
     setNotificationAnchorEl(null);
   };
 
-  const handleAlarmOpen = async (event=null) => {
+  const handleAlarmOpen = async (event = null) => {
     if (event !== null) {
       setAlarmAnchorEl(event.currentTarget);
     }
     try {
       const response = await fetch(`${config.backendAPI}/alarms`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+       const responseText = await response.text();
+      console.log('Raw response:', responseText);   
       const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Unexpected response format: expected an array');
+      }
       const alarmsWithTimestamp = data.map((item) => ({
         id: item[0],
         timestamp: new Date(item[1]).toLocaleString(),
@@ -141,7 +148,7 @@ const NavigationBar = ({ title }) => {
       const unreadCount = alarmsWithTimestamp.filter(item => !item.read).length;
       setAcount(unreadCount);
     } catch (error) {
-      console.error(error.message);
+      console.error('Error fetching alarms:',error.message);
     }
   };
 
@@ -156,22 +163,12 @@ const NavigationBar = ({ title }) => {
       });
       if (response.ok) {
         const closedNotification = issue.find((item) => item.id === id);
-        setClosedNotifications((prevNotifications) => [
-          ...prevNotifications,
-          closedNotification,
-        ]);
-        localStorage.setItem(
-          `notification_${id}`,
-          JSON.stringify(closedNotification)
-        );
         setIssue((prevIssue) => prevIssue.filter((item) => item.id !== id));
-        // Update ncount after marking notification as read
         const unreadCount = issue.filter(item => !item.read).length - 1;
         setNcount(unreadCount);
         if (issue.length === 1) {
           handleNotificationClose();
         }
-        // console.log('Notification marked as read successfully');
       } else {
         console.error('Failed to mark notification as read');
       }
@@ -199,9 +196,7 @@ const NavigationBar = ({ title }) => {
         body: JSON.stringify({ remarks }),
       });
       if (response.ok) {
-        // console.log('Alarm resolved successfully');
-        // Optionally update UI after resolving alarm
-        setAcount(acount - 1); // Reduce alarm count after resolving
+        setAcount(acount - 1);
         handleCloseDialog();
       } else {
         console.error('Failed to resolve alarm');
@@ -212,7 +207,6 @@ const NavigationBar = ({ title }) => {
   };
 
   useEffect(() => {
-    // Fetch notifications when component mounts
     handleNotificationOpen();
     handleAlarmOpen();
   }, []);
@@ -232,18 +226,15 @@ const NavigationBar = ({ title }) => {
       <div className="navbar__title">{title}</div>
 
       <div>
-        {/* Dropdown to select the pages */}
         <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
           <option value="/dt_waternetwork/" selected={window.location.pathname === '/dt_waternetwork'}>Live</option>
-          {/* <option value="/dt_waternetwork/analytics" selected={window.location.pathname === '/dt_waternetwork/analytics'}>Analytics</option> */}
-          {/* <option value="/dt_waternetwork/actuation" selected={window.location.pathname === '/dt_waternetwork/actuation'}>Actuation</option> */}
           <option value="/dt_waternetwork/simulation" selected={window.location.pathname === '/dt_waternetwork/simulation'}>Simulation</option>
         </select>
       </div>
 
       <div>
         <IconButton color="inherit" onClick={handleNotificationOpen}>
-          <Badge badgeContent={ncount !== null ? ncount : 0} color="secondary">
+          <Badge badgeContent={ncount} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -260,82 +251,76 @@ const NavigationBar = ({ title }) => {
             horizontal: 'right',
           }}
         >
-          <div className={classes.popover}>
-            {/* Notification cards */}
+          <PopoverContent>
             {issue.map((item, index) => (
-              <Card key={index} className={classes.notificationCard}>
-                <CardContent className={classes.notificationCardContent}>
+              <NotificationCard key={index}>
+                <NotificationCardContent>
                   <div>
                     <Typography variant="h6">{item.title}</Typography>
                     <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
                   </div>
-                  <Button className={classes.markAsReadButton} onClick={() => markNotificationAsRead(item.id)}>Mark as Read</Button>
-                </CardContent>
-              </Card>
+                  <MarkAsReadButton onClick={() => markNotificationAsRead(item.id)}>Mark as Read</MarkAsReadButton>
+                </NotificationCardContent>
+              </NotificationCard>
             ))}
-            </div>
-            </Popover>
-            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
 
-            <div>
-            <IconButton color="inherit" onClick={handleAlarmOpen}>
-              <Badge badgeContent={acount !== null ? acount : 0} color="secondary">
-                <AlarmIcon />
-              </Badge>
-            </IconButton>
-            <Popover
-              open={Boolean(alarmAnchorEl)}
-              anchorEl={alarmAnchorEl}
-              onClose={handleAlarmClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <div className={classes.popover}>
-                {issue.map((item, index) => (
-                  <Card key={index} className={classes.notificationCard}>
-                    <CardContent className={classes.notificationCardContent}>
-                      <div>
-                        <Typography variant="h6">{item.title}</Typography>
-                        <Typography variant="body1">id: {item.id}</Typography>
-                        <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
-                      </div>
-                      <Button className={classes.markAsResolvedButton} onClick={() => handleMarkAsResolved(item.id)}>Mark as Resolved</Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </Popover>
-            </div>
-
-            <div>
-              <IconButton color="inherit" onClick={handleHamburgerClick}>
-                {isHamburgerOpen ? <CloseIcon /> : <Analytics />}
-              </IconButton>
-              {isHamburgerOpen && (
-                <div className="full-screen-overlay">
-                  <div className="iframe-container">
-                    {/* Your content here, e.g., a close button or the menu items */}
-                    <IconButton color="inherit" onClick={handleHamburgerClick}>
-                    <div style={{ width: '100vw', height: '92vh', overflow: 'hidden', zIndex:15 }}>
-                      <iframe 
-                        src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=dark&background=transparent" 
-                        title="Live" 
-                        style={{ width: '100vw', height: '92vh', border: 'none' }}
-                        allowTransparency="true"
-                      ></iframe>
-                    </div>
-                     </IconButton>
+      <div>
+        <IconButton color="inherit" onClick={handleAlarmOpen}>
+          <Badge badgeContent={acount} color="secondary">
+            <AlarmIcon />
+          </Badge>
+        </IconButton>
+        <Popover
+          open={Boolean(alarmAnchorEl)}
+          anchorEl={alarmAnchorEl}
+          onClose={handleAlarmClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <PopoverContent>
+            {issue.map((item, index) => (
+              <NotificationCard key={index}>
+                <NotificationCardContent>
+                  <div>
+                    <Typography variant="h6">{item.title}</Typography>
+                    <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
                   </div>
-                </div>
-              )}
-            </div>
+                  <MarkAsResolvedButton onClick={() => handleMarkAsResolved(item.id)}>Mark as Resolved</MarkAsResolvedButton>
+                </NotificationCardContent>
+              </NotificationCard>
+            ))}
+          </PopoverContent>
+        </Popover>
+      </div>
 
+      <div>
+        <IconButton color="inherit" onClick={handleHamburgerClick}>
+          {isHamburgerOpen ? <CloseIcon /> : <Analyticsicon />}
+        </IconButton>
+        {isHamburgerOpen && (
+          <div className="full-screen-overlay">
+            <div className="iframe-container">
+              <div style={{ width: '100vw', height: '92vh', overflow: 'hidden', zIndex: 15 }}>
+                <iframe
+                  src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=dark&background=transparent"
+                  title="Live"
+                  style={{ width: '100vw', height: '92vh', border: 'none' }}
+                  allowTransparency="true"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Resolve Alarm</DialogTitle>

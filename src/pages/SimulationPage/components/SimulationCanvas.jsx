@@ -244,7 +244,7 @@ const SimulationCanvas = ({
 
         {/* Water Tower */}
        <div>
-        <RoOHT waterInROFilter={waterInROFilter} ohtCapacity={ro_ohtCapacity} handleIconClick={(e) => handleIconClick(e)}
+        <RoOHT waterInROFilter={waterInROFilter} ro_ohtCapacity={ro_ohtCapacity} handleIconClick={(e) => handleIconClick(e)}
           ref={(ref) => { if (ref) { ref.id = "KRBROOHT"; iconRefs.push(ref); } }} />
         </div>
 
