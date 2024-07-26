@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { FaDownload, FaSave } from "react-icons/fa";
-import { IoIosCloseCircle } from "react-icons/io";
+import React, { useEffect, useRef } from 'react';
+import { FaDownload } from "react-icons/fa";
 import { GrPowerReset } from "react-icons/gr";
+import config from '../../config';
 import './Console.css';
-import config from '../../../../config';
 
 const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
   const listRef = useRef(null);
