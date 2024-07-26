@@ -10,13 +10,14 @@ import roCoolerImage from "../../images/ro_cooler.png";
 import Motor from "../../images/Motor.png";
 import PumpHouse from "../../images/pump_house.png";
 import Borewell from "../../images/borewell.png";
-import ROWatertank from "../../images/tank_ro.png";
+// import ROWatertank from "../../images/tank_ro.png";
 import Washrooms from "../../images/Washrooms.png";
 import Sump from './Sump/Sump';
 import WaterTank from './WaterTank/Watertank';
 import Lshapepipeoht from './LShapePipe/PipeOHT'
 import ROLpipe from './LShapePipe/ROLpipe';
 import ELpipe from './LShapePipe/ELpipe';
+import RoOHT from './RoOHT/RoOHT';
 
 const SimulationCanvas = ({
   handleIconClick,
@@ -39,6 +40,7 @@ const SimulationCanvas = ({
   waterInOHT,
   ohtCapacity,
   waterInROFilter,
+  ro_ohtCapacity,
   waterConsumed,
   flowrate
 }) => {
@@ -241,11 +243,9 @@ const SimulationCanvas = ({
         </div> */}
 
         {/* Water Tower */}
-        <div style={{ position: "absolute", top: "6vw", left: "53.6vw" , textAlign: "center" }}>
-          {/* <div style={{ fontSize: "1vw" }}><b>{waterInROFilter.toFixed(2)}L</b></div> */}
-          <div style={{ fontSize: "0.6vw" }}>RO OHT <br></br> <b>{waterInROFilter.toFixed(2)}L</b></div>
-          <img src={ROWatertank} alt="WaterTank" style={{ width: "5vw", height: "5vw" }} onClick={(e) => handleIconClick(e)}
-            ref={(ref) => { if (ref) { ref.id = "KRBROOHT"; iconRefs.push(ref); } }} />
+       <div>
+        <RoOHT waterInROFilter={waterInROFilter} ohtCapacity={ro_ohtCapacity} handleIconClick={(e) => handleIconClick(e)}
+          ref={(ref) => { if (ref) { ref.id = "KRBROOHT"; iconRefs.push(ref); } }} />
         </div>
 
         {/* RO Coolers */}
