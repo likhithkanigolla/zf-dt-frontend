@@ -10,10 +10,12 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick}, ref) => 
     console.log("TDS VAL HERE", calculatedTdsVal)
     if (calculatedTdsVal >= 0 && calculatedTdsVal <= 150) {
       setWaterColor('rgb(37, 194, 226)');
-    } else if (calculatedTdsVal >= 151 && calculatedTdsVal <= 400) {
-      setWaterColor('yellow');
+    } else if (calculatedTdsVal >= 151 && calculatedTdsVal <= 250) {
+      setWaterColor('#82A460');
+    } else if (calculatedTdsVal >= 251 && calculatedTdsVal <= 400) {
+      setWaterColor('#C0C0C2');
     } else if (calculatedTdsVal >= 401 && calculatedTdsVal <= 600) {
-      setWaterColor('#663333');
+      setWaterColor('#CAAA76');
     }
   }, [calculatedTdsVal]);
 
