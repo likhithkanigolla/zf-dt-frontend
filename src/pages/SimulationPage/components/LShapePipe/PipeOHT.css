@@ -80,6 +80,7 @@
 }
 
 .falling-wateroht {
+    animation-delay: 20s;
     fill: rgb(37, 194, 226);
     animation: fallingWater 300ms infinite ease-in;
     transform-origin: bottom;
@@ -89,6 +90,7 @@
 }
 
 .falling-water2oht {
+    animation-delay: 20s;
     fill: rgb(37, 194, 226);
     animation: fallingWater 300ms infinite ease-in;
     transform-origin: bottom;
@@ -97,6 +99,7 @@
 }
 
 .falling-water3oht {
+    animation-delay: 20s;
     fill: rgb(37, 194, 226);
     animation: fallingWater 1s infinite ease-in;
     transform-origin: bottom;

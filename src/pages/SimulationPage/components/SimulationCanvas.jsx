@@ -42,6 +42,7 @@ const SimulationCanvas = ({
   waterInROFilter,
   ro_ohtCapacity,
   waterConsumed,
+  calculatedTdsVal,
   flowrate
 }) => {
   const pumpHouseRef = useRef(null);
@@ -114,7 +115,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* Sump */}
-        <Sump waterInSump={waterInSump} sumpCapacity={sumpCapacity} handleIconClick={(e) => handleIconClick(e)}
+        <Sump waterInSump={waterInSump} sumpCapacity={sumpCapacity} calculatedTdsVal={calculatedTdsVal} handleIconClick={(e) => handleIconClick(e)}
           ref={(ref) => { if (ref) { ref.id = "KRBSump"; iconRefs.push(ref); } }} />
          
          {/* MirrorLPipe Motor to OHT P1 */}
