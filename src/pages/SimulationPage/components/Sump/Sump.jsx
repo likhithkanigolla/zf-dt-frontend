@@ -4,7 +4,7 @@ import './Sump.css';
 const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick}, ref) => {
   const [fillPercentage, setFillPercentage] = useState(0);
   const [waterColor, setWaterColor] = useState('lightblue');
-  let calculatedTdsVal = 520
+  let calculatedTdsVal = 3000
 
   useEffect(() => {
     console.log("TDS VAL HERE", calculatedTdsVal)
@@ -13,8 +13,8 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick}, ref) => 
     } else if (calculatedTdsVal >= 151 && calculatedTdsVal <= 250) {
       setWaterColor('#82A460');
     } else if (calculatedTdsVal >= 251 && calculatedTdsVal <= 400) {
-      setWaterColor('#C0C0C2');
-    } else if (calculatedTdsVal >= 401 && calculatedTdsVal <= 600) {
+      setWaterColor('#6B6947');
+    } else if (calculatedTdsVal >= 401 && calculatedTdsVal) {
       setWaterColor('#CAAA76');
     }
   }, [calculatedTdsVal]);
