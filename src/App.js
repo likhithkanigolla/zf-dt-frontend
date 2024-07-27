@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RealValueVisualisation from './pages/HomePage/RealValueVisualisation';
 import VisualizationPage from './pages/VisualizationPage/VisualizationPage';
 import SimulationPage from './pages/SimulationPage/SimulationPage';
-import SimulationScenario1 from './pages/SimulationPage/SimulationScenario1';
+import SimulationScenarioTemplate from './pages/SimulationPage/Scenarios/SimulationScenarioTemplate';
+import WaterLevelNodeFailure from './pages/SimulationPage/Scenarios/WaterLevelNodeFailure';
 import LoginPage from './pages/LoginPage/LoginPage';
 // import DemoPage from './pages/DemoSim/DemoPage';
 
@@ -18,7 +19,8 @@ const App = () => {
           <Route path="analytics" element={<VisualizationPage />} />
           <Route path="simulation" element={<SimulationPage />} />
           {/* <Route path="/demo" element={<DemoPage />} /> */}
-          <Route path="simulation/scenario1" element={<SimulationScenario1 />} />
+          <Route path="simulation/scenario1" element={<SimulationScenarioTemplate />} />
+          <Route path="simulation/waterlevel" element={<WaterLevelNodeFailure />} />
           <Route path='login' element={<LoginPage/>}/>
         </Route>
       </Routes>

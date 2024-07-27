@@ -70,7 +70,7 @@ const SimulationCanvas = ({
     // console.log(iconRefs);
   }, [iconRefs]);
   return (
-    <div>
+    <div className='simulation-canvas'>
       {/* PumpHouse */}
       <div style={{ position: "absolute", top: "1vw", left: "1.5vw"}} id="pumpHouseIcon">
         <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
