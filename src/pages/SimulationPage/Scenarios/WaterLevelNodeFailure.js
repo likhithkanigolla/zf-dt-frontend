@@ -89,7 +89,8 @@ function WaterLevelNodeFailure() {
   const [steps, setSteps] = useState([
     {
       title: "Water Level Node Failure Scenario",
-      content: "Welcome to the Water Level Node Failure Scenario. This is a guided tour to help you understand the scenario.",
+      content:
+        "Welcome to the Water Level Node Failure Scenario. This is a guided tour to help you understand the scenario.",
       target: ".full-page",
       placement: "center",
     },
@@ -100,7 +101,8 @@ function WaterLevelNodeFailure() {
     },
     {
       target: ".right-section",
-      content: "This is the right section.Asumptions and solution will be displayed here.",
+      content:
+        "This is the right section.Asumptions and solution will be displayed here.",
       placement: "left",
     },
     {
@@ -113,7 +115,8 @@ function WaterLevelNodeFailure() {
     },
     {
       target: ".console-container",
-      content: "This is the console. Everything that happen in simulation will be displayed here .You can download the log here.",
+      content:
+        "This is the console. Everything that happen in simulation will be displayed here .You can download the log here.",
     },
     {
       title: "Start Simulation",
@@ -163,6 +166,10 @@ function WaterLevelNodeFailure() {
     } else if (type === EVENTS.TARGET_NOT_FOUND) {
       console.log("Target not found:", steps[index].target);
     }
+
+    //Print the step number based on the index which is executing now
+    console.log("Step Index:", index);
+    console.log("This is Step Number:", index + 1);
   };
 
   const handleStartSimulation = async () => {
@@ -452,8 +459,6 @@ function WaterLevelNodeFailure() {
           height: "50vw",
         }}
         className="full-page">
-
-
         <div
           style={{
             display: "flex",
@@ -462,13 +467,14 @@ function WaterLevelNodeFailure() {
             alignItems: "center",
           }}
           className="left-section">
-          <h1 style={{ textAlign: "center" }}>Simulation Scenario Title</h1>
-          <p>
-            Scenario Explanation: Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Nullam nec purus nec nunc ultricies tincidunt.
-            Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec
-            nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-            tincidunt. Nullam nec purus nec nunc ultricies tincidunt.
+          <h2 style={{textAlign: "center"}}>Simulation Scenario</h2>
+          <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
+          <p style={{ textAlign: "center" }}>
+            Water level node in the OHT is responsible for turning on and off
+            the motor. The primary principle is when the water level in the OHT
+            goes below 20% then the motor should be turned on and when it
+            reaches 80% it should turned off. But in this scenario the water
+            level node got failed.
           </p>
           <button
             onClick={handleStartSimulation}
@@ -647,19 +653,23 @@ function WaterLevelNodeFailure() {
           }}
           className="right-section">
           <h4 style={{ textAlign: "center" }}>Assumptions</h4>
-          <p style={{ textAlign: "center" }}>
-            1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2.
-            Nullam nec purus nec nunc ultricies tincidunt. 3. Nullam nec purus
-            nec nunc ultricies tincidunt. 4. Nullam nec purus nec nunc ultricies
-            tincidunt. 5. Nullam nec purus nec nunc ultricies tincidunt.
-          </p>
-          <h2>Soulution</h2>
-          <p>
-            1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2.
-            Nullam nec purus nec nunc ultricies tincidunt. 3. Nullam nec purus
-            nec nunc ultricies tincidunt. 4. Nullam nec purus nec nunc ultricies
-            tincidunt. 5. Nullam nec purus nec nunc ultricies tincidunt.
-          </p>
+            <ol>
+              <li>Motor Voltage: 240V</li>
+              <li>Motor Current: 11A</li>
+              <li>Power Factor: 0.11</li>
+              <li>Motor Efficiency: 0.85</li>
+              <li>Temperature: 25°C</li>
+              <li>Sump Capacity: 60,000L</li>
+              <li>OHT Capacity: 100,000L</li>
+              <li>Flow Rate: 10L/s</li>
+            </ol>
+          <h4>Soulution</h4>
+          <ol>
+            <li>Check the Motor Running Status by deploying the Virtual Motor Sensor</li>
+            <li>Check the Total InFlow from sump to OHT by deploying Water Quality Sensor at Motor</li>
+            <li>Check the Total OutFlow from OHT to RO Filter by deploying Water Quality Sensor at RO Plant</li>
+            <li>Finally Deploy the WaterLevel Sensor at OHT and check the issue is resolved or not. </li>
+          </ol>
         </div>
       </div>
     </div>
