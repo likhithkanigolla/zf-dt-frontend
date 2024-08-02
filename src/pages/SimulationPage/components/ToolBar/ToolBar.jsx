@@ -17,7 +17,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
             <button className="tool-button waterquantity-tool" onClick={() => {handleToolbarItemClick('waterquantitysensor') ; if(setStepIndex){setStepIndex(stepIndex+1);}}}>
                 <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> 
             </button>
-            <button className="tool-button waterlevel-tool" onClick={() => handleToolbarItemClick('waterlevelsensor')}>
+            <button className="tool-button waterlevel-tool" onClick={() => {handleToolbarItemClick('waterlevelsensor'); if(setStepIndex){setStepIndex(stepIndex+1);}}}>
                 <img src={WaterLevelNode} alt="Water Level Sensor"/>
             </button>
             <button className="tool-button motor-tool" onClick={() => handleToolbarItemClick('motorsensor')}>

@@ -61,18 +61,6 @@ const SimulationPage = () => {
     // flowrate: "5"
   });
 
-  const pipeList = [
-    "PipeP1toSump",
-    "PipeBoreToSump",
-    "PipeSumpToMotor",
-    "PipeMotorToOHT",
-    "PipeOHTtoRO",
-    "PipeOHTtoAdminWashrooms",
-    "PipeOHTtoKRBWashrooms",
-    "PipetoRO1",
-    "PipetoRO3",
-  ];
-
   const [result, setResult] = useState(null);
   const [previousResult, setpreviousResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
@@ -126,6 +114,9 @@ const SimulationPage = () => {
 
   const [datagraph, setDatagraph] = useState([]);
   const [flowgraph, setFlowgraph] = useState([]);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  const pipeList = ["PipeP1toSump", "PipeBoreToSump", "PipeSumpToMotor", "PipeMotorToOHT", "PipeOHTtoRO", "PipeOHTtoAdminWashrooms", "PipeOHTtoKRBWashrooms", "PipetoRO1", "PipetoRO3"];
 
   const pipeFlowPresence = {
     PipeP1toSump: flow1,
@@ -145,7 +136,7 @@ const SimulationPage = () => {
     PipeBoreToSump: 15,
     PipeSumpToMotor: 5,
     PipeMotorToOHT: flowrate,
-    PipeOHTtoRO: PermeateFlowRate + 15,
+    PipeOHTtoRO: PermeateFlowRate + PermeateFlowRate * 0.06,
     PipeOHTtoAdminWashrooms: 10,
     PipeOHTtoKRBWashrooms: 5,
     PipetoRO1: 2.5,
@@ -154,10 +145,7 @@ const SimulationPage = () => {
 
   const [log, setLog] = useState([]);
   const updateLog = (message) => {
-    setLog((prevLog) => [
-      ...prevLog,
-      `${new Date().toISOString()}: ${message}`,
-    ]);
+    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
   };
 
   const handleDownloadLog = () => {
@@ -223,11 +211,7 @@ const SimulationPage = () => {
     for (let i = 0; i < numLeakages; i++) {
       // Calculate position based on leakageLocation and index (to distribute markers)
       // console.log("Marker Leakage Location:", leakageLocation);
-      const position = calculateLeakagePosition(
-        leakageLocation,
-        i,
-        numLeakages
-      );
+      const position = calculateLeakagePosition(leakageLocation, i, numLeakages);
       newMarkers.push({
         type: "leakage",
         x: position.x,
@@ -301,9 +285,7 @@ const SimulationPage = () => {
     if (timeElapsed >= inputValues.simulationTime) {
       handleSaveLog();
       setTimeElapsed(0);
-      updateLog(
-        "Simulation stopped automatically after reaching simulation time."
-      );
+      updateLog("Simulation stopped automatically after reaching simulation time.");
       updateLog("Data saved successfully.");
     }
 
@@ -318,10 +300,7 @@ const SimulationPage = () => {
 
             const totalAfterMotorLeakageRate = Math.min(
               leakageMarkers.reduce((sum, marker) => {
-                if (
-                  marker.type === "leakage" &&
-                  marker.location === "motorOHT"
-                ) {
+                if (marker.type === "leakage" && marker.location === "motorOHT") {
                   return sum + marker.rate;
                 }
                 return sum;
@@ -331,30 +310,20 @@ const SimulationPage = () => {
             updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}`);
             // Calculate the effective flow rate into OHT
             updateLog(`Motor Flow Rate: ${flowrate}`);
-            const effectiveFlowRate = Math.max(
-              flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5),
-              1
-            );
+            const effectiveFlowRate = Math.max(flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5), 1);
 
             updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
 
             const prevWaterInOHT = waterInOHT; // Get previous water level
-            setWaterInOHT((prev) =>
-              Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity)
-            );
+            setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity));
           }
 
           if (waterInSump === 0) {
             setFlow5(false);
           }
 
-          if (
-            (waterInOHT === inputValues.ohtCapacity || waterInSump === 0) &&
-            !alertShown
-          ) {
-            updateLog(
-              "Motor turned off automatically since water tank is full."
-            );
+          if ((waterInOHT === inputValues.ohtCapacity || waterInSump === 0) && !alertShown) {
+            updateLog("Motor turned off automatically since water tank is full.");
             // toast.error("Motor turned off automatically since water tank is full.");
             setMotorOn(false);
             setFlow2(false);
@@ -372,16 +341,7 @@ const SimulationPage = () => {
         ); // Maximum leakage rate
         console.log("Total Leakage Rate: ", totalAfterOHTLeakageRate);
 
-        const temp_permeate = Math.max(
-          Math.max(
-            0.0,
-            Math.min(
-              PermeateFlowRate + (Math.random() - 0.5) * 10,
-              PermeateFlowRate_B + 5
-            )
-          ) - totalAfterOHTLeakageRate,
-          0
-        );
+        const temp_permeate = Math.max(Math.max(0.0, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B + 5)) - totalAfterOHTLeakageRate, 0);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
         setFlowgraph((flowgraph) => [
@@ -396,18 +356,8 @@ const SimulationPage = () => {
         updateLog("Permeate Flow Rate: " + PermeateFlowRate);
 
         // Pump water from OHT to RO Filter continuously
-        if (
-          waterInOHT > PermeateFlowRate &&
-          waterInROFilter < inputValues.ro_ohtCapacity
-        ) {
-          setWaterInOHT((prev) =>
-            Math.max(
-              prev -
-              (PermeateFlowRate + PermeateFlowRate * 0.3) -
-              flowrate * 0.06,
-              0
-            )
-          ); // Tds Reduction rate is 70% so 30% water will be wasted.
+        if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
+          setWaterInOHT((prev) => Math.max(prev - (PermeateFlowRate + PermeateFlowRate * 0.3) - flowrate * 0.06, 0)); // Tds Reduction rate is 70% so 30% water will be wasted.
           setWaterFlowAdmin((prev) => prev + flowrate * 0.02);
           setWaterFlowKRB((prev) => prev + flowrate * 0.04);
           setWaterInROFilter((prev) => prev + PermeateFlowRate); // Increase water in RO Filter by permeate flow rate, converted from l/m2/hr to l/s
@@ -433,15 +383,9 @@ const SimulationPage = () => {
           // toast.error("No water in sump.");
         }
 
-        if (
-          waterInOHT < PermeateFlowRate &&
-          waterInSump <= flowrate &&
-          waterInROFilter < 10
-        ) {
+        if (waterInOHT < PermeateFlowRate && waterInSump <= flowrate && waterInROFilter < 10) {
           handleStopSimulation();
-          updateLog(
-            "Simulation stopped automatically since all tanks are empty."
-          );
+          updateLog("Simulation stopped automatically since all tanks are empty.");
           // toast.error("Simulation stopped automatically since all tanks are empty.");
         }
 
@@ -506,15 +450,7 @@ const SimulationPage = () => {
       clearInterval(intervalwaterConsume);
       clearInterval(interval_val_update_wq);
     }; // Cleanup interval on unmount or when simulation stops
-  }, [
-    waterFlowStarted,
-    motorOn,
-    waterInSump,
-    waterInOHT,
-    waterInROFilter,
-    alertShown,
-    leakageRate,
-  ]);
+  }, [waterFlowStarted, motorOn, waterInSump, waterInOHT, waterInROFilter, alertShown, leakageRate]);
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -563,24 +499,19 @@ const SimulationPage = () => {
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
     try {
-      const response = await fetch(
-        `${config.backendAPI}/calculate_soil_contamination`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(inputValues),
-        }
-      );
+      const response = await fetch(`${config.backendAPI}/calculate_soil_contamination`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValues),
+      });
       if (!response.ok) {
         throw new Error("Failed to calculate soil contamination");
       }
       const soilContamination = await response.json();
       setSoilContamination(soilContamination);
-      updateLog(
-        `TDS Value Soil Contamination calculated: ${soilContamination}`
-      );
+      updateLog(`TDS Value Soil Contamination calculated: ${soilContamination}`);
       return soilContamination; // Return the soil contamination value
     } catch (error) {
       console.error(error);
@@ -589,36 +520,26 @@ const SimulationPage = () => {
 
   const calculateSandContamination = async () => {
     try {
-      const response = await fetch(
-        `${config.backendAPI}/calculate_sand_contamination`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(inputValues),
-        }
-      );
+      const response = await fetch(`${config.backendAPI}/calculate_sand_contamination`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValues),
+      });
       if (!response.ok) {
         throw new Error("Failed to calculate sand contamination");
       }
       const sandContamination = await response.json();
       setSandContamination(sandContamination);
-      updateLog(
-        `TDS Value Sand Contamination calculated: ${sandContamination}`
-      );
+      updateLog(`TDS Value Sand Contamination calculated: ${sandContamination}`);
       return sandContamination; // Return the sand contamination value
     } catch (error) {
       console.error(error);
     }
   };
 
-  const calculateROFiltration = async (
-    calculatedTDS,
-    desired_tds,
-    temperature,
-    membrane_area
-  ) => {
+  const calculateROFiltration = async (calculatedTDS, desired_tds, temperature, membrane_area) => {
     const requestBody = {
       initial_tds: calculatedTDS,
       desired_tds: desired_tds,
@@ -640,13 +561,7 @@ const SimulationPage = () => {
     return data;
   };
 
-  const calculateMotorFlowRate = async (
-    voltage,
-    current,
-    power_factor,
-    motor_efficiency,
-    depth
-  ) => {
+  const calculateMotorFlowRate = async (voltage, current, power_factor, motor_efficiency, depth) => {
     const requestBody = {
       voltage: voltage,
       current: current,
@@ -655,16 +570,13 @@ const SimulationPage = () => {
       depth: depth,
     };
 
-    let response = await fetch(
-      `${config.backendAPI}/calculate_motor_flow_rate`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    let response = await fetch(`${config.backendAPI}/calculate_motor_flow_rate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
 
     let data = await response.json();
     updateLog(`Motor Flow Rate Data: ${JSON.stringify(data, null, 2)}`);
@@ -679,9 +591,7 @@ const SimulationPage = () => {
       // store the result.calculated_tds_value in this format in { time: currenttime', tds: result.calculated_tds_value, id: 1 } id 1 if only soil is there and id 2 if only sand is there id 3 if both are there
 
       if (soilQuantity !== 0 && sandQuantity === 0) {
-        const soilContaminationValue = await calculateSoilContamination(
-          inputValues
-        );
+        const soilContaminationValue = await calculateSoilContamination(inputValues);
         console.log("Soil Value:", soilContaminationValue);
         calculatedTDS = soilContaminationValue;
         setDatagraph((datagraph) => [
@@ -693,9 +603,7 @@ const SimulationPage = () => {
           },
         ]);
       } else if (soilQuantity === 0 && sandQuantity !== 0) {
-        const sandContaminationValue = await calculateSandContamination(
-          inputValues
-        );
+        const sandContaminationValue = await calculateSandContamination(inputValues);
         console.log("Sand Value:", sandContaminationValue);
         calculatedTDS = sandContaminationValue;
         setDatagraph((datagraph) => [
@@ -715,31 +623,16 @@ const SimulationPage = () => {
         updateLog(`Sand TDS Value calculated: ${SandTDS}`);
 
         calculatedTDS = (SoilTDS + SandTDS) / 2;
-        setDatagraph((datagraph) => [
-          ...datagraph,
-          { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 },
-        ]);
+        setDatagraph((datagraph) => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
         updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
       }
-      const flow = await calculateMotorFlowRate(
-        inputValues.voltage,
-        inputValues.current,
-        inputValues.power_factor,
-        inputValues.motor_efficiency,
-        2.5
-      );
-      const data_RO = await calculateROFiltration(
-        calculatedTDS,
-        inputValues.desired_tds,
-        inputValues.temperature,
-        inputValues.membrane_area
-      );
+      const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5);
+      const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
       // console.log("RO Filtration Data:", data_RO);
       setpreviousResult(result); // Store the current result in previousResult
       setResult({
         ...data_RO,
-        calculated_tds_value:
-          parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25,
+        calculated_tds_value: parseFloat(data_RO.calculated_tds_value) + Math.random() * 0.5 - 0.25,
       });
 
       setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
@@ -767,9 +660,7 @@ const SimulationPage = () => {
 
   const getRealData = async (tableName) => {
     try {
-      const response = await fetch(
-        `${config.backendAPI}/get_value?table_name=${tableName}`
-      );
+      const response = await fetch(`${config.backendAPI}/get_value?table_name=${tableName}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -900,12 +791,7 @@ const SimulationPage = () => {
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref, index) => {
       const rect = ref.getBoundingClientRect();
-      if (
-        markerCoordinates.x >= rect.left &&
-        markerCoordinates.x <= rect.left + rect.width &&
-        markerCoordinates.y >= rect.top &&
-        markerCoordinates.y <= rect.top + rect.height
-      ) {
+      if (markerCoordinates.x >= rect.left && markerCoordinates.x <= rect.left + rect.width && markerCoordinates.y >= rect.top && markerCoordinates.y <= rect.top + rect.height) {
         iconId = ref.id;
         isPlaced = true;
       }
@@ -981,10 +867,7 @@ const SimulationPage = () => {
       };
 
       const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
-      updateLog(
-        `Marker of type ${item.type
-        } placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`
-      );
+      updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
 
       const caltds = await handleCalculate();
       // const caltds=100;
@@ -1029,10 +912,7 @@ const SimulationPage = () => {
         setSensorValues((prevValues) => ({
           ...prevValues,
           type: "waterqualitysensor",
-          [iconId]:
-            result.final_tds_concentration_after_ro_tank +
-            Math.floor(Math.random() * 11) -
-            5,
+          [iconId]: result.final_tds_concentration_after_ro_tank + Math.floor(Math.random() * 11) - 5,
         }));
       }
 
@@ -1085,32 +965,12 @@ const SimulationPage = () => {
     "WM-WL-KH98-00": (waterInSump / inputValues.sumpCapacity) * 100,
     "WM-WL-KH00-00": (waterInOHT / inputValues.ohtCapacity) * 100,
     "DM-KH98-60": 0,
-    "WM-WD-KH98-00": result
-      ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10
-      : 0,
-    "WM-WD-KH96-00": result
-      ? result.calculated_tds_value + 30 + Math.floor(Math.random() * 21) - 10
-      : 0,
-    "WM-WD-KH96-02": result
-      ? result.final_tds_concentration_after_ro_tank +
-      Math.floor(Math.random() * 11) -
-      5
-      : 0,
-    "WM-WD-KH95-00": result
-      ? result.final_tds_concentration_after_ro_tank -
-      5 +
-      Math.floor(Math.random() * 11) -
-      5
-      : 0,
-    "WM-WD-KH96-01": result
-      ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10
-      : 0,
-    "WM-WD-KH03-00": result
-      ? result.final_tds_concentration_after_ro_tank -
-      5 +
-      Math.floor(Math.random() * 11) -
-      5
-      : 0,
+    "WM-WD-KH98-00": result ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10 : 0,
+    "WM-WD-KH96-00": result ? result.calculated_tds_value + 30 + Math.floor(Math.random() * 21) - 10 : 0,
+    "WM-WD-KH96-02": result ? result.final_tds_concentration_after_ro_tank + Math.floor(Math.random() * 11) - 5 : 0,
+    "WM-WD-KH95-00": result ? result.final_tds_concentration_after_ro_tank - 5 + Math.floor(Math.random() * 11) - 5 : 0,
+    "WM-WD-KH96-01": result ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10 : 0,
+    "WM-WD-KH03-00": result ? result.final_tds_concentration_after_ro_tank - 5 + Math.floor(Math.random() * 11) - 5 : 0,
     "WM-WF-KB04-70": waterFlowAdmin,
     "WM-WF-KB04-73": waterFlowKRB,
     "WM-WF-KB04-71": (3 * waterConsumed) / 4,
@@ -1176,8 +1036,7 @@ const SimulationPage = () => {
                 background: "#ffffff",
               }}
               onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
+              onDragOver={handleDragOver}>
               <img
                 src={whiteimage}
                 alt="blueprint"
@@ -1216,16 +1075,13 @@ const SimulationPage = () => {
                   top: "12.5vw",
                   left: "14vw",
                   textAlign: "center",
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH98-00"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH98-00"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH98-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1236,16 +1092,13 @@ const SimulationPage = () => {
                   left: "29.5vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-00"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH96-00"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1256,16 +1109,13 @@ const SimulationPage = () => {
                   left: "50.6vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-01"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH96-01"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-01"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1275,16 +1125,13 @@ const SimulationPage = () => {
                   top: "9vw",
                   left: "55vw",
                   textAlign: "center",
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-02"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH96-02"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-02"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1294,16 +1141,13 @@ const SimulationPage = () => {
                   top: "15vw",
                   left: "52.3vw",
                   textAlign: "center",
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH95-00"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH95-00"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH95-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1313,16 +1157,13 @@ const SimulationPage = () => {
                   top: "15vw",
                   left: "57.9vw",
                   textAlign: "center",
-                }}
-              >
+                }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH03-00"
-                  data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH03-00"
-                  ].toFixed(2)}ppm`}
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH03-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1333,16 +1174,13 @@ const SimulationPage = () => {
                   left: "13vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
                 <HoverableIcon
                   src={WaterLevelNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH98-00"
-                  data={`Water Level: ${SimulatedValues[
-                    "WM-WL-KH98-00"
-                  ].toFixed(2)}%`}
+                  data={`Water Level: ${SimulatedValues["WM-WL-KH98-00"].toFixed(2)}%`}
                 />
               </div>
 
@@ -1353,16 +1191,13 @@ const SimulationPage = () => {
                   left: "32vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
                 <HoverableIcon
                   src={WaterLevelNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH00-00"
-                  data={`Water Level: ${SimulatedValues[
-                    "WM-WL-KH00-00"
-                  ].toFixed(2)}%`}
+                  data={`Water Level: ${SimulatedValues["WM-WL-KH00-00"].toFixed(2)}%`}
                 />
               </div>
 
@@ -1373,8 +1208,7 @@ const SimulationPage = () => {
                   left: "22vw",
                   textAlign: "center",
                   zIndex: 4,
-                }}
-              >
+                }}>
                 {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
                 <HoverableIcon
                   src={MotorNode}
@@ -1393,8 +1227,7 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
@@ -1413,16 +1246,13 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH95-40"
-                  data={`Total Water Flow: ${SimulatedValues[
-                    "WM-WF-KH95-40"
-                  ].toFixed(2)}L`}
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KH95-40"].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -1435,16 +1265,13 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-70"
-                  data={`Total Water Flow: ${SimulatedValues[
-                    "WM-WF-KB04-70"
-                  ].toFixed(2)}L`}
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-70"].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -1457,16 +1284,13 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-73"
-                  data={`Total Water Flow: ${SimulatedValues[
-                    "WM-WF-KB04-73"
-                  ].toFixed(2)}L`}
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-73"].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -1479,16 +1303,13 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-71"
-                  data={`Total Water Flow: ${SimulatedValues[
-                    "WM-WF-KB04-71"
-                  ].toFixed(2)}L`}
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-71"].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -1501,16 +1322,13 @@ const SimulationPage = () => {
                   textAlign: "center",
                   transform: "rotate(90deg)",
                   zIndex: 3,
-                }}
-              >
+                }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon
                   src={WaterQuantityNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-72"
-                  data={`Total Water Flow: ${SimulatedValues[
-                    "WM-WF-KB04-72"
-                  ].toFixed(2)}L`}
+                  data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-72"].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -1521,8 +1339,7 @@ const SimulationPage = () => {
                   top: "19vw",
                   left: "1vw",
                   textAlign: "center",
-                }}
-              >
+                }}>
                 <Timer elapsedTime={timeElapsed} />
               </div>
 
@@ -1537,8 +1354,7 @@ const SimulationPage = () => {
                     cursor: "pointer",
                     zIndex: 20,
                   }}
-                  onClick={() => { }}
-                >
+                  onClick={() => {}}>
                   <img
                     src={LeakageIcon}
                     alt="Leakage"
@@ -1559,17 +1375,12 @@ const SimulationPage = () => {
                     cursor: "move",
                     border: isMarkerPlaced ? "2px solid green" : "none",
                     zIndex: 5,
-                  }}
-                >
+                  }}>
                   <HoverableIcon
                     src={getImageForType(item.type)}
                     alt={item.type}
                     dataId="VirtualNode"
-                    data={
-                      item.type === "waterquantitysensor"
-                        ? sensorValues[index]?.totalFlow
-                        : sensorValues[item.id]
-                    }
+                    data={item.type === "waterquantitysensor" ? sensorValues[index]?.totalFlow : sensorValues[item.id]}
                     onClick={(e) => handleMarkerClick(item, index, e)}
                   />
                 </div>
@@ -1599,8 +1410,7 @@ const SimulationPage = () => {
                     ref.id = "dustbin";
                     iconRefs.push(ref);
                   }
-                }}
-              >
+                }}>
                 <DeleteIcon style={{ color: "white", fontSize: "40px" }} />
               </div>
 
@@ -1610,11 +1420,10 @@ const SimulationPage = () => {
                   onDragStart={(e) => handleDragStart(e)}
                   style={{
                     position: "absolute",
-                    left: "20px",
+                    left: "200px",
                     top: "20px",
                     cursor: "move",
-                  }}
-                >
+                  }}>
                   {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
                   <HoverableIcon
                     src={getImageForType(itemToAdd)}
@@ -1634,8 +1443,7 @@ const SimulationPage = () => {
                     backgroundColor: "white",
                     padding: "10px",
                     border: "1px solid black",
-                  }}
-                >
+                  }}>
                   {hoverData.data}
                 </div>
               )}

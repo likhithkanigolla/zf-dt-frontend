@@ -6,7 +6,7 @@ import MotorNode from  '../../pages/images/MotorNode.png';
 import WaterQuantityNode from  '../../pages/images/WaterQuantityNode.png';
 import Timer from '../timer-component';
 
-function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking, setWaterLevelNodeWorking}) {
+function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking, setWaterLevelNodeWorking,setStepIndex, stepIndex}) {
   console.log("Simu",SimulatedValues);
     return (
         <div>
@@ -149,7 +149,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "32vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}>
+                }}
+                className='water-level-node-oht'>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
                 <HoverableIcon
                   src={WaterLevelNode}
@@ -160,6 +161,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   ].toFixed(2)}%`}
                   waterLevelNodeWorking={waterLevelNodeWorking}
                   setWaterLevelNodeWorking={setWaterLevelNodeWorking}
+                  setStepIndex={setStepIndex}
+                  stepIndex={stepIndex}
                 />
               </div>
 

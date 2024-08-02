@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData, waterLevelNodeWorking, setWaterLevelNodeWorking, type}) => {
+const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData, waterLevelNodeWorking, setWaterLevelNodeWorking, type, setStepIndex, stepIndex}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEnabled, setIsEnabled] = useState(true);
 
@@ -11,6 +11,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData,
     else{
     setIsEnabled(!isEnabled);
     setWaterLevelNodeWorking(!waterLevelNodeWorking);
+    if(setStepIndex){setStepIndex(stepIndex+1);}
     }
   };
 

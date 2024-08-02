@@ -74,7 +74,7 @@ const SimulationCanvas = ({
       {/* PumpHouse */}
       <div style={{ position: "absolute", top: "1vw", left: "1.5vw"}} id="pumpHouseIcon">
         <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
-          ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
+          // ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
         />
         <div style={{ fontSize: "1vw" }}>PumpHouse</div>
       </div>
