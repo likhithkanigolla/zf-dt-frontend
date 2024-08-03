@@ -10,7 +10,8 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData,
     }
     else{
     setIsEnabled(!isEnabled);
-    setWaterLevelNodeWorking(!waterLevelNodeWorking);
+    if(setWaterLevelNodeWorking){
+    setWaterLevelNodeWorking(!waterLevelNodeWorking);}
     if(setStepIndex){setStepIndex(stepIndex+1);}
     }
   };
