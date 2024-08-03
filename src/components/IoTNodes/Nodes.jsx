@@ -6,7 +6,7 @@ import MotorNode from  '../../pages/images/MotorNode.png';
 import WaterQuantityNode from  '../../pages/images/WaterQuantityNode.png';
 import Timer from '../timer-component';
 
-function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
+function IoTNodes({SimulatedValues, motorOn, timeElapsed}) {
     return (
         <div>
               {/* IoT Nodes  */}
@@ -24,7 +24,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH98-00"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH98-00"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -43,7 +43,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH96-00"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH96-00"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -62,7 +62,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH96-01"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH96-01"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -80,7 +80,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH96-02"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH96-02"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -98,7 +98,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH95-00"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH95-00"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -116,7 +116,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WD-KH03-00"
                   data={`Water Quality: ${SimulatedValues[
                     "WM-WD-KH03-00"
-                  ]}ppm`}
+                  ].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -135,7 +135,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WL-KH98-00"
                   data={`Water Level: ${SimulatedValues[
                     "WM-WL-KH98-00"
-                  ]}%`}
+                  ].toFixed(2)}%`}
                 />
               </div>
 
@@ -154,7 +154,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WL-KH00-00"
                   data={`Water Level: ${SimulatedValues[
                     "WM-WL-KH00-00"
-                  ]}%`}
+                  ].toFixed(2)}%`}
                 />
               </div>
 
@@ -211,7 +211,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WF-KH95-40"
                   data={`Total Water Flow: ${SimulatedValues[
                     "WM-WF-KH95-40"
-                  ]}L`}
+                  ].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -232,7 +232,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WF-KB04-70"
                   data={`Total Water Flow: ${SimulatedValues[
                     "WM-WF-KB04-70"
-                  ]}L`}
+                  ].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -253,7 +253,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WF-KB04-73"
                   data={`Total Water Flow: ${SimulatedValues[
                     "WM-WF-KB04-73"
-                  ]}L`}
+                  ].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -274,7 +274,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues[
                     "WM-WF-KB04-71"
-                  ]}L`}
+                  ].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>
@@ -295,7 +295,7 @@ function IoTNodes(SimulatedValues, motorOn, timeElapsed) {
                   dataId="WM-WF-KB04-72"
                   data={`Total Water Flow: ${SimulatedValues[
                     "WM-WF-KB04-72"
-                  ]}L`}
+                  ].toFixed(2)}L`}
                   rotation={90}
                 />
               </div>

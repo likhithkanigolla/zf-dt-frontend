@@ -1,24 +1,20 @@
 import { saveAs } from "file-saver";
 import React, { useEffect, useState } from "react";
 
-import NavigationBar from "../../components/navigation/Navigation";
-import ConsoleHeader from "../../components/Console/Console";
-import SimulationCanvas from "./components/SimulationCanvas";
-import Toolbar from "./components/ToolBar/ToolBar";
-import Timer from "../../components/timer-component";
-import IoTNodes from "../../components/IoTNodes/Nodes";
-
-import MotorNode from "../images/MotorNode.png";
-import WaterLevelNode from "../images/WaterLevelNode.png";
-import WaterQualityNode from "../images/WaterQualityNode.png";
-import WaterQuantityNode from "../images/WaterQuantityNode.png";
-import LeakageIcon from "../images/leakage_water.png";
-import whiteimage from "../images/white.png";
-import HoverableIcon from "./components/HoverableIcon";
-
+import NavigationBar from "../../../components/navigation/Navigation";
+import ConsoleHeader from "../../../components/Console/Console";
+import SimulationCanvas from "../components/SimulationCanvas";
+import Toolbar from "../components/ToolBar/ToolBar";
+import IoTNodes from "../../../components/IoTNodes/Nodes";
+import MotorNode from "../../images/MotorNode.png";
+import WaterLevelNode from "../../images/WaterLevelNode.png";
+import WaterQualityNode from "../../images/WaterQualityNode.png";
+import WaterQuantityNode from "../../images/WaterQuantityNode.png";
+import whiteimage from "../../images/white.png";
+import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function SimulationScenario1() {
+function SimulationScenarioTemplate() {
   // Define the state variables
   const [iconRefs, setIconRefs] = React.useState([]);
   const [flow1, setFlow1] = React.useState(0);
@@ -26,26 +22,36 @@ function SimulationScenario1() {
   const [flow3, setFlow3] = React.useState(0);
   const [flow4, setFlow4] = React.useState(0);
   const [flow5, setFlow5] = React.useState(0);
-  const [flow6, setFlow6] = React.useState(0);
-  const [flow7, setFlow7] = React.useState(0);
-  const [flow8, setFlow8] = React.useState(0);
-  const [flow9, setFlow9] = React.useState(0);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
-  const [waterInSump, setWaterInSump] = React.useState(0);
+  const [waterInSump, setWaterInSump] = useState(38670);
   const [motorOn, setMotorOn] = React.useState(false);
   const [isSimulationRunning, setIsSimulationRunning] = React.useState(false);
-  const [waterInOHT, setWaterInOHT] = React.useState(0);
-  const [waterInROFilter, setWaterInROFilter] = React.useState(0);
+  const [waterInOHT, setWaterInOHT] = React.useState(39260);
+  const [waterInROFilter, setWaterInROFilter] = React.useState(100);
   const [waterConsumed, setWaterConsumed] = React.useState(0);
-  const [flowrate, setFlowrate] = React.useState(0);
+  const [waterFlowAdmin, setWaterFlowAdmin] = useState(0); // Initial water flow in Admin
+  const [waterFlowKRB, setWaterFlowKRB] = useState(0); // Initial water flow in KRB
   const [result, setResult] = React.useState("");
-  const [inputValues, setInputValues] = React.useState({
-    sumpCapacity: 1000,
-    ohtCapacity: 5000,
-    flowrate: 10,
+  const [inputValues, setInputValues] = useState({
+    Scenarios: "1",
+    timeMultiplier: "1",
+    simulationTime: "3600",
+    SandQuantity: "0",
+    SoilQuantity: "0",
+    voltage: "240",
+    current: "11",
+    power_factor: "0.11",
+    motor_efficiency: "0.85",
+    temperature: "25",
+    desired_tds: "65",
+    membrane_area: "3700",
+    sumpCapacity: "60000",
+    ohtCapacity: "100000",
+    ro_ohtCapacity: "1000",
+    flowrate:10,
   });
 
-  const [timeElapsed, setTimeElapsed] = React.useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
   const [log, setLog] = React.useState([]);
   const [hoverData, setHoverData] = React.useState({
     isVisible: false,
@@ -55,47 +61,42 @@ function SimulationScenario1() {
   });
 
   const SimulatedValues = {
-    "WM-WD-KH98-00": 0.5,
-    "WM-WD-KH96-00": 0.5,
-    "WM-WD-KH96-01": 0.5,
-    "WM-WD-KH96-02": 0.5,
-    "WM-WD-KH95-00": 0.5,
-    "WM-WD-KH03-00": 0.5,
-    "WM-WL-KH98-00": 50,
-    "WM-WL-KH00-00": 50,
+    "WM-WL-KH98-00": (waterInSump / inputValues.sumpCapacity) * 100,
+    "WM-WL-KH00-00": (waterInOHT / inputValues.ohtCapacity) * 100,
     "DM-KH98-60": 0,
-    "WM-WF-KH98-40": 0,
-    "WM-WF-KH95-40": 0,
-    "WM-WF-KB04-70": 0,
-    "WM-WF-KB04-73": 0,
-    "WM-WF-KB04-71": 0,
-    "WM-WF-KB04-72": 0,
+    "WM-WD-KH98-00": 435 + Math.floor(Math.random() * 21) - 10,
+    "WM-WD-KH96-00": 435 + 30 + Math.floor(Math.random() * 21) - 10,
+    "WM-WD-KH96-02": 46 + Math.floor(Math.random() * 11) - 5,
+    "WM-WD-KH95-00": 46 - 5 + Math.floor(Math.random() * 11) - 5,
+    "WM-WD-KH96-01": 435 + Math.floor(Math.random() * 21) - 10,
+    "WM-WD-KH03-00": 46 - 5 + Math.floor(Math.random() * 11) - 5,
+    "WM-WF-KB04-70": waterFlowAdmin,
+    "WM-WF-KB04-73": waterFlowKRB,
+    "WM-WF-KB04-71": (3 * waterConsumed) / 4,
+    "WM-WF-KB04-72": waterConsumed / 4,
+    "WM-WF-KH98-40": inputValues ? inputValues.sumpCapacity : 0,
+    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump : 0,
   };
 
   const [itemToAdd, setItemToAdd] = React.useState(null);
   const [isMarkerPlaced, setIsMarkerPlaced] = React.useState(false);
   const [canvasItems, setCanvasItems] = React.useState([]);
   const [sensorValues, setSensorValues] = React.useState({});
-  const [leakageMarkers, setLeakageMarkers] = React.useState([]);
 
   const updateLog = (message) => {
-    setLog((prevLog) => [
-      ...prevLog,
-      `${new Date().toISOString()}: ${message}`,
-    ]);
+    setLog((prevLog) => [...prevLog,`${new Date().toISOString()}: ${message}`,]);
   };
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
       handleStartWaterFlow(); // Start water flow
       setIsSimulationRunning(true);
-      // setFlow4((flow4) => !flow4);
       setFlow1((flow1) => !flow1);
       setFlow5((flow5) => !flow5);
       setFlow2(true);
+      setFlow3(true);
       setMotorOn(true);
       updateLog("Simulation started.");
-      // toast.success("Simulation started!");
     } else {
       handleStopWaterFlow(); // Stop water flow
       setIsSimulationRunning(false);
@@ -106,7 +107,6 @@ function SimulationScenario1() {
       setFlow5(false);
       setMotorOn(false);
       updateLog("Simulation stopped.");
-      // toast.error("Simulation stopped!");
     }
   };
 
@@ -288,6 +288,63 @@ function SimulationScenario1() {
     setIsSimulationRunning(!isSimulationRunning);
   };
 
+  const handleConsumeWater = () => {
+    if (waterInROFilter >= 10) {
+      setFlow4(true);
+      setWaterInROFilter((prev) => prev - 10);
+      setWaterConsumed((prev) => prev + 10);
+    } else {
+      // alert("Not enough water in RO Filter to consume.")
+      setFlow4(false);
+      // toast.error("Not enough water in RO Filter to consume.");
+      updateLog("Not enough water in RO Filter to consume.");
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isSimulationRunning) {
+        setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
+        console.log("Time Elapsed: ", timeElapsed);
+        if(waterFlowStarted){
+          if(motorOn){
+            if(waterInSump > 0){
+              setWaterInSump(waterInSump - inputValues.flowrate);
+              setWaterInOHT(waterInOHT + inputValues.flowrate);
+            }
+            else{
+              setMotorOn(false);
+              updateLog("Motor turned off due to insufficient water in sump.");
+            }
+    
+            if(waterInOHT > 0){
+              setWaterInOHT(waterInOHT - inputValues.flowrate);
+              setWaterInROFilter(waterInROFilter + inputValues.flowrate);
+              setWaterFlowAdmin((prev) => prev + inputValues.flowrate * 0.02);
+              setWaterFlowKRB((prev) => prev + inputValues.flowrate * 0.04);
+
+            } else {
+              setFlow3(false);
+              updateLog("Motor turned off due to insufficient water in OHT.");
+            }
+
+            if(waterInROFilter >= 10){
+              setFlow4(true);
+              setWaterInROFilter(waterInROFilter - 5);
+              setWaterConsumed(waterConsumed + 5);
+            }
+          }
+        }
+      }
+
+
+    }, 1000);
+
+    return () => clearInterval(interval);
+  } 
+  );
+
+
   return (
     <div>
       {/* Navigation Bar */}
@@ -305,18 +362,18 @@ function SimulationScenario1() {
             flexDirection: "column",
             alignItems: "center",
           }}>
-          <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>Simulation Scenario 1</h1>
-          <p style={{}}>
-            In this scenario, we simulate the failure of a water level node. The
-            node is responsible for measuring the water level in a tank. The
-            simulation will demonstrate the impact of the node failure on the
-            overall system performance.
-          </p>
-          <p style={{ textAlign: "center" }}>
-            Click on the icons to interact with the simulation.
+          <h1 style={{ textAlign: "center"}}>Simulation Scenario Title</h1>
+          <p>
+            Scenario Explanation: 
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nullam nec purus nec nunc ultricies tincidunt.
+            Nullam nec purus nec nunc ultricies tincidunt.
+            Nullam nec purus nec nunc ultricies tincidunt.
+            Nullam nec purus nec nunc ultricies tincidunt.
+            Nullam nec purus nec nunc ultricies tincidunt.
           </p>
           <button
-            onClick={toggleIsOn & handleStartSimulation}
+            onClick={handleStartSimulation}
             style={{
               padding: "1rem",
               margin: "1rem",
@@ -374,7 +431,7 @@ function SimulationScenario1() {
                 ohtCapacity={inputValues.ohtCapacity}
                 waterInROFilter={waterInROFilter}
                 waterConsumed={waterConsumed}
-                flowrate={flowrate}
+                flowrate={inputValues.flowrate}
                 result={result}
               />
               <IoTNodes SimulatedValues={SimulatedValues} motorOn={motorOn}  timeElapsed={timeElapsed}/>
@@ -486,14 +543,22 @@ function SimulationScenario1() {
             flexDirection: "column",
             alignItems: "center",
           }}>
-          <h2>Node Failure</h2>
-          <p>
-            The water level node has failed. The system is unable to measure the
-            water level in the tank.
+
+          <h4 style={{ textAlign: "center"}}>Assumptions</h4>
+          <p style={{ textAlign: "center" }}>
+            1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            2. Nullam nec purus nec nunc ultricies tincidunt.
+            3. Nullam nec purus nec nunc ultricies tincidunt.
+            4. Nullam nec purus nec nunc ultricies tincidunt.
+            5. Nullam nec purus nec nunc ultricies tincidunt.
           </p>
+          <h2>Soulution</h2>
           <p>
-            The system performance is affected due to the lack of data from the
-            water level node.
+            1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            2. Nullam nec purus nec nunc ultricies tincidunt.
+            3. Nullam nec purus nec nunc ultricies tincidunt.
+            4. Nullam nec purus nec nunc ultricies tincidunt.
+            5. Nullam nec purus nec nunc ultricies tincidunt.
           </p>
         </div>
       </div>
@@ -501,4 +566,4 @@ function SimulationScenario1() {
   );
 }
 
-export default SimulationScenario1;
+export default SimulationScenarioTemplate;
