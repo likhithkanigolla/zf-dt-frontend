@@ -36,21 +36,12 @@ const LShapePipeOHT= forwardRef(({ flow, onClick, text },ref) => {
                 {flow && (
                     <>
                         <g className="lshape-pipe-water">
-                            {/* {!initialFlowComplete && (
-                                <rect
-                                    x="0"
-                                    y="0"
-                                    width="100"
-                                    height="10"
-                                    fill="lightblue"
-                                    className="lshape-initial-flow"
-                                />
-                            )} */}
+                          
                             {initialFlowComplete && (
                                 <rect
                                     x="0"
                                     y="0"
-                                    width="100"
+                                    width="1000"
                                     height="200"
                                     fill="lightblue"
                                     className="lshape-initial-flow"

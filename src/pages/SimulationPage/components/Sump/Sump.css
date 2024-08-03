@@ -42,7 +42,7 @@
 .sumpwave {
 width: 200%;
 height: 20px; /* Adjust as needed */
-background: rgb(37, 194, 226);;
+background: rgb(37, 194, 226);
 border-radius: 50%;
 position: absolute;
 animation: wave-animation 4s infinite linear;

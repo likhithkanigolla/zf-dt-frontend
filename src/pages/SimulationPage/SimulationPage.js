@@ -1066,6 +1066,7 @@ const SimulationPage = () => {
                 waterConsumed={waterConsumed}
                 flowrate={flowrate}
                 result={result}
+                calculatedTdsVal = {result ? result.calculated_tds_value : 150}
               />
 
               {/* IoT Nodes  */}
