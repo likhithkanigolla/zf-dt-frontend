@@ -15,7 +15,9 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick}, ref) => 
     } else if (calculatedTdsVal >= 251 && calculatedTdsVal <= 400) {
       setWaterColor('#6B6947');
     } else if (calculatedTdsVal >= 401 && calculatedTdsVal) {
-      setWaterColor('#CAAA76');
+      // setWaterColor('#CAAA76');
+      // setWaterColor('#82A460');
+      setWaterColor('rgb(37, 194, 226)');
     }
   }, [calculatedTdsVal]);
 
