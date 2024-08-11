@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
 function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning }) {
@@ -27,19 +28,27 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     const isScenario2 = inputValues.Scenarios === "2";
     const isScenario3 = inputValues.Scenarios === "3";
 
+    const navigate = useNavigate();
+
+    const handleChangeOpt = (event) => {
+        if (event.target.value === "6") {
+            navigate('/dt_waternetwork/simulation/waterlevel');
+        }
+      };
+
     return (
         <div>
             <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
             <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '68vh', color: 'white' }}>
                 <div>
                     <label>
-                        <select name="Scenarios" className="dropdown-content" onChange={handleChange} value={inputValues.Scenarios}>
+                        <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
                             <option value="1">Select Scenario</option>
                             <option value="2">Soil Impurities vs TDS</option>
                             <option value="3">Sand Impurities vs TDS</option>
+                            <option value="6">Water Level Node Failed</option>
                             <option value="4" disabled>Flow vs TDS</option>
                             <option value="5" disabled>Water Quality Node Failed</option>
-                            <option value="6" disabled>Water Level Node Failed</option>
                             <option value="7" disabled>Water Purifiation Agents vs TDS</option>
 
                         </select>
