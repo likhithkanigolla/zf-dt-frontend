@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LeakageOptions from '../LeakageOptions';
 import './Form.css';
 
-function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate }) {
+function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
@@ -296,9 +296,14 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
             </div>
 
             <div className="button-container">
-                <button onClick={handleStartClick} className="button-form" style={{ background: isSimulationRunning ? "blue" : "rgb(15, 140, 17)" }}>
-                    {isSimulationRunning ? "Pause" : "Start"}
-                </button>
+            <button
+            onClick={handleStartClick}
+            className="button-form"
+            style={{ background: isSimulationRunning ? "blue" : "rgb(15, 140, 17)" }}
+            disabled={isLoading}
+        >
+            {isLoading ? "Loading..." : isSimulationRunning ? "Pause" : "Start"}
+        </button>
                 <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)' }}>
                     End
                 </button>
