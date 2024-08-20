@@ -62,9 +62,9 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             <option value="2">Soil Impurities vs TDS</option>
                             <option value="3">Sand Impurities vs TDS</option>
                             <option value="6">Water Level Node Failed</option>
+                            <option value="7">Pipe Leakages</option>
                             <option value="4" disabled>Flow vs TDS</option>
                             <option value="5" disabled>Water Quality Node Failed</option>
-                            <option value="7">Leakage</option>
                             <option value="8" disabled>Water Purification Agents vs TDS</option>
                         </select>
                     </label>
