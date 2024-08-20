@@ -6,7 +6,8 @@ import MotorNode from  '../../pages/images/MotorNode.png';
 import WaterQuantityNode from  '../../pages/images/WaterQuantityNode.png';
 import Timer from '../timer-component';
 
-function IoTNodes({SimulatedValues, motorOn, timeElapsed}) {
+function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking, setWaterLevelNodeWorking,setStepIndex, stepIndex}) {
+  console.log("Simu",SimulatedValues);
     return (
         <div>
               {/* IoT Nodes  */}
@@ -130,12 +131,14 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed}) {
                 }}>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
                 <HoverableIcon
+                  classsName="hello-water-node"
                   src={WaterLevelNode}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH98-00"
                   data={`Water Level: ${SimulatedValues[
                     "WM-WL-KH98-00"
                   ].toFixed(2)}%`}
+
                 />
               </div>
 
@@ -146,7 +149,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed}) {
                   left: "32vw",
                   textAlign: "center",
                   zIndex: 3,
-                }}>
+                }}
+                className='water-level-node-oht'>
                 {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
                 <HoverableIcon
                   src={WaterLevelNode}
@@ -155,6 +159,10 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed}) {
                   data={`Water Level: ${SimulatedValues[
                     "WM-WL-KH00-00"
                   ].toFixed(2)}%`}
+                  waterLevelNodeWorking={waterLevelNodeWorking}
+                  setWaterLevelNodeWorking={setWaterLevelNodeWorking}
+                  setStepIndex={setStepIndex}
+                  stepIndex={stepIndex}
                 />
               </div>
 

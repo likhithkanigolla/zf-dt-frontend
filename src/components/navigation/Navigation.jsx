@@ -206,10 +206,15 @@ const NavigationBar = ({ title }) => {
     }
   };
 
+  const [selectedPath, setSelectedPath] = useState(window.location.pathname);
+  
   useEffect(() => {
     handleNotificationOpen();
     handleAlarmOpen();
+    setSelectedPath(window.location.pathname);
   }, []);
+
+  
 
   return (
     <nav className="navbar">
@@ -226,9 +231,13 @@ const NavigationBar = ({ title }) => {
       <div className="navbar__title">{title}</div>
 
       <div>
-        <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
+        {/* <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
           <option value="/dt_waternetwork/" selected={window.location.pathname === '/dt_waternetwork'}>Live</option>
           <option value="/dt_waternetwork/simulation" selected={window.location.pathname === '/dt_waternetwork/simulation'}>Simulation</option>
+        </select> */}
+        <select className="navbar__dropdown" value={selectedPath} onChange={(e) => {window.location.href = e.target.value;}}>
+            <option value="/dt_waternetwork/">Live</option>
+            <option value="/dt_waternetwork/simulation">Simulation</option>
         </select>
       </div>
 
