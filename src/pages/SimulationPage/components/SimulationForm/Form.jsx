@@ -297,13 +297,19 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
             <div className="button-container">
             <button
-            onClick={handleStartClick}
-            className="button-form"
-            style={{ background: isSimulationRunning ? "blue" : "rgb(15, 140, 17)" }}
-            disabled={isLoading}
-        >
-            {isLoading ? "Loading..." : isSimulationRunning ? "Pause" : "Start"}
-        </button>
+                onClick={handleStartClick}
+                className="button-form"
+                style={{ 
+                    background: isLoading 
+                        ? "gray" 
+                        : isSimulationRunning 
+                            ? "blue" 
+                            : "rgb(15, 140, 17)" 
+                }}
+                disabled={isLoading}
+            >
+                {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+            </button>
                 <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)' }}>
                     End
                 </button>
