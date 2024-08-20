@@ -11,11 +11,14 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick, calculate
     if (calculatedTdsVal >= 0 && calculatedTdsVal <= 150) {
       setWaterColor('rgb(37, 194, 226)');
     } else if (calculatedTdsVal >= 151 && calculatedTdsVal <= 250) {
-      setWaterColor('#82A460');
+      // setWaterColor('#82A460');
+      setWaterColor('rgb(37, 194, 226)');
     } else if (calculatedTdsVal >= 251 && calculatedTdsVal <= 400) {
-      setWaterColor('#6B6947');
+      // setWaterColor('#6B6947');
+      setWaterColor('rgb(37, 194, 226)');
     } else if (calculatedTdsVal >= 401) {
-      setWaterColor('#CAAA76');
+      // setWaterColor('#CAAA76');
+      setWaterColor('rgb(37, 194, 226)');
     }
 
     // Update impurities based on TDS value
@@ -29,21 +32,21 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick, calculate
 
   const generateImpurities = (tdsValue) => {
     let count = 0;
-    if (tdsValue >= 0 && tdsValue <= 50) {
-      count = 6;
-    } else if (tdsValue >= 51 && tdsValue <= 100) {
-      count = 9 + Math.floor(Math.random() * 2);
-    } else if (tdsValue >= 101 && tdsValue <= 150) {
-      count = 10 + Math.floor(Math.random() * 4);
-    } else if (tdsValue >= 151 && tdsValue <= 250) {
-      count = 80 + Math.floor(Math.random() * 6);
-    } else if (tdsValue >= 251 && tdsValue <= 400) {
-      count = 50 + Math.floor(Math.random() * 6);
-    } else if (tdsValue >= 401 && tdsValue <= 600) {
-      count = 35 + Math.floor(Math.random() * 6);
-    } else if (tdsValue > 600) {
-      count = 500;
-    }
+    // if (tdsValue >= 0 && tdsValue <= 50) {
+    //   count = 6;
+    // } else if (tdsValue >= 51 && tdsValue <= 100) {
+    //   count = 9 + Math.floor(Math.random() * 2);
+    // } else if (tdsValue >= 101 && tdsValue <= 150) {
+    //   count = 10 + Math.floor(Math.random() * 4);
+    // } else if (tdsValue >= 151 && tdsValue <= 250) {
+    //   count = 80 + Math.floor(Math.random() * 6);
+    // } else if (tdsValue >= 251 && tdsValue <= 400) {
+    //   count = 50 + Math.floor(Math.random() * 6);
+    // } else if (tdsValue >= 401 && tdsValue <= 600) {
+    //   count = 35 + Math.floor(Math.random() * 6);
+    // } else if (tdsValue > 600) {
+    //   count = 500;
+    // }
 
     const particles = [];
     for (let i = 0; i < count; i++) {

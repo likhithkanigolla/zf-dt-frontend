@@ -58,6 +58,9 @@ const SimulationPage = () => {
     sumpCapacity: "60000",
     ohtCapacity: "100000",
     ro_ohtCapacity: "1000",
+    num_leakages: "3",
+    leakage_location: "motorOHT",
+    leakage_rate: "5",
     // flowrate: "5"
   });
 
@@ -1007,6 +1010,14 @@ const SimulationPage = () => {
           handleDownloadLog={handleDownloadLog}
           handleSaveLog={handleSaveLog}
           log={log}
+          showLeakageOptions={showLeakageOptions}
+          numLeakages={numLeakages}
+          setNumLeakages={setNumLeakages}
+          leakageLocation={leakageLocation}
+          setLeakageLocation={setLeakageLocation}
+          leakageRate={leakageRate}
+          setLeakageRate={setLeakageRate}
+          handleApplyLeakages={handleApplyLeakages}
         />
 
         {/* Middle Section */}
@@ -1014,18 +1025,18 @@ const SimulationPage = () => {
           {/* Toolbar */}
           <Toolbar
             handleToolbarItemClick={handleToolbarItemClick}
-            handleLeakageIconClick={handleLeakageIconClick}
+            // handleLeakageIconClick={handleLeakageIconClick}
           />
-          <LeakageOptions
+          {/* <LeakageOptions
             showLeakageOptions={showLeakageOptions}
-            numLeakages={numLeakages}
-            setNumLeakages={setNumLeakages}
-            leakageLocation={leakageLocation}
-            setLeakageLocation={setLeakageLocation}
-            leakageRate={leakageRate}
+            numLeakages={inputValues.num_leakages}
+            // setNumLeakages={setNumLeakages}
+            leakageLocation={inputValues.leakage_location}
+            // setLeakageLocation={setLeakageLocation}
+            leakageRate={inputValues.leakage_rate}
             setLeakageRate={setLeakageRate}
             handleApplyLeakages={handleApplyLeakages}
-          />
+          /> */}
           <div className="demo-page">
             <div
               style={{

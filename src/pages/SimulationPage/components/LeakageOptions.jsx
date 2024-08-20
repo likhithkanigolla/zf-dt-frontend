@@ -7,6 +7,7 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
 
   return (
     <div className="leakage-options-popup">
+       <h4 className="heading">Leakage Configuration</h4>
       <label htmlFor="numLeakages">Number of Leakages:</label>
       <input
         type="number"
@@ -14,12 +15,14 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
         value={numLeakages}
         onChange={(e) => setNumLeakages(parseInt(e.target.value, 4))}
         min="1"
+        className="input-box"
       />
       <label htmlFor="leakageLocation">Leakage Location:</label>
       <select
         id="leakageLocation"
         value={leakageLocation}
         onChange={(e) => setLeakageLocation(e.target.value)}
+        className="input-box"
       >
         <option value="">Select Location</option>
         <option value="motorOHT">Between Motor and OHT</option>
@@ -33,8 +36,9 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
         value={leakageRate}
         onChange={(e) => setLeakageRate(parseFloat(e.target.value))}
         min="0"
+        className="input-box"
       />
-      <button onClick={handleApplyLeakages}>Apply</button>
+      <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'black' }}>Apply</button>
     </div>
   );
 };
