@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import "./RealValueVisualisation.css";
 
@@ -306,6 +307,37 @@ const RealValueVisualisation = () => {
       <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
     </div>
   );
+
+  const LazyBox = ({ src, panelId }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [iframeSrc, setIframeSrc] = useState('');
+  
+    useEffect(() => {
+      const cachedSrc = localStorage.getItem(`panel-${panelId}`);
+      if (cachedSrc) {
+        setIframeSrc(cachedSrc);
+        setIsLoaded(true);
+      } else {
+        setIframeSrc(src);
+      }
+    }, [src, panelId]);
+  
+    const handleLoad = () => {
+      localStorage.setItem(`panel-${panelId}`, src);
+      setIsLoaded(true);
+    };
+  
+    return (
+      <div style={{ flex: 1 }}>
+        {!isLoaded && <div>Loading...</div>}
+        <iframe
+          src={iframeSrc}
+          style={{ width: '100%', height: '100%', border: 'none', display: isLoaded ? 'block' : 'none' }}
+          onLoad={handleLoad}
+        />
+      </div>
+    );
+  };
 
   const fetchNodeData = async (tableName) => {
     const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH03-00'];
@@ -628,10 +660,14 @@ const RealValueVisualisation = () => {
       <div style={{ display: "flex"}} className='Page'>
         <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw', border: "0px" }}>
 
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" /> */}
           {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
+          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" /> */}
+          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" /> */}
+      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" panelId="24" />
+      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" panelId="9" />
+      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" panelId="20" />
+
         </div>
 
         <div style={{ height: "46vw", width: "100%",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
@@ -726,7 +762,7 @@ const RealValueVisualisation = () => {
                     <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40' rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "6.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+                  <div style={{ position: "absolute", top: "6.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
                     <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40' rotation={90}/>
                   </div>
@@ -769,5 +805,6 @@ const RealValueVisualisation = () => {
     </div>
   );
 };
+
 
 export default RealValueVisualisation;
