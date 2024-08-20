@@ -30,7 +30,7 @@ const LShapePipe= forwardRef(({ flow, onClick, text }, ref) => {
 
                 <polygon
                     points="0 0, 23 0, 23 10, 9 10, 9 100, 0 100, 0 70, 0 30"
-                    className="lshape-pipe-border"
+                    className="lshapeoht-pipe-border"
                 />
 
                 {flow && (

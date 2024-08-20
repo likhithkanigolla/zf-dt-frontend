@@ -1,6 +1,6 @@
 import { saveAs } from "file-saver";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useRef } from "react";
+import Joyride, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 import NavigationBar from "../../../components/navigation/Navigation";
 import ConsoleHeader from "../../../components/Console/Console";
 import SimulationCanvas from "../components/SimulationCanvas";
@@ -82,6 +82,55 @@ function SimulationScenarioTemplate() {
   const [isMarkerPlaced, setIsMarkerPlaced] = React.useState(false);
   const [canvasItems, setCanvasItems] = React.useState([]);
   const [sensorValues, setSensorValues] = React.useState({});
+
+  const [run, setRun] = useState(true);
+  const [stepIndex, setStepIndex] = useState(0);
+  // Joyride steps
+  const [steps, setSteps] = useState([
+    {
+      target: ".step1",
+      content: "This is the first step!",
+    },
+    {
+      target: ".step2",
+      content: "This is the second step!",
+    },
+    {
+      target: ".step3",
+      content: "This is the third step!",
+    },
+  ]);
+
+  const joyrideRef = useRef(null);
+
+  const handleJoyrideCallback = (data) => {
+    const { action, index, type, status } = data;
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      console.log("Tour finished or skipped");
+      setRun(false);
+      setStepIndex(0);
+    } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+      console.log("Step after or target not found");
+      const step = steps[index];
+      const nextStepIndex = action === ACTIONS.PREV ? index - 1 : index + 1;
+      if (index === 4) {
+        // Code to handle next step after step 6
+        console.log("I am at step 6");
+        setStepIndex(nextStepIndex);
+      } else {
+        // Code for other cases
+
+        setStepIndex(nextStepIndex);
+        console.log("Index", index);
+      }
+    } else if (type === EVENTS.TARGET_NOT_FOUND) {
+      console.log("Target not found:", steps[index].target);
+    }
+
+    //Print the step number based on the index which is executing now
+    console.log("Step Index:", index);
+    console.log("This is Step Number:", index + 1);
+  };
 
   const updateLog = (message) => {
     setLog((prevLog) => [...prevLog,`${new Date().toISOString()}: ${message}`,]);
@@ -350,18 +399,36 @@ function SimulationScenarioTemplate() {
       {/* Navigation Bar */}
       <NavigationBar title="Digital Twin Simulation - Water Level Node Failure" />
       {/* Page Content */}
+      <Joyride
+        ref={joyrideRef}
+        callback={handleJoyrideCallback}
+        continuous={true}
+        scrollToFirstStep={true}
+        showSkipButton={true}
+        run={run}
+        steps={steps}
+        stepIndex={stepIndex}
+        styles={{
+          options: {
+            zIndex: 10000,
+            width: 400,
+            position: "relative",
+          },
+        }}
+      />
       <div
         style={{
           display: "flex",
           height: "50vw",
-        }}>
+        }} className="step1">
         <div
           style={{
             display: "flex",
             flex: 1,
             flexDirection: "column",
             alignItems: "center",
-          }}>
+          }}
+          className="step2">
           <h1 style={{ textAlign: "center"}}>Simulation Scenario Title</h1>
           <p>
             Scenario Explanation: 
@@ -382,7 +449,9 @@ function SimulationScenarioTemplate() {
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",
-            }}>
+            }}
+            className="step3"
+            >
             {isSimulationRunning ? "Stop Simulation" : "Start Simulation"}
           </button>
         </div>

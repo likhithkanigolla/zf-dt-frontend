@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData }) => {
+const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData, waterLevelNodeWorking, setWaterLevelNodeWorking, type, setStepIndex, stepIndex}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEnabled, setIsEnabled] = useState(true);
 
@@ -10,6 +10,9 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
     }
     else{
     setIsEnabled(!isEnabled);
+    if(setWaterLevelNodeWorking){
+    setWaterLevelNodeWorking(!waterLevelNodeWorking);}
+    if(setStepIndex){setStepIndex(stepIndex+1);}
     }
   };
 
@@ -30,8 +33,10 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData 
           width: '2vw',
           height: '2vw',
           borderRadius: '50%', // Makes the image circular (adjust as needed)
-          zIndex:15
-        }}
+          zIndex:15,
+          }}
+          className= {type === 'waterquantitysensor' ? 'waterquantity-vtool' : type === 'waterlevelsensor' ? 'waterlevel-vtool' : type === 'motorsensor' ? 'motor-vtool' : type === 'leakagesensor' ? 'leakage-vtool' : type === 'waterqualitysensor' ? 'waterquality-vtool': 'normal-vtool'}
+        
         onClick={onClick ? onClick : handleClick} 
       />
       {isEnabled && isHovered && (
