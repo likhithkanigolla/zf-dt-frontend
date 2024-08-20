@@ -308,19 +308,36 @@ const RealValueVisualisation = () => {
     </div>
   );
 
-  const LazyBox = ({ src }) => {
-    const { ref, inView } = useInView({
-      triggerOnce: true, // Load only once when it comes into view
-      threshold: 0.1, // Trigger when 10% of the component is visible
-    });
+  const LazyBox = ({ src, panelId }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [iframeSrc, setIframeSrc] = useState('');
+  
+    useEffect(() => {
+      const cachedSrc = localStorage.getItem(`panel-${panelId}`);
+      if (cachedSrc) {
+        setIframeSrc(cachedSrc);
+        setIsLoaded(true);
+      } else {
+        setIframeSrc(src);
+      }
+    }, [src, panelId]);
+  
+    const handleLoad = () => {
+      localStorage.setItem(`panel-${panelId}`, src);
+      setIsLoaded(true);
+    };
   
     return (
-      <div ref={ref} style={{ flex: 1 }}>
-        {inView && <iframe src={src} style={{ width: '100%', height: '100%', border: 'none' }} />}
+      <div style={{ flex: 1 }}>
+        {!isLoaded && <div>Loading...</div>}
+        <iframe
+          src={iframeSrc}
+          style={{ width: '100%', height: '100%', border: 'none', display: isLoaded ? 'block' : 'none' }}
+          onLoad={handleLoad}
+        />
       </div>
     );
   };
-
   const fetchNodeData = async (tableName) => {
     const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH03-00'];
     const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
