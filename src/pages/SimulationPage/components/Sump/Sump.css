@@ -17,7 +17,7 @@
 
 .sump-background {
   position: absolute;
-  width: 100%;
+  width: 100vw;
   height: 1vw;
   background-color: #ccc;
   
@@ -33,9 +33,9 @@
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden; 
-  transition: height 5s ease;
-  animation: sumpwave 3s infinite ease-in-out;
-  border-radius: 100%;
+  transition: height 3s ease;
+  animation: sumpwave 6s infinite ease-in-out;
+  border-radius: 40%;
 
 }
 
@@ -46,6 +46,7 @@ background: rgb(37, 194, 226);
 border-radius: 50%;
 position: absolute;
 animation: wave-animation 4s infinite linear;
+
 }
 
 .sumpwave:nth-child(2) {
@@ -87,3 +88,18 @@ animation: wave-animation 4s infinite linear reverse;
   text-align: center;
   width: 100%;
 }
+
+.impurity {
+  position: absolute;
+  background-color: gray;
+  z-index: 4;
+}
+
+.impurity.circle {
+  border-radius: 50%;
+}
+
+
+/* .impurity {
+  position: absolute;
+} */
