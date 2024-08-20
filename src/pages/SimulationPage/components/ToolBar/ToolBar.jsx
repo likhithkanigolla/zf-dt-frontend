@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ToolBar.css';
 
 
@@ -8,22 +8,22 @@ import WaterQualityNode from "../../../images/WaterQualityNode.png";
 import WaterQuantityNode from "../../../images/WaterQuantityNode.png";
 import LeakageIcon from "../../../images/leakage_water.png"; 
 
-function Toolbar({ handleToolbarItemClick, handleLeakageIconClick }) {
+function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex, stepIndex }) {
     return (
         <div className="toolbar">
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
+            <button className="tool-button waterquality-tool" onClick={() => handleToolbarItemClick('waterqualitysensor')}>
                 <img src={WaterQualityNode} alt="Water Quality Sensor"/> 
             </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterquantitysensor')}>
+            <button className="tool-button waterquantity-tool" onClick={() => {handleToolbarItemClick('waterquantitysensor') ; if(setStepIndex){setStepIndex(stepIndex+1);}}}>
                 <img src={WaterQuantityNode} alt="Water Quantity Sensor"/> 
             </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('waterlevelsensor')}>
+            <button className="tool-button waterlevel-tool" onClick={() => {handleToolbarItemClick('waterlevelsensor'); if(setStepIndex){setStepIndex(stepIndex+1);}}}>
                 <img src={WaterLevelNode} alt="Water Level Sensor"/>
             </button>
-            <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
+            <button className="tool-button motor-tool" onClick={() => handleToolbarItemClick('motorsensor')}>
                 <img src={MotorNode} alt="Motor Sensor"/>
             </button>
-            <button className="tool-button" onClick={handleLeakageIconClick}>
+            <button className="tool-button leakage-tool" onClick={handleLeakageIconClick}>
                 <img src={LeakageIcon} alt="Leakage" />
             </button>
 

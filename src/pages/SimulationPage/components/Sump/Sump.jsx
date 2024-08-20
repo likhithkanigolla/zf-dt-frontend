@@ -17,7 +17,7 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick, calculate
     } else if (calculatedTdsVal >= 401) {
       setWaterColor('#CAAA76');
     }
-    
+
     // Update impurities based on TDS value
     setImpurities(generateImpurities(calculatedTdsVal));
   }, [calculatedTdsVal]);
@@ -51,7 +51,6 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick, calculate
         left: Math.random() * 100, // Random position within the container
         top: Math.random() * 100,
         size: Math.random() * 0.5 + 0.1, // Random size
-        shape: Math.random() < 0.5 ? 'circle' : 'triangle' // Random shape
       });
     }
     return particles;
@@ -79,16 +78,15 @@ const Sump = forwardRef(({ waterInSump, sumpCapacity, handleIconClick, calculate
             {impurities.map((impurity, index) => (
               <div
                 key={index}
-                className={`impurity ${impurity.shape}`}
+                className="impurity"
                 style={{
                   position: 'absolute',
                   left: `${impurity.left}%`,
                   top: `${impurity.top}%`,
                   width: `${impurity.size}vw`,
                   height: `${impurity.size}vw`,
-                  bottom: "1vw",
                   backgroundColor: 'gray',
-                  borderRadius: impurity.shape === 'circle' ? '50%' : '0%',
+                  borderRadius: '50%',
                   zIndex: '2'
                 }}
               ></div>
