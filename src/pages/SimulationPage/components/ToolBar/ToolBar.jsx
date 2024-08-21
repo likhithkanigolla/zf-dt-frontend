@@ -5,7 +5,7 @@ import MotorNode from "../../../images/MotorNode.png";
 import WaterLevelNode from "../../../images/WaterLevelNode.png";
 import WaterQualityNode from "../../../images/WaterQualityNode.png";
 import WaterQuantityNode from "../../../images/WaterQuantityNode.png";
-import LeakageIcon from "../../../images/leakage_water.png"; 
+
 
 function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex, stepIndex }) {
     return (
@@ -25,10 +25,6 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
             <button className="tool-button" onClick={() => handleToolbarItemClick('motorsensor')}>
                 <img src={MotorNode} alt="Motor Sensor" />
                 <span className="tool-button-title">Motor Sensor</span>
-            </button>
-            <button className="tool-button" onClick={handleLeakageIconClick}>
-                <img src={LeakageIcon} alt="Leakage" />
-                <span className="tool-button-title">Pipe Leakages</span>
             </button>
         </div>
     );
