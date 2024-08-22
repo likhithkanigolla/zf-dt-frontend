@@ -192,6 +192,7 @@ const SimulationPage = () => {
       setFlowrate(10);
       setPermeateFlowRate(1);
       setPreviousPermeateFlowRate(0);
+      setTimeElapsed(0);
       // toast.success("Log data saved successfully.");
     } catch (error) {
       console.error("Error saving log data:", error);
