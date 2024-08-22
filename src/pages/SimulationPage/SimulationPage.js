@@ -1008,7 +1008,7 @@ const SimulationPage = () => {
     "WM-WF-KB04-71": (3 * waterConsumed) / 4,
     "WM-WF-KB04-72": waterConsumed / 4,
     "WM-WF-KH98-40": inputValues ? inputValues.sumpCapacity : 0,
-    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump : 0,
+    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump + (leakageRate/3) : 0,
   };
 
   const displayValueOnClick = (id) => {
@@ -1398,13 +1398,14 @@ const SimulationPage = () => {
                     top: `${marker.x}vw`,
                     left: `${marker.y}vw`,
                     cursor: "pointer",
-                    zIndex: 20,
+                    zIndex: 3,
+                    
                   }}
                   onClick={() => {}}>
                   <img
                     src={LeakageIcon}
                     alt="Leakage"
-                    style={{ width: "20px", height: "20px" }}
+                    style={{ position:"absolute",width: "1.5vw", height: "1.5vw", zIndex: "1"}}
                   />
                 </div>
               ))}
