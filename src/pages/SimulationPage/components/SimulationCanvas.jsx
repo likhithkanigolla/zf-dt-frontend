@@ -139,7 +139,7 @@ const SimulationCanvas = ({
           />
           {motorOn && (<div style={{ fontSize: "10px", color: "green" }}>Running</div>)}
           <div style={{ fontSize: "0.6vw" }}>Motor Pumping Rate</div>
-          <div style={{ fontSize: "0.8vw" }}><b>{motorOn ? (flowrate + Math.random() * 2 - 1).toFixed(2) : 0} L/s</b></div>
+          <div style={{ fontSize: "0.8vw" }}><b>{motorOn ? flowrate: 0} L/s</b></div>
         </div>
 
         {/* L Shape Pipe from motor to oht */}

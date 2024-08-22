@@ -1,17 +1,21 @@
 import React from 'react';
 import LeakageIcon from "../../images/leakage_water.png"; 
 
-const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leakageLocation, setLeakageLocation, leakageRate, setLeakageRate, handleApplyLeakages }) => {
+const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leakageLocation, setLeakageLocation, leakageRate, setLeakageRate, handleApplyLeakages, flowrate, PermeateFlowRate}) => {
   if (!showLeakageOptions) {
     return null;
   }
 
   return (
     <div className="leakage-options-popup">
-  
+    {/* Write the text in the form of mathematical formaula; Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate) */}
+    <h6 style={{ textAlign: 'center', color: 'black'}}>Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate)</h6>
+    <h6 style={{ textAlign: 'center', color: 'black'}}>OHT OutflowRate =  FlowrateOfAdminBlockWashrooms + FlowrateOfKRBBlockWashrooms + FlowrateofRO </h6>
+    <h6 style={{ textAlign: 'center', color: 'black'}}>Original Flowrate = {flowrate} L/s</h6>
+    <h6 style={{ textAlign: 'center', color: 'black'}}>Effective Flowrate = {(flowrate - (numLeakages*leakageRate)).toFixed(2)} L/s</h6>
+    <h6 style={{ textAlign: 'center', color: 'black'}}>OHT Outflowrate = {(flowrate-(flowrate*0.06)-PermeateFlowRate).toFixed(2)} L/s</h6>
 
-
-  <div className="heading" style={{ display: 'flex', alignItems: 'center' }}>
+    <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
   <h4  style={{ margin: 0 }}>Leakage Configuration</h4>
   <img 
     src={LeakageIcon} 
