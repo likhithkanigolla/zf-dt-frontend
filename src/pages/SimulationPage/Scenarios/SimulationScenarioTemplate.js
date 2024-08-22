@@ -69,7 +69,7 @@ function SimulationScenarioTemplate() {
     "WM-WD-KH96-02": 46 + Math.floor(Math.random() * 11) - 5,
     "WM-WD-KH95-00": 46 - 5 + Math.floor(Math.random() * 11) - 5,
     "WM-WD-KH96-01": 435 + Math.floor(Math.random() * 21) - 10,
-    "WM-WD-KH03-00": 46 - 5 + Math.floor(Math.random() * 11) - 5,
+    "WM-WD-KH04-00": 46 - 5 + Math.floor(Math.random() * 11) - 5,
     "WM-WF-KB04-70": waterFlowAdmin,
     "WM-WF-KB04-73": waterFlowKRB,
     "WM-WF-KB04-71": (3 * waterConsumed) / 4,
