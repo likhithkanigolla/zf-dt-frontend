@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Joyride, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 import { saveAs } from "file-saver";
+import { useNavigate } from 'react-router-dom';
 import NavigationBar from "../../../components/navigation/Navigation";
 import ConsoleHeader from "../../../components/Console/Console";
 import SimulationCanvas from "../components/SimulationCanvas";
+import Back from '@mui/icons-material/ArrowBackRounded';
 import Toolbar from "../components/ToolBar/ToolBar";
 import IoTNodes from "../../../components/IoTNodes/Nodes";
 import MotorNode from "../../images/MotorNode.png";
@@ -16,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 function WaterLevelNodeFailure() {
   // Define the state variables
+  const navigate = useNavigate();
   const [iconRefs, setIconRefs] = React.useState([]);
   const [flow1, setFlow1] = React.useState(0);
   const [flow2, setFlow2] = React.useState(0);
@@ -632,7 +635,22 @@ function WaterLevelNodeFailure() {
             alignItems: "center",
           }}
           className="left-section">
+             <button 
+      onClick={() => navigate(-1)} 
+      style={{ 
+        position: 'relative', 
+        top: '2vw', 
+        right: '6.3vw', 
+        backgroundColor: 'transparent', 
+        border: 'none', 
+        cursor: 'pointer',
+        padding: 0 
+      }}
+    >
+      <Back style={{ fontSize: '2rem', color: 'black' }} />
+    </button>
           <h2 style={{textAlign: "center"}}>Simulation Scenario</h2>
+          
           <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
           <p style={{ textAlign: "center" }}>
             Water level node in the OHT is responsible for turning on and off
