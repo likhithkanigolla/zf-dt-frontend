@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeakageOptions from '../LeakageOptions';
+
 import './Form.css';
 
 function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
@@ -189,6 +190,8 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     //     />
                     //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
                     // </div>
+   
+
                     <LeakageOptions
                     showLeakageOptions={true}
                     numLeakages={numLeakages}
@@ -199,6 +202,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     setLeakageRate={setLeakageRate}
                     handleApplyLeakages={handleApplyLeakages}
                   />
+         
                     
                 )}
 

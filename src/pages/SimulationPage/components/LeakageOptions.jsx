@@ -1,4 +1,5 @@
 import React from 'react';
+import LeakageIcon from "../../images/leakage_water.png"; 
 
 const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leakageLocation, setLeakageLocation, leakageRate, setLeakageRate, handleApplyLeakages }) => {
   if (!showLeakageOptions) {
@@ -7,7 +8,21 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
 
   return (
     <div className="leakage-options-popup">
-       <h4 className="heading">Leakage Configuration</h4>
+  
+
+
+  <div className="heading" style={{ display: 'flex', alignItems: 'center' }}>
+  <h4  style={{ margin: 0 }}>Leakage Configuration</h4>
+  <img 
+    src={LeakageIcon} 
+    alt="Leakage"  
+    style={{ 
+      
+      width: '1vw', 
+      height: '1vw' 
+    }} 
+  />
+</div>
       <label htmlFor="numLeakages">Number of Leakages:</label>
       <input
         type="number"
