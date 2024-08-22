@@ -63,6 +63,7 @@ function SimulationForm({
         if (event.target.value === "6") {
             navigate('/dt_waternetwork/simulation/waterlevel');
         }
+        handleSaveLog();
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
@@ -75,6 +76,7 @@ function SimulationForm({
             handleApplyLeakages(inputValues.leakage_location, inputValues.leakage_rate);
         }
         handleStartSimulation();
+        
     };
 
     return (
