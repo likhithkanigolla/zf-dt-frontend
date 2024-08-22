@@ -347,8 +347,10 @@ const SimulationPage = () => {
         console.log("Total Leakage Rate: ", totalAfterOHTLeakageRate);
 
         const temp_permeate = Math.max(Math.max(0.0, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B + 5)) - totalAfterOHTLeakageRate, 0);
+        const temp_flowrate = Math.max((flowrate  + Math.random() * 2 - 1).toFixed(2), 0);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
+        setFlowrate(temp_flowrate)
         setFlowgraph((flowgraph) => [
           ...flowgraph,
           {
@@ -1037,6 +1039,7 @@ const SimulationPage = () => {
           handleDownloadLog={handleDownloadLog}
           handleSaveLog={handleSaveLog}
           handleStopSimulation ={handleStopSimulation}
+          flowrate ={flowrate}
           log={log}
           showLeakageOptions={showLeakageOptions}
           numLeakages={numLeakages}
@@ -1047,6 +1050,8 @@ const SimulationPage = () => {
           setLeakageRate={setLeakageRate}
           handleApplyLeakages={handleApplyLeakages}
           isLoading={isLoading}
+          PermeateFlowRate={PermeateFlowRate}
+          
         />
 
         {/* Middle Section */}

@@ -4,7 +4,7 @@ import LeakageOptions from '../LeakageOptions';
 
 import './Form.css';
 
-function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
+function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions, setLeakageRate, setLeakageLocation, setNumLeakages, numLeakages, leakageLocation, leakageRate, isLoading, flowrate, PermeateFlowRate }) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
@@ -51,7 +51,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
             handleApplyLeakages(inputValues.leakage_location, inputValues.leakage_rate);
         }
         handleStartSimulation();
-        
+
     };
 
     return (
@@ -192,22 +192,24 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     //     />
                     //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
                     // </div>
-                    
 
-                    // Write the text in the form of mathematical formaula; Effective Flowrate = Flowrate - (Number of Leakages * )
+
+
 
                     <LeakageOptions
-                    showLeakageOptions={true}
-                    numLeakages={numLeakages}
-                    setNumLeakages={setNumLeakages}
-                    leakageLocation={leakageLocation}
-                    setLeakageLocation={setLeakageLocation}
-                    leakageRate={leakageRate}
-                    setLeakageRate={setLeakageRate}
-                    handleApplyLeakages={handleApplyLeakages}
-                  />
-         
-                    
+                        showLeakageOptions={true}
+                        numLeakages={numLeakages}
+                        setNumLeakages={setNumLeakages}
+                        leakageLocation={leakageLocation}
+                        setLeakageLocation={setLeakageLocation}
+                        leakageRate={leakageRate}
+                        setLeakageRate={setLeakageRate}
+                        handleApplyLeakages={handleApplyLeakages}
+                        flowrate={flowrate}
+                        PermeateFlowRate={PermeateFlowRate}
+                    />
+
+
                 )}
 
                 {/* Additional Configurations when no scenario is selected */}
@@ -304,20 +306,20 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
             </div>
 
             <div className="button-container">
-            <button
-                onClick={handleStartClick}
-                className="button-form"
-                style={{ 
-                    background: isLoading 
-                        ? "gray" 
-                        : isSimulationRunning 
-                            ? "blue" 
-                            : "rgb(15, 140, 17)" 
-                }}
-                disabled={isLoading}
-            >
-                {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
-            </button>
+                <button
+                    onClick={handleStartClick}
+                    className="button-form"
+                    style={{
+                        background: isLoading
+                            ? "gray"
+                            : isSimulationRunning
+                                ? "blue"
+                                : "rgb(15, 140, 17)"
+                    }}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+                </button>
                 <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)' }}>
                     End
                 </button>
