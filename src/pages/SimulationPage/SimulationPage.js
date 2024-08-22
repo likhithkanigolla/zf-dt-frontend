@@ -58,6 +58,9 @@ const SimulationPage = () => {
     sumpCapacity: "60000",
     ohtCapacity: "100000",
     ro_ohtCapacity: "1000",
+    num_leakages: "3",
+    leakage_location: "motorOHT",
+    leakage_rate: "5",
     // flowrate: "5"
   });
 
@@ -111,6 +114,7 @@ const SimulationPage = () => {
   const [leakageLocation, setLeakageLocation] = useState("");
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [datagraph, setDatagraph] = useState([]);
   const [flowgraph, setFlowgraph] = useState([]);
@@ -496,8 +500,10 @@ const SimulationPage = () => {
     );
   };
 
+
   // Function to call the api calculate_soil_contamination from backend and get the result
   const calculateSoilContamination = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${config.backendAPI}/calculate_soil_contamination`, {
         method: "POST",
@@ -516,9 +522,13 @@ const SimulationPage = () => {
     } catch (error) {
       console.error(error);
     }
+    finally {
+      setIsLoading(false);
+    }
   };
 
   const calculateSandContamination = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${config.backendAPI}/calculate_sand_contamination`, {
         method: "POST",
@@ -537,9 +547,13 @@ const SimulationPage = () => {
     } catch (error) {
       console.error(error);
     }
+    finally {
+      setIsLoading(false);
+    }
   };
 
   const calculateROFiltration = async (calculatedTDS, desired_tds, temperature, membrane_area) => {
+    setIsLoading(true);
     const requestBody = {
       initial_tds: calculatedTDS,
       desired_tds: desired_tds,
@@ -549,19 +563,27 @@ const SimulationPage = () => {
       sump_capacity: inputValues.sumpCapacity,
     };
 
-    let response = await fetch(`${config.backendAPI}/calculate_ro_filtration`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-    let data = await response.json();
-    updateLog(`RO Filtration Data: ${JSON.stringify(data, null, 2)}`);
-    return data;
+    try {
+      let response = await fetch(`${config.backendAPI}/calculate_ro_filtration`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      let data = await response.json();
+      updateLog(`RO Filtration Data: ${JSON.stringify(data, null, 2)}`);
+      // setROFiltrationData(data);
+      return data;
+    } catch (error) {
+      console.error('Error calculating RO Filtration:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const calculateMotorFlowRate = async (voltage, current, power_factor, motor_efficiency, depth) => {
+    setIsLoading(true);
     const requestBody = {
       voltage: voltage,
       current: current,
@@ -570,18 +592,25 @@ const SimulationPage = () => {
       depth: depth,
     };
 
-    let response = await fetch(`${config.backendAPI}/calculate_motor_flow_rate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    let data = await response.json();
-    updateLog(`Motor Flow Rate Data: ${JSON.stringify(data, null, 2)}`);
-    return data;
+    try {
+      let response = await fetch(`${config.backendAPI}/calculate_motor_flow_rate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      let data = await response.json();
+      updateLog(`Motor Flow Rate Data: ${JSON.stringify(data, null, 2)}`);
+      // setMotorFlowRateData(data);
+      return data;
+    } catch (error) {
+      console.error('Error calculating Motor Flow Rate:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   const handleCalculate = async () => {
     try {
@@ -1007,6 +1036,15 @@ const SimulationPage = () => {
           handleDownloadLog={handleDownloadLog}
           handleSaveLog={handleSaveLog}
           log={log}
+          showLeakageOptions={showLeakageOptions}
+          numLeakages={numLeakages}
+          setNumLeakages={setNumLeakages}
+          leakageLocation={leakageLocation}
+          setLeakageLocation={setLeakageLocation}
+          leakageRate={leakageRate}
+          setLeakageRate={setLeakageRate}
+          handleApplyLeakages={handleApplyLeakages}
+          isLoading={isLoading}
         />
 
         {/* Middle Section */}
@@ -1014,18 +1052,18 @@ const SimulationPage = () => {
           {/* Toolbar */}
           <Toolbar
             handleToolbarItemClick={handleToolbarItemClick}
-            handleLeakageIconClick={handleLeakageIconClick}
+            // handleLeakageIconClick={handleLeakageIconClick}
           />
-          <LeakageOptions
+          {/* <LeakageOptions
             showLeakageOptions={showLeakageOptions}
-            numLeakages={numLeakages}
-            setNumLeakages={setNumLeakages}
-            leakageLocation={leakageLocation}
-            setLeakageLocation={setLeakageLocation}
-            leakageRate={leakageRate}
+            numLeakages={inputValues.num_leakages}
+            // setNumLeakages={setNumLeakages}
+            leakageLocation={inputValues.leakage_location}
+            // setLeakageLocation={setLeakageLocation}
+            leakageRate={inputValues.leakage_rate}
             setLeakageRate={setLeakageRate}
             handleApplyLeakages={handleApplyLeakages}
-          />
+          /> */}
           <div className="demo-page">
             <div
               style={{

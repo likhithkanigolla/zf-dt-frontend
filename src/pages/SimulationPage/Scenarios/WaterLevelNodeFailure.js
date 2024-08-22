@@ -15,6 +15,9 @@ import WaterQuantityNode from "../../images/WaterQuantityNode.png";
 import whiteimage from "../../images/white.png";
 import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from '@mui/icons-material/Info';
+
+
 
 function WaterLevelNodeFailure() {
   // Define the state variables
@@ -649,9 +652,20 @@ function WaterLevelNodeFailure() {
     >
       <Back style={{ fontSize: '2rem', color: 'black' }} />
     </button>
-          <h2 style={{textAlign: "center"}}>Simulation Scenario</h2>
+<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <h2 style={{ marginLeft: 30, flex: 'none' }}>Simulation Scenario</h2>
           
-          <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
+  <InfoIcon 
+    onClick={() => setRun(true)} 
+    style={{ 
+      marginLeft: '0.5rem', 
+      color: 'blue', 
+      cursor: 'pointer', 
+      fontSize: '1.5rem' 
+    }} 
+  />
+</div>
+<h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
           <p style={{ textAlign: "center" }}>
             Water level node in the OHT is responsible for turning on and off
             the motor. The primary principle is when the water level in the OHT
