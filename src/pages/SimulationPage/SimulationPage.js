@@ -347,8 +347,10 @@ const SimulationPage = () => {
         console.log("Total Leakage Rate: ", totalAfterOHTLeakageRate);
 
         const temp_permeate = Math.max(Math.max(0.0, Math.min(PermeateFlowRate + (Math.random() - 0.5) * 10, PermeateFlowRate_B + 5)) - totalAfterOHTLeakageRate, 0);
+        const temp_flowrate = Math.max((flowrate  + Math.random() * 2 - 1).toFixed(2), 0);
         setPreviousPermeateFlowRate(PermeateFlowRate.toFixed(2));
         setPermeateFlowRate(temp_permeate);
+        setFlowrate(temp_flowrate)
         setFlowgraph((flowgraph) => [
           ...flowgraph,
           {
@@ -1006,7 +1008,7 @@ const SimulationPage = () => {
     "WM-WF-KB04-71": (3 * waterConsumed) / 4,
     "WM-WF-KB04-72": waterConsumed / 4,
     "WM-WF-KH98-40": inputValues ? inputValues.sumpCapacity : 0,
-    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump : 0,
+    "WM-WF-KH95-40": inputValues ? inputValues.sumpCapacity - waterInSump + (leakageRate/3) : 0,
   };
 
   const displayValueOnClick = (id) => {
@@ -1037,6 +1039,7 @@ const SimulationPage = () => {
           handleDownloadLog={handleDownloadLog}
           handleSaveLog={handleSaveLog}
           handleStopSimulation ={handleStopSimulation}
+          flowrate ={flowrate}
           log={log}
           showLeakageOptions={showLeakageOptions}
           numLeakages={numLeakages}
@@ -1047,6 +1050,8 @@ const SimulationPage = () => {
           setLeakageRate={setLeakageRate}
           handleApplyLeakages={handleApplyLeakages}
           isLoading={isLoading}
+          PermeateFlowRate={PermeateFlowRate}
+          
         />
 
         {/* Middle Section */}
@@ -1393,13 +1398,14 @@ const SimulationPage = () => {
                     top: `${marker.x}vw`,
                     left: `${marker.y}vw`,
                     cursor: "pointer",
-                    zIndex: 20,
+                    zIndex: 3,
+                    
                   }}
                   onClick={() => {}}>
                   <img
                     src={LeakageIcon}
                     alt="Leakage"
-                    style={{ width: "20px", height: "20px" }}
+                    style={{ position:"absolute",width: "1.5vw", height: "1.5vw", zIndex: "1"}}
                   />
                 </div>
               ))}

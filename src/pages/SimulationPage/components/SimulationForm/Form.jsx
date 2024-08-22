@@ -5,22 +5,8 @@ import Timer from '../../../../components/timer-component';
 
 import './Form.css';
 
-function SimulationForm({
-    inputValues,
-    handleChange,
-    handleStartSimulation,
-    handleSaveLog,
-    handleStopSimulation, isSimulationRunning,
-    handleApplyLeakages,
-    showLeakageOptions,
-    setLeakageRate,
-    setLeakageLocation,
-    setNumLeakages,
-    numLeakages,
-    leakageLocation,
-    leakageRate,
-    isLoading
-}) {
+
+function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions, setLeakageRate, setLeakageLocation, setNumLeakages, numLeakages, leakageLocation, leakageRate, isLoading, flowrate, PermeateFlowRate }) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
@@ -76,7 +62,7 @@ function SimulationForm({
             handleApplyLeakages(inputValues.leakage_location, inputValues.leakage_rate);
         }
         handleStartSimulation();
-        
+
     };
 
     return (
@@ -217,7 +203,6 @@ function SimulationForm({
                     //     />
                     //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
                     // </div>
-   
 
                     <LeakageOptions
                         showLeakageOptions={true}
@@ -228,6 +213,8 @@ function SimulationForm({
                         leakageRate={leakageRate}
                         setLeakageRate={setLeakageRate}
                         handleApplyLeakages={handleApplyLeakages}
+                        flowrate={flowrate}
+                        PermeateFlowRate={PermeateFlowRate}
                     />
                 )}
 
