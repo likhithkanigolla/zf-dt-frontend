@@ -75,7 +75,7 @@ const LineGraph = ({ data, title , feild }) => {
         backgroundColor = 'rgba(153, 102, 255, 0.2)';
         break;
       case 4:
-        label = 'Permative Flow Rate(L/S)';
+        label = 'Permeative Flow Rate(L/S)';
         borderColor = 'rgba(255, 159, 64, 1)';
         backgroundColor = 'rgba(255, 159, 64, 0.2)';
         break;

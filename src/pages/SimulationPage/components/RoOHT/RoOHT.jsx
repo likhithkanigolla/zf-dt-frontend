@@ -3,7 +3,7 @@ import './RoOHT.css'; // Import CSS file
 
 const RoOHT = forwardRef(({ waterInROFilter, ro_ohtCapacity, handleIconClick }, ref) => {
   const [fillPercentage, setFillPercentage] = useState(0);
-  const [isOverflowing, setIsOverflowing] = useState(false);
+ 
 
   useEffect(() => {
     const targetPercentage = (waterInROFilter / ro_ohtCapacity) ;
