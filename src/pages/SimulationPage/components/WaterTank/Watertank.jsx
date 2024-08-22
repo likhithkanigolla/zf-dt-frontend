@@ -3,7 +3,7 @@ import './WaterTank.css'; // Import CSS file
 
 const WaterTank = forwardRef(({ waterInOHT, ohtCapacity, handleIconClick }, ref) => {
   const [fillPercentage, setFillPercentage] = useState(0);
-  const [isOverflowing, setIsOverflowing] = useState(false);
+  // const [isOverflowing, setIsOverflowing] = useState(false);
 
   useEffect(() => {
     const targetPercentage = (waterInOHT / ohtCapacity) * 100;

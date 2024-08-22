@@ -10,10 +10,10 @@ body {
 .container, .result-container {
   background-color:none ;
   border-radius: 0vw;
-  padding: 20px;
+  padding: 1.25rem;
   margin: 5px 0;
   height: 22vh;
-  width: 18.5vw;
+  width: 18.9vw;
   overflow-y: scroll;
   overflow-x: hidden; /* Ensure horizontal scrollbar is hidden */
   scrollbar-width: none; /* Firefox */

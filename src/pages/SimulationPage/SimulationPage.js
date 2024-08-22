@@ -237,8 +237,8 @@ const SimulationPage = () => {
     if (location === "motorOHT") {
       // Hardcoded coordinates for the three possible leakage positions
       leakagePositions = [
-        { x: 13.5, y: 19 }, // Motor end
-        { x: 11, y: 27 }, // Middle pipe
+        { x: 13.5, y: 25.5 }, // Motor end
+        { x: 10, y: 27 }, // Middle pipe
         { x: 4, y: 27 }, // Near OHT
       ];
     } // ... (rest of your logic)

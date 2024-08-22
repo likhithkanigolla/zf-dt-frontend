@@ -70,12 +70,12 @@ const LineGraph = ({ data, title , feild }) => {
         backgroundColor = 'rgba(255, 205, 86, 0.2)';
         break;
       case 3:
-        label = 'Sand and Soil';
+        label = 'Sand and Soil(ppm)';
         borderColor = 'rgba(153, 102, 255, 1)';
         backgroundColor = 'rgba(153, 102, 255, 0.2)';
         break;
       case 4:
-        label = 'Permative Flow Rate';
+        label = 'Permeative Flow Rate(L/S)';
         borderColor = 'rgba(255, 159, 64, 1)';
         backgroundColor = 'rgba(255, 159, 64, 0.2)';
         break;

@@ -45,7 +45,7 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
       >
         <option value="">Select Location</option>
         <option value="motorOHT">Between Motor and OHT</option>
-        <option value="roPlant">Around RO Plant</option>
+        <option value="roPlant">Between OHT and RO Plant</option>
         {/* Add more options as needed */}
       </select>
       <label htmlFor="leakageRate">Leakage Rate (L/s):</label>

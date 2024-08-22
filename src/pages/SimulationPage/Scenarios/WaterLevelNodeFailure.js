@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Joyride, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 import { saveAs } from "file-saver";
+import { useNavigate } from 'react-router-dom';
 import NavigationBar from "../../../components/navigation/Navigation";
 import ConsoleHeader from "../../../components/Console/Console";
 import SimulationCanvas from "../components/SimulationCanvas";
+import Back from '@mui/icons-material/ArrowBackRounded';
 import Toolbar from "../components/ToolBar/ToolBar";
 import IoTNodes from "../../../components/IoTNodes/Nodes";
 import MotorNode from "../../images/MotorNode.png";
@@ -19,6 +21,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 function WaterLevelNodeFailure() {
   // Define the state variables
+  const navigate = useNavigate();
   const [iconRefs, setIconRefs] = React.useState([]);
   const [flow1, setFlow1] = React.useState(0);
   const [flow2, setFlow2] = React.useState(0);
@@ -635,12 +638,28 @@ function WaterLevelNodeFailure() {
             alignItems: "center",
           }}
           className="left-section">
-<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-  <h2 style={{ marginLeft: 30, flex: 'none' }}>Simulation Scenario</h2>
+             <button 
+              onClick={() => navigate(-1)} 
+              style={{ 
+                position: 'relative', 
+                top: '2vw', 
+                right: '8vw', 
+                backgroundColor: 'transparent', 
+                border: 'none', 
+                cursor: 'pointer',
+                padding: 0 
+              }}
+            >
+              <Back style={{ fontSize: '1.6rem', color: 'black' }} />
+            </button>
+<div style={{ display: 'flex', alignItems: 'center',  left: '2vw', marginTop: '-2.5vw', width: '7vw' }}>
+  <h2 style={{ marginLeft: '-2.5vw', flex: 'none', fontSize: '1.3vw' }}>Simulation Scenario</h2>
+          
   <InfoIcon 
     onClick={() => setRun(true)} 
     style={{ 
       marginLeft: '0.5rem', 
+      top: '2vw',
       color: 'blue', 
       cursor: 'pointer', 
       fontSize: '1.5rem' 
@@ -648,7 +667,7 @@ function WaterLevelNodeFailure() {
   />
 </div>
 <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
-          <p style={{ textAlign: "center" }}>
+          <p style={{ textAlign: "left" }}>
             Water level node in the OHT is responsible for turning on and off
             the motor. The primary principle is when the water level in the OHT
             goes below 20% then the motor should be turned on and when it
@@ -847,42 +866,43 @@ function WaterLevelNodeFailure() {
           <br></br>
         </div>
         <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          className="right-section">
-          <h4 style={{ textAlign: "center" }}>Assumptions</h4>
-            <ol>
-              <li>Motor Voltage: 240V</li>
-              <li>Motor Current: 11A</li>
-              <li>Power Factor: 0.11</li>
-              <li>Motor Efficiency: 0.85</li>
-              <li>Temperature: 25°C</li>
-              <li>Sump Capacity: 60,000L</li>
-              <li>OHT Capacity: 100,000L</li>
-              <li>Flow Rate: 10L/s</li>
-            </ol>
-          <h4>Steps to Replicate Scenario</h4>
-          <ol>
-            {/* <li>Check the Motor Running Status by deploying the Virtual Motor Sensor</li>
-            <li>Check the Total InFlow from sump to OHT by deploying Water Quality Sensor at Motor</li>
-            <li>Check the Total OutFlow from OHT to RO Filter by deploying Water Quality Sensor at RO Plant</li>
-            <li>Finally Deploy the WaterLevel Sensor at OHT and check the issue is resolved or not. </li> */}
-            <li>Start the simulation</li>
-            <li>Set the water level in OHT to 85%</li>
-            <li>Check the motor status</li>
-            <li>Set the water level in OHT to 15%</li>
-            <li>Check the motor status</li>
-            <li>Make the water level node failure at OHT</li>
-            <li>Check the motor status</li>
-            <li>Deploy the water level sensor at OHT</li>
-            <li>Check the motor status</li>
-            <li>Stop the simulation</li>
-          </ol>
-        </div>
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        className="right-section"
+      >
+        <h4 style={{ textAlign: "left", marginBottom: "1px" }}>Assumptions</h4>
+        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+          <li>Motor Voltage: 240V</li>
+          <li>Motor Current: 11A</li>
+          <li>Power Factor: 0.11</li>
+          <li>Motor Efficiency: 0.85</li>
+          <li>Temperature: 25°C</li>
+          <li>Sump Capacity: 60,000L</li>
+          <li>OHT Capacity: 100,000L</li>
+          <li>Flow Rate: 10L/s</li>
+          <li>Initial Sump Capacity: 38,670.00L</li>
+          <li>Initial OHT Capacity: 39,260.00L</li>
+        </ol>
+        
+        <h4 style={{ marginTop: "1px", marginBottom: "0px" }}>Steps to Replicate Scenario</h4>
+        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+          <li>Start the simulation</li>
+          <li>Set the water level in OHT to 85%</li>
+          <li>Check the motor status</li>
+          <li>Set the water level in OHT to 15%</li>
+          <li>Check the motor status</li>
+          <li>Make the water level node failure at OHT</li>
+          <li>Check the motor status</li>
+          <li>Deploy the water level sensor at OHT</li>
+          <li>Check the motor status</li>
+          <li>Stop the simulation</li>
+        </ol>
+      </div>
+
       </div>
     </div>
   );

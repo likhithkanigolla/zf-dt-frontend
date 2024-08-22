@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeakageOptions from '../LeakageOptions';
+import Timer from '../../../../components/timer-component';
 
 import './Form.css';
+
 
 function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions, setLeakageRate, setLeakageLocation, setNumLeakages, numLeakages, leakageLocation, leakageRate, isLoading, flowrate, PermeateFlowRate }) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
@@ -10,6 +12,9 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
     const [isMotorConfigCollapsed, setIsMotorConfigCollapsed] = useState(false);
+    const [prevScenario, setPrevScenario] = useState(inputValues.Scenarios);
+
+    const navigate = useNavigate();
 
     const toggleLeakageConfig = () => {
         setIsLeakageConfigCollapsed(!isLeakageConfigCollapsed);
@@ -31,7 +36,13 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
+            handleSaveLog(); // End the current simulation
+            handleStartSimulation(); // Start the new simulation
+        }
+        setPrevScenario(inputValues.Scenarios);
+    }, [inputValues.Scenarios]);
 
     const handleChangeOpt = async (event) => {
         await handleChange(event);
@@ -61,14 +72,14 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
-                            <option value="1">Select Scenario</option>
-                            <option value="2">Soil Impurities vs TDS</option>
-                            <option value="3">Sand Impurities vs TDS</option>
-                            <option value="6">Water Level Node Failed</option>
-                            <option value="7">Pipe Leakages</option>
-                            <option value="4" disabled>Flow vs TDS</option>
-                            <option value="5" disabled>Water Quality Node Failed</option>
-                            <option value="8" disabled>Water Purification Agents vs TDS</option>
+                                <option value="1">Select Scenario</option>
+                                <option value="2" onClick={handleSaveLog}>Soil Impurities vs TDS</option>
+                                <option value="3">Sand Impurities vs TDS</option>
+                                <option value="6">Water Level Node Failed</option>
+                                <option value="7">Pipe Leakages</option>
+                                <option value="4" disabled>Flow vs TDS</option>
+                                <option value="5" disabled>Water Quality Node Failed</option>
+                                <option value="8" disabled>Water Purification Agents vs TDS</option>
                         </select>
                     </label>
                     <div className="simulation-speed">
@@ -193,9 +204,6 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
                     // </div>
 
-
-
-
                     <LeakageOptions
                         showLeakageOptions={true}
                         numLeakages={numLeakages}
@@ -208,8 +216,6 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         flowrate={flowrate}
                         PermeateFlowRate={PermeateFlowRate}
                     />
-
-
                 )}
 
                 {/* Additional Configurations when no scenario is selected */}
