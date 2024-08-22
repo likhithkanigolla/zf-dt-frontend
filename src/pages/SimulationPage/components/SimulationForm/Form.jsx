@@ -4,7 +4,7 @@ import LeakageOptions from '../LeakageOptions';
 
 import './Form.css';
 
-function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
+function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
@@ -33,12 +33,12 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
     const navigate = useNavigate();
 
-    const handleChangeOpt = (event) => {
-        handleChange(event);
+    const handleChangeOpt = async (event) => {
+        await handleChange(event);
         if (event.target.value === "6") {
             navigate('/dt_waternetwork/simulation/waterlevel');
         }
-        handleSaveLog();
+        handleStopSimulation();
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
@@ -192,7 +192,9 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     //     />
                     //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
                     // </div>
-   
+                    
+
+                    // Write the text in the form of mathematical formaula; Effective Flowrate = Flowrate - (Number of Leakages * )
 
                     <LeakageOptions
                     showLeakageOptions={true}
