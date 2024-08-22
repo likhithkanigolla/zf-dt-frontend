@@ -1036,6 +1036,7 @@ const SimulationPage = () => {
           timeMultiplier={timeMultiplier}
           handleDownloadLog={handleDownloadLog}
           handleSaveLog={handleSaveLog}
+          handleStopSimulation ={handleStopSimulation}
           log={log}
           showLeakageOptions={showLeakageOptions}
           numLeakages={numLeakages}

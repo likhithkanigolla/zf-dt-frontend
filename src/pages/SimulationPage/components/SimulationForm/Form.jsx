@@ -10,7 +10,7 @@ function SimulationForm({
     handleChange,
     handleStartSimulation,
     handleSaveLog,
-    isSimulationRunning,
+    handleStopSimulation, isSimulationRunning,
     handleApplyLeakages,
     showLeakageOptions,
     setLeakageRate,
@@ -58,12 +58,12 @@ function SimulationForm({
         setPrevScenario(inputValues.Scenarios);
     }, [inputValues.Scenarios]);
 
-    const handleChangeOpt = (event) => {
-        handleChange(event);
+    const handleChangeOpt = async (event) => {
+        await handleChange(event);
         if (event.target.value === "6") {
             navigate('/dt_waternetwork/simulation/waterlevel');
         }
-        handleSaveLog();
+        handleStopSimulation();
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
@@ -182,6 +182,43 @@ function SimulationForm({
 
                 {/* Leakage Configuration */}
                 {(isScenario7 || !isAnyScenarioSelected) && (
+                    // <div>
+                    //     <h4 className="heading" onClick={toggleLeakageConfig}>Leakage Configuration</h4>
+                    //     <h4 className="heading-in">Number of Leakages:</h4>
+                    //     <input
+                    //         className="input-box"
+                    //         type="number"
+                    //         name="num_leakages"
+                    //         id="num_leakages"
+                    //         value={inputValues.num_leakages}
+                    //         onChange={handleChange}
+                    //     />
+                    //     <h4 className="heading-in">Leakage Location:</h4>
+                    //     <select
+                    //         className="input-box"
+                    //         name="leakage_location"
+                    //         id="leakage_location"
+                    //         value={inputValues.leakage_location}
+                    //         onChange={handleChange}
+                    //     >
+                    //         <option value="">Select Location</option>
+                    //         <option value="Between Motor and OHT">Between Motor and OHT</option>
+                    //         <option value="Around RO Plant">Around RO Plant</option>
+                    //         <option value="Near Sump">Near Sump</option>
+                    //     </select>
+                    //     <h4 className="heading-in">Leakage Rate (Liters/Second):</h4>
+                    //     <input
+                    //         className="input-box"
+                    //         type="number"
+                    //         name="leakage_rate"
+                    //         id="leakage_rate"
+                    //         value={inputValues.leakage_rate}
+                    //         onChange={handleChange}
+                    //     />
+                    //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
+                    // </div>
+   
+
                     <LeakageOptions
                         showLeakageOptions={true}
                         numLeakages={numLeakages}
