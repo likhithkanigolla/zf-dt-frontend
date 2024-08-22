@@ -866,44 +866,43 @@ function WaterLevelNodeFailure() {
           <br></br>
         </div>
         <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          className="right-section">
-          <h4 style={{ textAlign: "left" }}>Assumptions</h4>
-            <ol>
-              <li>Motor Voltage: 240V</li>
-              <li>Motor Current: 11A</li>
-              <li>Power Factor: 0.11</li>
-              <li>Motor Efficiency: 0.85</li>
-              <li>Temperature: 25°C</li>
-              <li>Sump Capacity: 60,000L</li>
-              <li>OHT Capacity: 100,000L</li>
-              <li>Flow Rate: 10L/s</li>
-              <li>Initail Sump capacity: 38670.00L</li>
-              <li>Initial OHT capacity: 39260.00L</li>
-            </ol>
-          <h4>Steps to Replicate Scenario</h4>
-          <ol>
-            {/* <li>Check the Motor Running Status by deploying the Virtual Motor Sensor</li>
-            <li>Check the Total InFlow from sump to OHT by deploying Water Quality Sensor at Motor</li>
-            <li>Check the Total OutFlow from OHT to RO Filter by deploying Water Quality Sensor at RO Plant</li>
-            <li>Finally Deploy the WaterLevel Sensor at OHT and check the issue is resolved or not. </li> */}
-            <li>Start the simulation</li>
-            <li>Set the water level in OHT to 85%</li>
-            <li>Check the motor status</li>
-            <li>Set the water level in OHT to 15%</li>
-            <li>Check the motor status</li>
-            <li>Make the water level node failure at OHT</li>
-            <li>Check the motor status</li>
-            <li>Deploy the water level sensor at OHT</li>
-            <li>Check the motor status</li>
-            <li>Stop the simulation</li>
-          </ol>
-        </div>
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        className="right-section"
+      >
+        <h4 style={{ textAlign: "left", marginBottom: "1px" }}>Assumptions</h4>
+        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+          <li>Motor Voltage: 240V</li>
+          <li>Motor Current: 11A</li>
+          <li>Power Factor: 0.11</li>
+          <li>Motor Efficiency: 0.85</li>
+          <li>Temperature: 25°C</li>
+          <li>Sump Capacity: 60,000L</li>
+          <li>OHT Capacity: 100,000L</li>
+          <li>Flow Rate: 10L/s</li>
+          <li>Initial Sump Capacity: 38,670.00L</li>
+          <li>Initial OHT Capacity: 39,260.00L</li>
+        </ol>
+        
+        <h4 style={{ marginTop: "1px", marginBottom: "0px" }}>Steps to Replicate Scenario</h4>
+        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+          <li>Start the simulation</li>
+          <li>Set the water level in OHT to 85%</li>
+          <li>Check the motor status</li>
+          <li>Set the water level in OHT to 15%</li>
+          <li>Check the motor status</li>
+          <li>Make the water level node failure at OHT</li>
+          <li>Check the motor status</li>
+          <li>Deploy the water level sensor at OHT</li>
+          <li>Check the motor status</li>
+          <li>Stop the simulation</li>
+        </ol>
+      </div>
+
       </div>
     </div>
   );

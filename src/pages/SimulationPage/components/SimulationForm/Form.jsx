@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeakageOptions from '../LeakageOptions';
+import Timer from '../../../../components/timer-component';
 
 import './Form.css';
 
-function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, isSimulationRunning, handleApplyLeakages, showLeakageOptions,setLeakageRate, setLeakageLocation, setNumLeakages,numLeakages,leakageLocation,leakageRate , isLoading}) {
+function SimulationForm({
+    inputValues,
+    handleChange,
+    handleStartSimulation,
+    handleSaveLog,
+    isSimulationRunning,
+    handleApplyLeakages,
+    showLeakageOptions,
+    setLeakageRate,
+    setLeakageLocation,
+    setNumLeakages,
+    numLeakages,
+    leakageLocation,
+    leakageRate,
+    isLoading
+}) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
     const [isMotorConfigCollapsed, setIsMotorConfigCollapsed] = useState(false);
+    const [prevScenario, setPrevScenario] = useState(inputValues.Scenarios);
+
+    const navigate = useNavigate();
 
     const toggleLeakageConfig = () => {
         setIsLeakageConfigCollapsed(!isLeakageConfigCollapsed);
@@ -31,7 +50,13 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
         setIsMotorConfigCollapsed(!isMotorConfigCollapsed);
     };
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
+            handleSaveLog(); // End the current simulation
+            handleStartSimulation(); // Start the new simulation
+        }
+        setPrevScenario(inputValues.Scenarios);
+    }, [inputValues.Scenarios]);
 
     const handleChangeOpt = (event) => {
         handleChange(event);
@@ -59,14 +84,14 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
-                            <option value="1">Select Scenario</option>
-                            <option value="2">Soil Impurities vs TDS</option>
-                            <option value="3">Sand Impurities vs TDS</option>
-                            <option value="6">Water Level Node Failed</option>
-                            <option value="7">Pipe Leakages</option>
-                            <option value="4" disabled>Flow vs TDS</option>
-                            <option value="5" disabled>Water Quality Node Failed</option>
-                            <option value="8" disabled>Water Purification Agents vs TDS</option>
+                                <option value="1">Select Scenario</option>
+                                <option value="2" onClick={handleSaveLog}>Soil Impurities vs TDS</option>
+                                <option value="3">Sand Impurities vs TDS</option>
+                                <option value="6">Water Level Node Failed</option>
+                                <option value="7">Pipe Leakages</option>
+                                <option value="4" disabled>Flow vs TDS</option>
+                                <option value="5" disabled>Water Quality Node Failed</option>
+                                <option value="8" disabled>Water Purification Agents vs TDS</option>
                         </select>
                     </label>
                     <div className="simulation-speed">
@@ -155,55 +180,16 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
                 {/* Leakage Configuration */}
                 {(isScenario7 || !isAnyScenarioSelected) && (
-                    // <div>
-                    //     <h4 className="heading" onClick={toggleLeakageConfig}>Leakage Configuration</h4>
-                    //     <h4 className="heading-in">Number of Leakages:</h4>
-                    //     <input
-                    //         className="input-box"
-                    //         type="number"
-                    //         name="num_leakages"
-                    //         id="num_leakages"
-                    //         value={inputValues.num_leakages}
-                    //         onChange={handleChange}
-                    //     />
-                    //     <h4 className="heading-in">Leakage Location:</h4>
-                    //     <select
-                    //         className="input-box"
-                    //         name="leakage_location"
-                    //         id="leakage_location"
-                    //         value={inputValues.leakage_location}
-                    //         onChange={handleChange}
-                    //     >
-                    //         <option value="">Select Location</option>
-                    //         <option value="Between Motor and OHT">Between Motor and OHT</option>
-                    //         <option value="Around RO Plant">Around RO Plant</option>
-                    //         <option value="Near Sump">Near Sump</option>
-                    //     </select>
-                    //     <h4 className="heading-in">Leakage Rate (Liters/Second):</h4>
-                    //     <input
-                    //         className="input-box"
-                    //         type="number"
-                    //         name="leakage_rate"
-                    //         id="leakage_rate"
-                    //         value={inputValues.leakage_rate}
-                    //         onChange={handleChange}
-                    //     />
-                    //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
-                    // </div>
-   
-
                     <LeakageOptions
-                    showLeakageOptions={true}
-                    numLeakages={numLeakages}
-                    setNumLeakages={setNumLeakages}
-                    leakageLocation={leakageLocation}
-                    setLeakageLocation={setLeakageLocation}
-                    leakageRate={leakageRate}
-                    setLeakageRate={setLeakageRate}
-                    handleApplyLeakages={handleApplyLeakages}
-                  />
-         
-                    
+                        showLeakageOptions={true}
+                        numLeakages={numLeakages}
+                        setNumLeakages={setNumLeakages}
+                        leakageLocation={leakageLocation}
+                        setLeakageLocation={setLeakageLocation}
+                        leakageRate={leakageRate}
+                        setLeakageRate={setLeakageRate}
+                        handleApplyLeakages={handleApplyLeakages}
+                    />
                 )}
 
                 {/* Additional Configurations when no scenario is selected */}
@@ -300,20 +286,20 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
             </div>
 
             <div className="button-container">
-            <button
-                onClick={handleStartClick}
-                className="button-form"
-                style={{ 
-                    background: isLoading 
-                        ? "gray" 
-                        : isSimulationRunning 
-                            ? "blue" 
-                            : "rgb(15, 140, 17)" 
-                }}
-                disabled={isLoading}
-            >
-                {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
-            </button>
+                <button
+                    onClick={handleStartClick}
+                    className="button-form"
+                    style={{
+                        background: isLoading
+                            ? "gray"
+                            : isSimulationRunning
+                                ? "blue"
+                                : "rgb(15, 140, 17)"
+                    }}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+                </button>
                 <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)' }}>
                     End
                 </button>
