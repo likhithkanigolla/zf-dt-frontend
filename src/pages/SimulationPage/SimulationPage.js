@@ -1002,7 +1002,7 @@ const SimulationPage = () => {
     "WM-WD-KH96-02": result ? result.final_tds_concentration_after_ro_tank + Math.floor(Math.random() * 11) - 5 : 0,
     "WM-WD-KH95-00": result ? result.final_tds_concentration_after_ro_tank - 5 + Math.floor(Math.random() * 11) - 5 : 0,
     "WM-WD-KH96-01": result ? result.calculated_tds_value + Math.floor(Math.random() * 21) - 10 : 0,
-    "WM-WD-KH03-00": result ? result.final_tds_concentration_after_ro_tank - 5 + Math.floor(Math.random() * 11) - 5 : 0,
+    "WM-WD-KH04-00": result ? result.final_tds_concentration_after_ro_tank - 5 + Math.floor(Math.random() * 11) - 5 : 0,
     "WM-WF-KB04-70": waterFlowAdmin,
     "WM-WF-KB04-73": waterFlowKRB,
     "WM-WF-KB04-71": (3 * waterConsumed) / 4,
@@ -1204,12 +1204,12 @@ const SimulationPage = () => {
                   left: "57.9vw",
                   textAlign: "center",
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} /> */}
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
-                  dataId="WM-WD-KH03-00"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH03-00"].toFixed(2)}ppm`}
+                  dataId="WM-WD-KH04-00"
+                  data={`Water Quality: ${SimulatedValues["WM-WD-KH04-00"].toFixed(2)}ppm`}
                 />
               </div>
 

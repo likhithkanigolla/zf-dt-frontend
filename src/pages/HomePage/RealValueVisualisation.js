@@ -38,7 +38,7 @@ const RealValueVisualisation = () => {
     "WM-WD-KH96-02": false,
     "WM-WD-KH95-00": false,
     "WM-WD-KH96-01": false,
-    "WM-WD-KH03-00": false,
+    "WM-WD-KH04-00": false,
     "WM-WF-KB04-70": false,
     "WM-WF-KB04-73": false,
     "WM-WF-KB04-71": false,
@@ -340,7 +340,7 @@ const RealValueVisualisation = () => {
   // };
 
   const fetchNodeData = async (tableName) => {
-    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH03-00'];
+    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH04-00'];
     const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
     const MotorNodes = ['DM-KH98-60'];
     const WaterFlowNodes = ['WM-WF-KB04-70', 'WM-WF-KB04-73', 'WM-WF-KB04-71', 'WM-WF-KB04-72', 'WM-WF-KH98-40', 'WM-WF-KH95-40'];
@@ -738,8 +738,8 @@ const RealValueVisualisation = () => {
                   </div>
 
                   <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH03-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH03-00'/>
+                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH04-00')} /> */}
+                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH04-00'/>
                   </div>
 
                   <div style={{ position: "absolute", top: "8vw", left: "14vw", textAlign: "center" }}>

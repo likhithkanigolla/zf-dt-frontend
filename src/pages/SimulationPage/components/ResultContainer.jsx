@@ -28,7 +28,7 @@ const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateF
       <h1 style={{ textAlign: 'center', color: '#123462' }}>Results</h1>
       <LineGraph data={datagraph} title={'IMPURITIES vs TDS(ppm) Timeseries'} feild={'tds'}/>
       <LineGraph data={flowgraph} title={'Permeative Flow Rate(L/S)'} feild={'flowrate'}/>
-      <div className="result-container">
+      <div className="result-container" style={{ height:"20vw"}}>
         <table style={{ width: '18vw', marginTop: '-1vw', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
           <thead>
             <tr style={{ backgroundColor: '#f2f2f2', width: '20vw', height: '1vw' }}>

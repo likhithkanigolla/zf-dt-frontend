@@ -110,13 +110,13 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "57.9vw",
                   textAlign: "center",
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH03-00')} /> */}
+                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
-                  dataId="WM-WD-KH03-00"
+                  dataId="WM-WD-KH04-00"
                   data={`Water Quality: ${SimulatedValues[
-                    "WM-WD-KH03-00"
+                    "WM-WD-KH04-00"
                   ].toFixed(2)}ppm`}
                 />
               </div>
