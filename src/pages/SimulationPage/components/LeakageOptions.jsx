@@ -9,12 +9,11 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
   return (
     <div className="leakage-options-popup">
     {/* Write the text in the form of mathematical formaula; Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate) */}
-    <h6 style={{ textAlign: 'center', color: 'black'}}>Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate)</h6>
-    <h6 style={{ textAlign: 'center', color: 'black'}}>OHT OutflowRate =  FlowrateOfAdminBlockWashrooms + FlowrateOfKRBBlockWashrooms + FlowrateofRO </h6>
-    <h6 style={{ textAlign: 'center', color: 'black'}}>Original Flowrate = {flowrate} L/s</h6>
-    <h6 style={{ textAlign: 'center', color: 'black'}}>Effective Flowrate = {(flowrate - (numLeakages*leakageRate)).toFixed(2)} L/s</h6>
-    <h6 style={{ textAlign: 'center', color: 'black'}}>OHT Outflowrate = {(flowrate-(flowrate*0.06)-PermeateFlowRate).toFixed(2)} L/s</h6>
-
+    <h6 style={{ textAlign: 'left', color: 'black'}}>Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate)</h6>
+    <h6 style={{ textAlign: 'left', color: 'black'}}>OHT OutflowRate =  FlowrateOfAdminBlockWashrooms + FlowrateOfKRBBlockWashrooms + FlowrateofRO </h6>
+    <h6 style={{ textAlign: 'left', color: 'black'}}>Original Flowrate = {flowrate} L/s</h6>
+    <h6 style={{ textAlign: 'left', color: 'black'}}>Effective Flowrate = {(flowrate - (numLeakages*leakageRate)).toFixed(2)} L/s</h6>
+    <h6 style={{ textAlign: 'left', color: 'black'}}>OHT Outflowrate = {(flowrate-(flowrate*0.06)-PermeateFlowRate).toFixed(2)} L/s</h6>
     <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
   <h4  style={{ margin: 0 }}>Leakage Configuration</h4>
   <img 
@@ -57,7 +56,7 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
         min="0"
         className="input-box"
       />
-      <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'black' }}>Apply</button>
+      <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'black', borderRadius: '1vw', marginBottom: '1vw'}}>Apply</button>
     </div>
   );
 };
