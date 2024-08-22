@@ -639,26 +639,27 @@ function WaterLevelNodeFailure() {
           }}
           className="left-section">
              <button 
-      onClick={() => navigate(-1)} 
-      style={{ 
-        position: 'relative', 
-        top: '2vw', 
-        right: '6.3vw', 
-        backgroundColor: 'transparent', 
-        border: 'none', 
-        cursor: 'pointer',
-        padding: 0 
-      }}
-    >
-      <Back style={{ fontSize: '2rem', color: 'black' }} />
-    </button>
-<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-  <h2 style={{ marginLeft: 30, flex: 'none' }}>Simulation Scenario</h2>
+              onClick={() => navigate(-1)} 
+              style={{ 
+                position: 'relative', 
+                top: '2vw', 
+                right: '8vw', 
+                backgroundColor: 'transparent', 
+                border: 'none', 
+                cursor: 'pointer',
+                padding: 0 
+              }}
+            >
+              <Back style={{ fontSize: '1.6rem', color: 'black' }} />
+            </button>
+<div style={{ display: 'flex', alignItems: 'center',  left: '2vw', marginTop: '-2.5vw', width: '7vw' }}>
+  <h2 style={{ marginLeft: '-2.5vw', flex: 'none', fontSize: '1.3vw' }}>Simulation Scenario</h2>
           
   <InfoIcon 
     onClick={() => setRun(true)} 
     style={{ 
       marginLeft: '0.5rem', 
+      top: '2vw',
       color: 'blue', 
       cursor: 'pointer', 
       fontSize: '1.5rem' 
@@ -666,7 +667,7 @@ function WaterLevelNodeFailure() {
   />
 </div>
 <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
-          <p style={{ textAlign: "center" }}>
+          <p style={{ textAlign: "left" }}>
             Water level node in the OHT is responsible for turning on and off
             the motor. The primary principle is when the water level in the OHT
             goes below 20% then the motor should be turned on and when it
@@ -872,7 +873,7 @@ function WaterLevelNodeFailure() {
             alignItems: "center",
           }}
           className="right-section">
-          <h4 style={{ textAlign: "center" }}>Assumptions</h4>
+          <h4 style={{ textAlign: "left" }}>Assumptions</h4>
             <ol>
               <li>Motor Voltage: 240V</li>
               <li>Motor Current: 11A</li>
@@ -882,6 +883,8 @@ function WaterLevelNodeFailure() {
               <li>Sump Capacity: 60,000L</li>
               <li>OHT Capacity: 100,000L</li>
               <li>Flow Rate: 10L/s</li>
+              <li>Initail Sump capacity: 38670.00L</li>
+              <li>Initial OHT capacity: 39260.00L</li>
             </ol>
           <h4>Steps to Replicate Scenario</h4>
           <ol>
