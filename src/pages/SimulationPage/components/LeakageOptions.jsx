@@ -40,8 +40,9 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
         id="leakageLocation"
         value={leakageLocation}
         onChange={(e) => setLeakageLocation(e.target.value)}
+        onClick={(e) => setLeakageLocation(e.target.value)}
         className="input-box"
-      >
+       >
         <option value="">Select Location</option>
         <option value="motorOHT">Between Motor and OHT</option>
         <option value="roPlant">Between OHT and RO Plant</option>
