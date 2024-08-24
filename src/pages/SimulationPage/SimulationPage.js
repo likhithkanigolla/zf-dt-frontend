@@ -1056,7 +1056,9 @@ const SimulationPage = () => {
         />
 
         {/* Middle Section */}
-        <div style={{ flex: 3 }}>
+        <div style={{ flex: 3, 
+          height: '0vw',
+          }}>
           {/* Toolbar */}
           <Toolbar
             handleToolbarItemClick={handleToolbarItemClick}
