@@ -66,7 +66,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     return (
-        <div>
+        <div style={{width: '20vw'}}>
             <h1 style={{ textAlign: 'center', 
                 color: '#123462',
                 fontSize: '2.2vw',

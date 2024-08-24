@@ -1350,7 +1350,7 @@ const SimulationPage = () => {
                   left: "52.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 3,
+                  zIndex: 150,
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
@@ -1359,6 +1359,7 @@ const SimulationPage = () => {
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-71"].toFixed(2)}L`}
                   rotation={90}
+                  
                 />
               </div>
 
@@ -1369,7 +1370,7 @@ const SimulationPage = () => {
                   left: "57.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 3,
+                  zIndex: 150,
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon

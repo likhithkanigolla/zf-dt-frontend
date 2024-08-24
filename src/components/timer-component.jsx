@@ -18,32 +18,17 @@ const Timer = ({ elapsedTime }) => {
         .toString()
         .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-    // Dark timer
+    // Responsive timer styles
     const timerStyles = {
         fontFamily: "'Orbitron', sans-serif",
-        fontSize: '0.8em',
+        fontSize: '1vw',  // Using vw units to make the font responsive
         color: 'black',
-        // backgroundColor: '#f2f2f2',
-        padding: '10px',
-        borderRadius: '5px',
+        padding: '1vw',  // Padding using vw units
+        borderRadius: '1vw',
         textAlign: 'center',
         width: 'fit-content',
-        margin: '20px auto',
-        // boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        margin: 'auto',
     };
-
-    // const timerStyles = {
-    //     fontFamily: "'Orbitron', sans-serif",
-    //     fontSize: '0.8vw',
-    //     color: '#333333',  // Dark gray text color
-    //     backgroundColor: '#f2f2f2',  // Light gray background color
-    //     padding: '15px',
-    //     borderRadius: '10px',
-    //     textAlign: 'center',
-    //     width: 'fit-content',
-    //     margin: '20px auto',
-    //     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    // };
 
     return <div style={timerStyles}>Time Elapsed: {formattedTime}</div>;
 };

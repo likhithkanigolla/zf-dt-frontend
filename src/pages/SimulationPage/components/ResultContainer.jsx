@@ -10,12 +10,12 @@ const ResultTable = ({ title, value, previousValue }) => {
       <td style={{ padding: '0.620rem', 
         textAlign: 'left', 
         fontWeight: 'bold', 
-        width: '2vw'
+        width: '2vw', fontSize: '1.2vw'
         }}>{title}</td>
       <td style={{ padding: '0.520rem', textAlign: 'center' }}>{value}
       </td>
 
-      <td style={{ padding: '0.520rem', textAlign: 'center', color: differenceColor }}>
+      <td style={{ padding: '0.520rem', textAlign: 'center', color: differenceColor, fontSize: '1.2vw'}}>
         {difference.toFixed(2)} {difference < 0 ? '↓' : '↑'}
       </td>
     </tr>
@@ -24,17 +24,22 @@ const ResultTable = ({ title, value, previousValue }) => {
 
 const ResultContainer = ({ result, previousResult, data, sensorValues, PermeateFlowRate, PreviousPermeateFlowRate, datagraph , flowgraph}) => {
   return (
-    <div style={{ flex: 1}}>
-      <h1 style={{ textAlign: 'center', color: '#123462' }}>Results</h1>
+    <div style={{ flex: 1, width: '2vw'}}>
+      <h1 style={{ textAlign: 'center',
+         color: '#123462',
+         fontSize: '2.5vw',
+         marginBottom: '1vw',
+         marginTop: '0.6vw',
+         }}>Results</h1>
       <LineGraph data={datagraph} title={'IMPURITIES vs TDS(ppm) Timeseries'} feild={'tds'}/>
       <LineGraph data={flowgraph} title={'Permeative Flow Rate(L/S)'} feild={'flowrate'}/>
-      <div className="result-container" style={{ height:"9vw"}}>
-        <table style={{ width: '18vw', marginTop: '-1vw', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
+      <div className="result-container" style={{ height:"9vw",  marginLeft: '-0.5vw', width:'20vw' }}>
+        <table style={{  marginTop: '-1vw', borderCollapse: 'collapse', border: '0.063rem solid #ddd'}}>
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2', width: '20vw', height: '1vw' }}>
-              <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Parameter</th>
-              <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>Value</th>
-              <th style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>Difference</th>
+            <tr style={{ backgroundColor: '#f2f2f2', width: '2vw', height: '1vw', }}>
+              <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '0.063rem solid #ddd', fontSize: '1.2vw' }}>Parameter</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '0.063rem solid #ddd', fontSize: '1.2vw' }}>Value</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', borderBottom: '0.063rem solid #ddd', fontSize: '1.2vw' }}>Difference</th>
             </tr>
           </thead>
           <tbody>
