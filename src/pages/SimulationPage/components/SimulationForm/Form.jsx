@@ -67,8 +67,12 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
     return (
         <div>
-            <h1 style={{ textAlign: 'center', color: '#123462' }}>Configuration</h1>
-            <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '68vh', color: 'white' }}>
+            <h1 style={{ textAlign: 'center', 
+                color: '#123462',
+                fontSize: '2.2vw',
+                position: 'relative'
+                }}>Configuration</h1>
+            <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '66vh', color: 'white' }}>
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
@@ -320,13 +324,18 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             ? "gray"
                             : isSimulationRunning
                                 ? "blue"
-                                : "rgb(15, 140, 17)"
+                                : "rgb(15, 140, 17)",
+                        maxWidth: '18vw',
+                        fontSize: '1.1vw'
                     }}
                     disabled={isLoading}
                 >
                     {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
                 </button>
-                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)' }}>
+                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)',
+                     maxWidth: '18vw',
+                        fontSize: '1.1vw'
+                 }}>
                     End
                 </button>
             </div>

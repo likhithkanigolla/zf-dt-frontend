@@ -15,16 +15,18 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
     <h6 style={{ textAlign: 'left', color: 'black'}}>Effective Flowrate = {(flowrate - (numLeakages*leakageRate)).toFixed(2)} L/s</h6>
     <h6 style={{ textAlign: 'left', color: 'black'}}>OHT Outflowrate = {(flowrate-(flowrate*0.06)-PermeateFlowRate).toFixed(2)} L/s</h6>
     <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
-  <h4  style={{ margin: 0 }}>Leakage Configuration</h4>
+  <h4  style={{ margin: 0 }}>Leakage Configuration
   <img 
     src={LeakageIcon} 
     alt="Leakage"  
     style={{ 
       
       width: '1vw', 
-      height: '1vw' 
+      height: '1vw',
+      marginLeft: '0.5vw'
     }} 
   />
+  </h4>
 </div>
       <label htmlFor="numLeakages">Number of Leakages:</label>
       <input
