@@ -212,6 +212,7 @@ const NavigationBar = ({ title }) => {
     handleNotificationOpen();
     handleAlarmOpen();
     setSelectedPath(window.location.pathname);
+    console.log('Current notifications:', issue);
   }, []);
 
   
@@ -260,19 +261,20 @@ const NavigationBar = ({ title }) => {
             horizontal: 'right',
           }}
         >
-          <PopoverContent>
-            {issue.map((item, index) => (
-              <NotificationCard key={index}>
-                <NotificationCardContent>
-                  <div>
-                    <Typography variant="h6">{item.title}</Typography>
-                    <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
-                  </div>
-                  <MarkAsReadButton onClick={() => markNotificationAsRead(item.id)}>Mark as Read</MarkAsReadButton>
-                </NotificationCardContent>
-              </NotificationCard>
-            ))}
-          </PopoverContent>
+        <PopoverContent>
+          {issue.map((item, index) => (
+            <NotificationCard key={index}>
+              <NotificationCardContent>
+                <div>
+                  <Typography variant="h6">{item.title}</Typography>
+                  <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
+                </div>
+                <MarkAsReadButton onClick={() => markNotificationAsRead(item.id)}>Mark as Read</MarkAsReadButton>
+              </NotificationCardContent>
+            </NotificationCard>
+          ))}
+        </PopoverContent>
+
         </Popover>
       </div>
 

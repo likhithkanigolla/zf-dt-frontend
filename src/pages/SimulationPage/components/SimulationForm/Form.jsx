@@ -72,7 +72,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 <div>
                     <label>
                         <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
-                                <option value="1">Select Scenario</option>
+                                <option value="1">Default Scenario</option>
                                 <option value="2" onClick={handleSaveLog}>Soil Impurities vs TDS</option>
                                 <option value="3">Sand Impurities vs TDS</option>
                                 <option value="7">Pipe Leakages</option>
