@@ -52,6 +52,7 @@
 }
 
 .heading-container {
+  position: sticky;
   display: flex;
   background-color: #123462;
   border-radius: 0.2vw;
@@ -59,6 +60,13 @@
   width: 59vw;
   justify-content: space-between;
   align-items: center;
+}
+.sticky {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: -10;
+  z-index: 1000; /* Ensure it stays above other content */
+  background-color: #123462; /* Optional: to maintain background color */
 }
 
 .heading-n {
