@@ -46,10 +46,11 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
     const handleChangeOpt = async (event) => {
         await handleChange(event);
+        handleSaveLog();
         if (event.target.value === "6") {
             navigate('/dt_waternetwork/simulation/waterlevel');
         }
-        handleStopSimulation();
+        // handleStopSimulation();
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
