@@ -37,11 +37,15 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
 
   return (
     <div className="container-n console-container">
-      <div className='flex-container heading-container'>
+      <div className='flex-container heading-container sticky'>
         <h3 className='heading-n'>Console</h3>
-        <button onClick={handleDownloadLog} className='button-c'>< FaDownload className='icon' /></button>
+        <button onClick={handleDownloadLog} className='button-c'>
+          <FaDownload className='icon' />
+        </button>
         {/* <button onClick={() => handleSaveLog(log)} className='button-c'><FaSave className='icon' /></button> */}
-        <button onClick={handleClearLog} className='button-c'><GrPowerReset className='icon' /></button>
+        <button onClick={handleClearLog} className='button-c'>
+          <GrPowerReset className='icon' />
+        </button>
       </div>
       <div className='log-container' ref={listRef}>
         {log.slice(-50).map((log, index) => (

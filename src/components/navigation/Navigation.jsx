@@ -76,7 +76,8 @@ const NavigationBar = ({ title }) => {
   const [alarmAnchorEl, setAlarmAnchorEl] = useState(null);
   const [ncount, setNcount] = useState(0);
   const [acount, setAcount] = useState(0);
-  const [issue, setIssue] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [alarms, setAlarms] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAlarmId, setSelectedAlarmId] = useState(null);
   const [remarks, setRemarks] = useState('');
@@ -95,26 +96,19 @@ const NavigationBar = ({ title }) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const responseText = await response.text();
-      console.log('Raw response:', responseText);
       const data = await response.json();
-      if (!Array.isArray(data)) {
-        throw new Error('Unexpected response format: expected an array');
-      }
       const notificationsWithTimestamp = data.map((item) => ({
         id: item[0],
         timestamp: new Date(item[1]).toLocaleString(),
         node_id: item[2],
         notification_type: item[3],
         title: item[4],
-        read: item[5],
+        read: false, // Assume unread since no read status in provided data
       }));
-      setIssue(notificationsWithTimestamp);
-
-      const unreadCount = notificationsWithTimestamp.filter(item => !item.read).length;
-      setNcount(unreadCount);
+      setNotifications(notificationsWithTimestamp);
+      setNcount(notificationsWithTimestamp.length); // Count all as unread initially
     } catch (error) {
-      console.error('Error fetching notifications:',error.message);
+      console.error('Error fetching notifications:', error.message);
     }
   };
 
@@ -128,15 +122,10 @@ const NavigationBar = ({ title }) => {
     }
     try {
       const response = await fetch(`${config.backendAPI}/alarms`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-       const responseText = await response.text();
-      console.log('Raw response:', responseText);   
-      const data = await response.json();
-      if (!Array.isArray(data)) {
-        throw new Error('Unexpected response format: expected an array');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
       const alarmsWithTimestamp = data.map((item) => ({
         id: item[0],
         timestamp: new Date(item[1]).toLocaleString(),
@@ -144,11 +133,10 @@ const NavigationBar = ({ title }) => {
         alarm_type: item[3],
         title: item[4],
       }));
-      setIssue(alarmsWithTimestamp);
-      const unreadCount = alarmsWithTimestamp.filter(item => !item.read).length;
-      setAcount(unreadCount);
+      setAlarms(alarmsWithTimestamp);
+      setAcount(alarmsWithTimestamp.length); // Assume all as active
     } catch (error) {
-      console.error('Error fetching alarms:',error.message);
+      console.error('Error fetching alarms:', error.message);
     }
   };
 
@@ -162,11 +150,9 @@ const NavigationBar = ({ title }) => {
         method: 'PUT',
       });
       if (response.ok) {
-        const closedNotification = issue.find((item) => item.id === id);
-        setIssue((prevIssue) => prevIssue.filter((item) => item.id !== id));
-        const unreadCount = issue.filter(item => !item.read).length - 1;
-        setNcount(unreadCount);
-        if (issue.length === 1) {
+        setNotifications((prevNotifications) => prevNotifications.filter((item) => item.id !== id));
+        setNcount(ncount - 1);
+        if (notifications.length === 1) {
           handleNotificationClose();
         }
       } else {
@@ -196,6 +182,7 @@ const NavigationBar = ({ title }) => {
         body: JSON.stringify({ remarks }),
       });
       if (response.ok) {
+        setAlarms((prevAlarms) => prevAlarms.filter((item) => item.id !== selectedAlarmId));
         setAcount(acount - 1);
         handleCloseDialog();
       } else {
@@ -214,8 +201,6 @@ const NavigationBar = ({ title }) => {
     setSelectedPath(window.location.pathname);
   }, []);
 
-  
-
   return (
     <nav className="navbar">
       <Link to="/dt_waternetwork/">
@@ -231,10 +216,6 @@ const NavigationBar = ({ title }) => {
       <div className="navbar__title">{title}</div>
 
       <div>
-        {/* <select className="navbar__dropdown" onChange={(e) => { window.location.href = e.target.value }}>
-          <option value="/dt_waternetwork/" selected={window.location.pathname === '/dt_waternetwork'}>Live</option>
-          <option value="/dt_waternetwork/simulation" selected={window.location.pathname === '/dt_waternetwork/simulation'}>Simulation</option>
-        </select> */}
         <select className="navbar__dropdown" value={selectedPath} onChange={(e) => {window.location.href = e.target.value;}}>
             <option value="/dt_waternetwork/">Live</option>
             <option value="/dt_waternetwork/simulation">Simulation</option>
@@ -260,19 +241,21 @@ const NavigationBar = ({ title }) => {
             horizontal: 'right',
           }}
         >
-          <PopoverContent>
-            {issue.map((item, index) => (
-              <NotificationCard key={index}>
-                <NotificationCardContent>
-                  <div>
-                    <Typography variant="h6">{item.title}</Typography>
-                    <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
-                  </div>
-                  <MarkAsReadButton onClick={() => markNotificationAsRead(item.id)}>Mark as Read</MarkAsReadButton>
-                </NotificationCardContent>
-              </NotificationCard>
-            ))}
-          </PopoverContent>
+        <PopoverContent>
+          {notifications.map((item, index) => (
+            <NotificationCard key={index}>
+              <NotificationCardContent>
+                <div>
+                  <Typography variant="h6">{item.title}</Typography>
+                  <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
+                  <Typography variant="body2">Node ID: {item.node_id}</Typography>
+                  <Typography variant="body2">Type: {item.notification_type}</Typography>
+                </div>
+                <MarkAsReadButton onClick={() => markNotificationAsRead(item.id)}>Mark as Read</MarkAsReadButton>
+              </NotificationCardContent>
+            </NotificationCard>
+          ))}
+        </PopoverContent>
         </Popover>
       </div>
 
@@ -296,12 +279,14 @@ const NavigationBar = ({ title }) => {
           }}
         >
           <PopoverContent>
-            {issue.map((item, index) => (
+            {alarms.map((item, index) => (
               <NotificationCard key={index}>
                 <NotificationCardContent>
                   <div>
                     <Typography variant="h6">{item.title}</Typography>
                     <Typography variant="body1">Timestamp: {item.timestamp}</Typography>
+                    <Typography variant="body2">Node ID: {item.node_id}</Typography>
+                    <Typography variant="body2">Type: {item.alarm_type}</Typography>
                   </div>
                   <MarkAsResolvedButton onClick={() => handleMarkAsResolved(item.id)}>Mark as Resolved</MarkAsResolvedButton>
                 </NotificationCardContent>
@@ -331,15 +316,31 @@ const NavigationBar = ({ title }) => {
         )}
       </div>
 
+      <div className="navbar__menu-icon" onClick={handleHamburgerClick}>
+        <div className={`navbar__hamburger-icon ${isHamburgerOpen ? 'open' : ''}`}>
+          <span className="navbar__hamburger-line"></span>
+          <span className="navbar__hamburger-line"></span>
+          <span className="navbar__hamburger-line"></span>
+        </div>
+      </div>
+
+
+      <Link to="/dt_waternetwork/">
+        <div className="navbar__logo">
+          <img src={ZFLOGO} alt="ZF Logo" />
+        </div>
+      </Link>
+
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Resolve Alarm</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            id="remarks"
             label="Remarks"
+            type="text"
             fullWidth
+            variant="standard"
             value={remarks}
             onChange={(e) => setRemarks(e.target.value)}
           />
@@ -348,17 +349,11 @@ const NavigationBar = ({ title }) => {
           <Button onClick={handleCloseDialog} color="primary">
             Cancel
           </Button>
-          <Button color="primary" onClick={handleResolveAlarm}>
+          <Button onClick={handleResolveAlarm} color="primary">
             Resolve
           </Button>
         </DialogActions>
       </Dialog>
-
-      <Link to="/dt_waternetwork/">
-        <div className="navbar__logo">
-          <img src={ZFLOGO} alt="ZF Logo" />
-        </div>
-      </Link>
     </nav>
   );
 };

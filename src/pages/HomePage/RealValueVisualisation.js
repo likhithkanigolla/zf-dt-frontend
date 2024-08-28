@@ -295,6 +295,51 @@ const RealValueVisualisation = () => {
     }
   };
 
+  const motorClick = async (buttonId, actionType) => {
+    // Call NodeActuation with the button ID, tableName, and actionType
+    console.log("Motor",buttonId, actionType);
+    document.getElementById(buttonId).disabled = true;
+    try{
+      await MotorActuation(actionType, () => {
+        console.log('Operation complete');
+    });
+  }
+  catch (error) {
+    console.error('Error:', error);
+  }
+  finally{
+    document.getElementById(buttonId).disabled = false;
+  };
+};
+
+  async function MotorActuation (status, callback){
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a delay
+    // Determine the status based on the updated state
+    // const node_status = !isOn[nodeName] ? 'on' : 'off';
+    const requestBody = {
+      // Your request body data here
+      
+    };
+    try {
+      const response = await fetch(
+        `${config.backendAPI}/motor/actuation/${status}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+  
+      const data = await response.json();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+  }
+
+
   const Box = ({ color, src }) => (
     <div style={{
       flex: 1,
@@ -542,8 +587,8 @@ const RealValueVisualisation = () => {
     }
     else if (MotorNodes.includes(tableName)) { 
       const buttonsInfo = [
-        { text: 'Motor on', id: 'turnOnButton', onClick: () => modifiedOnClick('turnOnButton', tableName, 1)},
-        { text: 'Motor off', id: 'turnOffButton', onClick: () => modifiedOnClick('turnOffButton', tableName, 0) },
+        { text: 'Motor on', id: 'turnOnButton', onClick: () => motorClick('turnOnButton',1)},
+        { text: 'Motor off', id: 'turnOffButton', onClick: () => motorClick('turnOffButton', 0) },
         { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
         { text: 'Motor Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
       ];
