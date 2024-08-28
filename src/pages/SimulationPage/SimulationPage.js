@@ -43,7 +43,7 @@ const SimulationPage = () => {
     y: 0,
   });
   const [inputValues, setInputValues] = useState({
-    Scenarios: "1",
+    Scenarios: "2",
     timeMultiplier: "1",
     simulationTime: "3600",
     SandQuantity: "0",

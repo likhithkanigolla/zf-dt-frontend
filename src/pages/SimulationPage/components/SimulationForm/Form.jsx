@@ -5,14 +5,13 @@ import Timer from '../../../../components/timer-component';
 
 import './Form.css';
 
-
 function SimulationForm({ inputValues, handleChange, handleStartSimulation, handleSaveLog, handleStopSimulation, isSimulationRunning, handleApplyLeakages, showLeakageOptions, setLeakageRate, setLeakageLocation, setNumLeakages, numLeakages, leakageLocation, leakageRate, isLoading, flowrate, PermeateFlowRate }) {
     const [isLeakageConfigCollapsed, setIsLeakageConfigCollapsed] = useState(false);
     const [isWaterConfigCollapsed, setIsWaterConfigCollapsed] = useState(false);
     const [isCapacitiesCollapsed, setIsCapacitiesCollapsed] = useState(false);
     const [isROPlantConfigCollapsed, setIsROPlantConfigCollapsed] = useState(false);
     const [isMotorConfigCollapsed, setIsMotorConfigCollapsed] = useState(false);
-    const [prevScenario, setPrevScenario] = useState(inputValues.Scenarios);
+    const [prevScenario, setPrevScenario] = useState(inputValues.Scenarios );  // Set default to "2"
 
     const navigate = useNavigate();
 
@@ -53,20 +52,20 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
+    // const isScenario1 = inputValues.Scenarios === "1";
     const isScenario3 = inputValues.Scenarios === "3";
     const isScenario7 = inputValues.Scenarios === "7";
-    const isAnyScenarioSelected = isScenario2 || isScenario3 || isScenario7;
+    const isallScenario = inputValues.Scenarios === "all";
 
     const handleStartClick = () => {
         if (isScenario7) {
             handleApplyLeakages(inputValues.leakage_location, inputValues.leakage_rate);
         }
         handleStartSimulation();
-
     };
 
     return (
-        <div style={{width: '20vw'}}>
+        <div style={{ width: '20vw' }}>
             <h1 style={{ textAlign: 'center', 
                 color: '#123462',
                 fontSize: '2.2vw',
@@ -75,15 +74,22 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
             <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '66vh', color: 'white' }}>
                 <div>
                     <label>
-                        <select name="Scenarios" className="dropdown-content" onChange={handleChangeOpt} value={inputValues.Scenarios}>
-                                <option value="1">Default Scenario</option>
-                                <option value="2" onClick={handleSaveLog}>Soil Impurities vs TDS</option>
-                                <option value="3">Sand Impurities vs TDS</option>
-                                <option value="7">Pipe Leakages</option>
-                                <option value="6">Water Level Node Failed</option>
-                                <option value="4" disabled>Flow vs TDS</option>
-                                <option value="5" disabled>Water Quality Node Failed</option>
-                                <option value="8" disabled>Water Purification Agents vs TDS</option>
+                        <select 
+                            name="Scenarios" 
+                            className="dropdown-content" 
+                            onChange={handleChangeOpt} 
+                            value={inputValues.Scenarios} // Default to Scenario 2
+                        >
+                              
+                            {/* <option value="2">Soil Impurities vs TDS</option> */}
+                            <option value="2">Soil Impurities vs TDS</option>
+                            <option value="3">Sand Impurities vs TDS</option>
+                            <option value="7">Pipe Leakages</option>
+                            <option value="6">Water Level Node Failed</option>
+                            <option value="4" disabled>Flow vs TDS</option>
+                            <option value="5" disabled>Water Quality Node Failed</option>
+                            <option value="8" disabled>Water Purification Agents vs TDS</option>
+                            <option value="all">All</option>
                         </select>
                     </label>
                     <div className="simulation-speed">
@@ -101,7 +107,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 </div>
 
                 {/* Parameter Configuration */}
-                {(isScenario2 || isScenario3 || !isAnyScenarioSelected) && (
+                {(isScenario2 || isScenario3) && (
                     <div>
                         <h4 className="heading">Parameter Configuration</h4>
                         {(!isScenario2 && !isScenario3) && (
@@ -170,8 +176,72 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     </div>
                 )}
                 {/* Additional Configurations when no scenario is selected */}
-                {!isAnyScenarioSelected && (
+                {isallScenario && (
                     <>
+                        <h4 className="heading">Parameter Configuration</h4>
+                        {(!isScenario2 && !isScenario3) && (
+                            <>
+                                <h4 className="heading-in" htmlFor="SoilQuantity">
+                                    Soil Impurities (In grams)
+                                </h4>
+                                <input
+                                    type="number"
+                                    name="SoilQuantity"
+                                    id="SoilQuantity"
+                                    value={inputValues.SoilQuantity}
+                                    className='input-box'
+                                    onChange={handleChange}
+                                />
+                                <h4 className="heading-in" htmlFor="SandQuantity">
+                                    Sand Impurities (In grams)
+                                </h4>
+                                <input
+                                    type="number"
+                                    name="SandQuantity"
+                                    id="SandQuantity"
+                                    value={inputValues.SandQuantity}
+                                    onChange={handleChange}
+                                />
+                            </>
+                        )}
+                        {isScenario2 && (
+                            <>
+                                <h4 className="heading-in" htmlFor="SoilQuantity">
+                                    Soil Impurities (In grams)
+                                </h4>
+                                <input
+                                    type="number"
+                                    name="SoilQuantity"
+                                    id="SoilQuantity"
+                                    value={inputValues.SoilQuantity}
+                                    className='input-box'
+                                    onChange={handleChange}
+                                />
+                            </>
+                        )}
+                        {isScenario3 && (
+                            <>
+                                <h4 className="heading-in" htmlFor="SandQuantity">
+                                    Sand Impurities (In grams)
+                                </h4>
+                                <input
+                                    type="number"
+                                    name="SandQuantity"
+                                    id="SandQuantity"
+                                    value={inputValues.SandQuantity}
+                                    onChange={handleChange}
+                                />
+                            </>
+                        )}
+                        <h4 className="heading-in">Temperature (°C):</h4>
+                        <input
+                            className="input-box"
+                            type="number"
+                            name="temperature"
+                            id="temperature"
+                            value={inputValues.temperature}
+                            onChange={handleChange}
+                        />
                         <h4 className="heading" onClick={toggleCapacities}>Capacity Configuration</h4>
                         <h4 className="heading-in">Sump Capacity (Liters):</h4>
                         <input
@@ -258,47 +328,24 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             value={inputValues.motor_efficiency}
                             onChange={handleChange}
                         />
+
+                        <LeakageOptions
+                        showLeakageOptions={true}
+                        numLeakages={numLeakages}
+                        setNumLeakages={setNumLeakages}
+                        leakageLocation={leakageLocation}
+                        setLeakageLocation={setLeakageLocation}
+                        leakageRate={leakageRate}
+                        setLeakageRate={setLeakageRate}
+                        handleApplyLeakages={handleApplyLeakages}
+                        flowrate={flowrate}
+                        PermeateFlowRate={PermeateFlowRate}
+                    />
                     </>
                 )}
 
-                                {/* Leakage Configuration */}
-                                {(isScenario7  || !isAnyScenarioSelected) && (
-                    // <div>
-                    //     <h4 className="heading" onClick={toggleLeakageConfig}>Leakage Configuration</h4>
-                    //     <h4 className="heading-in">Number of Leakages:</h4>
-                    //     <input
-                    //         className="input-box"
-                    //         type="number"
-                    //         name="num_leakages"
-                    //         id="num_leakages"
-                    //         value={inputValues.num_leakages}
-                    //         onChange={handleChange}
-                    //     />
-                    //     <h4 className="heading-in">Leakage Location:</h4>
-                    //     <select
-                    //         className="input-box"
-                    //         name="leakage_location"
-                    //         id="leakage_location"
-                    //         value={inputValues.leakage_location}
-                    //         onChange={handleChange}
-                    //     >
-                    //         <option value="">Select Location</option>
-                    //         <option value="Between Motor and OHT">Between Motor and OHT</option>
-                    //         <option value="Around RO Plant">Around RO Plant</option>
-                    //         <option value="Near Sump">Near Sump</option>
-                    //     </select>
-                    //     <h4 className="heading-in">Leakage Rate (Liters/Second):</h4>
-                    //     <input
-                    //         className="input-box"
-                    //         type="number"
-                    //         name="leakage_rate"
-                    //         id="leakage_rate"
-                    //         value={inputValues.leakage_rate}
-                    //         onChange={handleChange}
-                    //     />
-                    //     <button onClick={handleApplyLeakages} className="button-form" style={{ background: 'rgb(15, 140, 17)' }}>Apply</button>
-                    // </div>
-
+                {/* Leakage Configuration */}
+                {(isScenario7) && (
                     <LeakageOptions
                         showLeakageOptions={true}
                         numLeakages={numLeakages}
@@ -312,7 +359,6 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         PermeateFlowRate={PermeateFlowRate}
                     />
                 )}
-
             </div>
 
             <div className="button-container">
@@ -332,10 +378,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 >
                     {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
                 </button>
-                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)',
-                     maxWidth: '18vw',
-                        fontSize: '1.1vw'
-                 }}>
+                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
                     End
                 </button>
             </div>
