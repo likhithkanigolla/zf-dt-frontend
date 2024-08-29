@@ -99,7 +99,7 @@ const SimulationPage = () => {
   const [waterFlowAdmin, setWaterFlowAdmin] = useState(0); // Initial water flow in Admin
   const [waterFlowKRB, setWaterFlowKRB] = useState(0); // Initial water flow in KRB
   const [motorOn, setMotorOn] = useState(false); // Initial motor state
-  const [waterInROFilter, setWaterInROFilter] = useState(100); // Initial water level in RO Filter
+  const [waterInROFilter, setWaterInROFilter] = useState(1); // Initial water level in RO Filter
   const [alertShown, setAlertShown] = useState(false);
   const [waterFlowStarted, setWaterFlowStarted] = useState(false);
   const [waterConsumed, setWaterConsumed] = useState(0.0);
@@ -120,7 +120,7 @@ const SimulationPage = () => {
 
   const [showLeakageOptions, setShowLeakageOptions] = useState(false);
   const [numLeakages, setNumLeakages] = useState(1);
-  const [leakageLocation, setLeakageLocation] = useState("");
+  const [leakageLocation, setLeakageLocation] = useState("motorOHT");
   const [leakageRate, setLeakageRate] = useState(0); // Add state for leakage rate
   const [leakageMarkers, setLeakageMarkers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -779,7 +779,7 @@ const SimulationPage = () => {
       setFlow4(false);
       setFlow5(false);
       setMotorOn(false);
-      updateLog("Simulation stopped.");
+      updateLog("Simulation paused.");
       // toast.error("Simulation stopped!");
     }
   };
