@@ -64,6 +64,15 @@ const SimulationPage = () => {
     // flowrate: "5"
   });
 
+  const scenarioMapping = {
+    "1": "Soil vs TDS",
+    "2": "Sand vs TDS",
+    "3": "Flow vs TDS",
+    "4": "Water Quality Node Failed",
+    "5": "Water Purification Agents vs TDS",
+  };
+
+
   const [result, setResult] = useState(null);
   const [previousResult, setpreviousResult] = useState(null);
   const [soilContamination, setSoilContamination] = useState(null);
@@ -149,7 +158,8 @@ const SimulationPage = () => {
 
   const [log, setLog] = useState([]);
   const updateLog = (message) => {
-    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+    // setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
+    setLog((prevLog) => [...prevLog, `${message}`]);
   };
 
   const handleDownloadLog = () => {
@@ -203,7 +213,7 @@ const SimulationPage = () => {
 
   const handleMultiplierChange = (e) => {
     setTimeMultiplier(parseFloat(e.target.value));
-    updateLog(`Speed Multiplier changed to ${e.target.value}.`);
+    updateLog(`Speed Multiplier changed to ${e.target.value}x.`);
   };
 
   // Function to handle leakage icon click
@@ -312,12 +322,12 @@ const SimulationPage = () => {
               }, 0),
               20
             ); // Maximum leakage rate
-            updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}`);
+            updateLog(`Total Leakage Rate: ${totalAfterMotorLeakageRate}l/s`);
             // Calculate the effective flow rate into OHT
-            updateLog(`Motor Flow Rate: ${flowrate}`);
+            updateLog(`Motor Flow Rate: ${flowrate}l/s`);
             const effectiveFlowRate = Math.max(flowrate - totalAfterMotorLeakageRate + (Math.random() - 0.5), 1);
 
-            updateLog(`Effective Flow Rate: ${effectiveFlowRate}`);
+            updateLog(`Effective Flow Rate: ${effectiveFlowRate}l/s`);
 
             const prevWaterInOHT = waterInOHT; // Get previous water level
             setWaterInOHT((prev) => Math.min(prev + effectiveFlowRate, inputValues.ohtCapacity));
@@ -360,7 +370,7 @@ const SimulationPage = () => {
           },
         ]);
         // setWaterInROFilter(temp_permeate/5); //Initializing enough water to consume
-        updateLog("Permeate Flow Rate: " + PermeateFlowRate);
+        updateLog("Permeate Flow Rate: " + PermeateFlowRate + "l/s");
 
         // Pump water from OHT to RO Filter continuously
         if (waterInOHT > PermeateFlowRate && waterInROFilter < inputValues.ro_ohtCapacity) {
@@ -467,7 +477,7 @@ const SimulationPage = () => {
       // If simulation is running, stop it
       handleStopWaterFlow();
       setIsSimulationRunning(false);
-      updateLog("Simulation stopped to Update Values.");
+      // updateLog("Simulation stopped to Update Values.");
 
       // Update input values
       setInputValues((prevInputValues) => ({
@@ -475,19 +485,20 @@ const SimulationPage = () => {
         [name]: value,
       }));
 
-      updateLog(`Updated the Value ${name} to ${value}.`);
+      // updateLog(`Updated the Value ${name} to ${value}.`);
+
       // Restart the simulation
       await handleCalculate(); // Recalculate
       handleStartWaterFlow(); // Restart the simulation
       setIsSimulationRunning(true);
-      updateLog("Simulation restarted after updating values.");
+      // updateLog("Simulation restarted after updating values.");
     } else {
       // If simulation is not running, simply update input values
       setInputValues((prevInputValues) => ({
         ...prevInputValues,
         [name]: value,
       }));
-      updateLog(`Updated the Value ${name} to ${value}.`);
+      // updateLog(`Updated the Value ${name} to ${value}.`);
     }
     if (name === "sumpCapacity") {
       setWaterInSump(parseInt(value) || 0); // Parse value as integer and set waterInSump
@@ -520,7 +531,7 @@ const SimulationPage = () => {
       }
       const soilContamination = await response.json();
       setSoilContamination(soilContamination);
-      updateLog(`TDS Value Soil Contamination calculated: ${soilContamination}`);
+      updateLog(`TDS Value Soil Contamination calculated: ${soilContamination} ppm`);
       return soilContamination; // Return the soil contamination value
     } catch (error) {
       console.error(error);
@@ -545,7 +556,7 @@ const SimulationPage = () => {
       }
       const sandContamination = await response.json();
       setSandContamination(sandContamination);
-      updateLog(`TDS Value Sand Contamination calculated: ${sandContamination}`);
+      updateLog(`TDS Value Sand Contamination calculated: ${sandContamination} ppm`);
       return sandContamination; // Return the sand contamination value
     } catch (error) {
       console.error(error);
@@ -651,12 +662,12 @@ const SimulationPage = () => {
         const SoilTDS = await calculateSoilContamination(inputValues);
 
         console.log("Soil Value:", SoilTDS, "Sand Value:", SandTDS);
-        updateLog(`Soil TDS Value calculated: ${SoilTDS}`);
-        updateLog(`Sand TDS Value calculated: ${SandTDS}`);
+        updateLog(`Soil TDS Value calculated: ${SoilTDS} ppm`);
+        updateLog(`Sand TDS Value calculated: ${SandTDS} ppm`);
 
         calculatedTDS = (SoilTDS + SandTDS) / 2;
         setDatagraph((datagraph) => [...datagraph, { time: new Date().toLocaleTimeString(), tds: calculatedTDS, id: 3 }]);
-        updateLog(`Average TDS Value calculated: ${calculatedTDS}`);
+        updateLog(`Average TDS Value calculated: ${calculatedTDS} ppm`);
       }
       const flow = await calculateMotorFlowRate(inputValues.voltage, inputValues.current, inputValues.power_factor, inputValues.motor_efficiency, 2.5);
       const data_RO = await calculateROFiltration(calculatedTDS, inputValues.desired_tds, inputValues.temperature, inputValues.membrane_area);
@@ -680,7 +691,7 @@ const SimulationPage = () => {
       setPermeateFlowRate_B(parseFloat(data_RO.permeate_flow_rate));
       setFlowrate(parseFloat(flow.flowrate_per_min));
 
-      updateLog(`Motor flow rate calculated: ${flow.flowrate_per_min}`);
+      updateLog(`Motor flow rate calculated: ${flow.flowrate_per_min} l/s`);
       updateLog(`RO filtration data: ${JSON.stringify(data_RO)}`);
 
       setWaterFlowStarted(true);
@@ -744,6 +755,10 @@ const SimulationPage = () => {
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
+      updateLog("Starting simulation...");
+      updateLog(`Selected Scenario: ${scenarioMapping[inputValues.Scenarios]}`);
+      updateLog(`Simulation Start Time: ${new Date().toISOString()}`); 
+      updateLog("Input Configuration: " + JSON.stringify(inputValues));
       await handleCalculate();
       // calculateSoilContamination();
       handleStartWaterFlow(); // Start water flow
@@ -803,8 +818,8 @@ const SimulationPage = () => {
     };
 
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates, index);
-    console.log("Marker is placed on:", iconId);
-    updateLog(`Marker is placed on: ${iconId}`);
+    // console.log("Marker is placed on:", iconId);
+    updateLog(`Virtual Node is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
 

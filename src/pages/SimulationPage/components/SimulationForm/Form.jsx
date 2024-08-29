@@ -37,6 +37,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     useEffect(() => {
+        console.log("Simulation",isSimulationRunning);
         if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
             handleSaveLog(); // End the current simulation
             handleStartSimulation(); // Start the new simulation
@@ -113,6 +114,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                     value={inputValues.SoilQuantity}
                                     className='input-box'
                                     onChange={handleChange}
+                                    disabled={isSimulationRunning}
                                 />
                                 <h4 className="heading-in" htmlFor="SandQuantity">
                                     Sand Impurities (In grams)

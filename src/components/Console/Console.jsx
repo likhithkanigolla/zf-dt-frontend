@@ -42,7 +42,6 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
         <button onClick={handleDownloadLog} className='button-c'>
           <FaDownload className='icon' />
         </button>
-        {/* <button onClick={() => handleSaveLog(log)} className='button-c'><FaSave className='icon' /></button> */}
         <button onClick={handleClearLog} className='button-c'>
           <GrPowerReset className='icon' />
         </button>
@@ -55,5 +54,6 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
     </div>
   );
 };
+
 
 export default ConsoleHeader;
