@@ -67,13 +67,13 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     return (
-        <div style={{ width: '20vw' }}>
+        <div style={{ width: '20vw', height: '200vh'}}>
             <h1 style={{ textAlign: 'center', 
                 color: '#123462',
                 fontSize: '2.2vw',
                 position: 'relative'
                 }}>Configuration</h1>
-            <div className="container" style={{ flex: 1, overflowY: 'scroll', height: '66vh', color: 'white' }}>
+            <div className="container">
                 <div>
                     <label>
                         <select 
@@ -392,7 +392,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                 ? "blue"
                                 : "rgb(15, 140, 17)",
                         maxWidth: '18vw',
-                        fontSize: '1.1vw'
+                        fontSize: '1.1vw',
                     }}
                     disabled={isLoading}
                 >

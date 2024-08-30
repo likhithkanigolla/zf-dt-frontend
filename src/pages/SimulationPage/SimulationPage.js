@@ -1071,7 +1071,7 @@ const SimulationPage = () => {
         />
 
         {/* Middle Section */}
-        <div style={{ flex: 3, 
+        <div style={{ flex: 1, 
           height: '0vw',
           }}>
           {/* Toolbar */}
@@ -1139,6 +1139,7 @@ const SimulationPage = () => {
                   top: "12.5vw",
                   left: "14vw",
                   textAlign: "center",
+                  zIndex: '4'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
                 <HoverableIcon
@@ -1189,6 +1190,7 @@ const SimulationPage = () => {
                   top: "9vw",
                   left: "55vw",
                   textAlign: "center",
+                  zIndex: '4'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
                 <HoverableIcon
@@ -1205,6 +1207,7 @@ const SimulationPage = () => {
                   top: "15vw",
                   left: "52.3vw",
                   textAlign: "center",
+                  zIndex: '5'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
                 <HoverableIcon
@@ -1221,6 +1224,7 @@ const SimulationPage = () => {
                   top: "15vw",
                   left: "57.9vw",
                   textAlign: "center",
+                  zIndex: '5'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
@@ -1366,7 +1370,7 @@ const SimulationPage = () => {
                   left: "52.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 150,
+                  zIndex: "4",
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
@@ -1386,7 +1390,7 @@ const SimulationPage = () => {
                   left: "57.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 150,
+                  zIndex: 4,
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon
