@@ -36,6 +36,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     useEffect(() => {
+        console.log("Simulation",isSimulationRunning);
         if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
             handleSaveLog(); // End the current simulation
             handleStartSimulation(); // Start the new simulation
@@ -45,10 +46,11 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
 
     const handleChangeOpt = async (event) => {
         await handleChange(event);
+        handleSaveLog();
         if (event.target.value === "6") {
             navigate('/dt_waternetwork/simulation/waterlevel');
         }
-        handleStopSimulation();
+        // handleStopSimulation();
     };
 
     const isScenario2 = inputValues.Scenarios === "2";
@@ -97,13 +99,15 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             <b>Simulation Speed: <span>{inputValues.timeMultiplier}x</span></b>
                         </label>
                     </div>
-                    <input style={{ width: '15vw' }} type="range" min="1" max="500" value={inputValues.timeMultiplier} className="slider" id="myRange" onChange={handleChange} name="timeMultiplier" />
+                    <input style={{ width: '15vw' }} type="range" min="1" max="500" value={inputValues.timeMultiplier} className="slider" id="myRange" onChange={handleChange}
+                    disabled={isSimulationRunning}  name="timeMultiplier" />
                     <div className='simulation-speed'>
                         <label style={{ color: 'white', background: '#ffffff00', whiteSpace: 'nowrap' }} className="heading-as">
                             <b>Simulation Time: <span>{inputValues.simulationTime} sec</span></b>
                         </label>
                     </div>
-                    <input type='number' value={inputValues.simulationTime} className='input-box' name='simulationTime' onChange={handleChange} />
+                    <input type='number' value={inputValues.simulationTime} className='input-box' name='simulationTime' onChange={handleChange}
+                    disabled={isSimulationRunning}  />
                 </div>
 
                 {/* Parameter Configuration */}
@@ -122,6 +126,8 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                     value={inputValues.SoilQuantity}
                                     className='input-box'
                                     onChange={handleChange}
+                                    disabled={isSimulationRunning} 
+                                    
                                 />
                                 <h4 className="heading-in" htmlFor="SandQuantity">
                                     Sand Impurities (In grams)
@@ -132,6 +138,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                     id="SandQuantity"
                                     value={inputValues.SandQuantity}
                                     onChange={handleChange}
+                                    disabled={isSimulationRunning} 
                                 />
                             </>
                         )}
@@ -147,6 +154,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                     value={inputValues.SoilQuantity}
                                     className='input-box'
                                     onChange={handleChange}
+                                    disabled={isSimulationRunning} 
                                 />
                             </>
                         )}
@@ -161,6 +169,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                                     id="SandQuantity"
                                     value={inputValues.SandQuantity}
                                     onChange={handleChange}
+                                    disabled={isSimulationRunning} 
                                 />
                             </>
                         )}
@@ -172,6 +181,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="temperature"
                             value={inputValues.temperature}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                     </div>
                 )}
@@ -251,6 +261,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="sumpCapacity"
                             value={inputValues.sumpCapacity}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">OHT Capacity (Liters):</h4>
                         <input
@@ -260,6 +271,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="ohtCapacity"
                             value={inputValues.ohtCapacity}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">RO OHT Capacity (Liters):</h4>
                         <input
@@ -269,6 +281,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="ro_ohtCapacity"
                             value={inputValues.ro_ohtCapacity}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
 
                         <h4 className="heading" onClick={toggleROPlantConfig}>RO Plant Configuration</h4>
@@ -280,6 +293,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="desired_tds"
                             value={inputValues.desired_tds}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">Membrane Area (m²):</h4>
                         <input
@@ -289,6 +303,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="membrane_area"
                             value={inputValues.membrane_area}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
 
                         <h4 className="heading" onClick={toggleMotorConfig}>Motor Configuration</h4>
@@ -300,6 +315,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="voltage"
                             value={inputValues.voltage}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">Current:</h4>
                         <input
@@ -309,6 +325,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="current"
                             value={inputValues.current}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">Power Factor:</h4>
                         <input
@@ -318,6 +335,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="power_factor"
                             value={inputValues.power_factor}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
                         <h4 className="heading-in">Motor Efficiency:</h4>
                         <input
@@ -327,6 +345,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             id="motor_efficiency"
                             value={inputValues.motor_efficiency}
                             onChange={handleChange}
+                            disabled={isSimulationRunning} 
                         />
 
                         <LeakageOptions
@@ -357,6 +376,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         handleApplyLeakages={handleApplyLeakages}
                         flowrate={flowrate}
                         PermeateFlowRate={PermeateFlowRate}
+                        isSimulationRunning={isSimulationRunning}
                     />
                 )}
             </div>
