@@ -171,6 +171,9 @@ const SimulationPage = () => {
 
   const handleSaveLog = () => {
     const logData = log;
+    updateLog("Simulation Ended.");
+    updateLog("Simulation End Time: " + new Date().toISOString());
+    updateLog("Simulation Duration: " + timeElapsed + " seconds");
     updateLog("Water in Sump: " + waterInSump);
     updateLog("Water in OHT: " + waterInOHT);
     updateLog("Water in RO Filter: " + waterInROFilter);
