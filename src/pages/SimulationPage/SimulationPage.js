@@ -171,6 +171,9 @@ const SimulationPage = () => {
 
   const handleSaveLog = () => {
     const logData = log;
+    updateLog("Simulation Ended.");
+    updateLog("Simulation End Time: " + new Date().toISOString());
+    updateLog("Simulation Duration: " + timeElapsed + " seconds");
     updateLog("Water in Sump: " + waterInSump);
     updateLog("Water in OHT: " + waterInOHT);
     updateLog("Water in RO Filter: " + waterInROFilter);
@@ -185,7 +188,7 @@ const SimulationPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ log: logData }),
+        body: JSON.stringify({ log: logData , scenario: scenarioMapping[inputValues.Scenarios]}),
       });
       updateLog("Log data saved successfully.");
       setLog([""]); // Clear the log after saving
