@@ -188,7 +188,7 @@ const SimulationPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ log: logData }),
+        body: JSON.stringify({ log: logData , scenario: scenarioMapping[inputValues.Scenarios]}),
       });
       updateLog("Log data saved successfully.");
       setLog([""]); // Clear the log after saving
