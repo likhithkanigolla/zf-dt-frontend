@@ -37,7 +37,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     useEffect(() => {
-        console.log("Simulation",isSimulationRunning);
+        // console.log("Simulation",isSimulationRunning);
         if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
             handleSaveLog(); // End the current simulation
             handleStartSimulation(); // Start the new simulation
