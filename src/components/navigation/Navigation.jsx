@@ -307,7 +307,7 @@ const NavigationBar = ({ title }) => {
                 <iframe
                   src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=dark&background=transparent"
                   title="Live"
-                  style={{ width: '100vw', height: '92vh', border: 'none', zIndex: '2000' }}
+                  style={{ width: '100vw', height: '92vh', border: 'none', zIndex: 15 }}
                   allowTransparency="true"
                 ></iframe>
               </div>

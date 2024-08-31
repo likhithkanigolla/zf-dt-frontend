@@ -25,11 +25,12 @@ body {
 .result-container {
   background-color: none;
   border-radius: 0;
-  padding: 0.8rem;
+  padding: 0.2rem;
   margin: 0.5rem 0;
   height: auto;
-  width: 50vh;
+  width: 1vw;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
