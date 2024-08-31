@@ -1071,7 +1071,7 @@ const SimulationPage = () => {
           isLoading={isLoading}
           PermeateFlowRate={PermeateFlowRate}
           
-        />
+          />
 
         {/* Middle Section */}
         <div style={{ flex: 1, 
@@ -1551,8 +1551,8 @@ const SimulationPage = () => {
           datagraph={datagraph}
           flowgraph={flowgraph}
         />
-      </div>
     </div>
+  </div>
   );
 };
 

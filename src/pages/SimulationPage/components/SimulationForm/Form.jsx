@@ -67,13 +67,14 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     return (
-        <div style={{ width: '20vw', height: '200vh'}}>
+        <div classname>
+        <div style={{ width: '20vw', height: '20vh'}}>
             <h1 style={{ textAlign: 'center', 
                 color: '#123462',
                 fontSize: '2.2vw',
                 position: 'relative'
                 }}>Configuration</h1>
-            <div className="container">
+            <div className="container" style={{height: '70vh'}}>
                 <div>
                     <label>
                         <select 
@@ -83,15 +84,15 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                             value={inputValues.Scenarios} // Default to Scenario 2
                         >
                               
-                            {/* <option value="2">Soil Impurities vs TDS</option> */}
+                        
                             <option value="2">Soil Impurities vs TDS</option>
                             <option value="3">Sand Impurities vs TDS</option>
                             <option value="7">Pipe Leakages</option>
                             <option value="6">Water Level Node Failed</option>
+                            <option value="all">All</option>
                             <option value="4" disabled>Flow vs TDS</option>
                             <option value="5" disabled>Water Quality Node Failed</option>
                             <option value="8" disabled>Water Purification Agents vs TDS</option>
-                            <option value="all">All</option>
                         </select>
                     </label>
                     <div className="simulation-speed">
@@ -379,29 +380,32 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         isSimulationRunning={isSimulationRunning}
                     />
                 )}
-            </div>
+            
 
-            <div className="button-container">
-                <button
-                    onClick={handleStartClick}
-                    className="button-form"
-                    style={{
-                        background: isLoading
-                            ? "gray"
-                            : isSimulationRunning
-                                ? "blue"
-                                : "rgb(15, 140, 17)",
-                        maxWidth: '18vw',
-                        fontSize: '1.1vw',
-                    }}
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
-                </button>
-                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
-                    End
-                </button>
+                <div className="button-container" style={{zIndex: -20000}}>
+                    <button
+                        onClick={handleStartClick}
+                        className="button-form"
+                        style={{
+                            background: isLoading
+                                ? "gray"
+                                : isSimulationRunning
+                                    ? "blue"
+                                    : "rgb(15, 140, 17)",
+                            maxWidth: '18vw',
+                            fontSize: '1.1vw',
+                        }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+                    </button>
+                    <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
+                        End
+                    </button>
+                
+                </div>
             </div>
+        </div>
         </div>
     );
 }

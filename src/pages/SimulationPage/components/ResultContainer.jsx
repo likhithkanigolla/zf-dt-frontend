@@ -6,11 +6,12 @@ const ResultTable = ({ title, value, previousValue }) => {
   const differenceColor = difference < 0 ? 'red' : 'green';
 
   return (
-    <tr style={{ borderBottom: '1px solid #ddd' , backgroundColor: 'white', width: '1vw'}}>
+    <tr style={{ borderBottom: '1px solid #ddd' , backgroundColor: 'white', width: '2vw'}}>
       <td style={{ padding: '0.620rem', 
         textAlign: 'left', 
         fontWeight: 'bold', 
-        width: '2vw', fontSize: '1.2vw'
+        width: '2vw', 
+        fontSize: '1.2vw'
         }}>{title}</td>
       <td style={{ padding: '0.520rem', textAlign: 'center' }}>{value}
       </td>
