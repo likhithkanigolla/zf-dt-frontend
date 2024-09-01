@@ -29,4 +29,4 @@ Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md]
 
 ## License
 
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [License](./LICENSE).
