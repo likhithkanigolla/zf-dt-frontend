@@ -3,52 +3,71 @@ body {
   background-color: #f5f5f5;
   color: #333;
   margin: 0;
+  overflow: hidden;
   line-height: 1.5;
 }
 
 /* General Container Styling */
-.container, .result-container {
-  background-color:none ;
-  border-radius: 0vw;
-  padding: 1.25rem;
-  margin: 5px 0;
-  height: 22vh;
-  width: 18.9vw;
-  overflow-y: scroll;
-  /* overflow-x: hidden;  */
+.container {
+  background-color: none;
+  border-radius: 0;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  height: auto;
+  width: 20vw;
+  overflow-y: hidden;
+  overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-.container::-webkit-scrollbar, .result-container::-webkit-scrollbar, .consoleContainer::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for WebKit browsers (Chrome, Safari, etc.) */
+
+.result-container {
+  background-color: none;
+  border-radius: 0;
+  padding: 0.2rem;
+  margin: 0.5rem 0;
+  height: auto;
+  width: 1vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.container::-webkit-scrollbar, 
+.result-container::-webkit-scrollbar, 
+.consoleContainer::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
 }
 
 /* Headings and Labels */
 .heading {
   color: #333;
-  margin-top: 0;
-  margin-bottom: 1vw;
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
 }
 
 /* Input Fields Styling */
 input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 16vw;
+  padding: 0.625rem;
+  margin-bottom: 1rem;
+  border: 0.063rem solid #ccc;
+  border-radius: 0.25rem;
   box-sizing: border-box;
 }
 
 /* Button Styling */
 .button, .info-button {
-  padding: 10px 15px;
+  padding: 0.625rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
   transition: background-color 0.2s ease-in-out;
+  width: 170vw;
+  text-align: center;
 }
 
 .button {
@@ -63,51 +82,49 @@ input[type="number"] {
 .info-button {
   background-color: transparent;
   color: #007bff;
-  font-size: 16px;
 }
 
 /* Information Box (Tooltip) */
 .info-box {
-  display: inline-block;
   background-color: #e9ecef;
   color: #333;
-  padding: 8px;
-  border-radius: 4px;
-  margin-top: 10px;
-  font-size: 14px;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 0.625rem;
+  font-size: 0.875rem;
 }
 
 /* Flex Layout for Main Content */
-div[style*='display: flex'] {
+.flex-container {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 /* Result Cards Container */
 .result-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  gap: 1rem;
 }
 
 /* Individual Result Card */
 .result-card {
   background-color: #f9f9f9;
-  padding: 15px;
-  height: 6vw;
-  border-radius: 5px;
+  padding: 1rem;
+  border-radius: 0.25rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Motor Status Overlay */
 .motor-status-overlay {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1rem;
+  right: 1rem;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 0.625rem;
+  border-radius: 0.25rem;
 }
 
 .motor.running {
@@ -127,6 +144,7 @@ div[style*='display: flex'] {
 /* Style for Motor On/Off button */
 .button.motor-on {
   background-color: green;
+  font-size: 2vw;
   color: white;
 }
 
@@ -154,9 +172,9 @@ div[style*='display: flex'] {
 
 /* Button Group */
 .buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
   background-color: #007bff;
   color: white;
   border: none;
@@ -170,8 +188,8 @@ div[style*='display: flex'] {
 /* Demo Page */
 .demo-page {
   position: relative;
-  width: 10vw;
-  height: 10vh;
+  width: 100%;
+  height: auto;
 }
 
 .marker-placed {
@@ -181,6 +199,7 @@ div[style*='display: flex'] {
 /* Toolbar */
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
 }
@@ -190,11 +209,11 @@ div[style*='display: flex'] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
+  width: 8.5vw;
+  height: 8.5vw;
   border: 1px solid transparent;
   background-color: transparent;
-  padding: 10px;
+  padding: 0.625rem;
   cursor: pointer;
   text-align: center;
   font-size: 0.9em;
@@ -208,17 +227,17 @@ div[style*='display: flex'] {
 
 /* Leakage Icon Animation */
 .leakage-icon {
-  width: 3vw;
-  height: 3vw;
+  width: 3rem;
+  height: 3rem;
   animation: drip 2s infinite;
 }
 
 /* Delete Area */
 .delete-area {
-  width: 50px;
-  height: 50px;
+  width: 3rem;
+  height: 3rem;
   border: 2px dashed red;
-  border-radius: 5px;
+  border-radius: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,18 +256,18 @@ div[style*='display: flex'] {
 /* Progress Bar */
 .progress-bar {
   background-color: #e9ecef;
-  border-radius: 5px;
+  border-radius: 0.25rem;
   overflow: hidden;
 }
 
 .progress-bar.horizontal {
-  width: 100px;
-  height: 10px;
+  width: 100%;
+  height: 0.625rem;
 }
 
 .progress-bar.vertical {
-  width: 10px;
-  height: 100px;
+  width: 0.625rem;
+  height: 100%;
 }
 
 .progress {
@@ -274,55 +293,37 @@ div[style*='display: flex'] {
 
 /* Responsive Design Adjustments */
 @media (max-width: 768px) {
-  div[style*='display: flex'] {
+  .flex-container {
     flex-direction: column;
   }
 
+  .heading {
+    font-size: 1.25rem;
+  }
 
-
-  .navigation-bar {
-    font-size: 18px;
+  .button, .info-button {
+    padding: 0.5rem;
   }
 }
 
-/* Additional Media Queries for Responsive Design */
 /* For screens smaller than 576px (e.g., smartphones) */
 @media (max-width: 575.98px) {
   .heading {
-    font-size: 18px;
+    font-size: 1rem;
   }
-
 
   .button, .info-button {
-    padding: 8px 12px;
+    padding: 0.5rem;
   }
 }
 
-/* For screens between 576px and 768px (e.g., tablets) */
-@media (min-width: 576px) and (max-width: 768px) {
-  .heading {
-    font-size: 22px;
+/* Additional Media Queries */
+/* For screens larger than 992px */
+@media (min-width: 992px) {
+  .float-box {
+    width: 25%;
+    max-width: 25%;
   }
-
-
-  .button, .info-button {
-    padding: 10px 15px;
-  }
-}
-
-/* For screens between 768px and 992px (e.g., small desktops) */
-@media (min-width: 768px) and (max-width: 991.98px) {
-  /* Add responsive styles for small desktops here */
-}
-
-/* For screens between 992px and 1200px (e.g., medium desktops) */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  /* Add responsive styles for medium desktops here */
-}
-
-/* For screens larger than 1200px (e.g., large desktops) */
-@media (min-width: 1200px) {
-  /* Add responsive styles for large desktops here */
 }
 
 .float-box {
@@ -332,39 +333,33 @@ div[style*='display: flex'] {
   transform: translate(-50%, -50%);
   z-index: 11;
   background-color: #f9f9f9;
-  padding: 30px;
-  border: 2px solid #e0e0e0;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  width: 20vw; /* Adjusted width */
-  max-width: 20vw; /* Ensures the box doesn't get too large on wider screens */
+  padding: 2rem;
+  border: 0.125rem solid #e0e0e0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 90%;
 }
 
 .float-box-heading {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   color: #333;
-  font-size: 1vw;
-}
-
-.float-box-heading span {
-  font-weight: normal;
-  color: #666;
+  font-size: 1.25rem;
 }
 
 .float-box-value {
-  display: block; /* Ensures it takes up the full width */
-  margin-bottom: 20px; /* Adds some space below the value */
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .float-box-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.625rem;
+  right: 0.625rem;
   cursor: pointer;
   background-color: transparent;
   border: none;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .float-box-close:hover {

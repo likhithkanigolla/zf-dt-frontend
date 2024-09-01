@@ -1,33 +1,37 @@
 .toolbar {
     display: flex;
-    justify-content: space-around;
+    /* margin-top: '-2vw'; */
+    justify-content: space-between;
     align-items: center;
-    /* padding: 4.5vw; */
-    height: 7vw;
+    padding: -1vh; /* Adjust padding for responsiveness */
+    margin-bottom: -1vw; /* Allows the toolbar height to adjust based on content */
+    margin-top: -1vw; /* Allows the toolbar height to adjust based on content */
     flex-wrap: wrap;
 }
 
 .tool-button {
     display: flex;
+    max-width: 12vw;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 1vw; /* Adjust as needed */
-    height: 1vw;
-    margin: 1px;
+    width: auto; /* Allows the width to adjust based on content */
+    height: auto; /* Allows the height to adjust based on content */
+    /* margin: 0.5vw; Adjust margin for responsiveness */
     background-color: transparent;
-    border: none;
+    /* border: none; */
     cursor: pointer;
     text-align: center;
 }
 
 .tool-button img {
-    width: 3vw;
-    height: 1vw;
-    margin-bottom: 8px; /* Space between image and title */
+    max-width: 12vw; /* Responsive width based on viewport */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 1vw; /* Space between image and title for responsiveness */
 }
 
 .tool-button-title {
-    font-size: 0.9em;
+    font-size: 0.9vw; /* Responsive font size */
     font-weight: bold;
+    /* text-align: center; Ensure text is centered */
 }

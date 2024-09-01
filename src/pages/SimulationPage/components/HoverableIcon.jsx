@@ -78,7 +78,7 @@ const HoverableIcon = ({ src, alt, onClick, dataId, data, rotation, refreshData,
             backgroundSize: 'contain',
             pointerEvents: 'none',
             borderRadius: '50%', // Keep the circular shape
-            zIndex: 100,
+            zIndex: 1000,
           }}
         />
       )}

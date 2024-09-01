@@ -43,7 +43,7 @@ const SimulationPage = () => {
     y: 0,
   });
   const [inputValues, setInputValues] = useState({
-    Scenarios: "1",
+    Scenarios: "2",
     timeMultiplier: "1",
     simulationTime: "3600",
     SandQuantity: "0",
@@ -206,6 +206,8 @@ const SimulationPage = () => {
       setPermeateFlowRate(1);
       setPreviousPermeateFlowRate(0);
       setTimeElapsed(0);
+      setDatagraph([]);
+      setFlowgraph([]);
       // toast.success("Log data saved successfully.");
     } catch (error) {
       console.error("Error saving log data:", error);
@@ -1077,10 +1079,10 @@ const handleDrop = (event) => {
           isLoading={isLoading}
           PermeateFlowRate={PermeateFlowRate}
           
-        />
+          />
 
         {/* Middle Section */}
-        <div style={{ flex: 3, 
+        <div style={{ flex: 1, 
           height: '0vw',
           }}>
           {/* Toolbar */}
@@ -1148,6 +1150,7 @@ const handleDrop = (event) => {
                   top: "12.5vw",
                   left: "14vw",
                   textAlign: "center",
+                  zIndex: '4'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
                 <HoverableIcon
@@ -1198,6 +1201,7 @@ const handleDrop = (event) => {
                   top: "9vw",
                   left: "55vw",
                   textAlign: "center",
+                  zIndex: '4'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
                 <HoverableIcon
@@ -1214,6 +1218,7 @@ const handleDrop = (event) => {
                   top: "15vw",
                   left: "52.3vw",
                   textAlign: "center",
+                  zIndex: '5'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
                 <HoverableIcon
@@ -1230,6 +1235,7 @@ const handleDrop = (event) => {
                   top: "15vw",
                   left: "57.9vw",
                   textAlign: "center",
+                  zIndex: '5'
                 }}>
                 {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
@@ -1375,7 +1381,7 @@ const handleDrop = (event) => {
                   left: "52.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 3,
+                  zIndex: "4",
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
@@ -1384,6 +1390,7 @@ const handleDrop = (event) => {
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-71"].toFixed(2)}L`}
                   rotation={90}
+                  
                 />
               </div>
 
@@ -1394,7 +1401,7 @@ const handleDrop = (event) => {
                   left: "57.5vw",
                   textAlign: "center",
                   transform: "rotate(90deg)",
-                  zIndex: 3,
+                  zIndex: 4,
                 }}>
                 {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon
@@ -1554,8 +1561,8 @@ const handleDrop = (event) => {
           datagraph={datagraph}
           flowgraph={flowgraph}
         />
-      </div>
     </div>
+  </div>
   );
 };
 

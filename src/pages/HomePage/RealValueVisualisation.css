@@ -1,5 +1,6 @@
 .page{
     width: 98.6vw;
+    height: 20vh;
 }
 
 .page::-webkit-scrollbar {
@@ -8,7 +9,7 @@
 
 .canvas {
     /* background-color: rgb(255, 255, 255); */
-    padding-top: '4vw';
+    padding-top: '1vw';
 }
 
 .node-on {
