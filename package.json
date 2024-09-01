@@ -1,6 +1,6 @@
 {
   "name": "dt_waternetwork_frontend",
-  "homepage": "/dt_waternetwork",
+
   "version": "0.1.0",
   "private": true,
   "dependencies": {
