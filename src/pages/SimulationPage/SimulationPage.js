@@ -1486,7 +1486,7 @@ const handleDrop = (event) => {
                     iconRefs.push(ref);
                   }
                 }}>
-                <DeleteIcon style={{ color: "white", fontSize: "40px" }} />
+                <DeleteIcon style={{ color: "white", fontSize: "2vw" }} />
               </div>
 
               {itemToAdd && (
