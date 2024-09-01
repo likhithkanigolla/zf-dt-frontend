@@ -1,29 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RealValueVisualisation from './pages/HomePage/RealValueVisualisation';
 import VisualizationPage from './pages/VisualizationPage/VisualizationPage';
 import SimulationPage from './pages/SimulationPage/SimulationPage';
 import SimulationScenarioTemplate from './pages/SimulationPage/Scenarios/SimulationScenarioTemplate';
 import WaterLevelNodeFailure from './pages/SimulationPage/Scenarios/WaterLevelNodeFailure';
 import LoginPage from './pages/LoginPage/LoginPage';
-// import RoOHT from './pages/SimulationPage/components/RoOHT/RoOHT';
-// import DemoPage from './pages/DemoSim/DemoPage';
 
 const App = () => {
   return (
-    <Router>
+    <Router basename="/dt_waternetwork">
       <Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
-        {/* <Route path="/dt_waternetwork/*" element={<AppLayout />}> */}
-        <Route path="/dt_waternetwork/*">
-          <Route index element={<RealValueVisualisation />} />
-          <Route path="analytics" element={<VisualizationPage />} />
-          <Route path="simulation" element={<SimulationPage />} />
-          {/* <Route path="/demo" element={<DemoPage />} /> */}
-          <Route path="simulation/scenario1" element={<SimulationScenarioTemplate />} />
-          <Route path="simulation/waterlevel" element={<WaterLevelNodeFailure />} />
-          <Route path='login' element={<LoginPage/>}/>
-        </Route>
+        {/* Define routes relative to /dt_waternetwork */}
+        <Route path="/" element={<RealValueVisualisation />} />
+        <Route path="analytics" element={<VisualizationPage />} />
+        <Route path="simulation" element={<SimulationPage />} />
+        <Route path="simulation/scenario1" element={<SimulationScenarioTemplate />} />
+        <Route path="simulation/waterlevel" element={<WaterLevelNodeFailure />} />
+        <Route path="login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
