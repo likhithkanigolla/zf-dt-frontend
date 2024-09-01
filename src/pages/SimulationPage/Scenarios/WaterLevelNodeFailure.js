@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Joyride, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 import { saveAs } from "file-saver";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import NavigationBar from "../../../components/navigation/Navigation";
 import ConsoleHeader from "../../../components/Console/Console";
 import SimulationCanvas from "../components/SimulationCanvas";
-import Back from '@mui/icons-material/ArrowBackRounded';
+import Back from "@mui/icons-material/ArrowBackRounded";
 import Toolbar from "../components/ToolBar/ToolBar";
 import IoTNodes from "../../../components/IoTNodes/Nodes";
 import MotorNode from "../../images/MotorNode.png";
@@ -15,9 +15,7 @@ import WaterQuantityNode from "../../images/WaterQuantityNode.png";
 import whiteimage from "../../images/white.png";
 import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InfoIcon from '@mui/icons-material/Info';
-
-
+import InfoIcon from "@mui/icons-material/Info";
 
 function WaterLevelNodeFailure() {
   // Define the state variables
@@ -97,20 +95,18 @@ function WaterLevelNodeFailure() {
   const [steps, setSteps] = useState([
     {
       title: "Water Level Node Failure Scenario",
-      content:
-        "Welcome to the Water Level Node Failure Scenario. This is a guided tour to help you understand the scenario and how to resolve it.",
+      content: "Welcome to the Water Level Node Failure Scenario. This is a guided tour to help you understand the scenario and how to resolve it.",
       target: ".full-page",
       placement: "center",
     },
     {
       target: ".left-section",
-      content:
-        "This is the left section. You can find the scenario title, description and simulation controls here",
+      content: "This is the left section. You can find the scenario title, description and simulation controls here",
+      placement: "right",
     },
     {
       target: ".right-section",
-      content:
-        "This is the right section. Asumptions and Steps to Replicate Scenario are written here.",
+      content: "This is the right section. Asumptions and Steps to Replicate Scenario are written here.",
       placement: "left",
     },
     {
@@ -123,8 +119,7 @@ function WaterLevelNodeFailure() {
     },
     {
       target: ".console-container",
-      content:
-        "This is the console. Everything that happen in simulation will be displayed here .You can download the log here.",
+      content: "This is the console. Everything that happen in simulation will be displayed here .You can download the log here.",
     },
     // {
     //   target: ".waterquantity-tool",
@@ -200,7 +195,6 @@ function WaterLevelNodeFailure() {
       spotlightClicks: true,
       disableBeacon: true,
       hideFooter: true,
-
     },
     {
       target: ".eightyfive-percentoht",
@@ -219,7 +213,7 @@ function WaterLevelNodeFailure() {
       content: "Now deploy the water level sensor at OHT to check the water level.",
       spotlightClicks: true,
       disableBeacon: true,
-      hideFooter: true, 
+      hideFooter: true,
     },
     {
       target: ".watertest",
@@ -257,9 +251,7 @@ function WaterLevelNodeFailure() {
       content: "This is the end of the tour. Thankyou.",
       placement: "center",
       isLastStep: true,
-
-    }
-
+    },
   ]);
 
   const joyrideRef = useRef(null);
@@ -274,8 +266,8 @@ function WaterLevelNodeFailure() {
       console.log("Step after or target not found");
       const step = steps[index];
       const nextStepIndex = action === ACTIONS.PREV ? index - 1 : index + 1;
-        setStepIndex(nextStepIndex);
-        console.log("Index", index);
+      setStepIndex(nextStepIndex);
+      console.log("Index", index);
     } else if (type === EVENTS.TARGET_NOT_FOUND) {
       console.log("Target not found:", steps[index].target);
     }
@@ -287,7 +279,7 @@ function WaterLevelNodeFailure() {
 
   const handleStartSimulation = async () => {
     if (!isSimulationRunning) {
-      setStepIndex(stepIndex+1);
+      setStepIndex(stepIndex + 1);
       handleStartWaterFlow(); // Start water flow
       setIsSimulationRunning(true);
       setFlow1((flow1) => !flow1);
@@ -297,7 +289,7 @@ function WaterLevelNodeFailure() {
       setMotorOn(true);
       updateLog("Simulation started.");
     } else {
-      setStepIndex(stepIndex+1)
+      setStepIndex(stepIndex + 1);
       handleStopWaterFlow(); // Stop water flow
       setIsSimulationRunning(false);
       setFlow1(false);
@@ -359,12 +351,7 @@ function WaterLevelNodeFailure() {
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref, index) => {
       const rect = ref.getBoundingClientRect();
-      if (
-        markerCoordinates.x >= rect.left &&
-        markerCoordinates.x <= rect.left + rect.width &&
-        markerCoordinates.y >= rect.top &&
-        markerCoordinates.y <= rect.top + rect.height
-      ) {
+      if (markerCoordinates.x >= rect.left && markerCoordinates.x <= rect.left + rect.width && markerCoordinates.y >= rect.top && markerCoordinates.y <= rect.top + rect.height) {
         iconId = ref.id;
         isPlaced = true;
       }
@@ -420,15 +407,13 @@ function WaterLevelNodeFailure() {
     updateLog(`Marker clicked: ${item.type}, iconId: ${iconId}`);
 
     if (iconId === "KRBOHTIcon" && item.type === "waterlevelsensor") {
-
       setSensorValues((prevValues) => ({
         ...prevValues,
         type: "waterlevelsensor",
-        "waterleveloht": (waterInOHT / inputValues.ohtCapacity) * 100,
+        waterleveloht: (waterInOHT / inputValues.ohtCapacity) * 100,
       }));
-
     }
-    
+
     if (item.type === "waterquantitysensor") {
       setSensorValues({
         ...sensorValues,
@@ -465,10 +450,7 @@ function WaterLevelNodeFailure() {
   };
 
   const updateLog = (message) => {
-    setLog((prevLog) => [
-      ...prevLog,
-      `${new Date().toISOString()}: ${message}`,
-    ]);
+    setLog((prevLog) => [...prevLog, `${new Date().toISOString()}: ${message}`]);
   };
 
   // Function to handle the download log event
@@ -521,7 +503,7 @@ function WaterLevelNodeFailure() {
   };
 
   useEffect(() => {
-    console.log("step",stepIndex)
+    console.log("step", stepIndex);
     const interval = setInterval(() => {
       if (isSimulationRunning) {
         setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
@@ -600,34 +582,16 @@ function WaterLevelNodeFailure() {
     return () => clearInterval(interval);
   }, [waterInOHT, isSimulationRunning, inputValues.ohtCapacity, prevWaterInOHT]);
 
-
-
   return (
     <div>
-      <Joyride
-        ref={joyrideRef}
-        callback={handleJoyrideCallback}
-        continuous={true}
-        scrollToFirstStep={true}
-        showSkipButton={true}
-        run={run}
-        steps={steps}
-        stepIndex={stepIndex}
-        styles={{
-          options: {
-            zIndex: 10000,
-            width: 400,
-            position: "relative",
-          },
-        }}
-      />
       {/* Navigation Bar */}
       <NavigationBar title="Digital Twin Simulation - Water Level Node Failure" />
       {/* Page Content */}
+
       <div
         style={{
           display: "flex",
-          height: "50vw",
+          // height: "50vw",
         }}
         className="full-page">
         <div
@@ -638,51 +602,111 @@ function WaterLevelNodeFailure() {
             alignItems: "center",
           }}
           className="left-section">
-             <button 
-              onClick={() => navigate(-1)} 
-              style={{ 
-                position: 'relative', 
-                top: '2vw', 
-                right: '8vw', 
-                backgroundColor: 'transparent', 
-                border: 'none', 
-                cursor: 'pointer',
-                padding: 0 
+          <Joyride
+            ref={joyrideRef}
+            callback={handleJoyrideCallback}
+            continuous={true}
+            scrollToFirstStep={true}
+            showSkipButton={true}
+            run={run}
+            steps={steps}
+            stepIndex={stepIndex}
+            locale={{
+              back: 'Previous',
+              close: 'Close',
+              last: 'Finish',
+              next: 'Next',
+              skip: 'Skip',
+            }}
+            styles={{
+              options: {
+                zIndex: 10000,
+                width: 400,
+                position: "absolute",
+              },
+              // buttonNext: {
+              //   backgroundColor: '#5cb85c',
+              // },
+              buttonBack: {
+                marginRight: 10,
+              },
+              // buttonSkip: {
+              //   backgroundColor: '#d9534f',
+              // },
+              tooltipContainer: {
+                textAlign: 'left',
+              },
+              tooltip: {
+                borderRadius: '10px',
+                boxShadow: '0 0 15px rgba(0, 0, 0, 0.3)',
+              },
+            }}
+          />
+          <button
+            onClick={() => navigate(-1)}
+            style={{
+              position: "relative",
+              top: "2vw",
+              right: "8vw",
+              backgroundColor: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}>
+            <Back style={{ fontSize: "1.6rem", color: "black" }} />
+          </button>
+          <div style={{ display: "flex", alignItems: "center", left: "2vw", marginTop: "-2.5vw", width: "7vw" }}>
+            <h2 style={{ marginLeft: "-2.5vw", flex: "none", fontSize: "1.3vw" }}>Simulation Scenario</h2>
+
+            <InfoIcon
+              onClick={() => setRun(true)}
+              style={{
+                marginLeft: "0.5rem",
+                top: "2vw",
+                color: "blue",
+                cursor: "pointer",
+                fontSize: "1.5rem",
               }}
-            >
-              <Back style={{ fontSize: '1.6rem', color: 'black' }} />
-            </button>
-<div style={{ display: 'flex', alignItems: 'center',  left: '2vw', marginTop: '-2.5vw', width: '7vw' }}>
-  <h2 style={{ marginLeft: '-2.5vw', flex: 'none', fontSize: '1.3vw' }}>Simulation Scenario</h2>
-          
-  <InfoIcon 
-    onClick={() => setRun(true)} 
-    style={{ 
-      marginLeft: '0.5rem', 
-      top: '2vw',
-      color: 'blue', 
-      cursor: 'pointer', 
-      fontSize: '1.5rem' 
-    }} 
-  />
-</div>
-<h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
+            />
+          </div>
+          <h4 style={{ textAlign: "center" }}>Water Level Node at OHT Failed</h4>
           <p style={{ textAlign: "left" }}>
-            Water level node in the OHT is responsible for turning on and off
-            the motor. The primary principle is when the water level in the OHT
-            goes below 20% then the motor should be turned on and when it
-            reaches 80% it should turned off. But in this scenario the water
-            level node got failed.
+            Water level node in the OHT is responsible for turning on and off the motor. The primary principle is when the water level in the OHT goes below 20% then the motor should be turned on and
+            when it reaches 80% it should turned off. But in this scenario the water level node got failed.
           </p>
           {/* Slider to control the water in the OHT */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             <label htmlFor="ohtCapacity">OHT Capacity:{inputValues.ohtCapacity}</label>
             <label htmlFor="waterInOHT">Water in OHT:{Number(waterInOHT)}</label>
-            <input type="range" min="0" max={inputValues.ohtCapacity} value={Number(waterInOHT)} onChange={(e) => setWaterInOHT(parseFloat(e.target.value))} />
-            <div style={{ marginTop: '10px' }}>
-              <button className='fifteen-percentoht' onClick={() => {handleButtonClick(15); ; setStepIndex(stepIndex+1)}}>15%</button>
-              <button className="fifty-percentoht" onClick={() => handleButtonClick(50)}>50%</button>
-              <button className="eightyfive-percentoht" onClick={() => {handleButtonClick(85); setStepIndex(stepIndex+1)}}>85%</button>
+            <input
+              type="range"
+              min="0"
+              max={inputValues.ohtCapacity}
+              value={Number(waterInOHT)}
+              onChange={(e) => setWaterInOHT(parseFloat(e.target.value))}
+            />
+            <div style={{ marginTop: "10px" }}>
+              <button
+                className="fifteen-percentoht"
+                onClick={() => {
+                  handleButtonClick(15);
+                  setStepIndex(stepIndex + 1);
+                }}>
+                15%
+              </button>
+              <button
+                className="fifty-percentoht"
+                onClick={() => handleButtonClick(50)}>
+                50%
+              </button>
+              <button
+                className="eightyfive-percentoht"
+                onClick={() => {
+                  handleButtonClick(85);
+                  setStepIndex(stepIndex + 1);
+                }}>
+                85%
+              </button>
             </div>
           </div>
           <button
@@ -778,11 +802,7 @@ function WaterLevelNodeFailure() {
                     src={getImageForType(item.type)}
                     alt={item.type}
                     dataId="VirtualNode"
-                    data={
-                      item.type === "waterquantitysensor"? sensorValues[index]?.totalFlow :
-                      item.type === "waterlevelsensor"? sensorValues["waterleveloht"]
-                        : sensorValues[index]
-                    }
+                    data={item.type === "waterquantitysensor" ? sensorValues[index]?.totalFlow : item.type === "waterlevelsensor" ? sensorValues["waterleveloht"] : sensorValues[index]}
                     type={item.type}
                     onClick={(e) => handleMarkerClick(item, index, e)}
                   />
@@ -814,7 +834,7 @@ function WaterLevelNodeFailure() {
                     iconRefs.push(ref);
                   }
                 }}>
-                <DeleteIcon style={{ color: "white", fontSize: "40px" }} />
+                <DeleteIcon style={{ color: "white", fontSize: "2vw" }} />
               </div>
 
               {itemToAdd && (
@@ -826,10 +846,8 @@ function WaterLevelNodeFailure() {
                     left: "20px",
                     top: "20px",
                     cursor: "move",
-                  }} 
-                  className="watertest"
-                  
-                  >
+                  }}
+                  className="watertest">
                   <HoverableIcon
                     src={getImageForType(itemToAdd)}
                     alt={itemToAdd}
@@ -866,43 +884,41 @@ function WaterLevelNodeFailure() {
           <br></br>
         </div>
         <div
-        style={{
-          display: "flex",
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-        className="right-section"
-      >
-        <h4 style={{ textAlign: "left", marginBottom: "1px" }}>Assumptions</h4>
-        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
-          <li>Motor Voltage: 240V</li>
-          <li>Motor Current: 11A</li>
-          <li>Power Factor: 0.11</li>
-          <li>Motor Efficiency: 0.85</li>
-          <li>Temperature: 25°C</li>
-          <li>Sump Capacity: 60,000L</li>
-          <li>OHT Capacity: 100,000L</li>
-          <li>Flow Rate: 10L/s</li>
-          <li>Initial Sump Capacity: 38,670.00L</li>
-          <li>Initial OHT Capacity: 39,260.00L</li>
-        </ol>
-        
-        <h4 style={{ marginTop: "1px", marginBottom: "0px" }}>Steps to Replicate Scenario</h4>
-        <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
-          <li>Start the simulation</li>
-          <li>Set the water level in OHT to 85%</li>
-          <li>Check the motor status</li>
-          <li>Set the water level in OHT to 15%</li>
-          <li>Check the motor status</li>
-          <li>Make the water level node failure at OHT</li>
-          <li>Check the motor status</li>
-          <li>Deploy the water level sensor at OHT</li>
-          <li>Check the motor status</li>
-          <li>Stop the simulation</li>
-        </ol>
-      </div>
+          style={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          className="right-section">
+          <h4 style={{ textAlign: "left", marginBottom: "1px" }}>Assumptions</h4>
+          <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+            <li>Motor Voltage: 240V</li>
+            <li>Motor Current: 11A</li>
+            <li>Power Factor: 0.11</li>
+            <li>Motor Efficiency: 0.85</li>
+            <li>Temperature: 25°C</li>
+            <li>Sump Capacity: 60,000L</li>
+            <li>OHT Capacity: 100,000L</li>
+            <li>Flow Rate: 10L/s</li>
+            <li>Initial Sump Capacity: 38,670.00L</li>
+            <li>Initial OHT Capacity: 39,260.00L</li>
+          </ol>
 
+          <h4 style={{ marginTop: "1px", marginBottom: "0px" }}>Steps to Replicate Scenario</h4>
+          <ol style={{ marginTop: "0", paddingLeft: "40px" }}>
+            <li>Start the simulation</li>
+            <li>Set the water level in OHT to 85%</li>
+            <li>Check the motor status</li>
+            <li>Set the water level in OHT to 15%</li>
+            <li>Check the motor status</li>
+            <li>Make the water level node failure at OHT</li>
+            <li>Check the motor status</li>
+            <li>Deploy the water level sensor at OHT</li>
+            <li>Check the motor status</li>
+            <li>Stop the simulation</li>
+          </ol>
+        </div>
       </div>
     </div>
   );

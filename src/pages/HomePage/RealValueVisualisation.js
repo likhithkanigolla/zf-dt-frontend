@@ -727,7 +727,7 @@ const RealValueVisualisation = () => {
                   top: '50%', // Centers vertically
                   left: '50%', // Centers horizontally
                   transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
-                  width: '6vw',
+                  width: '60vw',
                   zIndex: 1000, // Ensures it's on top of everything
                   }}>
                 <div className="modal-content">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Switch } from 'react-router-dom';
 import RealValueVisualisation from './pages/HomePage/RealValueVisualisation';
 import VisualizationPage from './pages/VisualizationPage/VisualizationPage';
 import SimulationPage from './pages/SimulationPage/SimulationPage';
