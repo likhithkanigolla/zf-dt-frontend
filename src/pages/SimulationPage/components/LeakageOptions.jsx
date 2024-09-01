@@ -8,24 +8,27 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
 
   return (
     <div className="leakage-options-popup">
+       <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
+          <h4  style={{ margin: 0 }}>Leakage Configuration
+          <img 
+            src={LeakageIcon} 
+            alt="Leakage"  
+            style={{ 
+              
+              width: '1vw', 
+              height: '1vw',
+              marginLeft: '0.5vw'
+            }} 
+          />
+          </h4>
+        </div>
     {/* Write the text in the form of mathematical formaula; Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate) */}
     <h6 style={{ textAlign: 'left', color: 'black'}}>Effective Flowrate = Flowrate - (Number of Leakages * LeakageRate)</h6>
     <h6 style={{ textAlign: 'left', color: 'black'}}>OHT OutflowRate =  FlowrateOfAdminBlockWashrooms + FlowrateOfKRBBlockWashrooms + FlowrateofRO </h6>
     <h6 style={{ textAlign: 'left', color: 'black'}}>Original Flowrate = {flowrate} L/s</h6>
     <h6 style={{ textAlign: 'left', color: 'black'}}>Effective Flowrate = {(flowrate - (numLeakages*leakageRate)).toFixed(2)} L/s</h6>
     <h6 style={{ textAlign: 'left', color: 'black'}}>OHT Outflowrate = {(flowrate-(flowrate*0.06)-PermeateFlowRate).toFixed(2)} L/s</h6>
-    <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
-  <h4  style={{ margin: 0 }}>Leakage Configuration</h4>
-  <img 
-    src={LeakageIcon} 
-    alt="Leakage"  
-    style={{ 
-      
-      width: '1vw', 
-      height: '1vw' 
-    }} 
-  />
-</div>
+   
       <label htmlFor="numLeakages">Number of Leakages:</label>
       <input
         type="number"
@@ -41,9 +44,9 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
         id="leakageLocation"
         value={leakageLocation}
         onChange={(e) => setLeakageLocation(e.target.value)}
+        onClick={(e) => setLeakageLocation(e.target.value)}
         className="input-box"
-        disabled={isSimulationRunning} 
-      >
+       >
         {/* <option value="">Select Location</option> */}
         <option value="motorOHT">Between Motor and OHT</option>
         <option value="roPlant">Between OHT and RO Plant</option>

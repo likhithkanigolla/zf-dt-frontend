@@ -701,9 +701,13 @@ const RealValueVisualisation = () => {
 
   return (
     <div className='page'>
-      <NavigationBar title="Digital Twin for Water Quality " style={{position:'fixed'}} />
+      <NavigationBar title="Digital Twin for Water Quality " 
+      style={{position:'relative',
+       width: '90vw',
+       height: '20vw'
+       }} />
       <div style={{ display: "flex"}} className='Page'>
-        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw', border: "0px" }}>
+        <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '41.2vw', border: "0px" }}>
 
           <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
           {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
@@ -715,7 +719,7 @@ const RealValueVisualisation = () => {
 
         </div>
 
-        <div style={{ height: "46vw", width: "100%",display: "flex", flex:3, justifyContent: "center", alignItems: "center"}} className='canvas'>
+        <div style={{ height: "42.6vw", width: "100vw",display: "flex", flex:2, justifyContent: "center", alignItems: "center"}} className='canvas'>
             <div>
               <div>
               <div id="myModal" className="modal" style={{
@@ -723,7 +727,7 @@ const RealValueVisualisation = () => {
                   top: '50%', // Centers vertically
                   left: '50%', // Centers horizontally
                   transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
-                  width: '60vw',
+                  width: '6vw',
                   zIndex: 1000, // Ensures it's on top of everything
                   }}>
                 <div className="modal-content">
@@ -833,7 +837,7 @@ const RealValueVisualisation = () => {
                   </div>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '15vw' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '16vw' }}>
                 <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
                 <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
               </div>

@@ -1,14 +1,37 @@
 /* VisualizationPage.css */
 .visualization-page {
-    text-align: center;
-    /* margin-top: 50px; */
-  }
-  
-  .visualization-page h2 {
-    margin-bottom: 20px;
+  text-align: center;
+  margin-top: 4vh; /* Use viewport height for better responsiveness */
+  overflow: hidden; /* Hide scrollbars */
+  height: 100vh; /* Ensure the page takes full viewport height */
+}
+
+.visualization-page h2 {
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased; /* Improve font rendering on WebKit browsers */
+  text-rendering: optimizeLegibility; /* Enhance text readability */
+}
+
+.visualization-page p {
+  margin-bottom: 1.875rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Safari-specific adjustments */
+@media not all and (min-resolution:.001dpcm) { 
+@supports (-webkit-appearance:none) {
+  .visualization-page {
+    padding-top: 4vh; /* Ensure consistent spacing in Safari */
+    overflow: hidden; /* Hide scrollbars in Safari */
   }
   
   .visualization-page p {
-    margin-bottom: 30px;
+    margin-bottom: 2rem; /* Adjust spacing for Safari */
   }
-  
+}
+}
