@@ -1,5 +1,5 @@
-# Use a base image
-FROM node:14-alpine
+# Stage 1: Build the application
+FROM node:14-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -16,8 +16,17 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Expose the port
-EXPOSE 3000
+# Stage 2: Serve the application
+FROM nginx:alpine
 
-# Start the application
-CMD ["npm", "start"]
+# Copy the build output to the Nginx HTML directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy custom Nginx configuration if needed
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose the port
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
