@@ -74,7 +74,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 fontSize: '2.2vw',
                 position: 'relative'
                 }}>Configuration</h1>
-            <div className="container" style={{height: '70vh'}}>
+            <div className="container" style={{height: '30vw'}}>
                 <div>
                     <label>
                         <select 
@@ -380,9 +380,8 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         isSimulationRunning={isSimulationRunning}
                     />
                 )}
-            
-
-                <div className="button-container" style={{zIndex: -20000}}>
+            </div>
+            <div className="button-container" style={{zIndex: 1000}}>
                     <button
                         onClick={handleStartClick}
                         className="button-form"
@@ -404,10 +403,10 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     </button>
                 
                 </div>
-            </div>
         </div>
         </div>
     );
 }
 
 export default SimulationForm;
+
