@@ -203,12 +203,12 @@ const NavigationBar = ({ title }) => {
 
   return (
     <nav className="navbar">
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={IITHLOGO} alt="IIITH Logo" />
         </div>
       </Link>
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
         </div>
@@ -217,8 +217,8 @@ const NavigationBar = ({ title }) => {
 
       <div>
         <select className="navbar__dropdown" value={selectedPath} onChange={(e) => {window.location.href = e.target.value;}}>
-            <option value="/dt_waternetwork/">Live</option>
-            <option value="/dt_waternetwork/simulation">Simulation</option>
+            <option value="/">Live</option>
+            <option value="/simulation">Simulation</option>
         </select>
       </div>
 
@@ -325,7 +325,7 @@ const NavigationBar = ({ title }) => {
       </div>
 
 
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={ZFLOGO} alt="ZF Logo" />
         </div>
