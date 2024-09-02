@@ -1,15 +1,32 @@
-FROM node:16-alpine as build
+# Use an official Node.js image as the base image
+FROM node:20-alpine AS build
 
+# Set the working directory in the container
 WORKDIR /app
-COPY . .
+
+# Copy the package.json and package-lock.json files
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-#COPY . .
+# Copy the entire project to the container
+COPY . .
+
+# Build the React app
 RUN npm run build
 
-FROM nginx:alpine
+# Use a lightweight web server to serve the built files
+FROM nginx:stable-alpine
+
+# Copy the build files to the nginx html directory
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY start.sh /start.sh
+
+# Copy a custom nginx configuration file if you need one
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose the port that nginx will run on
 EXPOSE 80
-CMD ["/bin/sh", "/start.sh"]
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
