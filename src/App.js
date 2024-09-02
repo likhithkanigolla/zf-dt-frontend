@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 
 const App = () => {
   return (
-    <Router basename="/dt_waternetwork">
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         {/* Define routes relative to /dt_waternetwork */}
         <Route path="/" element={<RealValueVisualisation />} />
