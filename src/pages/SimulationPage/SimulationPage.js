@@ -1513,7 +1513,7 @@ const handleDrop = (event) => {
                     src={getImageForType(itemToAdd)}
                     alt={itemToAdd}
                     dataId="Virtual Node"
-                    data={`NULL`}
+                    data={`Invalid placement`}
                   />
                 </div>
               )}
