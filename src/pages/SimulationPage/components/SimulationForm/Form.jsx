@@ -74,7 +74,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 fontSize: '2.2vw',
                 position: 'relative'
                 }}>Configuration</h1>
-            <div className="container">
+            <div className="container" style={{height: '30vw'}}>
                 <div>
                     <label>
                         <select 
@@ -381,31 +381,34 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                     />
                 )}
             </div>
-
-            <div className="button-container">
-                <button
-                    onClick={handleStartClick}
-                    className="button-form"
-                    style={{
-                        background: isLoading
-                            ? "gray"
-                            : isSimulationRunning
-                                ? "blue"
-                                : "rgb(15, 140, 17)",
-                        maxWidth: '18vw',
-                        fontSize: '1.1vw',
-                    }}
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
-                </button>
-                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
-                    End
-                </button>
-            </div>
+            <div className="button-container" style={{zIndex: 1000}}>
+                    <button
+                        onClick={handleStartClick}
+                        className="button-form"
+                        style={{
+                            background: isLoading
+                                ? "gray"
+                                : isSimulationRunning
+                                    ? "blue"
+                                    : "rgb(15, 140, 17)",
+                            maxWidth: '18vw',
+                            fontSize: '1.1vw',
+                        }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+                    </button>
+                    <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
+                        End
+                    </button>
+                
+                </div>
         </div>
+        </div>
+        
+        
     );
-}
+};
 
 export default SimulationForm;
 
