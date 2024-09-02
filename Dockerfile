@@ -22,8 +22,9 @@ FROM nginx:stable-alpine
 # Copy the build files to the nginx html directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy a custom nginx configuration file if you need one
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy the custom nginx configuration files
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Expose the port that nginx will run on
 EXPOSE 80
