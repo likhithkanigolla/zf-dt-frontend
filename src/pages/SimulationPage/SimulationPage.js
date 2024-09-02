@@ -810,18 +810,37 @@ const SimulationPage = () => {
   const [canvasItems, setCanvasItems] = useState([]);
   const [itemToAdd, setItemToAdd] = useState(null);
 
+
+  const checkMarkerOverlap = (markerCoordinates, index) => {
+    let isPlaced = false;
+    let iconId = null;
+    // Iterate over each icon and check if the marker overlaps with it
+    iconRefs.forEach((ref) => {
+      const rect = ref.getBoundingClientRect();
+      if (markerCoordinates.x >= rect.left && markerCoordinates.x <= rect.left + rect.width && markerCoordinates.y >= rect.top && markerCoordinates.y <= rect.top + rect.height) {
+        iconId = ref.id;
+        isPlaced = true;
+      }
+    });
+  
+    if (iconId === "dustbin") {
+      handleDeleteItem(index);
+    }
+  
+    return { isPlaced, iconId };
+  };
+
   const handleDragStart = (event, index) => {
     if (index !== undefined) {
       event.dataTransfer.setData("index", index);
     }
-
+  
     const markerCoordinates = {
       x: event.clientX,
       y: event.clientY,
     };
-
+  
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates, index);
-    // console.log("Marker is placed on:", iconId);
     updateLog(`Virtual Node is placed on: ${iconId}`);
     setIsMarkerPlaced(isPlaced);
   };
@@ -834,61 +853,40 @@ const SimulationPage = () => {
     // toast.error(`Deleted item at index ${index}.`);
   };
 
-  const checkMarkerOverlap = (markerCoordinates, index) => {
-    let isPlaced = false;
-    let iconId = null;
+const handleDrop = (event) => {
+  event.preventDefault();
+  const canvasRect = event.currentTarget.getBoundingClientRect();
+  const index = event.dataTransfer.getData("index");
+  const x = event.clientX - canvasRect.left;
+  const y = event.clientY - canvasRect.top;
 
-    // Iterate over each icon and check if the marker overlaps with it
-    iconRefs.forEach((ref, index) => {
-      const rect = ref.getBoundingClientRect();
-      if (markerCoordinates.x >= rect.left && markerCoordinates.x <= rect.left + rect.width && markerCoordinates.y >= rect.top && markerCoordinates.y <= rect.top + rect.height) {
-        iconId = ref.id;
-        isPlaced = true;
-      }
-    });
+  if (index) {
+    const updatedItems = [...canvasItems];
+    const markerCoordinates = { x: event.clientX, y: event.clientY };
+    const { isPlaced } = checkMarkerOverlap(markerCoordinates, index);
 
-    if (iconId === "dustbin") {
-      handleDeleteItem(index);
-    }
-
-    if (!isPlaced) {
-      // toast.error("Marker is not placed on any icon.");
-    } else {
-      // toast.success(`Marker is placed on: ${iconId}`);
-    }
-
-    return { isPlaced, iconId };
-  };
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const canvasRect = event.currentTarget.getBoundingClientRect();
-    const index = event.dataTransfer.getData("index");
-    const x = event.clientX - canvasRect.left;
-    const y = event.clientY - canvasRect.top;
-
-    if (index) {
-      const updatedItems = [...canvasItems];
-      updatedItems[index] = {
-        ...updatedItems[index],
-        x: x,
-        y: y,
-      };
-      setCanvasItems(updatedItems);
-      console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
-    } else if (itemToAdd) {
-      const newItem = {
-        type: itemToAdd,
-        x: x,
-        y: y,
-      };
-      setCanvasItems([...canvasItems, newItem]);
-      setItemToAdd(null);
-      updateLog(`Added item of type ${itemToAdd}`);
-    } else {
-      console.log("Dropped at x: ", x, "y: ", y);
-    }
-  };
+    updatedItems[index] = {
+      ...updatedItems[index],
+      x: x,
+      y: y,
+      isPlaced: isPlaced,
+    };
+    setCanvasItems(updatedItems);
+    console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
+  } else if (itemToAdd) {
+    const newItem = {
+      type: itemToAdd,
+      x: x,
+      y: y,
+      isPlaced: false, // Default to not placed
+    };
+    setCanvasItems([...canvasItems, newItem]);
+    setItemToAdd(null);
+    updateLog(`Added item of type ${itemToAdd}`);
+  } else {
+    console.log("Dropped at x: ", x, "y: ", y);
+  }
+};
 
   const handleDeleteAllItems = (event) => {
     setCanvasItems([]);
@@ -963,6 +961,14 @@ const SimulationPage = () => {
           ...prevValues,
           type: "waterqualitysensor",
           [iconId]: result.final_tds_concentration_after_ro_tank + Math.floor(Math.random() * 11) - 5,
+        }));
+      }
+
+      if(iconId === "Motor" && item.type === "motorsensor") {
+        setSensorValues((prevValues) => ({
+          ...prevValues,
+          type: "motorsensor",
+          [iconId]: flowrate,
         }));
       }
 
@@ -1436,6 +1442,7 @@ const SimulationPage = () => {
                 </div>
               ))}
 
+              {/* Sensor Markers */}
               {canvasItems.map((item, index) => (
                 <div
                   key={index}
@@ -1446,7 +1453,7 @@ const SimulationPage = () => {
                     left: `${item.x}px`,
                     top: `${item.y}px`,
                     cursor: "move",
-                    border: isMarkerPlaced ? "2px solid green" : "none",
+                    border: item.isPlaced ? "2px solid green" : "2px solid red", // Use item.isPlaced to determine border color
                     zIndex: 5,
                   }}>
                   <HoverableIcon
@@ -1484,7 +1491,7 @@ const SimulationPage = () => {
                     iconRefs.push(ref);
                   }
                 }}>
-                <DeleteIcon style={{ color: "white", fontSize: "40px" }} />
+                <DeleteIcon style={{ color: "white", fontSize: "2vw" }} />
               </div>
 
               {itemToAdd && (
@@ -1496,6 +1503,7 @@ const SimulationPage = () => {
                     left: "200px",
                     top: "20px",
                     cursor: "move",
+                    border: "2px solid red",
                   }}>
                   {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
                   <HoverableIcon

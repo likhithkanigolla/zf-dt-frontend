@@ -36,7 +36,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
     };
 
     useEffect(() => {
-        console.log("Simulation",isSimulationRunning);
+        // console.log("Simulation",isSimulationRunning);
         if (isSimulationRunning && inputValues.Scenarios !== prevScenario) {
             handleSaveLog(); // End the current simulation
             handleStartSimulation(); // Start the new simulation
@@ -74,7 +74,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 fontSize: '2.2vw',
                 position: 'relative'
                 }}>Configuration</h1>
-            <div className="container" style={{height: '70vh'}}>
+            <div className="container">
                 <div>
                     <label>
                         <select 
@@ -380,34 +380,32 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                         isSimulationRunning={isSimulationRunning}
                     />
                 )}
-            
-
-                <div className="button-container" style={{zIndex: -20000}}>
-                    <button
-                        onClick={handleStartClick}
-                        className="button-form"
-                        style={{
-                            background: isLoading
-                                ? "gray"
-                                : isSimulationRunning
-                                    ? "blue"
-                                    : "rgb(15, 140, 17)",
-                            maxWidth: '18vw',
-                            fontSize: '1.1vw',
-                        }}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
-                    </button>
-                    <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
-                        End
-                    </button>
-                
-                </div>
             </div>
-        </div>
+
+            <div className="button-container">
+                <button
+                    onClick={handleStartClick}
+                    className="button-form"
+                    style={{
+                        background: isLoading
+                            ? "gray"
+                            : isSimulationRunning
+                                ? "blue"
+                                : "rgb(15, 140, 17)",
+                        maxWidth: '18vw',
+                        fontSize: '1.1vw',
+                    }}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Starting..." : isSimulationRunning ? "Pause" : "Start"}
+                </button>
+                <button onClick={handleSaveLog} className="button-form" style={{ background: 'rgb(231, 76, 60)', maxWidth: '18vw', fontSize: '1.1vw' }}>
+                    End
+                </button>
+            </div>
         </div>
     );
 }
 
 export default SimulationForm;
+
