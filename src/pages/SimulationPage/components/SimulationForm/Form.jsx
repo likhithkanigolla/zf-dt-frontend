@@ -48,7 +48,7 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
         await handleChange(event);
         handleSaveLog();
         if (event.target.value === "6") {
-            navigate('/dt_waternetwork/simulation/waterlevel');
+            navigate('/simulation/waterlevel');
         }
         // handleStopSimulation();
     };

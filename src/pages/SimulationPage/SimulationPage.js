@@ -65,11 +65,12 @@ const SimulationPage = () => {
   });
 
   const scenarioMapping = {
-    "1": "Soil vs TDS",
-    "2": "Sand vs TDS",
-    "3": "Flow vs TDS",
-    "4": "Water Quality Node Failed",
-    "5": "Water Purification Agents vs TDS",
+    "2": "Soil vs TDS",
+    "3": "Sand vs TDS",
+    "4": "Flow vs TDS",
+    "5": "Water Quality Node Failed",
+    "8": "Water Purification Agents vs TDS",
+    "all": "All Scenarios",
   };
 
 
@@ -1512,7 +1513,7 @@ const handleDrop = (event) => {
                     src={getImageForType(itemToAdd)}
                     alt={itemToAdd}
                     dataId="Virtual Node"
-                    data={`NULL`}
+                    data={`Invalid placement`}
                   />
                 </div>
               )}

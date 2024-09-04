@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Badge,
   Typography,
@@ -83,6 +83,22 @@ const NavigationBar = ({ title }) => {
   const [remarks, setRemarks] = useState('');
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [selectedPath, setSelectedPath] = useState(location.pathname);
+
+  useEffect(() => {
+    setSelectedPath(location.pathname);
+    console.log('Location pathname:', location.pathname);
+    console.log('Selected path:', selectedPath);
+  }, [location.pathname]);
+
+  const handleChange = (e) => {
+    const newPath = e.target.value;
+    console.log('New path selected:', newPath);
+    setSelectedPath(newPath);
+    navigate(newPath);
+  };
   const handleHamburgerClick = () => {
     setIsHamburgerOpen(!isHamburgerOpen);
   };
@@ -193,22 +209,19 @@ const NavigationBar = ({ title }) => {
     }
   };
 
-  const [selectedPath, setSelectedPath] = useState(window.location.pathname);
-  
   useEffect(() => {
     handleNotificationOpen();
     handleAlarmOpen();
-    setSelectedPath(window.location.pathname);
   }, []);
 
   return (
     <nav className="navbar">
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={IITHLOGO} alt="IIITH Logo" />
         </div>
       </Link>
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
         </div>
@@ -216,9 +229,9 @@ const NavigationBar = ({ title }) => {
       <div className="navbar__title">{title}</div>
 
       <div>
-        <select className="navbar__dropdown" value={selectedPath} onChange={(e) => {window.location.href = e.target.value;}}>
-            <option value="/dt_waternetwork/">Live</option>
-            <option value="/dt_waternetwork/simulation">Simulation</option>
+        <select className="navbar__dropdown" value={selectedPath} onChange={handleChange}>
+            <option value="/">Live</option>
+            <option value="/simulation">Simulation</option>
         </select>
       </div>
 
@@ -325,7 +338,7 @@ const NavigationBar = ({ title }) => {
       </div>
 
 
-      <Link to="/dt_waternetwork/">
+      <Link to="/">
         <div className="navbar__logo">
           <img src={ZFLOGO} alt="ZF Logo" />
         </div>
