@@ -385,84 +385,102 @@ const RealValueVisualisation = () => {
   // };
 
   const fetchNodeData = async (tableName) => {
-    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH04-00'];
-    const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
-    const MotorNodes = ['DM-KH98-60'];
-    const WaterFlowNodes = ['WM-WF-KB04-70', 'WM-WF-KB04-73', 'WM-WF-KB04-71', 'WM-WF-KB04-72', 'WM-WF-KH98-40', 'WM-WF-KH95-40'];
-    
+    const WaterQualityNodes = [
+      "WM-WD-KH98-00",
+      "WM-WD-KH96-00",
+      "WM-WD-KH96-02",
+      "WM-WD-KH95-00",
+      "WM-WD-KH96-01",
+      "WM-WD-KH04-00",
+    ];
+    const WaterLevelNodes = ["WM-WL-KH98-00", "WM-WL-KH00-00"];
+    const MotorNodes = ["DM-KH98-60"];
+    const WaterFlowNodes = [
+      "WM-WF-KB04-70",
+      "WM-WF-KB04-73",
+      "WM-WF-KB04-71",
+      "WM-WF-KB04-72",
+      "WM-WF-KH98-40",
+      "WM-WF-KH95-40",
+    ];
+  
     try {
       const jsonData = await getRealData(tableName);
-      if (typeof jsonData !== 'object' || jsonData === null) {
+      if (typeof jsonData !== "object" || jsonData === null) {
         console.log("No valid data available for", tableName);
-        return; // Exit the function if no valid data is available
+        return;
       }
   
       // Create a table element
-      const table = document.createElement('table');
-      // Keep the table name as heading for the box
-      const heading = document.createElement('h2');
+      const table = document.createElement("table");
+      const heading = document.createElement("h2");
       heading.textContent = tableName;
       table.appendChild(heading);
   
-      // Create table header row
-      const headerRow = document.createElement('tr');
-      // Create table header cells
-      const headers = ['Parameter', 'Value', 'Units']; // Modify the headers here
+      const headerRow = document.createElement("tr");
+      const headers = ["Parameter", "Value", "Units"];
   
-      // Add styles to the table
-      table.style.width = '100%';
-      table.style.borderCollapse = 'collapse';
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
   
-      // Add styles to table headers
-      headers.forEach(header => {
-        const th = document.createElement('th');
+      headers.forEach((header) => {
+        const th = document.createElement("th");
         th.textContent = header;
-        th.style.border = '1px solid black';
-        th.style.padding = '8px';
-        th.style.backgroundColor = '#f2f2f2'; // Example background color for headers
+        th.style.border = "1px solid black";
+        th.style.padding = "8px";
+        th.style.backgroundColor = "#f2f2f2";
         headerRow.appendChild(th);
       });
-      table.appendChild(headerRow); // Append the header row to the table
+      table.appendChild(headerRow);
   
-      // Similarly, add styles to cells in the body
       Object.entries(jsonData).forEach(([key, value]) => {
-        if (key === 'timestamp') {
-          return; // Skip the key 'timestamp'
+        if (key === "timestamp") {
+          return;
         }
-        const row = document.createElement('tr');
-        const keyCell = document.createElement('td');
+        const row = document.createElement("tr");
+        const keyCell = document.createElement("td");
         keyCell.textContent = key;
-        keyCell.style.border = '1px solid black';
-        keyCell.style.padding = '8px';
-        const valueCell = document.createElement('td');
-        if (key === 'creationtime' && value !== null) {
-          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset only if value is not null
+        keyCell.style.border = "1px solid black";
+        keyCell.style.padding = "8px";
+        const valueCell = document.createElement("td");
+        if (key === "creationtime" && value !== null) {
+          value = value.replace("+00:00", "+05:30");
         }
         valueCell.textContent = value;
-        valueCell.style.border = '1px solid black';
-        valueCell.style.padding = '8px';
-        const unitCell = document.createElement('td');
-        unitCell.textContent = units[key] || ''; // Get the unit from the units object, or leave it empty if not found
-        unitCell.style.border = '1px solid black';
-        unitCell.style.padding = '8px';
+        valueCell.style.border = "1px solid black";
+        valueCell.style.padding = "8px";
+        const unitCell = document.createElement("td");
+        unitCell.textContent = units[key] || "";
+        unitCell.style.border = "1px solid black";
+        unitCell.style.padding = "8px";
         row.appendChild(keyCell);
         row.appendChild(valueCell);
         row.appendChild(unitCell);
         table.appendChild(row);
       });
   
-      const tableContainer = document.getElementById("tableContainer"); // Get the table container element
-      tableContainer.innerHTML = ""; // Clear the table container
-      tableContainer.appendChild(table); // Append the table to the table container
+      const tableContainer = document.getElementById("tableContainer");
+      tableContainer.innerHTML = "";
   
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'buttonContainer'; // Use the class name for styling
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.justifyContent = 'space-around'; // Adjust as needed
-      buttonContainer.style.marginTop = '20px'; // Space above the buttons
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "buttonContainer";
+      buttonContainer.style.display = "flex";
+      buttonContainer.style.justifyContent = "space-around";
+      buttonContainer.style.marginTop = "20px";
+  
+      const tableWrapper = document.createElement("div");
+      tableWrapper.className = "tableWrapper";
+      tableWrapper.style.overflowY = "auto";
+      tableWrapper.style.maxHeight = "300px"; // Set max height for the table container
+      tableWrapper.style.border = "1px solid #ccc"; // Optional: Add a border to the table container
+      tableWrapper.style.padding = "10px"; // Optional: Add some padding
+  
+      tableWrapper.appendChild(table);
+      tableContainer.appendChild(buttonContainer);
+      tableContainer.appendChild(tableWrapper);
   
       let selectedButton = null;
-      let inputValue = '';
+      let inputValue = "";
   
       const handleChange = (event) => {
         inputValue = event.target.value;
@@ -471,176 +489,214 @@ const RealValueVisualisation = () => {
       const handleSubmit = async (event) => {
         event.preventDefault();
         // Assuming 'inputField' is accessible here, or you find it by its class or name
-        const inputField = document.querySelector('.input-field');
+        const inputField = document.querySelector(".input-field");
         const inputValue = inputField.value.trim();
-
+  
         // Check if the input field is empty
-        if (inputValue === '') {
+        if (inputValue === "") {
           // Display an error message or handle the error
-          alert('Input cannot be blank');
+          alert("Input cannot be blank");
           return; // Stop the function here
         }
         try {
           // Step 1: Get the token
           const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
+              "Content-Type": "application/x-www-form-urlencoded",
             },
             body: new URLSearchParams({
-              'username': 'smartcity_water',
-              'password': 'WaterQualityNode'
-            })
+              username: "smartcity_water",
+              password: "WaterQualityNode",
+            }),
           });
   
           if (!tokenResponse.ok) {
-            throw new Error('Failed to fetch token');
+            throw new Error("Failed to fetch token");
           }
   
           const tokenData = await tokenResponse.json();
           const token = tokenData.access_token;
   
           // Step 2: Use the token in the next request
-          const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${tableName}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model_name: tableName,
-              coefficients: inputValue
-            })
-          });
+          const updateResponse = await fetch(
+            `${config.middlewareAPI}/coefficients/${tableName}`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model_name: tableName,
+                coefficients: inputValue,
+              }),
+            }
+          );
   
           if (!updateResponse.ok) {
-            throw new Error('Failed to update coefficients');
+            throw new Error("Failed to update coefficients");
           }
   
           const updateData = await updateResponse.json();
   
           // Reset the state
           selectedButton = null;
-          inputValue = '';
+          inputValue = "";
         } catch (error) {
-          console.error('Error:', error);
+          console.error("Error:", error);
         }
       };
-
+  
       if (WaterQualityNodes.includes(tableName)) {
-      // Create buttons
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-        { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
-            selectedButton = 4;
-            renderButtons();
+        // Create buttons
+        const buttonsInfo = [
+          {
+            text: "Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+          {
+            text: "Update Calibrated Values",
+            id: "updateValuesButton",
+            onClick: () => {
+              selectedButton = 4;
+              renderButtons();
+            },
+          },
+        ];
+  
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "10px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            buttonContainer.appendChild(button);
+          });
+  
+          tableContainer.appendChild(buttonContainer);
+  
+          if (selectedButton === 4) {
+            const inputDiv = document.createElement("div");
+            inputDiv.style.marginTop = "10px"; // Add some margin above the input field
+            inputDiv.style.textAlign = "center";
+  
+            const inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.onchange = handleChange;
+            inputField.name = "calibratedvalues";
+            inputField.value = inputValue;
+            inputField.className = "input-field";
+            inputField.placeholder = "[5.6,4.3,2.8,.....]";
+            inputField.style.padding = "8px";
+            inputField.style.width = "15vw";
+  
+            const submitButton = document.createElement("button");
+            submitButton.textContent = "Submit";
+            submitButton.className = "submit-button";
+            submitButton.style.marginTop = "10px";
+            submitButton.style.padding = "10px 20px";
+            submitButton.style.cursor = "pointer";
+            submitButton.onclick = handleSubmit;
+  
+            inputDiv.appendChild(inputField);
+            inputDiv.appendChild(submitButton);
+            tableContainer.appendChild(inputDiv);
           }
-        }
-      ];
+        };
+        renderButtons();
+      } else if (MotorNodes.includes(tableName)) {
+        const buttonsInfo = [
+          {
+            text: "Motor on",
+            id: "turnOnButton",
+            onClick: () => motorClick("turnOnButton", 1),
+          },
+          {
+            text: "Motor off",
+            id: "turnOffButton",
+            onClick: () => motorClick("turnOffButton", 0),
+          },
+          {
+            text: "Motor Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Motor Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+        ];
   
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "10px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            buttonContainer.appendChild(button);
+          });
   
-        tableContainer.appendChild(buttonContainer);
+          tableContainer.appendChild(buttonContainer);
+        };
+        renderButtons();
+      } else {
+        const buttonsInfo = [
+          {
+            text: "Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+        ];
   
-        if (selectedButton === 4) {
-          const inputDiv = document.createElement('div');
-          inputDiv.style.marginTop = '10px'; // Add some margin above the input field
-          inputDiv.style.textAlign= 'center';
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "10px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            buttonContainer.appendChild(button);
+          });
   
-          const inputField = document.createElement('input');
-          inputField.type = 'text';
-          inputField.onchange = handleChange;
-          inputField.name = 'calibratedvalues';
-          inputField.value = inputValue;
-          inputField.className = 'input-field';
-          inputField.placeholder = '[5.6,4.3,2.8,.....]';
-          inputField.style.padding = '8px';
-          inputField.style.width = '15vw';
+          tableContainer.appendChild(buttonContainer);
+        };
+        renderButtons();
+      }
   
-          const submitButton = document.createElement('button');
-          submitButton.textContent = 'Submit';
-          submitButton.className = 'submit-button';
-          submitButton.style.marginTop = '10px';
-          submitButton.style.padding = '10px 20px';
-          submitButton.style.cursor = 'pointer';
-          submitButton.onclick = handleSubmit;
-  
-          inputDiv.appendChild(inputField);
-          inputDiv.appendChild(submitButton);
-          tableContainer.appendChild(inputDiv);
-        }
-      };
-      renderButtons();
-    }
-    else if (MotorNodes.includes(tableName)) { 
-      const buttonsInfo = [
-        { text: 'Motor on', id: 'turnOnButton', onClick: () => motorClick('turnOnButton',1)},
-        { text: 'Motor off', id: 'turnOffButton', onClick: () => motorClick('turnOffButton', 0) },
-        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Motor Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
-  
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-    else{
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
-  
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-      const modal = document.getElementById("myModal"); // Get the modal element
-      modal.style.display = "block"; // Show the modal after fetching and displaying the data
+      const modal = document.getElementById("myModal");
+      modal.style.display = "block";
     } catch (error) {
       console.error(error);
     }
   };
+  
   
   
 
