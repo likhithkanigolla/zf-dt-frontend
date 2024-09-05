@@ -250,7 +250,7 @@ const SimulationCanvas = ({
         </div>
 
         {/* RO Coolers */}
-        <div style={{ position: "absolute", top: "14vw", left: "51.5vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "13.5vw", left: "51.5vw", textAlign: "center" }}>
           <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler1"; iconRefs.push(ref); } }} />
@@ -258,14 +258,14 @@ const SimulationCanvas = ({
           {/* <div style={{ fontSize: "0.7vw" }}><b>{((3 * waterConsumed) / 4).toFixed(1)}L</b></div> */}
         </div>
 
-        <div style={{ position: "absolute", top: "14vw", left: "54.3vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "13.5vw", left: "54.3vw", textAlign: "center" }}>
           <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler2"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "0.7vw" }}>RO 2</div>
+          <div style={{ fontSize: "0.7vw", top: "-2vw"}}>RO 2</div>
         </div>
 
-        <div style={{ position: "absolute", top: "14vw", left: "57vw", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: "13.5vw", left: "57vw", textAlign: "center" }}>
           <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler3"; iconRefs.push(ref); } }} />
