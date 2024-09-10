@@ -236,7 +236,7 @@ const NavigationBar = ({ title }) => {
         <select className="navbar__dropdown" value={selectedPath} onChange={handleChange}>
             <option value="/">Live</option>
             <option value="/simulation">Simulation</option>
-            <option value="http://10.4.20.161:3004">3D View</option>
+            <option value="http://smartcitylivinglab.iiit.ac.in:3004">3D View</option>
         </select>
       </div>
 
