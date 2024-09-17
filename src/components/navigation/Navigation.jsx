@@ -97,7 +97,11 @@ const NavigationBar = ({ title }) => {
     const newPath = e.target.value;
     console.log('New path selected:', newPath);
     setSelectedPath(newPath);
-    navigate(newPath);
+    if (newPath.startsWith('http')) {
+      window.location.href = newPath; // Navigate to external URL
+    } else {
+      navigate(newPath); // Navigate to internal route
+    }
   };
   const handleHamburgerClick = () => {
     setIsHamburgerOpen(!isHamburgerOpen);
@@ -232,6 +236,8 @@ const NavigationBar = ({ title }) => {
         <select className="navbar__dropdown" value={selectedPath} onChange={handleChange}>
             <option value="/">Live</option>
             <option value="/simulation">Simulation</option>
+            <option value="http://smartcitylivinglab.iiit.ac.in:3001">Test</option>
+            <option value="http://smartcitylivinglab.iiit.ac.in:3004">3D View</option>
         </select>
       </div>
 
