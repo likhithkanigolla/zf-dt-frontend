@@ -11,7 +11,7 @@ const Dashboard = () => {
         title="Digital Twin Water"
         width="100%"
         height="780"
-        src="http://10.2.16.116:3000/d/c653da7e-1484-4fa0-a9de-6042b35215da/digital-twin-water?orgId=1&from=now-6h&to=now&theme=light&kiosk"
+        src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c653da7e-1484-4fa0-a9de-6042b35215da/digital-twin-water-test-setup?orgId=1&theme=light&kiosk&autofitpanels"
         frameBorder="0"
         style={{ zIndex: 1 }}
       ></iframe>
