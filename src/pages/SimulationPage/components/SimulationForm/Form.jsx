@@ -405,8 +405,10 @@ function SimulationForm({ inputValues, handleChange, handleStartSimulation, hand
                 </div>
         </div>
         </div>
+        
+        
     );
-}
+};
 
 export default SimulationForm;
 

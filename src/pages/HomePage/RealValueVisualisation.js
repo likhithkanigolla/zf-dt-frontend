@@ -16,7 +16,8 @@ import WaterQuantityNode from "../images/WaterQuantityNode-removebg.png";
 
 const RealValueVisualisation = () => {
   // State for holding input values and results
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [highlightedNode, setHighlightedNode] = useState(null);
   const iconRefs = [];
   const [flow1, setFlow1] = useState(false);
   const [flow2, setFlow2] = useState(false);
@@ -94,7 +95,14 @@ const RealValueVisualisation = () => {
     return flowrate_lpm;
   }
 
+   // Wrapper function to handle both highlighting and data fetching
+   const handleNodeClick = (nodeId) => {
+    setHighlightedNode(nodeId); // Highlight the clicked node
+    fetchNodeData(nodeId); // Call the existing fetchNodeData function
+  };
+
   const closeModal = () => {
+    setHighlightedNode(null); // Remove highlight
     const modal = document.getElementById("myModal");
     modal.style.display = "none";
   };
@@ -385,84 +393,110 @@ const RealValueVisualisation = () => {
   // };
 
   const fetchNodeData = async (tableName) => {
-    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH04-00'];
-    const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
-    const MotorNodes = ['DM-KH98-60'];
-    const WaterFlowNodes = ['WM-WF-KB04-70', 'WM-WF-KB04-73', 'WM-WF-KB04-71', 'WM-WF-KB04-72', 'WM-WF-KH98-40', 'WM-WF-KH95-40'];
-    
+    const WaterQualityNodes = [
+      "WM-WD-KH98-00",
+      "WM-WD-KH96-00",
+      "WM-WD-KH96-02",
+      "WM-WD-KH95-00",
+      "WM-WD-KH96-01",
+      "WM-WD-KH04-00",
+    ];
+    const WaterLevelNodes = ["WM-WL-KH98-00", "WM-WL-KH00-00"];
+    const MotorNodes = ["DM-KH98-60"];
+    const WaterFlowNodes = [
+      "WM-WF-KB04-70",
+      "WM-WF-KB04-73",
+      "WM-WF-KB04-71",
+      "WM-WF-KB04-72",
+      "WM-WF-KH98-40",
+      "WM-WF-KH95-40",
+    ];
+  
     try {
       const jsonData = await getRealData(tableName);
-      if (typeof jsonData !== 'object' || jsonData === null) {
+      if (typeof jsonData !== "object" || jsonData === null) {
         console.log("No valid data available for", tableName);
-        return; // Exit the function if no valid data is available
+        return;
       }
   
       // Create a table element
-      const table = document.createElement('table');
-      // Keep the table name as heading for the box
-      const heading = document.createElement('h2');
+      const table = document.createElement("table");
+      const heading = document.createElement("h3");
       heading.textContent = tableName;
       table.appendChild(heading);
   
-      // Create table header row
-      const headerRow = document.createElement('tr');
-      // Create table header cells
-      const headers = ['Parameter', 'Value', 'Units']; // Modify the headers here
+      const headerRow = document.createElement("tr");
+      const headers = ["Parameter", "Value", "Units"];
   
-      // Add styles to the table
-      table.style.width = '100%';
-      table.style.borderCollapse = 'collapse';
+      table.style.width = "69%";
+      table.style.left = "1vw";
+      table.style.borderCollapse = "collapse";
   
-      // Add styles to table headers
-      headers.forEach(header => {
-        const th = document.createElement('th');
+      headers.forEach((header) => {
+        const th = document.createElement("th");
         th.textContent = header;
-        th.style.border = '1px solid black';
-        th.style.padding = '8px';
-        th.style.backgroundColor = '#f2f2f2'; // Example background color for headers
+        th.style.border = "1px solid black";
+        th.style.padding = "2px";
+        th.style.fontSize = "1vw";
+        th.style.backgroundColor = "#f2f2f2";
         headerRow.appendChild(th);
       });
-      table.appendChild(headerRow); // Append the header row to the table
+      table.appendChild(headerRow);
   
-      // Similarly, add styles to cells in the body
       Object.entries(jsonData).forEach(([key, value]) => {
-        if (key === 'timestamp') {
-          return; // Skip the key 'timestamp'
+        if (key === "timestamp") {
+          return;
         }
-        const row = document.createElement('tr');
-        const keyCell = document.createElement('td');
+        const row = document.createElement("tr");
+        const keyCell = document.createElement("td");
         keyCell.textContent = key;
-        keyCell.style.border = '1px solid black';
-        keyCell.style.padding = '8px';
-        const valueCell = document.createElement('td');
-        if (key === 'creationtime' && value !== null) {
-          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset only if value is not null
+        keyCell.style.border = "1px solid black";
+        keyCell.style.padding = "8px";
+        const valueCell = document.createElement("td");
+        if (key === "creationtime" && value !== null) {
+          value = value.replace("+00:00", "+05:30");
         }
         valueCell.textContent = value;
-        valueCell.style.border = '1px solid black';
-        valueCell.style.padding = '8px';
-        const unitCell = document.createElement('td');
-        unitCell.textContent = units[key] || ''; // Get the unit from the units object, or leave it empty if not found
-        unitCell.style.border = '1px solid black';
-        unitCell.style.padding = '8px';
+        valueCell.style.border = "1px solid black";
+        valueCell.style.padding = "2px";
+        const unitCell = document.createElement("td");
+        unitCell.textContent = units[key] || "";
+        unitCell.style.border = "1px solid black";
+        unitCell.style.padding = "8px";
         row.appendChild(keyCell);
         row.appendChild(valueCell);
         row.appendChild(unitCell);
         table.appendChild(row);
       });
   
-      const tableContainer = document.getElementById("tableContainer"); // Get the table container element
-      tableContainer.innerHTML = ""; // Clear the table container
-      tableContainer.appendChild(table); // Append the table to the table container
+      const tableContainer = document.getElementById("tableContainer");
+      tableContainer.innerHTML = "";
+      tableContainer.style.width = "57vw";
   
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'buttonContainer'; // Use the class name for styling
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.justifyContent = 'space-around'; // Adjust as needed
-      buttonContainer.style.marginTop = '20px'; // Space above the buttons
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "buttonContainer";
+      buttonContainer.style.display = "flex";
+      buttonContainer.style.justifyContent = "space-around";
+      buttonContainer.style.marginTop = "20px";
+      buttonContainer.style.height = "60px";
+      buttonContainer.style.width = "39.2vw";
+      buttonContainer.style.fontSize = "10px";
+      buttonContainer.style.position = "sticky";
+  
+      const tableWrapper = document.createElement("div");
+      tableWrapper.className = "tableWrapper no-scrollbar";
+      tableWrapper.style.overflowY = "auto";
+      tableWrapper.style.maxHeight = "15vw"; // Set max height for the table container
+      // tableWrapper.style.border = "1px solid #ccc"; // Optional: Add a border to the table container
+      tableWrapper.style.padding = "1px"; // Optional: Add some padding
+      tableWrapper.style.left = "10px"; // Optional: Add some padding
+  
+      tableWrapper.appendChild(table);
+      tableContainer.appendChild(buttonContainer);
+      tableContainer.appendChild(tableWrapper);
   
       let selectedButton = null;
-      let inputValue = '';
+      let inputValue = "";
   
       const handleChange = (event) => {
         inputValue = event.target.value;
@@ -471,176 +505,216 @@ const RealValueVisualisation = () => {
       const handleSubmit = async (event) => {
         event.preventDefault();
         // Assuming 'inputField' is accessible here, or you find it by its class or name
-        const inputField = document.querySelector('.input-field');
+        const inputField = document.querySelector(".input-field");
         const inputValue = inputField.value.trim();
-
+  
         // Check if the input field is empty
-        if (inputValue === '') {
+        if (inputValue === "") {
           // Display an error message or handle the error
-          alert('Input cannot be blank');
+          alert("Input cannot be blank");
           return; // Stop the function here
         }
         try {
           // Step 1: Get the token
           const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
+              "Content-Type": "application/x-www-form-urlencoded",
             },
             body: new URLSearchParams({
-              'username': 'smartcity_water',
-              'password': 'WaterQualityNode'
-            })
+              username: "smartcity_water",
+              password: "WaterQualityNode",
+            }),
           });
   
           if (!tokenResponse.ok) {
-            throw new Error('Failed to fetch token');
+            throw new Error("Failed to fetch token");
           }
   
           const tokenData = await tokenResponse.json();
           const token = tokenData.access_token;
   
           // Step 2: Use the token in the next request
-          const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${tableName}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model_name: tableName,
-              coefficients: inputValue
-            })
-          });
+          const updateResponse = await fetch(
+            `${config.middlewareAPI}/coefficients/${tableName}`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model_name: tableName,
+                coefficients: inputValue,
+              }),
+            }
+          );
   
           if (!updateResponse.ok) {
-            throw new Error('Failed to update coefficients');
+            throw new Error("Failed to update coefficients");
           }
   
           const updateData = await updateResponse.json();
   
           // Reset the state
           selectedButton = null;
-          inputValue = '';
+          inputValue = "";
         } catch (error) {
-          console.error('Error:', error);
+          console.error("Error:", error);
         }
       };
-
+  
       if (WaterQualityNodes.includes(tableName)) {
-      // Create buttons
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-        { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
-            selectedButton = 4;
-            renderButtons();
+        // Create buttons
+        const buttonsInfo = [
+          {
+            text: "Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+          {
+            text: "Update Calibrated Values",
+            id: "updateValuesButton",
+            onClick: () => {
+              selectedButton = 4;
+              renderButtons();
+            },
+          },
+        ];
+  
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "1px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            button.style.width = "25vw";
+            button.style.position = "Sticky";
+            buttonContainer.appendChild(button);
+          });
+  
+          tableContainer.appendChild(buttonContainer);
+  
+          if (selectedButton === 4) {
+            const inputDiv = document.createElement("div");
+            inputDiv.style.marginTop = "10px"; // Add some margin above the input field
+            inputDiv.style.textAlign = "center";
+  
+            const inputField = document.createElement("input");
+            inputField.type = "text";
+            inputField.onchange = handleChange;
+            inputField.name = "calibratedvalues";
+            inputField.value = inputValue;
+            inputField.className = "input-field";
+            inputField.placeholder = "[5.6,4.3,2.8,.....]";
+            inputField.style.padding = "8px";
+            inputField.style.width = "15vw";
+  
+            const submitButton = document.createElement("button");
+            submitButton.textContent = "Submit";
+            submitButton.className = "submit-button";
+            submitButton.style.marginTop = "10px";
+            submitButton.style.padding = "10px 20px";
+            submitButton.style.cursor = "pointer";
+            submitButton.onclick = handleSubmit;
+  
+            inputDiv.appendChild(inputField);
+            inputDiv.appendChild(submitButton);
+            tableContainer.appendChild(inputDiv);
           }
-        }
-      ];
+        };
+        renderButtons();
+      } else if (MotorNodes.includes(tableName)) {
+        const buttonsInfo = [
+          {
+            text: "Motor on",
+            id: "turnOnButton",
+            onClick: () => motorClick("turnOnButton", 1),
+          },
+          {
+            text: "Motor off",
+            id: "turnOffButton",
+            onClick: () => motorClick("turnOffButton", 0),
+          },
+          {
+            text: "Motor Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Motor Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+        ];
   
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "10px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            buttonContainer.appendChild(button);
+          });
   
-        tableContainer.appendChild(buttonContainer);
+          tableContainer.appendChild(buttonContainer);
+        };
+        renderButtons();
+      } else {
+        const buttonsInfo = [
+          {
+            text: "Node Reset",
+            id: "powerResetButton",
+            onClick: () => modifiedOnClick("powerResetButton", tableName, 2),
+          },
+          {
+            text: "Power Reset",
+            id: "nodeResetButton",
+            onClick: () => modifiedOnClick("nodeResetButton", tableName, 3),
+          },
+        ];
   
-        if (selectedButton === 4) {
-          const inputDiv = document.createElement('div');
-          inputDiv.style.marginTop = '10px'; // Add some margin above the input field
-          inputDiv.style.textAlign= 'center';
+        const renderButtons = () => {
+          buttonContainer.innerHTML = ""; // Clear the button container
+          buttonsInfo.forEach((buttonInfo) => {
+            const button = document.createElement("button");
+            button.textContent = buttonInfo.text;
+            button.id = buttonInfo.id;
+            button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+            // Optional: Add classes or styles to button
+            button.style.padding = "10px 20px";
+            button.style.margin = "0 10px"; // Adjust spacing between buttons
+            button.style.cursor = "pointer";
+            buttonContainer.appendChild(button);
+          });
   
-          const inputField = document.createElement('input');
-          inputField.type = 'text';
-          inputField.onchange = handleChange;
-          inputField.name = 'calibratedvalues';
-          inputField.value = inputValue;
-          inputField.className = 'input-field';
-          inputField.placeholder = '[5.6,4.3,2.8,.....]';
-          inputField.style.padding = '8px';
-          inputField.style.width = '15vw';
+          tableContainer.appendChild(buttonContainer);
+        };
+        renderButtons();
+      }
   
-          const submitButton = document.createElement('button');
-          submitButton.textContent = 'Submit';
-          submitButton.className = 'submit-button';
-          submitButton.style.marginTop = '10px';
-          submitButton.style.padding = '10px 20px';
-          submitButton.style.cursor = 'pointer';
-          submitButton.onclick = handleSubmit;
-  
-          inputDiv.appendChild(inputField);
-          inputDiv.appendChild(submitButton);
-          tableContainer.appendChild(inputDiv);
-        }
-      };
-      renderButtons();
-    }
-    else if (MotorNodes.includes(tableName)) { 
-      const buttonsInfo = [
-        { text: 'Motor on', id: 'turnOnButton', onClick: () => motorClick('turnOnButton',1)},
-        { text: 'Motor off', id: 'turnOffButton', onClick: () => motorClick('turnOffButton', 0) },
-        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Motor Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
-  
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-    else{
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
-  
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-      const modal = document.getElementById("myModal"); // Get the modal element
-      modal.style.display = "block"; // Show the modal after fetching and displaying the data
+      const modal = document.getElementById("myModal");
+      modal.style.display = "block";
     } catch (error) {
       console.error(error);
     }
   };
+  
   
   
 
@@ -724,10 +798,11 @@ const RealValueVisualisation = () => {
               <div>
               <div id="myModal" className="modal" style={{
                   position: 'fixed', // Keeps the modal above all other content
-                  top: '50%', // Centers vertically
-                  left: '50%', // Centers horizontally
+                  top: '93%', // Centers vertically
+                  left: '49%', // Centers horizontally
                   transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
-                  width: '60vw',
+                  width: '50vw',
+                  height: '48vw',
                   zIndex: 1000, // Ensures it's on top of everything
                   }}>
                 <div className="modal-content">
@@ -735,7 +810,7 @@ const RealValueVisualisation = () => {
                   <div id="tableContainer"></div>
                 </div>
               </div>
-                <div style={{ position: 'relative', width: '60vw',height: '20vw',border: '',}}>
+                <div style={{ position: 'relative', width: '60vw',height: '20vw', top: '-3vw'}}>
                   <SimulationCanvas
                     handleIconClick={handleIconClick}
                     iconRefs={iconRefs}
@@ -761,79 +836,285 @@ const RealValueVisualisation = () => {
                     flowrate={flowrate}
                   />
                   {/* IoT Nodes  */}
-                  <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "11.5vw",
+                      left: "13.5vw",
+                      textAlign: "center",
+                      padding: '0.5vw', // Create space between the node and the border
+                      border: highlightedNode === 'WM-WD-KH98-00' ? '4px solid yellow' : 'none',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH98-00')} fetchNodeDataParam={'WM-WD-KH98-00'}
+                      style={{ width: '2vw', height: '2vw' }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "2vw", left: "29vw", textAlign: "center", zIndex:10 }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "1.2vw",
+                      left: "29vw",
+                      textAlign: "center",
+                      zIndex: 10,
+                      border: highlightedNode === 'WM-WD-KH96-00' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH96-00')} fetchNodeDataParam={'WM-WD-KH96-00'}
+                      style={{ width: "2vw", height: "2vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center", zIndex: "2" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-01')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-01'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "6vw",
+                      left: "50.3vw",
+                      textAlign: "center",
+                      zIndex: "2",
+                      border: highlightedNode === 'WM-WD-KH96-01' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH96-01')} fetchNodeDataParam={'WM-WD-KH96-01'}
+                      style={{ width: "2vw", height: "2vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-02')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-02'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "8vw",
+                      left: "54.5vw",
+                      textAlign: "center",
+                      border: highlightedNode === 'WM-WD-KH96-02' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH96-02')} fetchNodeDataParam={'WM-WD-KH96-02'}
+                      style={{ width: "2vw", height: "2vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH95-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH95-00'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "14.5vw",
+                      left: "51.5vw",
+                      textAlign: "center",
+                      border: highlightedNode === 'WM-WD-KH95-00' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH95-00')} fetchNodeDataParam={'WM-WD-KH95-00'}
+                      style={{ width: "1.5vw", height: "1.5vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH04-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH04-00'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "14.5vw",
+                      left: "57vw",
+                      textAlign: "center",
+                      border: highlightedNode === 'WM-WD-KH04-00' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterQualityNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WD-KH04-00')} fetchNodeDataParam={'WM-WD-KH04-00'}
+                      style={{ width: "1.5vw", height: "1.5vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "8vw", left: "14vw", textAlign: "center" }}>
-                    {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH98-00')} /> */}
-                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH98-00'/>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "8vw",
+                      left: "14vw",
+                      textAlign: "center",
+                      border: highlightedNode === 'WM-WL-KH98-00' ? '4px solid yellow' : 'none',
+                      padding: '0.5vw',
+                      width: '3vw',
+                      height: '3vw',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InteractiveIcon
+                      src={WaterLevelNode}
+                      alt="WaterQuantityNode"
+                      onClick={() => handleNodeClick('WM-WL-KH98-00')} fetchNodeDataParam={'WM-WL-KH98-00'}
+                      style={{ width: "2vw", height: "2vw" }}
+                    />
                   </div>
 
-                  <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center", zIndex: 3 }}>
+                  <div style={{ position: "absolute", top: "1.2vw", left: "33vw", textAlign: "center", zIndex: 3 ,
+                    border: highlightedNode === 'WM-WL-KH00-00' ? '4px solid yellow' : 'none',
+                    padding: '0.5vw',
+                    width: '3vw',
+                    height: '3vw',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                     {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} /> */}
-                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH00-00'/>
+                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" 
+                     onClick={() => handleNodeClick('WM-WL-KH00-00')} fetchNodeDataParam={'WM-WL-KH00-00'}
+                     style={{ width: "2vw", height: "2vw" }}
+                   />
                   </div>
 
-                  <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 2 }}>
+                  <div style={{ position: "absolute", top: "10vw", left: "21.5vw", textAlign: "center", zIndex: 2,
+                     border: highlightedNode === 'DM-KH98-60' ? '4px solid yellow' : 'none',
+                     padding: '0.5vw',
+                     width: '3vw',
+                     height: '3vw',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                   }}>
                     {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('DM-KH98-60')} /> */}
-                    <InteractiveIcon src={MotorNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='DM-KH98-60'/>
+                    <InteractiveIcon src={MotorNode} alt="WaterQuantityNode" 
+                     onClick={() => handleNodeClick('DM-KH98-60')} fetchNodeDataParam={'DM-KH98-60'}
+                     style={{ width: "2vw", height: "2vw" }}
+                   />
                   </div>
 
-                  <div style={{ position: "absolute", top: "7vw", left: "9vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
+                  <div style={{ position: "absolute", top: "6.5vw", left: "6.5vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2, 
+                    border: highlightedNode === 'WM-WF-KH98-40' ? '4px solid yellow' : 'none',
+                    padding: '0.5vw',
+                    width: '3vw',
+                    height: '3vw',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KH98-40')} fetchNodeDataParam={'WM-WF-KH98-40'}
+                     style={{ width: "2vw", height: "2vw" }}
+                   rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "6.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
+                  <div style={{ position: "absolute", top: "6.3vw", left: "26vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3,
+                    border: highlightedNode === 'WM-WF-KH95-40' ? '4px solid yellow' : 'none',
+                    padding: '0.5vw',
+                    width: '3vw',
+                    height: '3vw',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KH95-40')} fetchNodeDataParam={'WM-WF-KH95-40'}
+                     style={{ width: "2vw", height: "2vw" }} rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "7.2vw", left: "42vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
+                  <div style={{ position: "absolute", top: "6.8vw", left: "39vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2", 
+                    border: highlightedNode === 'WM-WF-KB04-70' ? '4px solid yellow' : 'none',
+                    padding: '0.5vw',
+                    width: '3vw',
+                    height: '3vw',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KB04-70')} fetchNodeDataParam={'WM-WF-KB04-70'}
+                     style={{ width: "2vw", height: "2vw" }}rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "7.2vw", left: "48vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
+                  <div style={{ position: "absolute", top: "6.8vw", left: "45vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2", 
+                     border: highlightedNode === 'WM-WF-KB04-73' ? '4px solid yellow' : 'none',
+                     padding: '0.5vw',
+                     width: '3vw',
+                     height: '3vw',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                   }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KB04-73')} fetchNodeDataParam={'WM-WF-KB04-73'}
+                     style={{ width: "2vw", height: "2vw" }} rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "11vw", left: "54vw", textAlign: "center", transform: "rotate(90deg)" }}>
+                  <div style={{ position: "absolute", top: "11vw", left: "51.5vw", textAlign: "center", transform: "rotate(90deg)",
+                     border: highlightedNode === 'WM-WF-KB04-71' ? '4px solid yellow' : 'none',
+                     padding: '0.5vw',
+                     width: '3vw',
+                     height: '3vw',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                  }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-71')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KB04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
+                     style={{ width: "2vw", height: "2vw" }} rotation={90}/>
                   </div>
 
-                  <div style={{ position: "absolute", top: "11vw", left: "60vw", textAlign: "center", transform: "rotate(90deg)" }}>
+                  <div style={{ position: "absolute", top: "11vw", left: "57vw", textAlign: "center", transform: "rotate(90deg)",
+                   border: highlightedNode === 'WM-WF-KB04-72' ? '4px solid yellow' : 'none',
+                   padding: '0.5vw',
+                   width: '3vw',
+                   height: '3vw',
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   }}>
                     {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-72')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72' rotation={90}/>
+                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={() => handleNodeClick('WM-WF-KB04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
+                     style={{ width: "2vw", height: "2vw" }} rotation={90}/>
                   </div>
                 </div>
               </div>
