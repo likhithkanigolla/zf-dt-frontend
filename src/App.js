@@ -17,6 +17,7 @@ const App = () => {
         <Route path="simulation" element={<SimulationPage />} />
         <Route path="simulation/scenario1" element={<SimulationScenarioTemplate />} />
         <Route path="simulation/waterlevel" element={<WaterLevelNodeFailure />} />
+        {/* <Route path="test" element={<Test />} /> */}
         <Route path="login" element={<LoginPage />} />
       </Routes>
     </Router>
