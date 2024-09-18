@@ -1,0 +1,71 @@
+/* TestActuationPage.css */
+/* body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vw;
+    margin: 0;
+  }
+   */
+  #circuit {
+    position: relative;
+  }
+  
+  .switch {
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #switch1 {
+    top: 50px;
+    left: 50px;
+  }
+  
+  #switch2 {
+    top: 100px;
+    left: 200px;
+  }
+  
+  .wire {
+    position: absolute;
+    background-color: #333;
+    height: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  #wire1 {
+    top: 60px;
+    left: 90px;
+    width: 110px;
+  }
+  
+  #wire2 {
+    top: 110px;
+    left: 220px;
+    width: 80px;
+  }
+
+ .motor-rotate {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+  
+div::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar for WebKit browsers */
+}
+
+
+  
