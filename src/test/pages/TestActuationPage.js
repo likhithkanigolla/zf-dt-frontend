@@ -12,7 +12,7 @@ import NavigationBar from '../components/Navigation/Navigation';
 
 
 function TestActuationPage() {
-  let backendAPI =  "http://smartcitylivinglab.iiit.ac.in:7890"
+  let backendAPI =  "https://smartcitylivinglab.iiit.ac.in/testdt-backend-api"
   const [isOn, setIsOn] = useState({
     valve1: true,
     valve2: false,
