@@ -19,7 +19,7 @@ import '../TestSetup.css';
 
 
 // Coordinates for Nodes 
-let backendAPI =  "http://smartcitylivinglab.iiit.ac.in:7890";
+let backendAPI =  "https://smartcitylivinglab.iiit.ac.in/testdt-backend-api";
 const dt_node_1 = [17.44773337470836, 78.34853368169597];
 const dt_node_2 = [17.44711288989055, 78.34927584903512];
 const dt_node_3 = [17.446087802969153, 78.35051801020884];

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const fetchData = async (setDescriptorsData, arr, nodeID) => {
   try {
-    const url = "http://smartcitylivinglab.iiit.ac.in:7890/data/" + nodeID;
+    const url = "https://smartcitylivinglab.iiit.ac.in/testdt-backend-api/data/" + nodeID;
     const response = await axios.get(url);
     const descData = {};
 
@@ -36,7 +36,7 @@ function CustomCircleMarker({ nodeData, setClickedNode }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://smartcitylivinglab.iiit.ac.in:7890/real-time-location');
+        const response = await axios.post('https://smartcitylivinglab.iiit.ac.in/testdt-backend-api/real-time-location');
         const data = response.data;
         setLatitude(data.latitude);
         setLongitude(data.longitude);
