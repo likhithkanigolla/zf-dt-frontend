@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './LoginPage.css';
 import config from '../../config';
@@ -55,6 +56,9 @@ const LoginPage = () => {
                     </div>
                     {error && <p className="error-message">{error}</p>}
                     <button type="submit" className="login-button">Login</button>
+                    <Link to="/simulation" className="login-button" style={{marginTop:'1vw', color:'blue', backgroundColor:'white'}}>
+                        Go to Simulation
+                    </Link>
                 </form>
             </div>
         </div>
