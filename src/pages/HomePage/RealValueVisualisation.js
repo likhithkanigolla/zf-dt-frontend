@@ -96,7 +96,8 @@ const RealValueVisualisation = () => {
   }
 
    // Wrapper function to handle both highlighting and data fetching
-   const handleNodeClick = (nodeId) => {
+   const handleNodeClick = (nodeId, event) => {
+    event.preventDefault();
     setHighlightedNode(nodeId); // Highlight the clicked node
     fetchNodeData(nodeId); // Call the existing fetchNodeData function
   };
