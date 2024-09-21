@@ -112,6 +112,7 @@ const SimulationPage = () => {
   const [message, setMessage] = useState("");
   const [data, setData] = useState([]);
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [popupData, setPopupData] = useState({ isVisible: false, x: 0, y: 0, data: "" });
 
   const [infoText, setInfoText] = useState("");
   const [SoilQuantity, setSoilQuantity] = useState("");
@@ -817,10 +818,16 @@ const SimulationPage = () => {
   const checkMarkerOverlap = (markerCoordinates, index) => {
     let isPlaced = false;
     let iconId = null;
+  
     // Iterate over each icon and check if the marker overlaps with it
     iconRefs.forEach((ref) => {
       const rect = ref.getBoundingClientRect();
-      if (markerCoordinates.x >= rect.left && markerCoordinates.x <= rect.left + rect.width && markerCoordinates.y >= rect.top && markerCoordinates.y <= rect.top + rect.height) {
+      if (
+        markerCoordinates.x >= rect.left &&
+        markerCoordinates.x <= rect.left + rect.width &&
+        markerCoordinates.y >= rect.top &&
+        markerCoordinates.y <= rect.top + rect.height
+      ) {
         iconId = ref.id;
         isPlaced = true;
       }
@@ -832,15 +839,19 @@ const SimulationPage = () => {
   
     return { isPlaced, iconId };
   };
-
-  const handleDragStart = (event, index) => {
+  
+  const handleDragStart = (event, index, isTouch) => {
     if (index !== undefined) {
-      event.dataTransfer.setData("index", index);
+      if (isTouch) {
+        event.target.dataset.index = index;
+      } else {
+        event.dataTransfer.setData("index", index);
+      }
     }
   
     const markerCoordinates = {
-      x: event.clientX,
-      y: event.clientY,
+      x: isTouch ? event.touches[0].clientX : event.clientX,
+      y: isTouch ? event.touches[0].clientY : event.clientY,
     };
   
     const { isPlaced, iconId } = checkMarkerOverlap(markerCoordinates, index);
@@ -848,13 +859,54 @@ const SimulationPage = () => {
     setIsMarkerPlaced(isPlaced);
   };
 
-  const handleDeleteItem = (index) => {
-    const updatedItems = [...canvasItems];
-    updatedItems.splice(index, 1);
-    setCanvasItems(updatedItems);
-    updateLog(`Deleted item at index ${index}.`);
-    // toast.error(`Deleted item at index ${index}.`);
+  const handleTouchStart = (event, index) => {
+    handleDragStart(event, index, true);
   };
+  
+  const handleTouchMove = (event) => {
+    event.preventDefault(); // Prevent scrolling during touch drag
+  };
+  
+  const handleTouchEnd = (event) => {
+    const canvasRect = event.currentTarget.getBoundingClientRect();
+    const index = event.target.dataset.index;
+    const x = event.changedTouches[0].clientX - canvasRect.left;
+    const y = event.changedTouches[0].clientY - canvasRect.top;
+  
+    if (index) {
+      const updatedItems = [...canvasItems];
+      const markerCoordinates = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+      const { isPlaced } = checkMarkerOverlap(markerCoordinates, index);
+  
+      updatedItems[index] = {
+        ...updatedItems[index],
+        x: x,
+        y: y,
+        isPlaced: isPlaced,
+      };
+      setCanvasItems(updatedItems);
+      console.log(`Moved item ${updatedItems[index].type} to x: ${x}, y: ${y}`);
+    } else if (itemToAdd) {
+      const newItem = {
+        type: itemToAdd,
+        x: x,
+        y: y,
+        isPlaced: false,
+      };
+      setCanvasItems([...canvasItems, newItem]);
+      setItemToAdd(null);
+      updateLog(`Added item of type ${itemToAdd}`);
+    } else {
+      console.log("Dropped at x: ", x, "y: ", y);
+    }
+  };
+
+  const handleDeleteItem = (index) => {
+  const updatedItems = [...canvasItems];
+  updatedItems.splice(index, 1);
+  setCanvasItems(updatedItems);
+  updateLog(`Deleted item at index ${index}.`);
+};
 
 const handleDrop = (event) => {
   event.preventDefault();
@@ -881,7 +933,7 @@ const handleDrop = (event) => {
       type: itemToAdd,
       x: x,
       y: y,
-      isPlaced: false, // Default to not placed
+      isPlaced: false,
     };
     setCanvasItems([...canvasItems, newItem]);
     setItemToAdd(null);
@@ -891,9 +943,10 @@ const handleDrop = (event) => {
   }
 };
 
-  const handleDeleteAllItems = (event) => {
-    setCanvasItems([]);
-  };
+const handleDeleteAllItems = () => {
+  setCanvasItems([]);
+};
+
 
   const handleDragOver = (event) => {
     event.preventDefault(); // Necessary to allow dropping
@@ -911,11 +964,23 @@ const handleDrop = (event) => {
 
   const handleMarkerClick = async (item, index, event) => {
     if (isSimulationRunning) {
+      if (item.isPlaced) {
       const { clientX, clientY } = event;
       const coordinates = {
         x: clientX,
         y: clientY,
       };
+
+      const nodeData = `Node Type: ${item.type}, ID: ${item.id}`;
+
+      setPopupData({
+        isVisible: true,
+        x: clientX,
+        y: clientY,
+        data: nodeData,
+      });
+
+    
 
       const { isPlaced, iconId } = checkMarkerOverlap(coordinates, index);
       updateLog(`Marker of type ${item.type} placed on ${iconId} at coordinates: ${JSON.stringify(coordinates)}`);
@@ -990,6 +1055,7 @@ const handleDrop = (event) => {
           },
         }));
       }
+    }
     }
   };
 
@@ -1083,14 +1149,10 @@ const handleDrop = (event) => {
           />
 
         {/* Middle Section */}
-        <div style={{ flex: 1, 
-          height: '0vw',
-          }}>
+        <div style={{ flex: 1, height: '0vw' }}>
           {/* Toolbar */}
-          <Toolbar
-            handleToolbarItemClick={handleToolbarItemClick}
-            // handleLeakageIconClick={handleLeakageIconClick}
-          />
+          <Toolbar handleToolbarItemClick={handleToolbarItemClick} />
+
           {/* <LeakageOptions
             showLeakageOptions={showLeakageOptions}
             numLeakages={inputValues.num_leakages}
@@ -1111,12 +1173,11 @@ const handleDrop = (event) => {
                 background: "#ffffff",
               }}
               onDrop={handleDrop}
-              onDragOver={handleDragOver}>
-              <img
-                src={whiteimage}
-                alt="blueprint"
-                style={{ width: "100%", height: "100%" }}
-              />
+              onDragOver={(event) => event.preventDefault()}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }} />
               <SimulationCanvas
                 handleIconClick={handleIconClick}
                 iconRefs={iconRefs}
@@ -1446,90 +1507,96 @@ const handleDrop = (event) => {
               ))}
 
               {/* Sensor Markers */}
-              {canvasItems.map((item, index) => (
-                <div
-                  key={index}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, index)}
-                  style={{
-                    position: "absolute",
-                    left: `${item.x}px`,
-                    top: `${item.y}px`,
-                    cursor: "move",
-                    border: item.isPlaced ? "2px solid green" : "2px solid red", // Use item.isPlaced to determine border color
-                    zIndex: 5,
-                  }}>
-                  <HoverableIcon
-                    src={getImageForType(item.type)}
-                    alt={item.type}
-                    dataId="VirtualNode"
-                    data={item.type === "waterquantitysensor" ? sensorValues[index]?.totalFlow : sensorValues[item.id]}
-                    onClick={(e) => handleMarkerClick(item, index, e)}
-                  />
-                </div>
-              ))}
+      {canvasItems.map((item, index) => (
+        <div
+          key={index}
+          draggable
+          onDragStart={(e) => handleDragStart(e, index)}
+          onTouchStart={(e) => handleTouchStart(e, index)}
+          onTouchMove={handleTouchMove}
+          style={{
+            position: "absolute",
+            left: `${item.x}px`,
+            top: `${item.y}px`,
+            cursor: "move",
+            border: item.isPlaced ? "2px solid green" : "2px solid red",
+            zIndex: 5,
+          }}
+        >
+          <HoverableIcon
+            src={getImageForType(item.type)}
+            alt={item.type}
+            dataId="VirtualNode"
+            data={item.type === "waterquantitysensor" ? sensorValues[index]?.totalFlow : sensorValues[item.id]}
+            onClick={(e) => handleMarkerClick(item, index, e)}
+          />
+        </div>
+      ))}
 
-              {/* Dustbin Icon for Deleting Items */}
-              <div
-                id="dustbin"
-                onDragOver={(e) => e.preventDefault()}
-                onClick={handleDeleteAllItems}
-                style={{
-                  position: "absolute",
-                  bottom: "1vw",
-                  right: "1vw",
-                  width: "2vw",
-                  height: "2vw",
-                  cursor: "pointer",
-                  zIndex: 10,
-                  backgroundColor: "red",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  zIndex: 0,
-                }}
-                ref={(ref) => {
-                  if (ref) {
-                    ref.id = "dustbin";
-                    iconRefs.push(ref);
-                  }
-                }}>
-                <DeleteIcon style={{ color: "white", fontSize: "2vw" }} />
-              </div>
+               {/* Dustbin Icon for Deleting Items */}
+      <div
+        id="dustbin"
+        onDragOver={(e) => e.preventDefault()}
+        onClick={handleDeleteAllItems}
+        style={{
+          position: "absolute",
+          bottom: "1vw",
+          right: "1vw",
+          width: "2vw",
+          height: "2vw",
+          cursor: "pointer",
+          backgroundColor: "red",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 0,
+        }}
+        ref={(ref) => {
+          if (ref) {
+            ref.id = "dustbin";
+            iconRefs.push(ref);
+          }
+        }}
+      >
+        <DeleteIcon style={{ color: "white", fontSize: "2vw" }} />
+      </div>
 
-              {itemToAdd && (
-                <div
-                  draggable
-                  onDragStart={(e) => handleDragStart(e)}
-                  style={{
-                    position: "absolute",
-                    left: "200px",
-                    top: "20px",
-                    cursor: "move",
-                    border: "2px solid red",
-                  }}>
-                  {/* <img src={getImageForType(itemToAdd)}  alt={itemToAdd}  style={{ maxWidth: '3vw', maxHeight: '100%', filter:"grayscale(200%)" }}/> */}
-                  <HoverableIcon
-                    src={getImageForType(itemToAdd)}
-                    alt={itemToAdd}
-                    dataId="Virtual Node"
-                    data={`Invalid placement`}
-                  />
-                </div>
-              )}
-              {hoverData.isVisible && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: hoverData.y,
-                    left: hoverData.x,
-                    zIndex: 100,
-                    backgroundColor: "white",
-                    padding: "10px",
-                    border: "1px solid black",
-                  }}>
-                  {hoverData.data}
-                </div>
+      {itemToAdd && (
+        <div
+          draggable
+          onDragStart={(e) => handleDragStart(e)}
+          onTouchStart={(e) => handleTouchStart(e)}
+          style={{
+            position: "absolute",
+            left: "200px",
+            top: "20px",
+            cursor: "move",
+            border: "2px solid red",
+          }}
+        >
+          <HoverableIcon
+            src={getImageForType(itemToAdd)}
+            alt={itemToAdd}
+            dataId="Virtual Node"
+            data={`Invalid placement`}
+          />
+        </div>
+      )}
+
+      {hoverData.isVisible && (
+        <div
+          style={{
+            position: "absolute",
+            top: hoverData.y,
+            left: hoverData.x,
+            zIndex: 100,
+            backgroundColor: "white",
+            padding: "10px",
+            border: "1px solid black",
+          }}
+        >
+          {hoverData.data}
+        </div>
               )}
             </div>
             <ConsoleHeader
