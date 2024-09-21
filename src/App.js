@@ -6,6 +6,10 @@ import SimulationPage from './pages/SimulationPage/SimulationPage';
 import SimulationScenarioTemplate from './pages/SimulationPage/Scenarios/SimulationScenarioTemplate';
 import WaterLevelNodeFailure from './pages/SimulationPage/Scenarios/WaterLevelNodeFailure';
 import LoginPage from './pages/LoginPage/LoginPage';
+import Dashboard from './test/pages/Dashboard';
+import TestActuationPage from './test/pages/TestActuationPage';
+import TestSimulationPage from './test/pages/TestSimulationPage';
+import ThreeD from './test/pages/ThreeD';
 
 const App = () => {
   return (
@@ -17,6 +21,10 @@ const App = () => {
         <Route path="simulation" element={<SimulationPage />} />
         <Route path="simulation/scenario1" element={<SimulationScenarioTemplate />} />
         <Route path="simulation/waterlevel" element={<WaterLevelNodeFailure />} />
+        <Route path="test" element={<Dashboard />} />
+        <Route path="test/actuation" element={<TestActuationPage />} />
+        <Route path="test/simulation" element={<TestSimulationPage />} />
+        <Route path="test/3d" element={<ThreeD />} />
         <Route path="login" element={<LoginPage />} />
       </Routes>
     </Router>
