@@ -73,7 +73,7 @@ body {
     text-align: center;
 }
 
-.login-form .login-button {
+ .login-button {
     width: 100%;
     padding: 0.75rem;
     background-color: #007bff;
@@ -88,3 +88,36 @@ body {
 .login-form .login-button:hover {
     background-color: #0056b3;
 }
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0; /* Add margin to separate the buttons */
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.formGroup {
+    display: flex;
+    gap: 10px; /* Add some space between the links */
+  }
+  
+  .formGroup a {
+    color: blue; /* Change link color */
+    text-decoration: none; /* Remove underline */
+    background-color: #0056b3;
+    
+  }
+  
+  .formGroup a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }

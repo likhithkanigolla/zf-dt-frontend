@@ -608,7 +608,7 @@ const distanceToLineFromPoint = (point, lineStart, lineEnd) => {
         });
     
         // Display all the parameters when the solenoid is on
-        const temperatureValue = isSolenoidOn ? (marker.temperature || 'N/A') : '0';
+        const temperatureValue = isSolenoidOn ? (marker.temparature || 'N/A') : '0';
         const uTDSValue = isSolenoidOn ? (marker.u_tds || 'N/A') : '0';
         const comTDSValue = isSolenoidOn ? (marker.c_tds || 'N/A') : '0';
         const vTDSValue = isSolenoidOn ? (marker.v_tds || 'N/A') : '0';
