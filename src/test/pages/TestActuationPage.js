@@ -9,10 +9,13 @@ import Motor from '../images/Motor.png';
 import WaterQualityNode from '../images/wqn.png';
 import Circuit2 from '../images/final.png';
 import NavigationBar from '../components/Navigation/Navigation';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function TestActuationPage() {
   let backendAPI =  "https://smartcitylivinglab.iiit.ac.in/testdt-backend-api"
+  const navigate = useNavigate();
   const [isOn, setIsOn] = useState({
     valve1: true,
     valve2: false,
@@ -73,6 +76,11 @@ function TestActuationPage() {
     setHighlightedNode(nodeName);
     fetchNodeData(nodeName);
   };
+  
+  const handleClick = () => {
+    console.log('Clicked on Motor');
+    navigate('/test/3d'); 
+  };
 
   const fetchNodeData = async (nodeName) => {
     setLoading(true);
@@ -129,11 +137,12 @@ function TestActuationPage() {
           transform: "scaleX(-1)",
           ...(motorRunning ? spinningStyle : {}),
         }}
+        onClick={handleClick}
       />
-      <div style={{ position: 'absolute', top: '-13vw', left: '15%' }}>
+      {/* <div style={{ position: 'absolute', top: '-13vw', left: '15%' }}>
         <button onClick={() => toggleMotor(true)}>On</button>
         <button onClick={() => toggleMotor(false)}>Off</button>
-      </div>
+      </div> */}
     </div>
         {/* Valves and Tanks */}
         <GiValve

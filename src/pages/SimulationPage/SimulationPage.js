@@ -1219,7 +1219,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH98-00"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH98-00"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH98-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1236,7 +1236,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-00"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-00"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH96-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1253,7 +1253,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-01"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-01"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH96-01"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1270,7 +1270,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-02"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH96-02"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH96-02"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1287,7 +1287,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH95-00"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH95-00"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH95-00"].toFixed(2)}ppm`}
                 />
               </div>
 
@@ -1304,7 +1304,7 @@ const handleDeleteAllItems = () => {
                   src={WaterQualityNode}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH04-00"
-                  data={`Water Quality: ${SimulatedValues["WM-WD-KH04-00"].toFixed(2)}ppm`}
+                  data={`Water TDS: ${SimulatedValues["WM-WD-KH04-00"].toFixed(2)}ppm`}
                 />
               </div>
 
