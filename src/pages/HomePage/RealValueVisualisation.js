@@ -93,29 +93,51 @@ const RealValueVisualisation = () => {
 
   // Memoize handleNodeClick to prevent unnecessary re-renders
   const handleNodeClick = useCallback((nodeId) => {
-    highlightedNodeRef.current = nodeId; // Set the highlighted node ID in the ref
-    fetchNodeData(nodeId); // Call the existing fetchNodeData function
-
-    if (modalRef.current) {
-      modalRef.current.style.display = 'block'; // Show modal
+    // Clear the border of the previously highlighted node, if any
+    if (highlightedNodeRef.current && highlightedNodeRef.current !== nodeId) {
+      const prevNode = document.getElementById(highlightedNodeRef.current);
+      if (prevNode) {
+        prevNode.style.border = 'none';
+      }
     }
 
-    // Directly update the node's border color without causing a rerender
-    document.getElementById(nodeId).style.border = '4px solid yellow';
+    // Highlight the new node
+    const currentNode = document.getElementById(nodeId);
+    if (currentNode) {
+      currentNode.style.border = '4px solid yellow';
+    }
+
+    // Update the ref to the newly highlighted node
+    highlightedNodeRef.current = nodeId;
+
+    // Fetch the node data
+    fetchNodeData(nodeId);
+
+    // Show the modal
+    if (modalRef.current) {
+      modalRef.current.style.display = 'block';
+    }
   }, []);
 
- // Memoize closeModal to avoid triggering re-renders
- const closeModal = useCallback(() => {
-  highlightedNodeRef.current = null; // Remove highlight
-  if (modalRef.current) {
-    modalRef.current.style.display = 'none'; // Close modal
-  }
 
-  // Reset all node borders when modal is closed
-  document.querySelectorAll('.node').forEach(node => {
-    node.style.border = 'none';
-  });
-}, []);
+ // Memoize closeModal to avoid triggering re-renders
+  const closeModal = useCallback(() => {
+    // Remove highlight from the currently highlighted node
+    if (highlightedNodeRef.current) {
+      const currentNode = document.getElementById(highlightedNodeRef.current);
+      if (currentNode) {
+        currentNode.style.border = 'none';
+      }
+    }
+
+    highlightedNodeRef.current = null; // Clear the reference
+
+    // Close the modal
+    if (modalRef.current) {
+      modalRef.current.style.display = 'none';
+    }
+  }, []);
+
 
   const toggleIsOn = (valve) => {};
   const handleIconClick = (icon) => {};
@@ -1065,7 +1087,7 @@ const RealValueVisualisation = () => {
       </div>
 
       <div
-        id="WM-WF-KH04-70"
+        id="WM-WF-KB04-70"
         className="node"
         style={{
           position: 'absolute',
@@ -1081,19 +1103,19 @@ const RealValueVisualisation = () => {
           zIndex: "2",
           justifyContent: 'center',
           boxSizing: 'border-box',
-          border: highlightedNodeRef.current === 'WM-WF-KH04-70' ? '4px solid yellow' : 'none',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-70' ? '4px solid yellow' : 'none',
         }}
       >
         <InteractiveIcon
           src={WaterQuantityNode}
           alt="WaterQuantityNode"
-          onClick={() => handleNodeClick('WM-WF-KH04-70')} fetchNodeDataParam={'WM-WF-KH04-70'}
+          onClick={() => handleNodeClick('WM-WF-KB04-70')} fetchNodeDataParam={'WM-WF-KB04-70'}
           style={{ width: '2vw', height: '2vw' }}
         />
       </div>
 
       <div
-        id="WM-WF-KH04-73"
+        id="WM-WF-KB04-73"
         className="node"
         style={{
           position: 'absolute',
@@ -1109,19 +1131,19 @@ const RealValueVisualisation = () => {
           zIndex: "2", 
           justifyContent: 'center',
           boxSizing: 'border-box',
-          border: highlightedNodeRef.current === 'WM-WF-KH04-73' ? '4px solid yellow' : 'none',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-73' ? '4px solid yellow' : 'none',
         }}
       >
         <InteractiveIcon
           src={WaterQuantityNode}
           alt="WaterQuantityNode"
-          onClick={() => handleNodeClick('WM-WF-KH04-73')} fetchNodeDataParam={'WM-WF-KH04-73'}
+          onClick={() => handleNodeClick('WM-WF-KB04-73')} fetchNodeDataParam={'WM-WF-KB04-73'}
           style={{ width: '2vw', height: '2vw' }}
         />
       </div>
 
       <div
-        id="WM-WF-KH04-71"
+        id="WM-WF-KB04-71"
         className="node"
         style={{
           position: 'absolute',
@@ -1136,19 +1158,19 @@ const RealValueVisualisation = () => {
           transform: "rotate(90deg)",
           justifyContent: 'center',
           boxSizing: 'border-box',
-          border: highlightedNodeRef.current === 'WM-WF-KH04-71' ? '4px solid yellow' : 'none',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-71' ? '4px solid yellow' : 'none',
         }}
       >
         <InteractiveIcon
           src={WaterQuantityNode} 
           alt="WaterQuantityNode"
-          onClick={() => handleNodeClick('WM-WF-KH04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
+          onClick={() => handleNodeClick('WM-WF-KB04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
           style={{ width: '2vw', height: '2vw' }}
         />
       </div>
 
       <div
-        id="WM-Wf-KH04-72"
+        id="WM-WF-KB04-72"
         className="node"
         style={{
           position: 'absolute',
@@ -1163,13 +1185,13 @@ const RealValueVisualisation = () => {
           alignItems: 'center',
           justifyContent: 'center',
           boxSizing: 'border-box',
-          border: highlightedNodeRef.current === 'WM-WF-KH04-72' ? '4px solid yellow' : 'none',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-72' ? '4px solid yellow' : 'none',
         }}
       >
         <InteractiveIcon
           src={WaterQuantityNode}
           alt="WaterQuantityNode"
-          onClick={() => handleNodeClick('WM-WF-KH04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
+          onClick={() => handleNodeClick('WM-WF-KB04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
           style={{ width: '2vw', height: '2vw' }}
         />
       </div>
