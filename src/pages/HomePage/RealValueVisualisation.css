@@ -1,6 +1,6 @@
 .page{
     width: 98.6vw;
-    height: 20vh;
+    height: 18vh;
 }
 
 .page::-webkit-scrollbar {
@@ -35,9 +35,9 @@
     left: 0;
     top: 0;
     width: 30vw; /* Full width */
-    height: 100%; /* Full height */
+    height: 90%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    margin: 0 auto; /* Center horizontally */
+    
     justify-content: center; /* Center vertically */
     align-items: center; /* Center vertically */
 }
@@ -49,8 +49,9 @@
     margin-top: 5%; /* Center vertically */
     padding: 0px;
     border: 1px solid #888;
-    width: 79%; /* Could be more or less, depending on screen size */
-    height: 48%;
+    width: 82%; /* Could be more or less, depending on screen size */
+    height: 47.5%;
+    max-height: 25vw;
 }
 
 /* The Close Button */
