@@ -397,7 +397,7 @@ const RealValueVisualisation = () => {
 
 
   const GrafanaPanel = React.memo(({ src }) => (
-    <iframe src={src} style={{ width: '100%', height: '100%', border: 'none' }} />
+    <iframe src={src} style={{ width: '105%', height: '100%', border: 'none' }} />
   ));
 
   // const LazyBox = ({ src, panelId }) => {
@@ -571,7 +571,7 @@ const RealValueVisualisation = () => {
           const button = document.createElement("button");
           button.textContent = buttonInfo.text;
           button.id = buttonInfo.id;
-          button.style.padding = "1px 20px";
+          button.style.padding = "1px 2px";
           button.style.margin = "0 10px"; // Adjust spacing between buttons
           button.style.cursor = "pointer";
           button.style.width = "25vw";
@@ -620,8 +620,9 @@ const RealValueVisualisation = () => {
       // Input form for updating values
       const createInputForm = () => {
         const inputDiv = document.createElement("div");
-        inputDiv.style.marginTop = "10px";
+        inputDiv.style.marginTop = "0px";
         inputDiv.style.textAlign = "center";
+        inputDiv.style.marginRight = "18vw"
   
         const inputField = document.createElement("input");
         inputField.type = "text";
@@ -635,7 +636,7 @@ const RealValueVisualisation = () => {
         const submitButton = document.createElement("button");
         submitButton.textContent = "Submit";
         submitButton.className = "submit-button";
-        submitButton.style.marginTop = "10px";
+        submitButton.style.marginTop = "1px";
         submitButton.style.padding = "10px 20px";
         submitButton.style.cursor = "pointer";
         submitButton.onclick = async (event) => {
@@ -727,7 +728,7 @@ const RealValueVisualisation = () => {
     <div className='page'>
       <NavigationBar title="Digital Twin for Water Quality " 
       style={{position:'relative',
-       width: '90vw',
+       width: '80vw',
        height: '20vw'
        }} />
       <div style={{ display: "flex"}} className='Page'>
@@ -767,7 +768,7 @@ const RealValueVisualisation = () => {
           <div id="tableContainer"></div>
         </div>
       </div>
-                <div style={{ position: 'relative', width: '60vw',height: '20vw', top: '-3vw'}}>
+                <div style={{ position: 'relative', width: '60vw',height: '20vw', top: '-2.5vw'}}>
                 <SimulationCanvas
                     handleIconClick={handleIconClick}
                     iconRefs={iconRefs}
@@ -1197,7 +1198,7 @@ const RealValueVisualisation = () => {
       </div>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '16vw' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '17vw', top: '2vw' }}>
                 <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
                 <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
               </div>
