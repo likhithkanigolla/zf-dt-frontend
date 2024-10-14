@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { FaDownload } from "react-icons/fa";
 import { GrPowerReset } from "react-icons/gr";
+import DownloadSharpIcon from '@mui/icons-material/DownloadSharp';
+import ReplaySharpIcon from '@mui/icons-material/ReplaySharp';
 import config from '../../config';
 import './Console.css';
 
@@ -40,10 +42,10 @@ const ConsoleHeader = ({ handleDownloadLog, log, handleClearLog }) => {
       <div className='flex-container heading-container sticky'>
         <h3 className='heading-n'>Console</h3>
         <button onClick={handleDownloadLog} className='button-c'>
-          <FaDownload className='icon' />
+          <DownloadSharpIcon className='icon'  />
         </button>
         <button onClick={handleClearLog} className='button-c'>
-          <GrPowerReset className='icon' />
+          <ReplaySharpIcon className='icon' />
         </button>
       </div>
       <div className='log-container' ref={listRef}>
