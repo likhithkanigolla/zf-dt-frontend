@@ -46,7 +46,7 @@ const NavigationBar = () => {
           <option value="/test">Dashboard</option>
           <option value="/test/actuation">Actuation</option>
           <option value="/test/simulation">Simulation</option>
-          <option value="/test/3d">3D</option>
+          <option value="/test/3d">Motor Control</option>
         </select>
       </nav>
     </div>
