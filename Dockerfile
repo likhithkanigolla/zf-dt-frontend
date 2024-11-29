@@ -13,7 +13,7 @@ RUN npm run build
 # Stage 2: Serve the React app with Nginx
 FROM nginx:alpine
 
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html/dt_waternetwork
 
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
