@@ -19,9 +19,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/NotificationsActive';
 import AlarmIcon from '@mui/icons-material/Alarm';
 import { styled } from '@mui/material/styles';
-import IITHLOGO from './images/iiith.png';
-import SCRCLOGO from './images/scrc_logo.png';
-import ZFLOGO from './images/zf_logo.png';
 import config from '../../config';
 import './NavigationBar.css';
 
@@ -97,7 +94,11 @@ const NavigationBar = ({ title }) => {
     const newPath = e.target.value;
     console.log('New path selected:', newPath);
     setSelectedPath(newPath);
-    navigate(newPath);
+    if (newPath.startsWith('http')) {
+      window.location.href = newPath; // Navigate to external URL
+    } else {
+      navigate(newPath); // Navigate to internal route
+    }
   };
   const handleHamburgerClick = () => {
     setIsHamburgerOpen(!isHamburgerOpen);
@@ -218,12 +219,12 @@ const NavigationBar = ({ title }) => {
     <nav className="navbar">
       <Link to="/">
         <div className="navbar__logo">
-          <img src={IITHLOGO} alt="IIITH Logo" />
+          <img src='/images/iiith.png' alt="IIITH Logo" />
         </div>
       </Link>
       <Link to="/">
         <div className="navbar__logo">
-          <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
+          <img src='/images/scrc_logo.png' alt="Smart City Living Lab Logo" />
         </div>
       </Link>
       <div className="navbar__title">{title}</div>
@@ -232,6 +233,9 @@ const NavigationBar = ({ title }) => {
         <select className="navbar__dropdown" value={selectedPath} onChange={handleChange}>
             <option value="/">Live</option>
             <option value="/simulation">Simulation</option>
+            <option value="/test">Test</option>
+            {/* <option value="http://smartcitylivinglab.iiit.ac.in:3001">Test</option> */}
+            {/* <option value="http://smartcitylivinglab.iiit.ac.in:3004">3D View</option> */}
         </select>
       </div>
 
@@ -340,7 +344,7 @@ const NavigationBar = ({ title }) => {
 
       <Link to="/">
         <div className="navbar__logo">
-          <img src={ZFLOGO} alt="ZF Logo" />
+          <img src='/images/zf_logo.png' alt="ZF Logo" />
         </div>
       </Link>
 

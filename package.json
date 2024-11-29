@@ -1,7 +1,7 @@
 {
   "name": "dt_waternetwork_frontend",
   "version": "0.1.0",
-  "homepage": "/dt_waternetwork",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -14,15 +14,18 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "file-saver": "^2.0.5",
+    "leaflet-rotatedmarker": "^0.2.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
     "react-intersection-observer": "^9.13.0",
     "react-joyride": "^2.8.2",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "sweetalert2": "^11.14.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

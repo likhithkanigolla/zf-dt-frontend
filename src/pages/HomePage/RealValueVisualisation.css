@@ -1,6 +1,6 @@
 .page{
     width: 98.6vw;
-    height: 20vh;
+    height: 18vh;
 }
 
 .page::-webkit-scrollbar {
@@ -35,9 +35,9 @@
     left: 0;
     top: 0;
     width: 30vw; /* Full width */
-    height: 100%; /* Full height */
+    height: 90%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    margin: 0 auto; /* Center horizontally */
+    
     justify-content: center; /* Center vertically */
     align-items: center; /* Center vertically */
 }
@@ -46,17 +46,19 @@
 .modal-content {
     background-color: #fefefe;
     margin: 0 auto; /* Center horizontally */
-    margin-top: 15%; /* Center vertically */
-    padding: 10px;
+    margin-top: 5%; /* Center vertically */
+    padding: 0px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 82%; /* Could be more or less, depending on screen size */
+    height: 47.5%;
+    max-height: 25vw;
 }
 
 /* The Close Button */
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 1.3rem;
     font-weight: bold;
 }
 
@@ -188,3 +190,11 @@
     background-color: #f9f9f9;
   }
   
+  .no-scrollbar {
+    overflow-y: scroll;
+    scrollbar-width: none; /* For Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge */
+}

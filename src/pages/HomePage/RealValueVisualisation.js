@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-// import { useInView } from 'react-intersection-observer';
-
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import "./RealValueVisualisation.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
@@ -8,45 +6,29 @@ import LoginPage from '../LoginPage/LoginPage';
 import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
 import config from '../../config';
-import MotorNode from "../images/MotorNode-removebg.png";
-import WaterLevelNode from "../images/WaterLevelNode-removebg.png";
-import WaterQualityNode from "../images/WaterQualityNode-removebg.png";
-import WaterQuantityNode from "../images/WaterQuantityNode-removebg.png";
 
+// Memoize the InteractiveIcon to prevent re-renders unless props change
+const InteractiveIcon = React.memo(({ src, alt, onClick, style }) => (
+  <img src={src} alt={alt} onClick={onClick} style={style} />
+));
 
 const RealValueVisualisation = () => {
   // State for holding input values and results
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const highlightedNodeRef = useRef(null);
+  const modalRef = useRef(null);
+  // const [selectedTable, setSelectedTable] = useState("");
   const iconRefs = [];
-  const [flow1, setFlow1] = useState(false);
-  const [flow2, setFlow2] = useState(false);
-  const [flow3, setFlow3] = useState(false);
-  const [flow4, setFlow4] = useState(false);
-  const [flow5, setFlow5] = useState(false);
-  const [flow6, setFlow6] = useState(false);
-  const [flow7, setFlow7] = useState(false);
-  const [flow8, setFlow8] = useState(false);
-  const [flow9, setFlow9] = useState(false);
-
-
-  const [isOn, setIsOn] = useState({
-    "WM-WL-KH98-00": false,
-    "WM-WL-KH00-00": false,
-    "DM-KH98-60": false,
-    "WM-WD-KH98-00": false,
-    "WM-WD-KH96-00": false,
-    "WM-WD-KH96-02": false,
-    "WM-WD-KH95-00": false,
-    "WM-WD-KH96-01": false,
-    "WM-WD-KH04-00": false,
-    "WM-WF-KB04-70": false,
-    "WM-WF-KB04-73": false,
-    "WM-WF-KB04-71": false,
-    "WM-WF-KB04-72": false,
-    "WM-WF-KH98-40": false,
-    "WM-WF-KH95-40": false, 
+  const [flowStates, setFlowStates] = useState({
+    flow1: false, flow2: false, flow3: false, flow4: false,
+    flow5: false, flow6: false, flow7: false, flow8: false, flow9: false
   });
 
+  const [isOn, setIsOn] = useState({
+    "WM-WL-KH98-00": false, "WM-WL-KH00-00": false, "DM-KH98-60": false,"WM-WD-KH98-00": false,"WM-WD-KH96-00": false,"WM-WD-KH96-02": false,"WM-WD-KH95-00": false,"WM-WD-KH96-01": false,
+    "WM-WD-KH04-00": false,"WM-WF-KB04-70": false,"WM-WF-KB04-73": false,"WM-WF-KB04-71": false,"WM-WF-KB04-72": false,"WM-WF-KH98-40": false,"WM-WF-KH95-40": false, 
+    // ... other nodes
+  });
 
   const [units, setUnits] = useState ({
     flowrate : "Kl/min",
@@ -74,9 +56,9 @@ const RealValueVisualisation = () => {
   const [waterInROFilter, setWaterInROFilter] = useState(465.32); // Initial water level in RO Filter
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [flowrate, setFlowrate] = useState(10);
-  // All measurements are in m(meters)
-  const [sumpMeasurements, setSumpMeasurements] = useState({length: 5,breadth: 6.5, height: 2.08});
-  const [ohtMeasurements, setOhtMeasurements] = useState({length: 11.28,breadth: 8.82, height: 1.15});
+  // Memoize static data
+  const sumpMeasurements = useMemo(() => ({length: 5, breadth: 6.5, height: 2.08}), []);
+  const ohtMeasurements = useMemo(() => ({length: 11.28, breadth: 8.82, height: 1.15}), []);
 
 
   const WaterLevelCalculate = async (waterlevel, length, breadth, height) => {
@@ -94,10 +76,53 @@ const RealValueVisualisation = () => {
     return flowrate_lpm;
   }
 
-  const closeModal = () => {
-    const modal = document.getElementById("myModal");
-    modal.style.display = "none";
-  };
+  // Memoize handleNodeClick to prevent unnecessary re-renders
+  const handleNodeClick = useCallback((nodeId) => {
+    // Clear the border of the previously highlighted node, if any
+    if (highlightedNodeRef.current && highlightedNodeRef.current !== nodeId) {
+      const prevNode = document.getElementById(highlightedNodeRef.current);
+      if (prevNode) {
+        prevNode.style.border = 'none';
+      }
+    }
+
+    // Highlight the new node
+    const currentNode = document.getElementById(nodeId);
+    if (currentNode) {
+      currentNode.style.border = '4px solid yellow';
+    }
+
+    // Update the ref to the newly highlighted node
+    highlightedNodeRef.current = nodeId;
+
+    // Fetch the node data
+    fetchNodeData(nodeId);
+
+    // Show the modal
+    if (modalRef.current) {
+      modalRef.current.style.display = 'block';
+    }
+  }, []);
+
+
+ // Memoize closeModal to avoid triggering re-renders
+  const closeModal = useCallback(() => {
+    // Remove highlight from the currently highlighted node
+    if (highlightedNodeRef.current) {
+      const currentNode = document.getElementById(highlightedNodeRef.current);
+      if (currentNode) {
+        currentNode.style.border = 'none';
+      }
+    }
+
+    highlightedNodeRef.current = null; // Clear the reference
+
+    // Close the modal
+    if (modalRef.current) {
+      modalRef.current.style.display = 'none';
+    }
+  }, []);
+
 
   const toggleIsOn = (valve) => {};
   const handleIconClick = (icon) => {};
@@ -186,47 +211,63 @@ const RealValueVisualisation = () => {
   };
   
   useEffect(() => {
-    setFlow2(true);
-    setFlow3(true);
-    setFlow5(true);
-    setFlow8(true);
+    // Set initial flows based on business logic
+    setFlowStates({
+      flow1: false,
+      flow2: true,  // Pre-defined as true
+      flow3: true,  // Pre-defined as true
+      flow4: false,
+      flow5: true,  // Pre-defined as true
+      flow6: false,
+      flow7: false,
+      flow8: true,  // Pre-defined as true
+      flow9: false
+    });
+  
     const fetchData = async () => {
       // Calculate Water in Sump
       const SumpWaterLevelData = await getRealData('WM-WL-KH98-00');
-      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate((SumpWaterLevelData.waterlevel-20), sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
+      const [SumpWaterPercentage, SumpEstimatedWaterCapacity] = await WaterLevelCalculate((SumpWaterLevelData.waterlevel - 20), sumpMeasurements.length, sumpMeasurements.breadth, sumpMeasurements.height);
       setWaterInSump(SumpEstimatedWaterCapacity);
-
+  
+      // Calculate Water Consumed
       const RO1FlowData = await getRealData('WM-WF-KB04-71');
       const RO2FlowData = await getRealData('WM-WF-KB04-72');
-      setWaterConsumed((RO1FlowData.totalflow + RO2FlowData.totalflow)*1000); //Converting to Litres from Kl
-
+      setWaterConsumed((RO1FlowData.totalflow + RO2FlowData.totalflow) * 1000); // Converting to Litres from KL
+  
       // Calculate Water in OHT
       const OHTWaterLevelData = await getRealData('WM-WL-KH00-00');
       const [OHTWaterPercentage, OHTEstimatedWaterCapacity] = await WaterLevelCalculate(OHTWaterLevelData.waterlevel, ohtMeasurements.length, ohtMeasurements.breadth, ohtMeasurements.height);
       setWaterInOHT(OHTEstimatedWaterCapacity);
-
+  
       // Calculate Motor Running Status
       const MotorData = await getRealData('DM-KH98-60');
       const MotorFlowrate = await MotorFlow(MotorData.voltage, MotorData.current, MotorData.power_factor, 0.85, sumpMeasurements.height, MotorData.status);
-      setMotorOn(MotorData.status === 1 ? true : false);
-      setFlow4(MotorData.status === 1 ? true : false);
-
-
-      // WaterQuantityNode Data 
+      setMotorOn(MotorData.status === 1);
+      setFlowStates(prevFlowStates => ({
+        ...prevFlowStates,
+        flow4: MotorData.status === 1  // Set flow4 based on motor status
+      }));
+  
+      // WaterQuantityNode Data
       const WaterQuantityDataAW1 = await getRealData('WM-WF-KB04-70');
       const WaterQuantityDataKW2 = await getRealData('WM-WF-KB04-73');
       const WaterQuantityDataR1 = await getRealData('WM-WF-KB04-71');
       const WaterQuantityDataR2 = await getRealData('WM-WF-KB04-72');
       const WaterQuantityBorewelltoSump = await getRealData('WM-WF-KH98-40');
       const WaterQuantityMotortoOHT = await getRealData('WM-WF-KH95-40');
-      if (WaterQuantityDataAW1.flowrate > 0) {setFlow6(true);} else {setFlow6(false);}
-      if (WaterQuantityDataKW2.flowrate > 0) {setFlow7(true);} else {setFlow7(false);}
-      if (WaterQuantityDataR1.flowrate > 0) {setFlow8(true);} else {setFlow8(false);}
-      if (WaterQuantityDataR2.flowrate > 0) {setFlow9(true);} else {setFlow9(false);}
-      if (WaterQuantityBorewelltoSump.flowrate > 0) {setFlow1(true);} else {setFlow1(false);}
-      // if (WaterQuantityMotortoOHT.flowrate > 0) {setFlow4(true);} else {setFlow4(false);}
-
+  
+      // Update flow states based on fetched flowrates
+      setFlowStates(prevFlowStates => ({
+        ...prevFlowStates,
+        flow1: WaterQuantityBorewelltoSump.flowrate > 0,  // Borewell to Sump flow
+        flow6: WaterQuantityDataAW1.flowrate > 0,  // AW1 flow
+        flow7: WaterQuantityDataKW2.flowrate > 0,  // KW2 flow
+        flow8: WaterQuantityDataR1.flowrate > 0,   // R1 flow (already set initially to true)
+        flow9: WaterQuantityDataR2.flowrate > 0    // R2 flow
+      }));
     };
+  
     fetchData();
 
     const nodeIds = Object.keys(isOn);
@@ -340,307 +381,239 @@ const RealValueVisualisation = () => {
   }
 
 
-  const Box = ({ color, src }) => (
-    <div style={{
-      flex: 1,
-      backgroundColor: color,
-      margin: '0px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <iframe src={src} width="120%" height="120%" style={{ border: 'none' }}></iframe>
-    </div>
-  );
+  const GrafanaPanel = React.memo(({ src }) => (
+    <iframe src={src} style={{ width: '105%', height: '100%', border: 'none' }} />
+  ));
 
-  // const LazyBox = ({ src, panelId }) => {
-  //   const [isLoaded, setIsLoaded] = useState(false);
-  //   const [iframeSrc, setIframeSrc] = useState('');
   
-  //   useEffect(() => {
-  //     const cachedSrc = localStorage.getItem(`panel-${panelId}`);
-  //     if (cachedSrc) {
-  //       setIframeSrc(cachedSrc);
-  //       setIsLoaded(true);
-  //     } else {
-  //       setIframeSrc(src);
-  //     }
-  //   }, [src, panelId]);
-  
-  //   const handleLoad = () => {
-  //     localStorage.setItem(`panel-${panelId}`, src);
-  //     setIsLoaded(true);
-  //   };
-  
-  //   return (
-  //     <div style={{ flex: 1 }}>
-  //       {!isLoaded && <div>Loading...</div>}
-  //       <iframe
-  //         src={iframeSrc}
-  //         style={{ width: '100%', height: '100%', border: 'none', display: isLoaded ? 'block' : 'none' }}
-  //         onLoad={handleLoad}
-  //       />
-  //     </div>
-  //   );
-  // };
-
-  const fetchNodeData = async (tableName) => {
-    const WaterQualityNodes = ['WM-WD-KH98-00', 'WM-WD-KH96-00', 'WM-WD-KH96-02', 'WM-WD-KH95-00', 'WM-WD-KH96-01', 'WM-WD-KH04-00'];
-    const WaterLevelNodes = ['WM-WL-KH98-00', 'WM-WL-KH00-00'];
-    const MotorNodes = ['DM-KH98-60'];
-    const WaterFlowNodes = ['WM-WF-KB04-70', 'WM-WF-KB04-73', 'WM-WF-KB04-71', 'WM-WF-KB04-72', 'WM-WF-KH98-40', 'WM-WF-KH95-40'];
-    
+  const handleSubmit = async (tableName, inputValue) => {
     try {
+      if (!inputValue.trim()) {
+        alert("Input cannot be blank");
+        return;
+      }
+      // Submit logic here, e.g., sending data to the backend
+      console.log("Submitting data for", tableName, "with value:", inputValue);
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+  
+  const fetchNodeData = async (tableName) => {
+    const WaterQualityNodes = [
+      "WM-WD-KH98-00",
+      "WM-WD-KH96-00",
+      "WM-WD-KH96-02",
+      "WM-WD-KH95-00",
+      "WM-WD-KH96-01",
+      "WM-WD-KH04-00",
+    ];
+    const WaterLevelNodes = ["WM-WL-KH98-00", "WM-WL-KH00-00"];
+    const MotorNodes = ["DM-KH98-60"];
+    const WaterFlowNodes = [
+      "WM-WF-KB04-70",
+      "WM-WF-KB04-73",
+      "WM-WF-KB04-71",
+      "WM-WF-KB04-72",
+      "WM-WF-KH98-40",
+      "WM-WF-KH95-40",
+    ];
+  
+    try {
+      // Fetch the data from the backend
       const jsonData = await getRealData(tableName);
-      if (typeof jsonData !== 'object' || jsonData === null) {
+  
+      // Ensure data is valid
+      if (!jsonData || typeof jsonData !== "object") {
         console.log("No valid data available for", tableName);
-        return; // Exit the function if no valid data is available
+        return;
       }
   
-      // Create a table element
-      const table = document.createElement('table');
-      // Keep the table name as heading for the box
-      const heading = document.createElement('h2');
+      // Create a table and heading
+      const table = document.createElement("table");
+      const heading = document.createElement("h3");
       heading.textContent = tableName;
       table.appendChild(heading);
   
-      // Create table header row
-      const headerRow = document.createElement('tr');
-      // Create table header cells
-      const headers = ['Parameter', 'Value', 'Units']; // Modify the headers here
+      // Table styling
+      table.style.width = "69%";
+      table.style.left = "1vw";
+      table.style.borderCollapse = "collapse";
   
-      // Add styles to the table
-      table.style.width = '100%';
-      table.style.borderCollapse = 'collapse';
-  
-      // Add styles to table headers
-      headers.forEach(header => {
-        const th = document.createElement('th');
+      // Table header
+      const headerRow = document.createElement("tr");
+      const headers = ["Parameter", "Value", "Units"];
+      headers.forEach((header) => {
+        const th = document.createElement("th");
         th.textContent = header;
-        th.style.border = '1px solid black';
-        th.style.padding = '8px';
-        th.style.backgroundColor = '#f2f2f2'; // Example background color for headers
+        th.style.border = "1px solid black";
+        th.style.padding = "2px";
+        th.style.fontSize = "1vw";
+        th.style.backgroundColor = "#f2f2f2";
         headerRow.appendChild(th);
       });
-      table.appendChild(headerRow); // Append the header row to the table
+      table.appendChild(headerRow);
   
-      // Similarly, add styles to cells in the body
+      // Populate table with data
       Object.entries(jsonData).forEach(([key, value]) => {
-        if (key === 'timestamp') {
-          return; // Skip the key 'timestamp'
-        }
-        const row = document.createElement('tr');
-        const keyCell = document.createElement('td');
+        if (key === "timestamp") return;
+  
+        const row = document.createElement("tr");
+  
+        const keyCell = document.createElement("td");
         keyCell.textContent = key;
-        keyCell.style.border = '1px solid black';
-        keyCell.style.padding = '8px';
-        const valueCell = document.createElement('td');
-        if (key === 'creationtime' && value !== null) {
-          value = value.replace('+00:00', '+05:30'); // Replace the timezone offset only if value is not null
+        keyCell.style.border = "1px solid black";
+        keyCell.style.padding = "8px";
+        row.appendChild(keyCell);
+  
+        const valueCell = document.createElement("td");
+        if (key === "creationtime" && value) {
+          value = value.replace("+00:00", "+05:30");
         }
         valueCell.textContent = value;
-        valueCell.style.border = '1px solid black';
-        valueCell.style.padding = '8px';
-        const unitCell = document.createElement('td');
-        unitCell.textContent = units[key] || ''; // Get the unit from the units object, or leave it empty if not found
-        unitCell.style.border = '1px solid black';
-        unitCell.style.padding = '8px';
-        row.appendChild(keyCell);
+        valueCell.style.border = "1px solid black";
+        valueCell.style.padding = "2px";
         row.appendChild(valueCell);
+  
+        const unitCell = document.createElement("td");
+        unitCell.textContent = units[key] || ""; // Assuming `units` is defined
+        unitCell.style.border = "1px solid black";
+        unitCell.style.padding = "8px";
         row.appendChild(unitCell);
+  
         table.appendChild(row);
       });
   
-      const tableContainer = document.getElementById("tableContainer"); // Get the table container element
-      tableContainer.innerHTML = ""; // Clear the table container
-      tableContainer.appendChild(table); // Append the table to the table container
+      // Append table to container
+      const tableContainer = document.getElementById("tableContainer");
+      tableContainer.innerHTML = ""; // Clear existing content
+      tableContainer.style.width = "57vw";
   
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'buttonContainer'; // Use the class name for styling
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.justifyContent = 'space-around'; // Adjust as needed
-      buttonContainer.style.marginTop = '20px'; // Space above the buttons
+      // Create table wrapper for scrollable content
+      const tableWrapper = document.createElement("div");
+      tableWrapper.className = "tableWrapper no-scrollbar";
+      tableWrapper.style.overflowY = "auto";
+      tableWrapper.style.maxHeight = "15vw"; // Limit height for scrolling
+      tableWrapper.style.padding = "1px"; // Optional: add padding
+  
+      tableWrapper.appendChild(table);
+      tableContainer.appendChild(tableWrapper);
+  
+      // Create button container
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "buttonContainer";
+      buttonContainer.style.display = "flex";
+      buttonContainer.style.justifyContent = "space-around";
+      buttonContainer.style.marginTop = "20px";
+      buttonContainer.style.height = "60px";
+      buttonContainer.style.width = "39.2vw";
+      buttonContainer.style.position = "sticky";
   
       let selectedButton = null;
-      let inputValue = '';
+      let inputValue = "";
   
-      const handleChange = (event) => {
-        inputValue = event.target.value;
+      // Render buttons based on node type
+      const renderButtons = (buttonsInfo) => {
+        buttonContainer.innerHTML = ""; // Clear existing buttons
+        buttonsInfo.forEach((buttonInfo) => {
+          const button = document.createElement("button");
+          button.textContent = buttonInfo.text;
+          button.id = buttonInfo.id;
+          button.style.padding = "1px 2px";
+          button.style.margin = "0 10px"; // Adjust spacing between buttons
+          button.style.cursor = "pointer";
+          button.style.width = "25vw";
+          button.style.position = "sticky";
+          button.addEventListener("click", buttonInfo.onClick); // Attach event listener
+          buttonContainer.appendChild(button);
+        });
+  
+        tableContainer.appendChild(buttonContainer);
       };
   
-      const handleSubmit = async (event) => {
-        event.preventDefault();
-        // Assuming 'inputField' is accessible here, or you find it by its class or name
-        const inputField = document.querySelector('.input-field');
-        const inputValue = inputField.value.trim();
-
-        // Check if the input field is empty
-        if (inputValue === '') {
-          // Display an error message or handle the error
-          alert('Input cannot be blank');
-          return; // Stop the function here
-        }
-        try {
-          // Step 1: Get the token
-          const tokenResponse = await fetch(`${config.middlewareAPI}/token`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
+      // Define node-specific buttons
+      const handleNodeButtons = () => {
+        if (WaterQualityNodes.includes(tableName)) {
+          const buttonsInfo = [
+            { text: "Node Reset", id: "powerResetButton", onClick: () => modifiedOnClick("powerResetButton", tableName, 2) },
+            { text: "Power Reset", id: "nodeResetButton", onClick: () => modifiedOnClick("nodeResetButton", tableName, 3) },
+            {
+              text: "Update Calibrated Values",
+              id: "updateValuesButton",
+              onClick: () => {
+                selectedButton = 4;
+                renderButtons(buttonsInfo);
+                createInputForm();
+              }
             },
-            body: new URLSearchParams({
-              'username': 'smartcity_water',
-              'password': 'WaterQualityNode'
-            })
-          });
-  
-          if (!tokenResponse.ok) {
-            throw new Error('Failed to fetch token');
-          }
-  
-          const tokenData = await tokenResponse.json();
-          const token = tokenData.access_token;
-  
-          // Step 2: Use the token in the next request
-          const updateResponse = await fetch(`${config.middlewareAPI}/coefficients/${tableName}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model_name: tableName,
-              coefficients: inputValue
-            })
-          });
-  
-          if (!updateResponse.ok) {
-            throw new Error('Failed to update coefficients');
-          }
-  
-          const updateData = await updateResponse.json();
-  
-          // Reset the state
-          selectedButton = null;
-          inputValue = '';
-        } catch (error) {
-          console.error('Error:', error);
+          ];
+          renderButtons(buttonsInfo);
+        } else if (MotorNodes.includes(tableName)) {
+          const buttonsInfo = [
+            { text: "Motor On", id: "turnOnButton", onClick: () => motorClick("turnOnButton", 1) },
+            { text: "Motor Off", id: "turnOffButton", onClick: () => motorClick("turnOffButton", 0) },
+            { text: "Motor Node Reset", id: "powerResetButton", onClick: () => modifiedOnClick("powerResetButton", tableName, 2) },
+            { text: "Motor Power Reset", id: "nodeResetButton", onClick: () => modifiedOnClick("nodeResetButton", tableName, 3) },
+          ];
+          renderButtons(buttonsInfo);
+        } else {
+          const buttonsInfo = [
+            { text: "Node Reset", id: "powerResetButton", onClick: () => modifiedOnClick("powerResetButton", tableName, 2) },
+            { text: "Power Reset", id: "nodeResetButton", onClick: () => modifiedOnClick("nodeResetButton", tableName, 3) },
+          ];
+          renderButtons(buttonsInfo);
         }
       };
-
-      if (WaterQualityNodes.includes(tableName)) {
-      // Create buttons
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-        { text: 'Update Calibrated Values', id: 'updateValuesButton', onClick: () => {
-            selectedButton = 4;
-            renderButtons();
+  
+      // Input form for updating values
+      const createInputForm = () => {
+        const inputDiv = document.createElement("div");
+        inputDiv.style.marginTop = "0px";
+        inputDiv.style.textAlign = "center";
+        inputDiv.style.marginRight = "18vw"
+  
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.className = "input-field";
+        inputField.value = inputValue;
+        inputField.placeholder = "[5.6,4.3,2.8,.....]";
+        inputField.style.padding = "8px";
+        inputField.style.width = "15vw";
+        inputField.onchange = (e) => { inputValue = e.target.value; };
+  
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Submit";
+        submitButton.className = "submit-button";
+        submitButton.style.marginTop = "1px";
+        submitButton.style.padding = "10px 20px";
+        submitButton.style.cursor = "pointer";
+        submitButton.onclick = async (event) => {
+          event.preventDefault();
+          if (!inputValue.trim()) {
+            alert("Input cannot be blank");
+            return;
           }
-        }
-      ];
+          await handleSubmit(tableName, inputValue);
+        };
   
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-  
-        if (selectedButton === 4) {
-          const inputDiv = document.createElement('div');
-          inputDiv.style.marginTop = '10px'; // Add some margin above the input field
-          inputDiv.style.textAlign= 'center';
-  
-          const inputField = document.createElement('input');
-          inputField.type = 'text';
-          inputField.onchange = handleChange;
-          inputField.name = 'calibratedvalues';
-          inputField.value = inputValue;
-          inputField.className = 'input-field';
-          inputField.placeholder = '[5.6,4.3,2.8,.....]';
-          inputField.style.padding = '8px';
-          inputField.style.width = '15vw';
-  
-          const submitButton = document.createElement('button');
-          submitButton.textContent = 'Submit';
-          submitButton.className = 'submit-button';
-          submitButton.style.marginTop = '10px';
-          submitButton.style.padding = '10px 20px';
-          submitButton.style.cursor = 'pointer';
-          submitButton.onclick = handleSubmit;
-  
-          inputDiv.appendChild(inputField);
-          inputDiv.appendChild(submitButton);
-          tableContainer.appendChild(inputDiv);
-        }
+        inputDiv.appendChild(inputField);
+        inputDiv.appendChild(submitButton);
+        tableContainer.appendChild(inputDiv);
       };
-      renderButtons();
-    }
-    else if (MotorNodes.includes(tableName)) { 
-      const buttonsInfo = [
-        { text: 'Motor on', id: 'turnOnButton', onClick: () => motorClick('turnOnButton',1)},
-        { text: 'Motor off', id: 'turnOffButton', onClick: () => motorClick('turnOffButton', 0) },
-        { text: 'Motor Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Motor Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
   
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
+      // Execute node button logic
+      handleNodeButtons();
   
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-    else{
-      const buttonsInfo = [
-        { text: 'Node Reset', id: 'powerResetButton', onClick: () => modifiedOnClick('powerResetButton', tableName, 2) },
-        { text: 'Power Reset', id: 'nodeResetButton', onClick: () => modifiedOnClick('nodeResetButton', tableName, 3) },
-      ];
+      // Display modal
+      const modal = document.getElementById("myModal");
+      modal.style.display = "block";
   
-      const renderButtons = () => {
-        buttonContainer.innerHTML = ''; // Clear the button container
-        buttonsInfo.forEach(buttonInfo => {
-          const button = document.createElement('button');
-          button.textContent = buttonInfo.text;
-          button.id = buttonInfo.id;
-          button.addEventListener('click', buttonInfo.onClick); // Attach event listener
-          // Optional: Add classes or styles to button
-          button.style.padding = '10px 20px';
-          button.style.margin = '0 10px'; // Adjust spacing between buttons
-          button.style.cursor = 'pointer';
-          buttonContainer.appendChild(button);
-        });
-  
-        tableContainer.appendChild(buttonContainer);
-      };
-      renderButtons();
-    }
-      const modal = document.getElementById("myModal"); // Get the modal element
-      modal.style.display = "block"; // Show the modal after fetching and displaying the data
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching node data:", error);
     }
   };
+  
+  
   
   
 
@@ -703,152 +676,484 @@ const RealValueVisualisation = () => {
     <div className='page'>
       <NavigationBar title="Digital Twin for Water Quality " 
       style={{position:'relative',
-       width: '90vw',
+       width: '80vw',
        height: '20vw'
        }} />
       <div style={{ display: "flex"}} className='Page'>
         <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '41.2vw', border: "0px" }}>
 
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
-          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
-      {/* <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" panelId="24" />
-      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" panelId="9" />
-      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" panelId="20" /> */}
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
 
         </div>
 
         <div style={{ height: "42.6vw", width: "100vw",display: "flex", flex:2, justifyContent: "center", alignItems: "center"}} className='canvas'>
             <div>
               <div>
-              <div id="myModal" className="modal" style={{
-                  position: 'fixed', // Keeps the modal above all other content
-                  top: '50%', // Centers vertically
-                  left: '50%', // Centers horizontally
-                  transform: 'translate(-50%, -50%)', // Adjusts for the modal's dimensions
-                  width: '60vw',
-                  zIndex: 1000, // Ensures it's on top of everything
-                  }}>
-                <div className="modal-content">
-                  <span className="close" onClick={() => closeModal()}>&times;</span>
-                  <div id="tableContainer"></div>
-                </div>
-              </div>
-                <div style={{ position: 'relative', width: '60vw',height: '20vw',border: '',}}>
-                  <SimulationCanvas
+              {/* Modal */}
+      <div
+        id="myModal"
+        ref={modalRef}
+        className="modal"
+        style={{
+          position: 'fixed',
+          top: '93%',
+          left: '49%',
+          transform: 'translate(-50%, -50%)',
+          width: '50vw',
+          height: '48vw',
+          zIndex: 10,
+          display: 'none', // Hide modal initially
+        }}
+      >
+        <div className="modal-content">
+          <span className="close" onClick={closeModal}>&times;</span>
+          <div id="tableContainer"></div>
+        </div>
+      </div>
+                <div style={{ position: 'relative', width: '60vw',height: '20vw', top: '-2.5vw'}}>
+                <SimulationCanvas
                     handleIconClick={handleIconClick}
                     iconRefs={iconRefs}
-                    PipeP1toSump={flow1}
-                    PipeBoreToSump={flow2}
-                    PipeSumpToMotor={flow3}
-                    PipeMotorToOHT={flow4}
-                    PipeOHTtoRO={flow5}
-                    PipeOHTtoAdminWashrooms={flow6}
-                    PipeOHTtoKRBWashrooms= {flow7}
-                    PipetoRO1={flow8}
-                    PipetoRO3={flow9}
-                    setFlow1={setFlow1}
-                    setFlow2={setFlow2} 
-                    waterInSump={waterInSump}
-                    sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height*1000}
-                    waterInOHT={waterInOHT}
-                    ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height*1000}
-                    waterInROFilter={waterInROFilter}
-                    toggleIsOn={toggleIsOn}
-                    motorOn={motorOn}
-                    waterConsumed={waterConsumed}
-                    flowrate={flowrate}
+                    PipeP1toSump={flowStates.flow1}               // Pipe from P1 to Sump
+                    PipeBoreToSump={flowStates.flow2}             // Pipe from Bore to Sump
+                    PipeSumpToMotor={flowStates.flow3}            // Pipe from Sump to Motor
+                    PipeMotorToOHT={flowStates.flow4}             // Pipe from Motor to OHT
+                    PipeOHTtoRO={flowStates.flow5}                // Pipe from OHT to RO
+                    PipeOHTtoAdminWashrooms={flowStates.flow6}    // Pipe from OHT to Admin Washrooms
+                    PipeOHTtoKRBWashrooms={flowStates.flow7}      // Pipe from OHT to KRB Washrooms
+                    PipetoRO1={flowStates.flow8}                  // Pipe to RO1
+                    PipetoRO3={flowStates.flow9}                  // Pipe to RO3
+                    setFlow1={setFlowStates}                           // Setter for flow1
+                    setFlow2={setFlowStates}                           // Setter for flow2
+                    waterInSump={waterInSump}                     // Water level in Sump
+                    sumpCapacity={sumpMeasurements.length * sumpMeasurements.breadth * sumpMeasurements.height * 1000}  // Sump Capacity
+                    waterInOHT={waterInOHT}                       // Water level in OHT
+                    ohtCapacity={ohtMeasurements.length * ohtMeasurements.breadth * ohtMeasurements.height * 1000}     // OHT Capacity
+                    waterInROFilter={waterInROFilter}             // Water in RO Filter
+                    toggleIsOn={toggleIsOn}                       // Toggle status
+                    motorOn={motorOn}                             // Motor status (on/off)
+                    waterConsumed={waterConsumed}                 // Water consumption data
+                    flowrate={flowrate}                           // Flowrate data
                   />
-                  {/* IoT Nodes  */}
-                  <div style={{ position: "absolute", top: "12.5vw", left: "14vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WD-KH98-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH98-00'/>
-                  </div>
 
-                  <div style={{ position: "absolute", top: "2vw", left: "29vw", textAlign: "center", zIndex:10 }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw", zIndex:5 }} onClick={()=> fetchNodeData('WM-WD-KH96-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-00'/>
-                  </div>
+                  {/* IoT Nodes */}
+      <div
+        id="WM-WD-KH98-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '11.5vw',
+          left: '13.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH98-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH98-00')} fetchNodeDataParam={'WM-WD-KH98-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "6.5vw", left: "50.6vw", textAlign: "center", zIndex: "2" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-01')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-01'/>
-                  </div>
+      <div
+        id="WM-WD-KH96-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '1.2vw',
+          left: '29vw',
+          zIndex: "10",
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH96-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH96-00')} fetchNodeDataParam={'WM-WD-KH96-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "8vw", left: "55vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WD-KH96-02')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH96-02'/>
-                  </div>
+      <div
+        id="WM-WD-KH96-01"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '6vw',
+          left: '50.3vw',
+          zIndex: "2",
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH96-01' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH96-01')} fetchNodeDataParam={'WM-WD-KH96-01'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "15vw", left: "52.3vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH95-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH95-00'/>
-                  </div>
+      <div
+        id="WM-WD-KH96-02"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '8vw',
+          left: '54.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH96-02' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH96-02')} fetchNodeDataParam={'WM-WD-KH96-02'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "15vw", left: "57.9vw", textAlign: "center" }}>
-                    {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WD-KH04-00')} /> */}
-                    <InteractiveIcon src={WaterQualityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WD-KH04-00'/>
-                  </div>
+      <div
+        id="WM-WD-KH95-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '14.5vw',
+          left: '51.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH95-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH95-00')} fetchNodeDataParam={'WM-WD-KH95-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "8vw", left: "14vw", textAlign: "center" }}>
-                    {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH98-00')} /> */}
-                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH98-00'/>
-                  </div>
+      <div
+        id="WM-WD-KH04-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '14.5vw',
+          left: '57vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WD-KH04-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+           src="/images/WaterQualityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WD-KH04-00')} fetchNodeDataParam={'WM-WD-KH04-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "2vw", left: "33vw", textAlign: "center", zIndex: 3 }}>
-                    {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WL-KH00-00')} /> */}
-                    <InteractiveIcon src={WaterLevelNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WL-KH00-00'/>
-                  </div>
+      <div
+        id="WM-WL-KH98-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '8vw',
+          left: '14vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WL-KH98-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterLevelNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WL-KH98-00')} fetchNodeDataParam={'WM-WL-KH98-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "10vw", left: "22vw", textAlign: "center", zIndex: 2 }}>
-                    {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('DM-KH98-60')} /> */}
-                    <InteractiveIcon src={MotorNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='DM-KH98-60'/>
-                  </div>
+      <div
+        id="WM-WL-KH00-00"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '1.2vw',
+          left: '33vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          zIndex: "3",
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WL-KH00-00' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterLevelNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WL-KH00-00')} fetchNodeDataParam={'WM-WL-KH00-00'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "7vw", left: "9vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 2 }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => fetchNodeData('WM-WF-KH98-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH98-40' rotation={90}/>
-                  </div>
+      <div
+        id="DM-KH98-60"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '10vw',
+          left: '21.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          zIndex: 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'DM-KH98-60' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/MotorNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('DM-KH98-60')} fetchNodeDataParam={'DM-KH98-60'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "6.7vw", left: "29vw", textAlign: "center",transform: "rotate(90deg)", zIndex: 3 }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KH95-40')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KH95-40' rotation={90}/>
-                  </div>
+      <div
+        id="WM-WF-KH98-40"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '6.5vw',
+          left: '6.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          transform: "rotate(90deg)", zIndex: 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KH98-40' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KH98-40')} fetchNodeDataParam={'WM-WF-KH98-40'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "7.2vw", left: "42vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2" }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-70')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-70' rotation={90}/>
-                  </div>
+      <div
+        id="WM-WF-KH95-40"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '6.3vw',
+          left: '26vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          transform: "rotate(90deg)", zIndex: 3,
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KH95-40' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KH95-40')} fetchNodeDataParam={'WM-WF-KH95-40'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "7.2vw", left: "48vw", textAlign: "center", transform: "rotate(90deg)", zIndex: "2"  }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-73')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-73' rotation={90}/>
-                  </div>
+      <div
+        id="WM-WF-KB04-70"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '6.8vw',
+          left: '39vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          transform: "rotate(90deg)", 
+          zIndex: "2",
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-70' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KB04-70')} fetchNodeDataParam={'WM-WF-KB04-70'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "11vw", left: "54vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-71')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-71' rotation={90}/>
-                  </div>
+      <div
+        id="WM-WF-KB04-73"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '6.8vw',
+          left: '45vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          transform: "rotate(90deg)",
+          zIndex: "2", 
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-73' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KB04-73')} fetchNodeDataParam={'WM-WF-KB04-73'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
 
-                  <div style={{ position: "absolute", top: "11vw", left: "60vw", textAlign: "center", transform: "rotate(90deg)" }}>
-                    {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> fetchNodeData('WM-WF-KB04-72')} /> */}
-                    <InteractiveIcon src={WaterQuantityNode} alt="WaterQuantityNode" onClick={fetchNodeData} fetchNodeDataParam='WM-WF-KB04-72' rotation={90}/>
-                  </div>
+      <div
+        id="WM-WF-KB04-71"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '11.5vw',
+          left: '51.5vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          alignItems: 'center',
+          transform: "rotate(90deg)",
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-71' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png" 
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KB04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
+
+      <div
+        id="WM-WF-KB04-72"
+        className="node"
+        style={{
+          position: 'absolute',
+          top: '11vw',
+          left: '57vw',
+          textAlign: 'center',
+          padding: '0.5vw', // Create space between the node and the border
+          width: '3vw',
+          height: '3vw',
+          display: 'flex',
+          transform: "rotate(90deg)",
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          border: highlightedNodeRef.current === 'WM-WF-KB04-72' ? '4px solid yellow' : 'none',
+        }}
+      >
+        <InteractiveIcon
+          src="/images/WaterQuantityNode-removebg.png"
+          alt="WaterQuantityNode"
+          onClick={() => handleNodeClick('WM-WF-KB04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
+          style={{ width: '2vw', height: '2vw' }}
+        />
+      </div>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '16vw' }}>
-                <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
-                <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
+              <div style={{ display: 'flex', flexDirection: 'row', flex:1, height: '17vw', top: '2vw' }}>
+                <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" />
+                <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" />
               </div>
             </div>
         </div>
 
         <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '40vw' }}>
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=22" />
           {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=33" /> */}
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
-          <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=10" />
+          <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=21" />
         </div>
       </div>
     </div>

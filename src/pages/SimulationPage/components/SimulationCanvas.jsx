@@ -1,22 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 
+// PIPES
 import ZshapePipe from './ZShapePipe/Pipe';
 import MirrorLPipe from './MirrorLPipe/Pipe';
 import StraightPipe from './StraightPipe/Pipe';
 import LShapePipe from './LShapePipe/Pipe';
-
-import roPlantImage from "../../images/ro_plant.png";
-import roCoolerImage from "../../images/ro_cooler.png";
-import Motor from "../../images/Motor.png";
-import PumpHouse from "../../images/pump_house.png";
-import Borewell from "../../images/borewell.png";
-// import ROWatertank from "../../images/tank_ro.png";
-import Washrooms from "../../images/Washrooms.png";
-import Sump from './Sump/Sump';
-import WaterTank from './WaterTank/Watertank';
 import Lshapepipeoht from './LShapePipe/PipeOHT'
 import ROLpipe from './LShapePipe/ROLpipe';
 import ELpipe from './LShapePipe/ELpipe';
+
+// TANKS
+import Sump from './Sump/Sump';
+import WaterTank from './WaterTank/Watertank';
 import RoOHT from './RoOHT/RoOHT';
 
 const SimulationCanvas = ({
@@ -76,7 +71,7 @@ const SimulationCanvas = ({
     <div className='simulation-canvas'>
       {/* PumpHouse */}
       <div style={{ position: "absolute", top: "1vw", left: "1.5vw"}} id="pumpHouseIcon">
-        <img src={PumpHouse} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
+        <img src="/images/pump_house.png" alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
           // ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
         />
         <div style={{ fontSize: "1vw" }}>PumpHouse</div>
@@ -97,13 +92,8 @@ const SimulationCanvas = ({
 
       {/* Borewell */}
       <div id="borewellIcon" style={{ position: "absolute", top: "10vw", left: "1.5vw" }}>
-        <img
-          src={Borewell}
-          alt="borewell"
-          style={{ width: "4.8vw", height: "4.8vw" }}
-          onClick={(e) => handleIconClick(e)}
-          ref={(ref) => { if (ref) { ref.id = "Borewell1"; iconRefs.push(ref); } }}
-        />
+        <img src="/images/borewell.png" alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}
+          onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "Borewell1"; iconRefs.push(ref); } }}/>
         <div style={{ fontSize: "1vw" }}>Borewell</div>
       </div>
 
@@ -127,7 +117,7 @@ const SimulationCanvas = ({
         {/* Motor */}
         <div style={{ position: "absolute", zIndex: 2, top: "12.5vw", left: "20.3vw", textAlign: "center", width: "5.8vw" }}
           ref={(ref) => { if (ref) { ref.id = "Motor"; iconRefs.push(ref); } }}>
-          <img src={Motor} alt="Motor"
+          <img src="/images/Motor.png" alt="Motor"
             className={`motor ${motorOn ? "running" : ""}`}
             style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)", }}
             onClick={() => {
@@ -168,13 +158,13 @@ const SimulationCanvas = ({
       </div>
           
         <div style={{ position: "absolute", top: "11vw", left: "36.7vw", textAlign: "center" }}>
-          <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
+          <img src="/images/Washrooms.png" alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
             ref={(ref) => { if (ref) { ref.id = "AdminBlockWashrooms"; iconRefs.push(ref); } }} />
             <div style={{ fontSize: "0.7vw" }}>Admin Block<br></br> Washrooms</div>
         </div>
 
         <div style={{ position: "absolute", top: "11vw", left: "41.6vw", textAlign: "center" }}>
-          <img src={Washrooms} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
+          <img src="/images/Washrooms.png" alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
             ref={(ref) => { if (ref) { ref.id = "KRBWashrooms"; iconRefs.push(ref); } }} />
             <div style={{ fontSize: "0.7vw" }}>KRB Washrooms</div>
         </div>
@@ -212,7 +202,7 @@ const SimulationCanvas = ({
         {/* RO Plant */}
         <div style={{ position: "absolute", top: "0vw", left: "52vw" }}>
         <div style={{ fontSize: "0.6vw" }}><b>RO Plant</b></div>
-          <img src={roPlantImage} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
+          <img src="/images/ro_plant.png" alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
             onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "ROPlant"; iconRefs.push(ref); } }} /> 
         </div>
 
@@ -250,23 +240,23 @@ const SimulationCanvas = ({
         </div>
 
         {/* RO Coolers */}
-        <div style={{ position: "absolute", top: "14vw", left: "51.5vw", textAlign: "center" }}>
-          <img src={roCoolerImage} alt="ro cooler 1" style={{ width: "3.2vw", height: "3.8vw" }}
+        <div style={{ position: "absolute", top: "13.5vw", left: "51.5vw", textAlign: "center" }}>
+          <img src="/images/ro_cooler.png" alt="ro cooler 1" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler1"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 1</div>
           {/* <div style={{ fontSize: "0.7vw" }}><b>{((3 * waterConsumed) / 4).toFixed(1)}L</b></div> */}
         </div>
 
-        <div style={{ position: "absolute", top: "14vw", left: "54.3vw", textAlign: "center" }}>
-          <img src={roCoolerImage} alt="ro cooler 2" style={{ width: "3.2vw", height: "3.8vw" }}
+        <div style={{ position: "absolute", top: "13.5vw", left: "54.3vw", textAlign: "center" }}>
+          <img src="/images/ro_cooler.png" alt="ro cooler 2" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler2"; iconRefs.push(ref); } }} />
-          <div style={{ fontSize: "0.7vw" }}>RO 2</div>
+          <div style={{ fontSize: "0.7vw", top: "-2vw"}}>RO 2</div>
         </div>
 
-        <div style={{ position: "absolute", top: "14vw", left: "57vw", textAlign: "center" }}>
-          <img src={roCoolerImage} alt="ro cooler 3" style={{ width: "3.2vw", height: "3.8vw" }}
+        <div style={{ position: "absolute", top: "13.5vw", left: "57vw", textAlign: "center" }}>
+          <img src="/images/ro_cooler.png" alt="ro cooler 3" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler3"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 3</div>
