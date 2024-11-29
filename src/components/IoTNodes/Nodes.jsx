@@ -4,6 +4,7 @@ import Timer from '../timer-component';
 
 function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking, setWaterLevelNodeWorking,setStepIndex, stepIndex}) {
   console.log("Simu",SimulatedValues);
+  const basePath = process.env.REACT_APP_BASE_PATH || "";
     return (
         <div>
               {/* IoT Nodes  */}
@@ -14,9 +15,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "14vw",
                   textAlign: "center",
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH98-00"
                   data={`Water Quality: ${SimulatedValues[
@@ -33,9 +33,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-00"
                   data={`Water Quality: ${SimulatedValues[
@@ -52,9 +51,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-01"
                   data={`Water Quality: ${SimulatedValues[
@@ -70,9 +68,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "55vw",
                   textAlign: "center",
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-02"
                   data={`Water Quality: ${SimulatedValues[
@@ -88,9 +85,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "52.3vw",
                   textAlign: "center",
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH95-00"
                   data={`Water Quality: ${SimulatedValues[
@@ -106,9 +102,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   left: "57.9vw",
                   textAlign: "center",
                 }}>
-                {/* <img src='/images/WaterQualityNode.png' alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQualityNode.png'
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH04-00"
                   data={`Water Quality: ${SimulatedValues[
@@ -125,10 +120,9 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterLevelNode.png' alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
                 <HoverableIcon
                   classsName="hello-water-node"
-                  src='/images/WaterLevelNode.png'
+                  src={`${basePath}/images/WaterLevelNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH98-00"
                   data={`Water Level: ${SimulatedValues[
@@ -147,9 +141,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   zIndex: 3,
                 }}
                 className='water-level-node-oht'>
-                {/* <img src='/images/WaterLevelNode.png' alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
                 <HoverableIcon
-                  src='/images/WaterLevelNode.png'
+                  src={`${basePath}/images/WaterLevelNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH00-00"
                   data={`Water Level: ${SimulatedValues[
@@ -170,9 +163,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   textAlign: "center",
                   zIndex: 4,
                 }}>
-                {/* <img src='/images/MotorNode.png' alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
                 <HoverableIcon
-                  src='/images/MotorNode.png'
+                  src={`${basePath}/images/MotorNode.png`}
                   alt="MotorNode"
                   aId="DM-KH98-60"
                   dataId="DM-KH98-60"
@@ -189,9 +181,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH98-40"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KH98-40"]}L`}
@@ -208,9 +199,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH95-40"
                   data={`Total Water Flow: ${SimulatedValues[
@@ -229,9 +219,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-70"
                   data={`Total Water Flow: ${SimulatedValues[
@@ -250,9 +239,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-73"
                   data={`Total Water Flow: ${SimulatedValues[
@@ -271,9 +259,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues[
@@ -292,9 +279,8 @@ function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking,
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src='/images/WaterQuantityNode.png' alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon
-                  src='/images/WaterQuantityNode.png'
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-72"
                   data={`Total Water Flow: ${SimulatedValues[
