@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-// import { useInView } from 'react-intersection-observer';
-
 import "./RealValueVisualisation.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
@@ -8,21 +6,11 @@ import LoginPage from '../LoginPage/LoginPage';
 import SimulationCanvas from "../SimulationPage/components/SimulationCanvas";
 
 import config from '../../config';
-import MotorNode from "../images/MotorNode-removebg.png";
-import WaterLevelNode from "../images/WaterLevelNode-removebg.png";
-import WaterQualityNode from "../images/WaterQualityNode-removebg.png";
-import WaterQuantityNode from "../images/WaterQuantityNode-removebg.png";
-import { SignalCellularNullOutlined } from '@mui/icons-material';
-
-// const NodeComponent = React.memo(({ nodeId, onClick }) => {
-//   return <div onClick={() => onClick(nodeId)}>Node {nodeId}</div>;
-// });
 
 // Memoize the InteractiveIcon to prevent re-renders unless props change
 const InteractiveIcon = React.memo(({ src, alt, onClick, style }) => (
   <img src={src} alt={alt} onClick={onClick} style={style} />
 ));
-
 
 const RealValueVisualisation = () => {
   // State for holding input values and results
@@ -41,9 +29,6 @@ const RealValueVisualisation = () => {
     "WM-WD-KH04-00": false,"WM-WF-KB04-70": false,"WM-WF-KB04-73": false,"WM-WF-KB04-71": false,"WM-WF-KB04-72": false,"WM-WF-KH98-40": false,"WM-WF-KH95-40": false, 
     // ... other nodes
   });
-
-  
-
 
   const [units, setUnits] = useState ({
     flowrate : "Kl/min",
@@ -400,36 +385,6 @@ const RealValueVisualisation = () => {
     <iframe src={src} style={{ width: '105%', height: '100%', border: 'none' }} />
   ));
 
-  // const LazyBox = ({ src, panelId }) => {
-  //   const [isLoaded, setIsLoaded] = useState(false);
-  //   const [iframeSrc, setIframeSrc] = useState('');
-  
-  //   useEffect(() => {
-  //     const cachedSrc = localStorage.getItem(`panel-${panelId}`);
-  //     if (cachedSrc) {
-  //       setIframeSrc(cachedSrc);
-  //       setIsLoaded(true);
-  //     } else {
-  //       setIframeSrc(src);
-  //     }
-  //   }, [src, panelId]);
-  
-  //   const handleLoad = () => {
-  //     localStorage.setItem(`panel-${panelId}`, src);
-  //     setIsLoaded(true);
-  //   };
-  
-  //   return (
-  //     <div style={{ flex: 1 }}>
-  //       {!isLoaded && <div>Loading...</div>}
-  //       <iframe
-  //         src={iframeSrc}
-  //         style={{ width: '100%', height: '100%', border: 'none', display: isLoaded ? 'block' : 'none' }}
-  //         onLoad={handleLoad}
-  //       />
-  //     </div>
-  //   );
-  // };
   
   const handleSubmit = async (tableName, inputValue) => {
     try {
@@ -443,13 +398,6 @@ const RealValueVisualisation = () => {
       console.error("Error submitting data:", error);
     }
   };
-
-  // Fetch data when tableName is selected
-  // useEffect(() => {
-  //   if (selectedTable) {
-  //     fetchNodeData(selectedTable);
-  //   }
-  // }, [selectedTable]);
   
   const fetchNodeData = async (tableName) => {
     const WaterQualityNodes = [
@@ -735,12 +683,8 @@ const RealValueVisualisation = () => {
         <div style={{ display: 'flex',flex:1, flexDirection: 'column', height: '41.2vw', border: "0px" }}>
 
           <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" />
-          {/* <Box src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=17" /> */}
           <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" />
           <GrafanaPanel src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" />
-      {/* <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=24" panelId="24" />
-      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=9" panelId="9" />
-      <LazyBox src="https://smartcitylivinglab.iiit.ac.in/grafana/d/c9998c83-4255-4c0d-ad26-524b8b84272d/zf-digital-twin?orgId=1&kiosk&autofitpanels&theme=light&viewPanel=20" panelId="20" /> */}
 
         </div>
 
@@ -814,7 +758,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQualityNode}
+          src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH98-00')} fetchNodeDataParam={'WM-WD-KH98-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -841,7 +785,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQualityNode}
+          src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-00')} fetchNodeDataParam={'WM-WD-KH96-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -868,7 +812,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQualityNode}
+          src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-01')} fetchNodeDataParam={'WM-WD-KH96-01'}
           style={{ width: '2vw', height: '2vw' }}
@@ -894,7 +838,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQualityNode}
+          src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-02')} fetchNodeDataParam={'WM-WD-KH96-02'}
           style={{ width: '2vw', height: '2vw' }}
@@ -920,7 +864,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQualityNode}
+          src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH95-00')} fetchNodeDataParam={'WM-WD-KH95-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -946,7 +890,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-           src={WaterQualityNode}
+           src="/images/WaterQualityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH04-00')} fetchNodeDataParam={'WM-WD-KH04-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -972,7 +916,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterLevelNode}
+          src="/images/WaterLevelNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WL-KH98-00')} fetchNodeDataParam={'WM-WL-KH98-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -999,7 +943,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterLevelNode}
+          src="/images/WaterLevelNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WL-KH00-00')} fetchNodeDataParam={'WM-WL-KH00-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1026,7 +970,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={MotorNode}
+          src="/images/MotorNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('DM-KH98-60')} fetchNodeDataParam={'DM-KH98-60'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1053,7 +997,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode}
+          src="/images/WaterQuantityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KH98-40')} fetchNodeDataParam={'WM-WF-KH98-40'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1080,7 +1024,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode}
+          src="/images/WaterQuantityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KH95-40')} fetchNodeDataParam={'WM-WF-KH95-40'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1108,7 +1052,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode}
+          src="/images/WaterQuantityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-70')} fetchNodeDataParam={'WM-WF-KB04-70'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1136,7 +1080,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode}
+          src="/images/WaterQuantityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-73')} fetchNodeDataParam={'WM-WF-KB04-73'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1163,7 +1107,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode} 
+          src="/images/WaterQuantityNode-removebg.png" 
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1190,7 +1134,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={WaterQuantityNode}
+          src="/images/WaterQuantityNode-removebg.png"
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
           style={{ width: '2vw', height: '2vw' }}

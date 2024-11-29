@@ -1,5 +1,4 @@
 import React from 'react';
-import LeakageIcon from "../../images/leakage_water.png"; 
 
 const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leakageLocation, setLeakageLocation, leakageRate, setLeakageRate, handleApplyLeakages, flowrate, PermeateFlowRate, isSimulationRunning}) => {
   if (!showLeakageOptions) {
@@ -11,7 +10,7 @@ const LeakageOptions = ({ showLeakageOptions, numLeakages, setNumLeakages, leaka
        <div className="heading" style={{ display: 'flex', alignItems: 'center'}}>
           <h4  style={{ margin: 0 }}>Leakage Configuration
           <img 
-            src={LeakageIcon} 
+            src="../../images/leakage_water.png"
             alt="Leakage"  
             style={{ 
               

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './NavigationBar.css';
-import IITHLOGO from './images/iiith.png';
-import SCRCLOGO from './images/scrc_logo.png';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
@@ -30,8 +28,8 @@ const NavigationBar = () => {
       <nav className="navbar">
         <Link to="/">
           <div className="navbar__logo">
-            <img src={IITHLOGO} alt="IIITH Logo" />
-            <img src={SCRCLOGO} alt="Smart City Living Lab Logo" />
+            <img src='./images/iiith.png' alt="IIITH Logo" />
+            <img src='./images/scrc_logo.png' alt="Smart City Living Lab Logo" />
           </div>
         </Link>
         <div className="navbar__dashboard">Digital Twin</div>
