@@ -18,9 +18,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import config from "../../config";
 
 const SimulationPage = () => {
-  // State for holding input values and results
+  // This is for Production Usage or Docker Usage only
   const basePath = process.env.REACT_APP_BASE_PATH || "";
   console.log("Base Path:", basePath);
+  /*****************************************/
+  // State for holding input values and results
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [timeMultiplier, setTimeMultiplier] = useState(1);
@@ -1067,13 +1069,13 @@ const handleDeleteAllItems = () => {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return "/images/WaterQualityNode.png";
+        return `${basePath}/images/WaterQualityNode.png`;
       case "waterquantitysensor":
-        return "/images/WaterQuantityNode.png";
+        return `${basePath}/images/WaterQuantityNode.png`;
       case "waterlevelsensor":
-        return "/images/WaterLevelNode.png";
+        return `${basePath}/images/WaterLevelNode.png`;
       case "motorsensor":
-        return "/images/MotorNode.png";
+        return `${basePath}/images/MotorNode.png`;
       default:
         return ""; // default image or empty string if none
     }
@@ -1170,7 +1172,7 @@ const handleDeleteAllItems = () => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <img src="/images/white.png" alt="blueprint" style={{ width: "100%", height: "100%" }} />
+              <img src={`${basePath}/images/white.png`} alt="blueprint" style={{ width: "100%", height: "100%" }} />
               <SimulationCanvas
                 handleIconClick={handleIconClick}
                 iconRefs={iconRefs}
@@ -1208,7 +1210,7 @@ const handleDeleteAllItems = () => {
                   zIndex: '4'
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH98-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH98-00"].toFixed(2)}ppm`}
@@ -1224,7 +1226,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-00"].toFixed(2)}ppm`}
@@ -1240,7 +1242,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-01"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-01"].toFixed(2)}ppm`}
@@ -1256,7 +1258,7 @@ const handleDeleteAllItems = () => {
                   zIndex: '4'
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-02"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-02"].toFixed(2)}ppm`}
@@ -1272,7 +1274,7 @@ const handleDeleteAllItems = () => {
                   zIndex: '5'
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH95-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH95-00"].toFixed(2)}ppm`}
@@ -1288,7 +1290,7 @@ const handleDeleteAllItems = () => {
                   zIndex: '5'
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQualityNode.png"
+                  src={`${basePath}/images/WaterQualityNode.png`}
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH04-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH04-00"].toFixed(2)}ppm`}
@@ -1304,7 +1306,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                  <HoverableIcon
-                  src="/images/WaterLevelNode.png"
+                  src={`${basePath}/images/WaterLevelNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH98-00"
                   data={`Water Level: ${SimulatedValues["WM-WL-KH98-00"].toFixed(2)}%`}
@@ -1320,7 +1322,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterLevelNode.png"
+                  src={`${basePath}/images/WaterLevelNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH00-00"
                   data={`Water Level: ${SimulatedValues["WM-WL-KH00-00"].toFixed(2)}%`}
@@ -1336,7 +1338,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 4,
                 }}>
                 <HoverableIcon
-                  src="/images/MotorNode.png"
+                  src={`${basePath}/images/MotorNode.png`}
                   alt="MotorNode"
                   aId="DM-KH98-60"
                   dataId="DM-KH98-60"
@@ -1354,7 +1356,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH98-40"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KH98-40"]}L`}
@@ -1372,7 +1374,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH95-40"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KH95-40"].toFixed(2)}L`}
@@ -1390,7 +1392,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-70"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-70"].toFixed(2)}L`}
@@ -1408,7 +1410,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 3,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-73"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-73"].toFixed(2)}L`}
@@ -1426,7 +1428,7 @@ const handleDeleteAllItems = () => {
                   zIndex: "4",
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-71"].toFixed(2)}L`}
@@ -1445,7 +1447,7 @@ const handleDeleteAllItems = () => {
                   zIndex: 4,
                 }}>
                 <HoverableIcon
-                  src="/images/WaterQuantityNode.png"
+                  src={`${basePath}/images/WaterQuantityNode.png`}
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-72"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-72"].toFixed(2)}L`}
@@ -1477,7 +1479,7 @@ const handleDeleteAllItems = () => {
                   }}
                   onClick={() => {}}>
                   <img
-                    src="/images/leakage_water.png"
+                    src={`${basePath}/images/leakage_water.png`}
                     alt="Leakage"
                     style={{ position:"absolute",width: "1.5vw", height: "1.5vw", zIndex: "1"}}
                   />

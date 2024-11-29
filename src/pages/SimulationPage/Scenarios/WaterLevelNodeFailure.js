@@ -13,6 +13,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 
 function WaterLevelNodeFailure() {
+  // This is for Production Usage or Docker Usage only
+  const basePath = process.env.REACT_APP_BASE_PATH || "";
+  console.log("Base Path:", basePath);
+  /*****************************************/
   // Define the state variables
   const navigate = useNavigate();
   const [iconRefs, setIconRefs] = React.useState([]);
@@ -432,13 +436,13 @@ function WaterLevelNodeFailure() {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return "/images/WaterQualityNode.png";
+        return `${basePath}/images/WaterQualityNode.png`;
       case "waterquantitysensor":
-        return "/images/WaterQuantityNode.png";
+        return `${basePath}/images/WaterQuantityNode.png`;
       case "waterlevelsensor":
-        return "/images/WaterLevelNode.png";
+        return `${basePath}/images/WaterLevelNode.png`;
       case "motorsensor":
-        return "/images/MotorNode.png";
+        return `${basePath}/images/MotorNode.png`;
       default:
         return ""; // default image or empty string if none
     }
@@ -741,7 +745,7 @@ function WaterLevelNodeFailure() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}>
               <img
-                src="/images/white.png"
+                src={`${basePath}/images/white.png`}
                 alt="blueprint"
                 style={{ width: "100%", height: "100%" }}
               />

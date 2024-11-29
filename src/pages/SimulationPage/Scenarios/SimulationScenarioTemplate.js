@@ -10,6 +10,10 @@ import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 function SimulationScenarioTemplate() {
+  // This is for Production Usage or Docker Usage only
+  const basePath = process.env.REACT_APP_BASE_PATH || "";
+  console.log("Base Path:", basePath);
+  /*****************************************/
   // Define the state variables
   const [iconRefs, setIconRefs] = React.useState([]);
   const [flow1, setFlow1] = React.useState(0);
@@ -289,13 +293,13 @@ function SimulationScenarioTemplate() {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return "/images/WaterQualityNode.png";
+        return `${basePath}/images/WaterQualityNode.png`;
       case "waterquantitysensor":
-        return "/images/WaterQuantityNode.png";
+        return `${basePath}/images/WaterQuantityNode.png`;
       case "waterlevelsensor":
-        return "/images/WaterLevelNode.png";
+        return `${basePath}/images/WaterLevelNode.png`;
       case "motorsensor":
-        return "/images/MotorNode.png";
+        return `${basePath}/images/MotorNode.png`;
       default:
         return ""; // default image or empty string if none
     }
@@ -469,7 +473,7 @@ function SimulationScenarioTemplate() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}>
               <img
-                src="/images/white.png"
+                src={`${basePath}/images/white.png`}
                 alt="blueprint"
                 style={{ width: "100%", height: "100%" }}
               />
