@@ -3,8 +3,9 @@ import HoverableIcon from '../../pages/SimulationPage/components/HoverableIcon';
 import Timer from '../timer-component';
 
 function IoTNodes({SimulatedValues, motorOn, timeElapsed, waterLevelNodeWorking, setWaterLevelNodeWorking,setStepIndex, stepIndex}) {
-  console.log("Simu",SimulatedValues);
+  // console.log("Simu",SimulatedValues);
   const basePath = process.env.REACT_APP_BASE_PATH || "";
+  console.log("Base Path:", basePath);
     return (
         <div>
               {/* IoT Nodes  */}

@@ -19,6 +19,8 @@ import config from "../../config";
 
 const SimulationPage = () => {
   // State for holding input values and results
+  const basePath = process.env.REACT_APP_BASE_PATH || "";
+  console.log("Base Path:", basePath);
   const iconRefs = [];
   const [isMarkerPlaced, setIsMarkerPlaced] = useState(false);
   const [timeMultiplier, setTimeMultiplier] = useState(1);
