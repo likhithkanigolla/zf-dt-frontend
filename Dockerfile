@@ -1,15 +1,22 @@
-# Build stage
-FROM node:16-alpine as build
+# Stage 1: Build the React app
+FROM node:14-alpine AS build
 
 WORKDIR /app
-COPY . .
-ENV PUBLIC_URL=/dt_waternetwork
+
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
+
+COPY . ./
 RUN npm run build
 
-# Serve stage
+# Stage 2: Serve the React app with Nginx
 FROM nginx:alpine
-COPY --from=build /app/build/ /usr/share/nginx/html/dt_waternetwork/
+
+COPY --from=build /app/build /usr/share/nginx/html/dt_waternetwork
+
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
