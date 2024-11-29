@@ -1,5 +1,7 @@
 import { saveAs } from "file-saver";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./SimulationPage.css";
 
 import NavigationBar from "../../components/navigation/Navigation";
@@ -10,19 +12,8 @@ import SimulationCanvas from "./components/SimulationCanvas";
 import SimulationForm from "./components/SimulationForm/Form";
 import Toolbar from "./components/ToolBar/ToolBar";
 import Timer from "../../components/timer-component";
-
-import MotorNode from "../images/MotorNode.png";
-import WaterLevelNode from "../images/WaterLevelNode.png";
-import WaterQualityNode from "../images/WaterQualityNode.png";
-import WaterQuantityNode from "../images/WaterQuantityNode.png";
-import LeakageIcon from "../images/leakage_water.png";
-import whiteimage from "../images/white.png";
 import HoverableIcon from "./components/HoverableIcon";
-
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import config from "../../config";
 
@@ -1074,13 +1065,13 @@ const handleDeleteAllItems = () => {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return WaterQualityNode;
+        return "/images/WaterQualityNode.png";
       case "waterquantitysensor":
-        return WaterQuantityNode;
+        return "/images/WaterQuantityNode.png";
       case "waterlevelsensor":
-        return WaterLevelNode;
+        return "/images/WaterLevelNode.png";
       case "motorsensor":
-        return MotorNode;
+        return "/images/MotorNode.png";
       default:
         return ""; // default image or empty string if none
     }
@@ -1177,7 +1168,7 @@ const handleDeleteAllItems = () => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <img src={whiteimage} alt="blueprint" style={{ width: "100%", height: "100%" }} />
+              <img src="/images/white.png" alt="blueprint" style={{ width: "100%", height: "100%" }} />
               <SimulationCanvas
                 handleIconClick={handleIconClick}
                 iconRefs={iconRefs}
@@ -1214,9 +1205,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: '4'
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WD-KH98-00')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH98-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH98-00"].toFixed(2)}ppm`}
@@ -1231,9 +1221,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-00')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-00"].toFixed(2)}ppm`}
@@ -1248,9 +1237,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-01')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-01"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-01"].toFixed(2)}ppm`}
@@ -1265,9 +1253,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: '4'
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WD-KH96-02')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH96-02"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH96-02"].toFixed(2)}ppm`}
@@ -1282,9 +1269,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: '5'
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH95-00')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH95-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH95-00"].toFixed(2)}ppm`}
@@ -1299,9 +1285,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: '5'
                 }}>
-                {/* <img src={WaterQualityNode} alt="WaterQuality Node" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WD-KH04-00')} /> */}
                 <HoverableIcon
-                  src={WaterQualityNode}
+                  src="/images/WaterQualityNode.png"
                   alt="WaterQualityNode"
                   dataId="WM-WD-KH04-00"
                   data={`Water TDS: ${SimulatedValues["WM-WD-KH04-00"].toFixed(2)}ppm`}
@@ -1316,9 +1301,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WL-KH98-00')} /> */}
-                <HoverableIcon
-                  src={WaterLevelNode}
+                 <HoverableIcon
+                  src="/images/WaterLevelNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH98-00"
                   data={`Water Level: ${SimulatedValues["WM-WL-KH98-00"].toFixed(2)}%`}
@@ -1333,9 +1317,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterLevelNode} alt="WaterLevelNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> displayValueOnClick('WM-WL-KH00-00')} onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)}/> */}
                 <HoverableIcon
-                  src={WaterLevelNode}
+                  src="/images/WaterLevelNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WL-KH00-00"
                   data={`Water Level: ${SimulatedValues["WM-WL-KH00-00"].toFixed(2)}%`}
@@ -1350,9 +1333,8 @@ const handleDeleteAllItems = () => {
                   textAlign: "center",
                   zIndex: 4,
                 }}>
-                {/* <img src={MotorNode} alt="MotorNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('DM-KH98-60')} /> */}
                 <HoverableIcon
-                  src={MotorNode}
+                  src="/images/MotorNode.png"
                   alt="MotorNode"
                   aId="DM-KH98-60"
                   dataId="DM-KH98-60"
@@ -1369,9 +1351,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={() => getRealData('WM-WF-KH98-40')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH98-40"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KH98-40"]}L`}
@@ -1388,9 +1369,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KH95-40')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KH95-40"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KH95-40"].toFixed(2)}L`}
@@ -1407,9 +1387,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-70')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-70"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-70"].toFixed(2)}L`}
@@ -1426,9 +1405,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: 3,
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "2vw", height: "2vw" }} onClick={()=> getRealData('WM-WF-KB04-73')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-73"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-73"].toFixed(2)}L`}
@@ -1445,9 +1423,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: "4",
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-71')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-71"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-71"].toFixed(2)}L`}
@@ -1465,9 +1442,8 @@ const handleDeleteAllItems = () => {
                   transform: "rotate(90deg)",
                   zIndex: 4,
                 }}>
-                {/* <img src={WaterQuantityNode} alt="WaterQuantityNode" style={{ width: "1.5vw", height: "1.5vw" }} onClick={()=> getRealData('WM-WF-KB04-72')} /> */}
                 <HoverableIcon
-                  src={WaterQuantityNode}
+                  src="/images/WaterQuantityNode.png"
                   alt="WaterQuantityNode"
                   dataId="WM-WF-KB04-72"
                   data={`Total Water Flow: ${SimulatedValues["WM-WF-KB04-72"].toFixed(2)}L`}
@@ -1499,7 +1475,7 @@ const handleDeleteAllItems = () => {
                   }}
                   onClick={() => {}}>
                   <img
-                    src={LeakageIcon}
+                    src="/images/leakage_water.png"
                     alt="Leakage"
                     style={{ position:"absolute",width: "1.5vw", height: "1.5vw", zIndex: "1"}}
                   />

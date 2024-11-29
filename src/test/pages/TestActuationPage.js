@@ -1,15 +1,11 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import circuit from '../images/circuit.png';
-import { GiWaterTower, GiValve } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
+import InstructionBox from '../components/InstructionBox/InstructionBox';
+import NavigationBar from '../components/Navigation/Navigation';
+import { GiWaterTower, GiValve} from "react-icons/gi";
 import { MdOutlineInbox } from "react-icons/md";
 import { FaBoxArchive } from "react-icons/fa6";
-import axios from 'axios';
-import InstructionBox from '../components/InstructionBox/InstructionBox';
-import Motor from '../images/Motor.png';
-import WaterQualityNode from '../images/wqn.png';
-import Circuit2 from '../images/final.png';
-import NavigationBar from '../components/Navigation/Navigation';
-import { useNavigate } from 'react-router-dom';
 
 
 
@@ -119,14 +115,14 @@ function TestActuationPage() {
     <div style={{ overflowY: 'hidden', height: '47vw' }}>
       <NavigationBar />
       <div style={{ position: 'relative' }}>
-        <img src={Circuit2} alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
+        <img src='/images/final.png' alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
         {/* Motor Image and Buttons */}
         <div style={{ position: 'relative' }}>
       <style>
         {keyframes}
       </style>
       <img
-        src={Motor}
+        src='/images/Motor.png'
         alt="Motor"
         style={{
           width: '4%',
@@ -225,7 +221,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src={WaterQualityNode}
+          src='/images/wqn.png'
           alt="Water Quality Node"
           style={{
             width: '100%',
@@ -250,7 +246,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src={WaterQualityNode}
+          src='../images/wqn.png'
           alt="Water Quality Node"
           style={{
             width: '100%',
@@ -273,7 +269,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src={WaterQualityNode}
+          src='../images/wqn.png'
           alt="Water Quality Node"
           style={{
             width: '100%',

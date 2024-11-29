@@ -6,11 +6,6 @@ import ConsoleHeader from "../../../components/Console/Console";
 import SimulationCanvas from "../components/SimulationCanvas";
 import Toolbar from "../components/ToolBar/ToolBar";
 import IoTNodes from "../../../components/IoTNodes/Nodes";
-import MotorNode from "../../images/MotorNode.png";
-import WaterLevelNode from "../../images/WaterLevelNode.png";
-import WaterQualityNode from "../../images/WaterQualityNode.png";
-import WaterQuantityNode from "../../images/WaterQuantityNode.png";
-import whiteimage from "../../images/white.png";
 import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -294,13 +289,13 @@ function SimulationScenarioTemplate() {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return WaterQualityNode;
+        return "/images/WaterQualityNode.png";
       case "waterquantitysensor":
-        return WaterQuantityNode;
+        return "/images/WaterQuantityNode.png";
       case "waterlevelsensor":
-        return WaterLevelNode;
+        return "/images/WaterLevelNode.png";
       case "motorsensor":
-        return MotorNode;
+        return "/images/MotorNode.png";
       default:
         return ""; // default image or empty string if none
     }
@@ -474,7 +469,7 @@ function SimulationScenarioTemplate() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}>
               <img
-                src={whiteimage}
+                src="/images/white.png"
                 alt="blueprint"
                 style={{ width: "100%", height: "100%" }}
               />

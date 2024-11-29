@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import './ToolBar.css';
 
-import MotorNode from "../../../images/MotorNode.png"; 
-import WaterLevelNode from "../../../images/WaterLevelNode.png";
-import WaterQualityNode from "../../../images/WaterQualityNode.png";
-import WaterQuantityNode from "../../../images/WaterQuantityNode.png";
-
 function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex, stepIndex }) {
     const [isDragging, setIsDragging] = useState(false);
     const [draggedItem, setDraggedItem] = useState(null);
@@ -52,7 +47,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
                 onTouchMove={handleDragMove}
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}>
-                <img src={WaterQualityNode} alt="Water Quality Sensor" />
+                <img src="/images/WaterQualityNode.png" alt="Water Quality Sensor" />
                 <span className="tool-button-title">Water Quality Sensor</span>
             </button>
 
@@ -63,7 +58,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
                 onTouchMove={handleDragMove}
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}>
-                <img src={WaterQuantityNode} alt="Water Quantity Sensor" />
+                <img src="/images/WaterQuantityNode.png" alt="Water Quantity Sensor" />
                 <span className="tool-button-title">Water Quantity Sensor</span>
             </button>
 
@@ -74,7 +69,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
                 onTouchMove={handleDragMove}
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}>
-                <img src={WaterLevelNode} alt="Water Level Sensor" className='waterlevel-tool' />
+                <img src="/images/WaterLevelNode.png" alt="Water Level Sensor" className='waterlevel-tool' />
                 <span className="tool-button-title">Water Level Sensor</span>
             </button>
 
@@ -85,7 +80,7 @@ function Toolbar({ handleToolbarItemClick, handleLeakageIconClick, setStepIndex,
                 onTouchMove={handleDragMove}
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}>
-                <img src={MotorNode} alt="Motor Sensor" />
+                <img src="/images/MotorNode.png" alt="Motor Sensor" />
                 <span className="tool-button-title">Motor Sensor</span>
             </button>
         </div>
