@@ -13,10 +13,6 @@ const InteractiveIcon = React.memo(({ src, alt, onClick, style }) => (
 ));
 
 const RealValueVisualisation = () => {
-  // This is for Production Usage or Docker Usage only
-  const basePath = process.env.REACT_APP_BASE_PATH || "";
-  console.log("Base Path:", basePath);
-  /*****************************************/
 
   // State for holding input values and results
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -763,7 +759,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQualityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH98-00')} fetchNodeDataParam={'WM-WD-KH98-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -790,7 +786,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQualityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-00')} fetchNodeDataParam={'WM-WD-KH96-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -817,7 +813,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQualityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-01')} fetchNodeDataParam={'WM-WD-KH96-01'}
           style={{ width: '2vw', height: '2vw' }}
@@ -843,7 +839,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQualityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH96-02')} fetchNodeDataParam={'WM-WD-KH96-02'}
           style={{ width: '2vw', height: '2vw' }}
@@ -869,7 +865,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQualityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH95-00')} fetchNodeDataParam={'WM-WD-KH95-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -895,7 +891,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-           src={`${basePath}/images/WaterQualityNode-removebg.png`}
+           src={`${config.basePath}/images/WaterQualityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WD-KH04-00')} fetchNodeDataParam={'WM-WD-KH04-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -921,7 +917,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterLevelNode-removebg.png`}
+          src={`${config.basePath}/images/WaterLevelNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WL-KH98-00')} fetchNodeDataParam={'WM-WL-KH98-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -948,7 +944,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterLevelNode-removebg.png`}
+          src={`${config.basePath}/images/WaterLevelNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WL-KH00-00')} fetchNodeDataParam={'WM-WL-KH00-00'}
           style={{ width: '2vw', height: '2vw' }}
@@ -975,7 +971,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/MotorNode-removebg.png`}
+          src={`${config.basePath}/images/MotorNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('DM-KH98-60')} fetchNodeDataParam={'DM-KH98-60'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1002,7 +998,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KH98-40')} fetchNodeDataParam={'WM-WF-KH98-40'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1029,7 +1025,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KH95-40')} fetchNodeDataParam={'WM-WF-KH95-40'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1057,7 +1053,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-70')} fetchNodeDataParam={'WM-WF-KB04-70'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1085,7 +1081,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-73')} fetchNodeDataParam={'WM-WF-KB04-73'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1112,7 +1108,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`} 
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`} 
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-71')} fetchNodeDataParam={'WM-WF-KB04-71'}
           style={{ width: '2vw', height: '2vw' }}
@@ -1139,7 +1135,7 @@ const RealValueVisualisation = () => {
         }}
       >
         <InteractiveIcon
-          src={`${basePath}/images/WaterQuantityNode-removebg.png`}
+          src={`${config.basePath}/images/WaterQuantityNode-removebg.png`}
           alt="WaterQuantityNode"
           onClick={() => handleNodeClick('WM-WF-KB04-72')} fetchNodeDataParam={'WM-WF-KB04-72'}
           style={{ width: '2vw', height: '2vw' }}

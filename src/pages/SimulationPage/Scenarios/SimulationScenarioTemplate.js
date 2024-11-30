@@ -8,12 +8,10 @@ import Toolbar from "../components/ToolBar/ToolBar";
 import IoTNodes from "../../../components/IoTNodes/Nodes";
 import HoverableIcon from "../components/HoverableIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import config from '../../../config';
 
 function SimulationScenarioTemplate() {
-  // This is for Production Usage or Docker Usage only
-  const basePath = process.env.REACT_APP_BASE_PATH || "";
-  console.log("Base Path:", basePath);
-  /*****************************************/
+
   // Define the state variables
   const [iconRefs, setIconRefs] = React.useState([]);
   const [flow1, setFlow1] = React.useState(0);
@@ -293,13 +291,13 @@ function SimulationScenarioTemplate() {
   const getImageForType = (type) => {
     switch (type) {
       case "waterqualitysensor":
-        return `${basePath}/images/WaterQualityNode.png`;
+        return `${config.basePath}/images/WaterQualityNode.png`;
       case "waterquantitysensor":
-        return `${basePath}/images/WaterQuantityNode.png`;
+        return `${config.basePath}/images/WaterQuantityNode.png`;
       case "waterlevelsensor":
-        return `${basePath}/images/WaterLevelNode.png`;
+        return `${config.basePath}/images/WaterLevelNode.png`;
       case "motorsensor":
-        return `${basePath}/images/MotorNode.png`;
+        return `${config.basePath}/images/MotorNode.png`;
       default:
         return ""; // default image or empty string if none
     }
@@ -473,7 +471,7 @@ function SimulationScenarioTemplate() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}>
               <img
-                src={`${basePath}/images/white.png`}
+                src={`${config.basePath}/images/white.png`}
                 alt="blueprint"
                 style={{ width: "100%", height: "100%" }}
               />

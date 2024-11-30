@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import config from '../../../config';
 
 // PIPES
 import ZshapePipe from './ZShapePipe/Pipe';
@@ -50,10 +51,7 @@ const SimulationCanvas = ({
   const roCooler1Ref = useRef(null);
   const roCooler2Ref = useRef(null);
   const roCooler3Ref = useRef(null);
-  // This is for Production Usage or Docker Usage only
-  const basePath = process.env.REACT_APP_BASE_PATH || "";
-  console.log("Base Path:", basePath);
-  /*****************************************/
+
 
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const SimulationCanvas = ({
     <div className='simulation-canvas'>
       {/* PumpHouse */}
       <div style={{ position: "absolute", top: "1vw", left: "1.5vw"}} id="pumpHouseIcon">
-        <img src={`${basePath}/images/pump_house.png`} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
+        <img src={`${config.basePath}/images/pump_house.png`} alt="sump" style={{ width: "4.8vw", height: "4.8vw" }} onClick={(e) => handleIconClick(e)}
           // ref={(ref) => { if (ref) { ref.id = "PumpHouse1"; iconRefs.push(ref); } }}
         />
         <div style={{ fontSize: "1vw" }}>PumpHouse</div>
@@ -96,7 +94,7 @@ const SimulationCanvas = ({
 
       {/* Borewell */}
       <div id="borewellIcon" style={{ position: "absolute", top: "10vw", left: "1.5vw" }}>
-        <img src={`${basePath}/images/borewell.png`} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}
+        <img src={`${config.basePath}/images/borewell.png`} alt="borewell" style={{ width: "4.8vw", height: "4.8vw" }}
           onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "Borewell1"; iconRefs.push(ref); } }}/>
         <div style={{ fontSize: "1vw" }}>Borewell</div>
       </div>
@@ -121,7 +119,7 @@ const SimulationCanvas = ({
         {/* Motor */}
         <div style={{ position: "absolute", zIndex: 2, top: "12.5vw", left: "20.3vw", textAlign: "center", width: "5.8vw" }}
           ref={(ref) => { if (ref) { ref.id = "Motor"; iconRefs.push(ref); } }}>
-          <img src={`${basePath}/images/Motor.png`} alt="Motor"
+          <img src={`${config.basePath}/images/Motor.png`} alt="Motor"
             className={`motor ${motorOn ? "running" : ""}`}
             style={{ width: "3vw", height: "3vw", transform: "scaleX(-1)", }}
             onClick={() => {
@@ -162,13 +160,13 @@ const SimulationCanvas = ({
       </div>
           
         <div style={{ position: "absolute", top: "11vw", left: "36.7vw", textAlign: "center" }}>
-          <img src={`${basePath}/images/Washrooms.png`} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
+          <img src={`${config.basePath}/images/Washrooms.png`} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
             ref={(ref) => { if (ref) { ref.id = "AdminBlockWashrooms"; iconRefs.push(ref); } }} />
             <div style={{ fontSize: "0.7vw" }}>Admin Block<br></br> Washrooms</div>
         </div>
 
         <div style={{ position: "absolute", top: "11vw", left: "41.6vw", textAlign: "center" }}>
-          <img src={`${basePath}/images/Washrooms.png`} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
+          <img src={`${config.basePath}/images/Washrooms.png`} alt="WaterTank" style={{ width: "3.8vw", height: "3.8vw" }}
             ref={(ref) => { if (ref) { ref.id = "KRBWashrooms"; iconRefs.push(ref); } }} />
             <div style={{ fontSize: "0.7vw" }}>KRB Washrooms</div>
         </div>
@@ -206,7 +204,7 @@ const SimulationCanvas = ({
         {/* RO Plant */}
         <div style={{ position: "absolute", top: "0vw", left: "52vw" }}>
         <div style={{ fontSize: "0.6vw" }}><b>RO Plant</b></div>
-          <img src={`${basePath}/images/ro_plant.png`} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
+          <img src={`${config.basePath}/images/ro_plant.png`} alt="ro plant" style={{ width: "4.8vw", height: "4.8vw" }}
             onClick={(e) => handleIconClick(e)} ref={(ref) => { if (ref) { ref.id = "ROPlant"; iconRefs.push(ref); } }} /> 
         </div>
 
@@ -245,7 +243,7 @@ const SimulationCanvas = ({
 
         {/* RO Coolers */}
         <div style={{ position: "absolute", top: "13.5vw", left: "51.5vw", textAlign: "center" }}>
-          <img src={`${basePath}/images/ro_cooler.png`} alt="ro cooler 1" style={{ width: "3.2vw", height: "3.8vw" }}
+          <img src={`${config.basePath}/images/ro_cooler.png`} alt="ro cooler 1" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler1"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 1</div>
@@ -253,14 +251,14 @@ const SimulationCanvas = ({
         </div>
 
         <div style={{ position: "absolute", top: "13.5vw", left: "54.3vw", textAlign: "center" }}>
-          <img src={`${basePath}/images/ro_cooler.png`} alt="ro cooler 2" style={{ width: "3.2vw", height: "3.8vw" }}
+          <img src={`${config.basePath}/images/ro_cooler.png`} alt="ro cooler 2" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler2"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw", top: "-2vw"}}>RO 2</div>
         </div>
 
         <div style={{ position: "absolute", top: "13.5vw", left: "57vw", textAlign: "center" }}>
-          <img src={`${basePath}/images/ro_cooler.png`} alt="ro cooler 3" style={{ width: "3.2vw", height: "3.8vw" }}
+          <img src={`${config.basePath}/images/ro_cooler.png`} alt="ro cooler 3" style={{ width: "3.2vw", height: "3.8vw" }}
             onClick={(e) => handleIconClick(e)}
             ref={(ref) => { if (ref) { ref.id = "ROCooler3"; iconRefs.push(ref); } }} />
           <div style={{ fontSize: "0.7vw" }}>RO 3</div>

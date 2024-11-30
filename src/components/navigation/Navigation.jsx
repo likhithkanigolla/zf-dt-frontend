@@ -70,9 +70,6 @@ const PopoverContent = styled('div')(({ theme }) => ({
 
 const NavigationBar = ({ title }) => {
 
-  const basePath = process.env.REACT_APP_BASE_PATH || "";
-  console.log("Base Path:", basePath);
-
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [alarmAnchorEl, setAlarmAnchorEl] = useState(null);
   const [ncount, setNcount] = useState(0);
@@ -223,12 +220,12 @@ const NavigationBar = ({ title }) => {
     <nav className="navbar">
       <Link to="/">
         <div className="navbar__logo">
-          <img src={`${basePath}/images/iiith.png`} alt="IIITH Logo" />
+          <img src={`${config.basePath}/images/iiith.png`} alt="IIITH Logo" />
         </div>
       </Link>
       <Link to="/">
         <div className="navbar__logo">
-          <img src={`${basePath}/images/scrc_logo.png`} alt="Smart City Living Lab Logo" />
+          <img src={`${config.basePath}/images/scrc_logo.png`} alt="Smart City Living Lab Logo" />
         </div>
       </Link>
       <div className="navbar__title">{title}</div>
@@ -348,7 +345,7 @@ const NavigationBar = ({ title }) => {
 
       <Link to="/">
         <div className="navbar__logo">
-          <img src={`${basePath}/images/zf_logo.png`} alt="ZF Logo" />
+          <img src={`${config.basePath}/images/zf_logo.png`} alt="ZF Logo" />
         </div>
       </Link>
 

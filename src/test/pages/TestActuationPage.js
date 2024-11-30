@@ -6,15 +6,11 @@ import NavigationBar from '../components/Navigation/Navigation';
 import { GiWaterTower, GiValve} from "react-icons/gi";
 import { MdOutlineInbox } from "react-icons/md";
 import { FaBoxArchive } from "react-icons/fa6";
+import config from '../../config';
 
 
 
 function TestActuationPage() {
-
-  // This is for Production Usage or Docker Usage only
-  const basePath = process.env.REACT_APP_BASE_PATH || "";
-  console.log("Base Path:", basePath);
-  /*****************************************/
   
   let backendAPI =  "https://smartcitylivinglab.iiit.ac.in/testdt-backend-api"
   const navigate = useNavigate();
@@ -121,14 +117,14 @@ function TestActuationPage() {
     <div style={{ overflowY: 'hidden', height: '47vw' }}>
       <NavigationBar />
       <div style={{ position: 'relative' }}>
-        <img src={`${basePath}/images/final.png`} alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
+        <img src={`${config.basePath}/images/final.png`} alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
         {/* Motor Image and Buttons */}
         <div style={{ position: 'relative' }}>
       <style>
         {keyframes}
       </style>
       <img
-        src={`${basePath}/images/Motor.png`}
+        src={`${config.basePath}/images/Motor.png`}
         alt="Motor"
         style={{
           width: '4%',
@@ -227,7 +223,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src={`${basePath}/images/wqn.png`}
+          src={`${config.basePath}/images/wqn.png`}
           alt="Water Quality Node"
           style={{
             width: '100%',
