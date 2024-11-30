@@ -117,7 +117,7 @@ function TestActuationPage() {
     <div style={{ overflowY: 'hidden', height: '47vw' }}>
       <NavigationBar />
       <div style={{ position: 'relative' }}>
-        <img src={`${config.basePath}/images/final.png`} alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
+        <img src={`${config.basePath}/images/Circut-M-Test.png`} alt="circuit" style={{ width: '100%', marginTop: '55px' }} />
         {/* Motor Image and Buttons */}
         <div style={{ position: 'relative' }}>
       <style>
@@ -223,7 +223,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src={`${config.basePath}/images/wqn.png`}
+          src={`${config.basePath}/images/WaterQualityNode.png`}
           alt="Water Quality Node"
           style={{
             width: '100%',
@@ -248,7 +248,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src='../images/wqn.png'
+          src={`${config.basePath}/images/WaterQualityNode.png`}
           alt="Water Quality Node"
           style={{
             width: '100%',
@@ -271,7 +271,7 @@ function TestActuationPage() {
         }}
       >
         <img
-          src='../images/wqn.png'
+          src={`${config.basePath}/images/WaterQualityNode.png`}
           alt="Water Quality Node"
           style={{
             width: '100%',
