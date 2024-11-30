@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import NavigationBar from "../components/Navigation/Navigation";
 import axios from "axios";
 import "./ThreeD.css";
-import video from "./zf.mp4";
-import audio from "./motor.mp3";
+import config from "../../config";
 
 const ThreeD = () => {
   const videoRef = useRef(null);
@@ -138,13 +137,11 @@ const ThreeD = () => {
         <video
           className="video"
           ref={videoRef}
-          src={video}
+          src={`${config.basePath}/video/zf.mp4`}
           style={{ width: "90vw", height: "auto" }}
           disablePictureInPicture
         />
-        <audio ref={audioRef} src={audio} />
-
-        {/* Buttons for motor on/off */}
+        <audio ref={audioRef} src={`${config.basePath}/audio/motor.mp3`} />
       </div>
     </div>
   );
